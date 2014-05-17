@@ -1,0 +1,138 @@
+div#counter-wrap {
+	position: relative;
+	width: 100%;
+}
+
+div#counter {
+	position: relative;
+	width: 100%;
+	max-width: 252px;
+	top: 0;
+	left: 0;
+}
+
+div#counter-fill-wrap {
+	overflow: hidden;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	max-width: 252px;
+	height: 75%;
+}
+
+div#counter-fill-wrap img#counter-fill {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+
+div#counter-value-wrap {
+	position: absolute;
+	top: 65%;
+	left: 40%;
+	width: 14em;
+	height: 7em;
+	max-width: 100%;
+	margin-left: -7em;
+	margin-top: -3.5em;
+	text-align: center;
+}
+
+div#counter-value-wrap span {
+	margin: 0;
+	padding: 0;
+	font-size: 1.8em;
+	line-height: 1;
+	color: #000000;
+	text-shadow:
+}
+
+div#counter-value-wrap span#counter-value {
+	margin: 0;
+	padding: 0;
+	font-size: 4em;
+	font-family: 'BebasNeue';
+	text-shadow:
+		2px 2px 0 #ffffff,
+		-1px -1px 0 #ffffff,
+		1px -1px 0 #ffffff,
+		-1px 1px 0 #ffffff,
+		1px 1px 0 #ffffff;
+}
+
+div#counter-value-wrap span.counter-euros {
+	font-size: 1.2em;
+	margin: 0;
+}
+
+div#counter-wrap img {
+	padding: 0;
+	margin: 0;
+}
+
+/****** ANIMATIONS ******/
+
+div#counter.animated {
+	-webkit-animation-name: counterfly;
+	-webkit-animation-duration: 7s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-animation-delay: 0;
+}
+
+div#counter-fill-wrap.simple {
+	-webkit-animation-name: counterfillimmediate;
+	-webkit-animation-duration: 6s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-animation-delay: 0;
+}
+
+div#counter-fill-wrap.animated {
+	-webkit-animation-name: counterfill;
+	-webkit-animation-duration: 7s;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-animation-delay: 0;
+}
+
+@-webkit-keyframes counterfly {
+	0% /* initial state - invisible, left corner of content container */
+		{
+			-webkit-animation-timing-function: ease-in;
+			-webkit-transform: translateX(-390%) translateY(80%) scaleX(0.2) scaleY(0);
+			opacity: 0;
+		}
+	7.14% /* 500ms - state unchanged */
+		{
+			-webkit-animation-timing-function: ease-in;
+			-webkit-transform: translateX(-390%) translateY(80%) scaleX(0.2) scaleY(0);
+			opacity: 0;
+		}
+	14.29% /* 1000ms - turning transparent */
+		{
+			-webkit-animation-timing-function: ease-out;
+			-webkit-transform: translateX(-390%) translateY(80%) scaleX(0.2) scaleY(0.1);
+			opacity: 0.2;
+		}
+	42.86% /* 3000ms - opaque, in position */
+		{
+			-webkit-animation-timing-function: linear;
+			-webkit-transform: translateX(0px) translateY(0px) scaleX(1) scaleY(1);
+			opacity: 1;
+		}
+	100% /* 7000ms - state unchanged */
+		{
+			-webkit-animation-timing-function: linear;
+			-webkit-transform: translateX(0px) translateY(0px) scaleX(1) scaleY(1);
+			opacity: 1;
+		}
+}

@@ -1,0 +1,21 @@
+.xchange-message-wrap {
+	padding: 1.4em;
+	border-radius: .7em;
+	background: #999999;
+	background: rgba( 150, 150, 150, .5 );
+	box-shadow: -2px 2px 5px 0 rgba(0, 0, 0, .7);
+	margin: 2.1em 0;
+	width: 100%;
+}
+.xchange-message-wrap :last-child {
+	padding-bottom: 0;
+}
+.xchange-message-wrap:nth-child(2n) {
+	background: rgba( 0, 207, 255, .4 );
+}
+.xchange-message-wrap:nth-child(2n+1) {
+	background: rgba( 130, 223, 41, .4 );
+}
+.xchange-title {
+	font-weight: bold;
+}

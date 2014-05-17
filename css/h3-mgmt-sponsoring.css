@@ -1,0 +1,84 @@
+.donation-info-wrap {
+	vertical-align: middle;
+}
+.donation-info-wrap {
+	text-align: center;
+	width: 80%;
+	display: inline;
+	display: inline-block;
+	font-size: 1.8em;
+}
+.arrow-wrap {
+	width: 8%;
+	display: inline;
+	display: inline-block;
+	font-size: 2.8em;
+	padding: 0 1%;
+	cursor: pointer;
+}
+.arrow-right {
+	text-align: right;
+}
+.arrow:hover {
+	text-shadow: 0 0 3px #00cfff
+}
+.arrow {
+	line-height: 1.6;
+}
+.address-row {
+	display: none;
+}
+.team-profile-sponsors .tip,
+.activity-stream .tip,
+.owner-link .tip {
+	text-align: left;
+	width: 15px !important;
+	height: 14px !important;
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	margin: 0 0 -2px 5px;
+}
+.comments-bubble {
+	margin: 0 !important;
+	position: absolute;
+	top: 0;
+}
+.comments-bubble:hover {
+	top: -14px;
+}
+.owner-link a {
+	color: #ffffff;
+	text-decoration: none;
+	border: 0;
+}
+.owner-link a:hover {
+	color: #ffffff;
+	text-shadow: 0 0 5px #b784bf;
+	text-decoration: none;
+	border: 0;
+}
+.sponsors-link {
+	color: #ffffff;
+	text-decoration: none;
+	border: 0;
+}
+.sponsors-link:hover {
+	color: #ffffff;
+	text-shadow: 0 0 2px #00cfff;
+	text-decoration: none;
+	border: 0;
+}
+div#donation-receipt-wrap {
+	display: none;
+}
+div.donation-selector-row::-moz-selection {
+	background: transparent;
+	color: #ffffff;
+	text-shadow: none;
+}
+div.donation-selector-row::selection {
+	background: transparent;
+	color: #ffffff;
+	text-shadow: none;
+}

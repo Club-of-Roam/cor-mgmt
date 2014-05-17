@@ -1,0 +1,52 @@
+.ticker-message {
+	padding: 1.4em;
+	border-radius: .7em;
+	background: #999999;
+	background: rgba( 150, 150, 150, .5 );
+	margin: 0 0 4.2em;
+}
+
+.ticker-message p.ticker-message-title {
+	font-size: 1.8em;
+	font-weight: 700;
+	padding: 0 0 .2778em;
+	margin: 0;
+}
+
+.ticker-message p.ticker-message-title a {
+	font-weight: 700;
+}
+
+.ticker-message span.ticker-message-ago {
+	font-weight: 700;
+}
+
+.ticker-message p.ticker-message-mates {
+	font-size: 1.6em;
+	padding: 0 0 .3125em;
+	margin: 0;
+}
+
+.ticker-message p.ticker-message-time {
+	font-size: 1.2em;
+	padding: 0;
+	margin: 0;
+}
+
+.ticker-mms img {
+	max-height: 30em;
+	margin: 0;
+	padding: 2.4em 0 0;
+}
+.ticker-mms a.shutterset:hover {
+	opacity: .6;
+}
+.ticker-mms table {
+	font-size: 1em;
+	margin-bottom: 0;
+}
+
+.ticker-message p.the-message {
+	margin: 0;
+	padding: 1.5em 0 0;
+}
