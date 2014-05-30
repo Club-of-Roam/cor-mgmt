@@ -1,0 +1,4 @@
+# files ending in a tilde (temporary backups)
+*~
+# all files in the logs directory (logs on the server should not be overwritten!)
+logs/
