@@ -14,14 +14,19 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 	foreach ( $fields as $field ) {
 
 		if ( $field['type'] == 'section' ) {
-			$output .= '<h3>' . $field['label'] . '</h3>';
+			$output .= '<h3 class="top-space-more">' . $field['label'] . '</h3>';
 			continue;
 		}
 
 		if ( ! isset( $field['value'] ) ) {
 			$field['value'] = '';
 		}
-		$output .= '<div class="form-row';
+		
+		if ( $field['type'] == 'radio' ) {
+			$output .= '<div style="margin-bottom: 15px;';
+		}else {	
+			$output .= '<div class="form-row';
+		}
 		if ( isset( $field['type'] ) && 'hidden' === $field['type'] ) {
 			$output .= ' hidden-field-row no-margin-bottom';
 		}
@@ -131,7 +136,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 						$output .= ' disabled="disabled"';
 					}
 
-					$output .= ' /><label for="' . $field['id'] . '_' . $option['value'] . '">' . $option['label'] . '</label><br />';
+					$output .= ' /><label style="display:inline;" for="' . $field['id'] . '_' . $option['value'] . '">' . $option['label'] . '</label><br />';
 				}
 			break;
 
@@ -278,7 +283,10 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 			break;
 		} // type switch
 		if( isset( $field['desc'] ) && ! empty( $field['desc'] ) ) {
-			$output .= '<br /><span class="description">' . $field['desc'] . '</span>';
+			if ( 'single-pic-upload' === $field['type'] ) {
+				$output .= '<br />';
+			}
+			$output .= '<span class="description">' . $field['desc'] . '</span>';
 		}
 		$output .= '</div>';
 	} // foreach field

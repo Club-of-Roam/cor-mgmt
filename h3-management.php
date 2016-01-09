@@ -5,7 +5,7 @@ Plugin Name: HitchHikingHub Management
 Plugin URI: http://tramprennen.org
 Description: Core of the "HitchHikingHub", events/races, user profiles, team profiles
 Version: 1.1
-Author: Johannes Pilkahn, Jonas Damhuis
+Author: Johannes Pilkahn, Jonas Damhuis, Ole 
 Author URI: http://nekkidgrandma.com
 License: GPL3
 */

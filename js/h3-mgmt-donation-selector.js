@@ -15,19 +15,15 @@ jQuery('.less-arrow').click(function() {
 		var newVal = prevVal - 1;
 	} else {
 		var newVal = prevVal - .5;
-		if( newVal < minVal ) {
-			newVal = prevVal;
-		}
+	}
+	if( newVal < minVal ) {
+		newVal = prevVal;
 	}
 	var newDon = newVal * 10;
 	jQuery('#thumbs').val( newVal );
 	jQuery('.thumbs').text( newVal );
 	jQuery('#donation').val( newDon );
 	jQuery('.donation').text( newDon );
-	if ( newVal < 20 ) {
-		jQuery('div#no-donation-receipt-wrap').show( 400 );
-		jQuery('div#donation-receipt-wrap').hide( 0 );
-	}
 });
 
 jQuery('.more-arrow').click(function() {
@@ -59,10 +55,15 @@ jQuery('#receipt').change(function() {
 	}
 });
 
-jQuery('#donation-submit-debit').click(function() {
-	var receiptVal = jQuery('#receipt').val();
-	if ( confirm( donationParams.debitConfirm + "\n\n" + donationParams.accountID + ": " + jQuery('input#account_id').val() + "\n" + donationParams. bankID + ": " + jQuery('input#bank_id').val() + "\n" + donationParams.donation + ": " + jQuery('input#donation').val() + " " + donationParams.euros ) ) {
-		return true;
-	}
-	return false;
-});
+function resizeIframe(obj) {
+	obj.style.height = '1000px';
+    //obj.style.height = obj.contentWindow.document.body.scrollHeight + '5000px';
+}
+
+//jQuery('#donation-submit-debit').click(function() {
+//	var receiptVal = jQuery('#receipt').val();
+//	if ( confirm( donationParams.debitConfirm + "\n\n" + donationParams.accountID + ": " + jQuery('input#account_id').val() + "\n" + donationParams. bankID + ": " + jQuery('input#bank_id').val() + "\n" + donationParams.donation + ": " + jQuery('input#donation').val() + " " + donationParams.euros ) ) {
+//		return true;
+//	}
+//	return false;
+//});

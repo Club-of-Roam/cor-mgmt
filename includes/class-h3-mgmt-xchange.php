@@ -80,8 +80,8 @@ class H3_MGMT_XChange {
 
 		$messages = $this->get_messages();
 
-		$output = '<div class="grid-row"><div class="grid-block col6"><div class="island-inside">' .
-			'<h2 class="first">' . _x( 'HitchMate XChange', 'XChange', 'h3-mgmt' ) . '</h2>';
+		$output = '<div class="flex_column av_one_half first  avia-builder-el-0  el_before_av_one_half  avia-builder-el-first">' .
+			'<h3>' . _x( 'HitchMate XChange', 'XChange', 'h3-mgmt' ) . '</h3>';
 
 		foreach( $messages as $message ) {
 			$test = rtrim( $message['message'] );
@@ -92,14 +92,14 @@ class H3_MGMT_XChange {
 							_x( 'Message by', 'XChange', 'h3-mgmt' ) . ': ' . $user_obj->first_name . ' (' . $message['time'] . ')' .
 						'</p>' .
 						'<p class="xchange-message no-margin-bottom">' .
-							preg_replace( '#(<br */?>\s*){2,}#i', '<br /><br />' , preg_replace( '/[\r|\n]/', '<br>' , $message['message'] ) ) .
+							preg_replace( '#(<br */?>\s*){2,}#i', '<br /><br />' , preg_replace( '/[\r|\n]/', '<br>' , stripslashes( $message['message'] ) ) ) .
 						'</p>' .
 					'</div>';
 			}
 		}
 
-		$output .= '</div></div><div class="grid-block col6 island last"><div class="island-inside">' .
-			'<h2>' . _x( 'Your own message', 'XChange', 'h3-mgmt' ) . '</h2>';
+		$output .= '</div><div class="flex_column av_one_half   avia-builder-el-2  avia-builder-el-last">' .
+			'<h3>' . _x( 'Your own message', 'XChange', 'h3-mgmt' ) . '</h3>';
 
 		if( is_user_logged_in() ) {
 			$output .= '<p>' . _x( 'If you want to post a HitchMate search message yourself, you can do so here. To delete an existing message, simply empty the text field and submit an empty message - your existing one will be deleted.', 'XChange', 'h3-mgmt' ) . '</p>' .
@@ -114,7 +114,7 @@ class H3_MGMT_XChange {
 				array(
 					'type' => 'textarea',
 					'id' => 'message',
-					'label' => 'The message',
+					'label' => __( 'The message', 'h3-mgmt' ),
 					'value' => $own_message
 				)
 			);
@@ -128,7 +128,7 @@ class H3_MGMT_XChange {
 			$output .= '<p>' . _x( 'You must be <a title="Log in" href="http://tramprennen.org/login">logged in</a> to post a HitchMate search message.', 'XChange', 'h3-mgmt' ) . '</p>';
 		}
 
-		$output .= '</div></div></div>';
+		$output .= '</div>';
 
 		return $output;
 	}
