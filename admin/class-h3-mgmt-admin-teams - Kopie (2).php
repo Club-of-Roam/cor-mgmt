@@ -63,12 +63,11 @@ class H3_MGMT_Admin_Teams {
 							'team_name' => $_POST['team_name'],
 							'description' => $_POST['description'],
 							'team_pic' => $_POST['team_pic'],
-							'team_phone' => $_POST['team_phone'],
 							'route_id' => $_POST['route_id'],
 							'race_id' => $_POST['race_id']
 						),
 						array( 'id'=> intval( $_GET['id'] ) ),
-						array( '%s', '%s', '%s', '%s', '%d', '%d' ),
+						array( '%s', '%s', '%s', '%d', '%d' ),
 						array( '%d' )
 					);
 					$messages[] = array(
@@ -83,10 +82,9 @@ class H3_MGMT_Admin_Teams {
 							'team_name' => $_POST['team_name'],
 							'description' => $_POST['description'],
 							'team_pic' => $_POST['team_pic'],
-							'team_phone' => $_POST['team_phone'],
 							'route_id' => $_POST['route_id']
 						),
-						array( '%d', '%s', '%s', '%s', '%s', '%d' )
+						array( '%d', '%s', '%s', '%s', '%d' )
 					);
 					$messages[] = array(
 						'type' => 'message',
@@ -342,23 +340,8 @@ class H3_MGMT_Admin_Teams {
 					'label' => 'name'
 				))
 		);
-		
-		$race_mb['fields'][] = array(
-			'id' => 'team_phone',
-			'type' => 'text',
-			'label'	=> __( 'Phones (for Ticker)', 'h3-mgmt' ),
-			'desc'	=> _x( 'More than 1 Phone Number separated by space bar!!!', 'h3-mgmt' ),
-			'options' => $h3_mgmt_races->options_array( array(
-					'data' => 'race',
-					'orderby' => 'start',
-					'order' => 'DESC',
-					'value' => 'id',
-					'label' => 'name'
-				))
-		);
-		
-		$fields[] = $race_mb;   			
-		
+		$fields[] = $race_mb;
+
 		$mcount = count($fields);
 		for ( $i = 0; $i < $mcount; $i++ ) {
 			$fcount = count($fields[$i]['fields']);
@@ -463,11 +446,6 @@ class H3_MGMT_Admin_Teams {
 				'sortable' => true
 			),
 			array(
-				'id' => 'InfMobile',
-				'title' => __( 'Inf. for Mobile', 'h3-mgmt' ),
-				'sortable' => true
-			),
-			array(
 				'id' => 'race',
 				'title' => __( 'Event / Race', 'h3-mgmt' ),
 				'sortable' => true
@@ -496,7 +474,7 @@ class H3_MGMT_Admin_Teams {
 			'orderby' => 'first_name',
 			'oder' => 'ASC',
 			'exclude_incomplete' => false,
-			'extra_fields' => array( 'first_name', 'last_name', 'email', 'city', 'mobile', 'team', 'race', 'shirt', 'InfMobile' )
+			'extra_fields' => array( 'first_name', 'last_name', 'email', 'city', 'mobile', 'team', 'race', 'shirt' )
 		);
 		list( $participants_count, $participants_complete_count, $participants_incomplete_count, $rows ) = $h3_mgmt_teams->get_participants_meta( $parts_args );
 

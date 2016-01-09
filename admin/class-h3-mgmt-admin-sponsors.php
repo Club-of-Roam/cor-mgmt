@@ -350,6 +350,11 @@ class H3_MGMT_Admin_Sponsors {
 				'conversion' => 'type'
 			),
 			array(
+				'id' => 'code',
+				'title' => __( 'Code', 'h3-mgmt' ),
+				'sortable' => true
+			),
+			array(
 				'id' => 'method',
 				'title' => __( 'Method', 'h3-mgmt' ),
 				'sortable' => true,
@@ -502,7 +507,7 @@ class H3_MGMT_Admin_Sponsors {
 			'type' => 'all',
 			'method' => $method,
 			'exclude_unpaid' => false,
-			'extra_fields' => array( 'bank_info', 'race' )
+			'extra_fields' => array( 'bank_info', 'race', 'code' )
 		));
 
 		$title = _x( 'TeamSponsors &amp; TeamOwners', 'Sponsoring, Backend', 'h3-mgmt' );

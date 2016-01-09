@@ -71,6 +71,14 @@ class H3_MGMT_Admin_Emails {
 				array(
 					'label' => _x( 'All participants of Tramprennen 2013', 'Admin Email Interface', 'h3-mgmt' ),
 					'value' => 'race-2'
+				),
+				array(
+					'label' => _x( 'All participants of Tramprennen 2014', 'Admin Email Interface', 'h3-mgmt' ),
+					'value' => 'race-3'
+				),
+				array(
+					'label' => _x( 'All participants of Tramprennen 2015', 'Admin Email Interface', 'h3-mgmt' ),
+					'value' => 'race-4'
 				)
 			);
 			$receipient_field = array(

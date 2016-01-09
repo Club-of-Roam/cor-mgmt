@@ -1,12 +1,9 @@
 .donation-info-wrap {
-	vertical-align: middle;
-}
-.donation-info-wrap {
 	text-align: center;
 	width: 80%;
 	display: inline;
 	display: inline-block;
-	font-size: 1.8em;
+	font-size: 2em;
 }
 .arrow-wrap {
 	width: 8%;
@@ -28,16 +25,15 @@
 .address-row {
 	display: none;
 }
-.team-profile-sponsors .tip,
-.activity-stream .tip,
-.owner-link .tip {
+.team-profile-sponsors .msg,
+.owner-link .msg {
 	text-align: left;
-	width: 15px !important;
-	height: 14px !important;
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
-	margin: 0 0 -2px 5px;
+	font-size: .8em;
+	font-style: italic;
+	color: #333;
 }
 .comments-bubble {
 	margin: 0 !important;
@@ -81,4 +77,26 @@ div.donation-selector-row::selection {
 	background: transparent;
 	color: #ffffff;
 	text-shadow: none;
+}
+.activity-stream {
+	padding: 1.5em;
+	background: #999999;
+	margin: 0 0 2.3em 0;
+	width: 100%;
+}
+.activity-stream :last-child {
+	padding-bottom: 0;
+}
+.activity-stream:nth-child(2n) {
+	background: #F1F1F1; /*#dfe8ff;*/
+}
+.activity-stream:nth-child(2n+1) {
+	background: #A0A0A0; /* #c79a52; */
+}
+.xchange-title {
+	font-weight: bold;
+}
+.activity-stream p:last-child {
+	margin: 0;
+	padding: 0 !important;
 }

@@ -7,6 +7,7 @@ div#counter {
 	position: relative;
 	width: 100%;
 	max-width: 252px;
+	max-height: 266px;
 	top: 0;
 	left: 0;
 }
@@ -53,18 +54,14 @@ div#counter-value-wrap span#counter-value {
 	margin: 0;
 	padding: 0;
 	font-size: 4em;
-	font-family: 'BebasNeue';
-	text-shadow:
-		2px 2px 0 #ffffff,
-		-1px -1px 0 #ffffff,
-		1px -1px 0 #ffffff,
-		-1px 1px 0 #ffffff,
-		1px 1px 0 #ffffff;
+	font-family: 'Raleway';
 }
 
 div#counter-value-wrap span.counter-euros {
 	font-size: 1.2em;
-	margin: 0;
+	margin: 0 0 .2em;
+	font-family: 'Raleway';
+	text-transform: uppercase;
 }
 
 div#counter-wrap img {

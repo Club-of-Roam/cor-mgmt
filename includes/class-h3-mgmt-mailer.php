@@ -86,16 +86,16 @@ class H3_MGMT_Mailer {
 					'message'	=>	str_replace( "%name%", $name, str_replace( "%team_name%", $team_name, __( 'Moin %name%! Your team "%team_name%" has been successfully created.', 'h3-mgmt' ) ) )
 				),
 				'invitation'	=>	array(
-					'subject'	=>	__( 'You have been invited to Tramprennen 2013', 'h3-mgmt' ),
-					'message'	=>	str_replace( "%code%", $code, str_replace( "%name%", $name, str_replace( "%link%", $link, str_replace( "%team_name%", $team_name, str_replace( "%inviter%", $inviter, __( 'Moin! You have been invited by %inviter% to join his/her team "%team_name%" for Tramprennen 2013. To accept the invitation, either click here: %link%, or enter the code %code% manually on tramprennen.org.', 'h3-mgmt' ) ) ) ) ) )
+					'subject'	=>	__( 'You have been invited to Tramprennen 2015', 'h3-mgmt' ),
+					'message'	=>	str_replace( "%code%", $code, str_replace( "%name%", $name, str_replace( "%link%", $link, str_replace( "%team_name%", $team_name, str_replace( "%inviter%", $inviter, __( 'Moin! You have been invited by %inviter% to join his/her team "%team_name%" for Tramprennen 2014. To accept the invitation, either click here: %link%, or enter the code %code% manually on tramprennen.org.', 'h3-mgmt' ) ) ) ) ) )
 				),
 				'invitation-accepted-inviter'	=>	array(
 					'subject'	=>	__( 'Your invitation was accepted!', 'h3-mgmt' ),
-					'message'	=>	str_replace( "%name%", $name, str_replace( "%link%", $link, str_replace( "%team_name%", $team_name, str_replace( "%invitee%", $invitee, __( 'Moin %name%! %invitee% has accepted your invitation to join "%team_name%" for Tramprennen 2013. Check the status of your time via: %link%', 'h3-mgmt' ) ) ) ) )
+					'message'	=>	str_replace( "%name%", $name, str_replace( "%link%", $link, str_replace( "%team_name%", $team_name, str_replace( "%invitee%", $invitee, __( 'Moin %name%! %invitee% has accepted your invitation to join "%team_name%" for Tramprennen 2014. Check the status of your time via: %link%', 'h3-mgmt' ) ) ) ) )
 				),
 				'invitation-accepted-invitee'	=>	array(
 					'subject'	=>	__( 'You have successfully joined a team!', 'h3-mgmt' ),
-					'message'	=>	str_replace( "%name%", $name, str_replace( "%link%", $link, str_replace( "%team_name%", $team_name, str_replace( "%inviter%", $inviter, __( 'Moin %name%! You have successfully accepted the invitation by %inviter% to join "%team_name%" for Tramprennen 2013. Check the status of your team via: %link%', 'h3-mgmt' ) ) ) ) )
+					'message'	=>	str_replace( "%name%", $name, str_replace( "%link%", $link, str_replace( "%team_name%", $team_name, str_replace( "%inviter%", $inviter, __( 'Moin %name%! You have successfully accepted the invitation by %inviter% to join "%team_name%" for Tramprennen 2014. Check the status of your team via: %link%', 'h3-mgmt' ) ) ) ) )
 				),
 				'package-paid'	=>	array(
 					'subject'	=>	__( 'HitchPackage payment received', 'h3-mgmt' ),
@@ -115,7 +115,7 @@ class H3_MGMT_Mailer {
 				),
 				'publishable'	=>	array(
 					'subject'	=>	__( 'Team complete!', 'h3-mgmt' ),
-					'message'	=>	str_replace( "%team_name%", $team_name, str_replace( "%names%", $names, str_replace( "%link%", $link, __( 'Moin %names%! Your team "%team_name%" is now complete. You can now choose your route and publish your team. Welcome to Tramprennen 2013! Check the status of your team via: %link%', 'h3-mgmt' ) ) ) )
+					'message'	=>	str_replace( "%team_name%", $team_name, str_replace( "%names%", $names, str_replace( "%link%", $link, __( 'Moin %names%! Your team "%team_name%" is now complete. You can now choose your route and publish your team. Welcome to Tramprennen 2014! Check the status of your team via: %link%', 'h3-mgmt' ) ) ) )
 				),
 				'paypal-please-owner'	=>	array(
 					'subject'	=>	__( 'Thank you for your donation!', 'h3-mgmt' ),
@@ -142,7 +142,7 @@ class H3_MGMT_Mailer {
 			if( ! empty( $options['subject'] ) ) {
 				$subject = str_replace( "%thumbs%", $thumbs, str_replace( "%code%", $code, str_replace( "%invitee%", $invitee, str_replace( "%inviter%", $inviter, str_replace( "%donation%", $donation, str_replace( "%names%", $names, str_replace( "%link%", $link, str_replace( "%name%", $name, str_replace( "%team_name%", $team_name, $options['subject'] ) ) ) ) ) ) ) ) );
 			} else {
-				$subject = 'TR12 | ' . $default_responses[$action]['subject'];
+				$subject = 'TR15 | ' . $default_responses[$action]['subject'];
 			}
 
 			if( ! empty( $options['message'] ) ) {
@@ -194,7 +194,7 @@ class H3_MGMT_Mailer {
 		}
 
 		foreach( $receipient as $to ) {
-			wp_mail( $to, $subject, $message, $headers );
+			wp_mail( $to, $subject, stripslashes( $message ), $headers );
 		}
 	}
 

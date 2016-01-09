@@ -1,21 +1,22 @@
 .xchange-message-wrap {
-	padding: 1.4em;
-	border-radius: .7em;
+	padding: 1.5em;
 	background: #999999;
-	background: rgba( 150, 150, 150, .5 );
-	box-shadow: -2px 2px 5px 0 rgba(0, 0, 0, .7);
-	margin: 2.1em 0;
+	margin: 0 0 2.3em 0;
 	width: 100%;
 }
 .xchange-message-wrap :last-child {
 	padding-bottom: 0;
 }
 .xchange-message-wrap:nth-child(2n) {
-	background: rgba( 0, 207, 255, .4 );
+	background: #dfe8ff;
 }
 .xchange-message-wrap:nth-child(2n+1) {
-	background: rgba( 130, 223, 41, .4 );
+	background: #c79a52;
 }
 .xchange-title {
 	font-weight: bold;
+}
+.xchange-message-wrap p:last-child {
+	margin: 0;
+	padding: 0 !important;
 }

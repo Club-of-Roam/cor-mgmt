@@ -27,12 +27,10 @@
 
 .team-island {
 	padding: 1.4em;
-	border-radius: .7em;
-	background: #999999;
-	background: rgba( 150, 150, 150, .5 );
-	box-shadow: -2px 2px 5px 0 rgba(0, 0, 0, .7);
+	background: #dfe8ff;
 	margin: 1em;
-	width: 180px;
+	width: 230px;
+	border: none !important;
 	float: left;
 }
 .team-island .team-overview-pic-wrap {
@@ -55,7 +53,6 @@
 	height: 33px;
 	float: left;
 	padding: 0;
-	border-radius: .5em;
 	margin: 0 1em 0 0;
 }
 .team-island .team-name {
@@ -88,6 +85,7 @@
 	padding: 0;
 	border-radius: .5em;
 	margin: 0 1em 0 0;
+	display: none;
 }
 .team-profile .team-profile-pic {
 	float: left;
@@ -110,7 +108,6 @@
 	height: 33px;
 	float: left;
 	padding: 0;
-	border-radius: .5em;
 	margin: 0 1em 0 0;
 }
 

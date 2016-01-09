@@ -781,25 +781,15 @@ class H3_MGMT_Races {
 				}
 				$output .= '>' . $option['label'] . '</option>';
 			}
-			
-			if ( $stage_number < 6 ) {
-				$output .= '</select><br />' .
-						'<input type="checkbox" name="extra-' . $team['id'] . '" id="extra-' . $team['id'] . '"';
-				if( 1 == $team[$extra_string] ) {
-					$output .= ' checked="checked"';
-				}
-				$output .= ' />' .
-						'<label style="float: left;">' . __( 'Extra Point ?', 'h3-mgmt' ) . '</label>' .
-						'<hr> </div>';
-			} else {
-				$output .= '</select><br />' .
-						'<label >' . __( 'Extra Point ?', 'h3-mgmt' ) . '</label>' . 
-						'<input type="text" name="extra-' . $team['id'] . '" id="extra-' . $team['id'] . '"';
-				$output .= ' value="' . $team[$extra_string] . '" size="2"';
-		
-				$output .= ' />' .
-						'<hr> </div>';
+
+			$output .= '</select><br />' .
+					'<input type="checkbox" name="extra-' . $team['id'] . '" id="extra-' . $team['id'] . '"';
+			if( 1 == $team[$extra_string] ) {
+				$output .= ' checked="checked"';
 			}
+			$output .= ' />' .
+					'<label style="float: left;">' . __( 'Extra Point ?', 'h3-mgmt' ) . '</label>' .
+					'<hr> </div>';
 		}
 
 		$output .= '<div class="form-row" style="max-width: 500px; margin-left: auto; margin-right: auto;">'.
@@ -828,7 +818,6 @@ class H3_MGMT_Races {
 			)
 		);
 
-		$stage = $_POST['stage'];
 		$stage_rank_string = 'rank_stage_' . $_POST['stage'];
 		$extra_string = 'extra_stage_' . $_POST['stage'];
 
@@ -836,18 +825,10 @@ class H3_MGMT_Races {
 			$rank_value_string = 'rank-' . $team['id'];
 			$extra_value_string = 'extra-' . $team['id'];
 
-			if( $stage < 6 ) {
-				if( isset( $_POST[$extra_value_string] ) ) {
-					$extra_value = 1;
-				} else {
-					$extra_value = 0;
-				}
+			if( isset( $_POST[$extra_value_string] ) ) {
+				$extra_value = 1;
 			} else {
-				if( isset( $_POST[$extra_value_string] ) ) {
-					$extra_value = $_POST[$extra_value_string];
-				} else {
-					$extra_value = 0;
-				}
+				$extra_value = 0;
 			}
 
 			$points = 0;
@@ -909,6 +890,11 @@ class H3_MGMT_Races {
 			$parent_type = 'route';
 			$routes = array( $_GET['ranking_route'] => $_GET['ranking_route'] );
 			
+			// echo $race .' ';			//TEST ok
+			 // echo $parent .' ';			//TEST ok
+			 // echo $parent_type .' ';			//TEST ok
+			// print_r($routes);			//TEST ok
+			
 		} else {
 			$parent = $race;
 			$parent_type = 'race';
@@ -932,9 +918,12 @@ class H3_MGMT_Races {
 			'order' => 'DESC',
 			'exclude_incomplete' => true,
 			'extra_fields' => array(),
-			'parent' => $parent,			
-			'parent_type' => $parent_type   
+			'parent' => $parent,			//13
+			'parent_type' => $parent_type   //route
 		));
+		
+		// echo $complete_count;
+		// print_r($teams);			//TEST
 		
 		if( $top === 0 ) {
 			$max = count($teams);
@@ -1029,8 +1018,8 @@ class H3_MGMT_Races {
 			if( $team['extra_stage_5'] == 1 ) {
 				$extra[5] = ' (+1)';
 			}
-			if( $team['extra_stage_6'] > 0 ) {
-				$extra[6] = ' (+' .$team['extra_stage_6']. ')';
+			if( $team['extra_stage_6'] == 1 ) {
+				$extra[6] = ' (+1)';
 			}
 
 			if( $previous['total'] > $team['total_points'] ) {

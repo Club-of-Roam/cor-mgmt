@@ -94,3 +94,6 @@
        -o-transition-property:         top, left, opacity;
           transition-property:         transform, opacity;
 }
+.ranking_link[style]:hover {
+	color: #000000;
+}

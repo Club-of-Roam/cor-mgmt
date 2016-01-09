@@ -14,7 +14,8 @@ if ( ! class_exists( 'H3_MGMT_Teams' ) ) :
 class H3_MGMT_Teams {
 
 	/*************** UTILITY METHODS ***************/
-
+	
+	
 /* 	/**
 	 * Returns data on all teams
 	 *
@@ -30,10 +31,10 @@ class H3_MGMT_Teams {
 		$default_args = array(
 			'orderby' => 'id',
 			'order' => 'ASC',
-			'exclude_incomplete' => false,	//true
+			'exclude_incomplete' => false,
 			'extra_fields' => array(),
-			'parent' => 'all',     		//13
-			'parent_type' => 'route'	//route
+			'parent' => 'all',
+			'parent_type' => 'route'
 		);
 		extract( wp_parse_args( $args, $default_args ), EXTR_SKIP );
 
@@ -357,6 +358,20 @@ class H3_MGMT_Teams {
 			ARRAY_A
 		);
 		
+		// if( $current_status_query['complete'] == 1) {		//TEST
+			// $user_ids = $this->get_teammates( $team_id );
+			// foreach( $user_ids as $user_id ) {
+				// $mob_inf = get_user_meta( $user_id, 'public_mobile_inf', true );
+				// $shirt = get_user_meta( $user_id, 'shirt_size', true );
+				// if( empty($mob_inf)) {
+					// update_user_meta( $user_id, 'public_mobile_inf', 'no');
+				// }
+				// if( empty($shirt)) {
+					// update_user_meta( $user_id, 'shirt_size', 'mm');
+				// }
+			// }
+		// }
+		
 		$current_status = isset( $current_status_query[0]['complete'] ) ? $current_status_query[0]['complete'] : 0;
 		
 		$user_ids = $this->get_teammates( $team_id );
@@ -514,7 +529,6 @@ class H3_MGMT_Teams {
 
 	/**
 	 * Returns an array of team phone numbers
-	 * Jonas change get Number in Team separated by space bar 
 	 *
 	 * @since 1.0
 	 * @access public
@@ -551,6 +565,7 @@ class H3_MGMT_Teams {
 				$phones[] = $mate_phone;
 			}
 		}
+		//print_r($phones);								//TEST $phones[] = 
 		return $phones;
 	}
 
@@ -694,8 +709,8 @@ class H3_MGMT_Teams {
 				'value' => 'please_select',
 				'class' => 'please-select'
 			);
-		}			   
-			   
+		}
+
 		foreach ( $team_query as $team ) {
 			if ( ( $exclude_with_owner != true || ! $this->get_owner( $team['id'] ) || $team['id'] === $owned_team_id ) &&
 			   ( $exclude_incomplete != true || $this->is_complete( $team['id'] ) ) ) {
@@ -976,7 +991,7 @@ class H3_MGMT_Teams {
 				)
 			),
 			array (
-				'label'	=> _x( 'For a Donation we would:', 'Team Profile Form', 'h3-mgmt' ),
+				'label'	=> _x( 'For a Donation we would...', 'Team Profile Form', 'h3-mgmt' ),
 				'desc'	=> __( 'Thoughts?', 'h3-mgmt' ),
 				'id'	=> 'meta_5',
 				'type'	=> 'textarea'
@@ -1113,7 +1128,7 @@ class H3_MGMT_Teams {
 				)
 			),
 			array (
-				'label'	=> _x( 'Could we give our partner Ortel Mobile your personal Information?', 'Team Profile Form', 'h3-mgmt' ),
+				'label'	=> _x( 'Could we give our partner Ortek Mobile your personal Information?', 'Team Profile Form', 'h3-mgmt' ),
 				'desc'	=> _x( 'Do you accept if we send your personal information to our mobile partner to register your sim-card? They will delete them after 10 days and will use them only for registration of your sim-card!', 'Team Profile Form', 'h3-mgmt' ),
 				'id'	=> 'public_mobile_inf',
 				'type'	=> 'select',
@@ -1131,12 +1146,6 @@ class H3_MGMT_Teams {
 						'label' => _x( "Please not (So you do not get your sponsored sim-card", 'Team Profile Form', 'h3-mgmt' )
 					)					
 				)
-			),
-			array (
-				'label'	=> _x( 'Address for Ortel', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'Your address? Just if we are allowed to give your information to our partner Ortel Mobile!', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'addressMobile',
-				'type'	=> 'textarea'
 			)
 		);
 
@@ -1361,23 +1370,16 @@ class H3_MGMT_Teams {
 			if( ( isset( $_GET['todo'] ) && $_GET['todo'] == 'leave' ) && isset( $_GET['id'] ) ) {
 				$team_id = $this->user_has_team( $race_id );
 				if( empty( $team_id ) ) {
-						$output .= '<p class="error">' .			//für registration closed einkommentieren
-							__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join Tramprennen 2016!', 'h3-mgmt' ) .	//für registration closed einkommentieren
-						'</p>';										//für registration closed einkommentieren
-						return $output;								//für registration closed einkommentieren
-						// return $this->team_dashboard( array( 'race_id' => $race_id ) );	//für registration closed auskommentieren
+					return $this->team_dashboard( array( 'race_id' => $race_id ) );
 				} else {
 					get_currentuserinfo();
 					$mates = $this->get_teammates( $team_id, false );
-					
 					if( in_array( $current_user->ID, $mates ) ) {
 						$wpdb->query(
 							"DELETE FROM " . $wpdb->prefix . "h3_mgmt_teammates " .
 							"WHERE user_id = " . $current_user->ID . " AND team_id = " . $team_id . " LIMIT 1"
 						);
-						
 						$mates = $this->get_teammates( $team_id );
-						
 						if ( empty( $mates ) ) {
 							$wpdb->query(
 								"DELETE FROM " . $wpdb->prefix . "h3_mgmt_teams " .
@@ -1397,7 +1399,7 @@ class H3_MGMT_Teams {
 				}
 			} else {
 				if ( ! isset( $_POST['submitted'] ) ) {
-						return $this->team_dashboard( array( 'race_id' => $race_id ) );
+					return $this->team_dashboard( array( 'race_id' => $race_id ) );
 				} else {
 					list( $valid, $errors ) = $this->validate_submit();
 					if ( $valid !== true ) {
@@ -1429,7 +1431,7 @@ class H3_MGMT_Teams {
 		$is_invitation = false;
 
 		$output = '';
-		
+
 		$team_id = $this->user_has_team( $race_id );
 
 		global $wpdb;
@@ -1448,17 +1450,12 @@ class H3_MGMT_Teams {
 					$output .= '<p class="error">' .
 							__( 'Sorry, the invitation code you are trying to use is outdated or false. Either contact the participant that invited you and request a new invitation or create your own team.', 'h3-mgmt' ) .
 						'</p>';
-					return $output;										//für registration closed einkommentieren
-					// $team_id = 0;									//für registration closed auskommentieren
-					// $team_section = $this->team_section( false );	//für registration closed auskommentieren
+					$team_id = 0;
+					$team_section = $this->team_section( false );
 				}
 			} else {
-				$output .= '<p class="error">' .						//für registration closed einkommentieren
-						__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join Tramprennen 2016!', 'h3-mgmt' ) .	//für registration closed einkommentieren
-					'</p>';												//für registration closed einkommentieren
-				return $output;											//für registration closed einkommentieren
-				// $team_id = 0;										//für registration closed auskommentieren
-				// $team_section = $this->team_section( false );		//für registration closed auskommentieren
+				$team_id = 0;
+				$team_section = $this->team_section( false );
 			}
 		} else {
 			$team_section = $this->team_section( true, $team_id );
@@ -1474,26 +1471,6 @@ class H3_MGMT_Teams {
 				$output .= '<p class="' . $message['type'] . '">' . $message['message'] . '</p>';
 			}
 		}
-		
-		//für registration closed Error Message at Team Dashboard
-		//----------------------------------------------------------------------------------------------------------------------------------
-		$output .= '<p class="error">' .
-					_x( 'Attention, the Registration is closed!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- You can\'t invite other hitchmates any more!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- You could still change all your settings in your Profile!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- Also we will set your Team as complete if we will get your payment and the liability waiver form in the next days!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- If you have chosen your starting point, you can\'t change it any more!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		//----------------------------------------------------------------------------------------------------------------------------------
-		//für registration closed
 
 		$output .= '<form name="h3_mgmt_team_dashboard_form" method="post" enctype="multipart/form-data" action="?">' .
 			'<input type="hidden" name="submitted" value="y"/>' .
@@ -1523,34 +1500,28 @@ class H3_MGMT_Teams {
 					$code .
 				'" />';
 		} else {
-			//for registration closed command out the whole next block
-			//----------------------------------------------------------------------------------------------------------------------------------
-			// $invitations = $this->allow_invitations( $team_id );
-			// if( $invitations ) {
-				// $output .= '<h3 class="top-space-more">' . _x( 'Invite teammate(s)', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
-				// if( $invitations === 2 ) {
-					// $output .= '<p>' . _x( 'Invite someone to join your team. You need a teammate for the team to be complete. You may invite up to two people at a time. If you have already invited two people and want to invite someone else, simply overwrite one or two of the above email adresses. Keep in mind that a team can consist of a maximum of three HitchMates and that you need to have both a guy and a girl.', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
-				// } else {
-					// $output .= '<p>' . _x( 'A team may also consist of up to three HitchMates. You need to be at least two people and minimum a guy and a girl.', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
-				// }
-				// $fields = $this->invitations_section( $team_id, $invitations );
-				// require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-			// }
-			//----------------------------------------------------------------------------------------------------------------------------------
-			//until here
+			$invitations = $this->allow_invitations( $team_id );
+			if( $invitations ) {
+				$output .= '<h3 class="top-space-more">' . _x( 'Invite teammate(s)', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
+				if( $invitations === 2 ) {
+					$output .= '<p>' . _x( 'Invite someone to join your team. You need a teammate for the team to be complete. You may invite up to two people at a time. If you have already invited two people and want to invite someone else, simply overwrite one or two of the above email adresses. Keep in mind that a team can consist of a maximum of three HitchMates and that you need to have both a guy and a girl.', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
+				} else {
+					$output .= '<p>' . _x( 'A team may also consist of up to three HitchMates. You need to be at least two people and minimum a guy and a girl.', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
+				}
+				$fields = $this->invitations_section( $team_id, $invitations );
+				require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
+			}
 		}
 
 		$output .= $this->mate_section( $team_id );
-		$team_data = $this->get_team_data( $team_id );
+
 		
-		// if( $this->is_complete( $team_id ) ) {
-			// if( $team_data['route_id'] == 0) {	//für registration closed if they chose starting point they can't any more
-				// $output .= '<h3>' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
-					// '<p>' . _x( 'Choose one of the city\'s. The number in the brackets shows the amount of free team slots left at the city. You can change your starting point selection until the 8th of August. After that it won\'t be possible for logistical reasons.', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
-				// $fields = $this->route_section( $team_id );
-				// require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-			// }									//für registration closed if they chose starting point they can't any more
-		// }
+		if( $this->is_complete( $team_id ) ) {
+			$output .= '<h3>' . _x( 'Select Route', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
+				'<p>' . _x( 'Choose one of the routes. The number in the brackets shows the amount of free team slots left on the route. You can change your route selection until the 5th of August. After that it won\'t be possible for logistical reasons.', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
+			$fields = $this->route_section( $team_id );
+			require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
+		}
 		
 
 		$output .= '<div class="form-row">' .
@@ -1691,11 +1662,11 @@ class H3_MGMT_Teams {
 		$owner = $this->get_owner( $team_id );
 		$sponsors = $this->get_sponsors( $team_id );
 		
-		$phones = $this->get_team_phones( $team_id ); 	
+		$phones = $this->get_team_phones( $team_id ); 	//TEST
 		
 		
-		$output .= '<p>' . _x( 'Only a few more steps are required before you can publish your team, choose your starting point and start hunting for TeamSponsors!', 'Homework', 'h3-mgmt' ) . '</p>';
-			//_x( "Just get your homework done and let's hitch! :)", 'Homework', 'h3-mgmt' ) . '<br /><br />' . _x( "<b>For all of you who already joined Tramprennen with the present user account: Due to technical reasons we took for you the choice for the sim-card. So please scroll down to \"Could we give our partner Ortel Mobile...\", check it and change it to \"YES I will\" if you want to get your simc-ard. =)</b>", 'Homework', 'h3-mgmt' ) . '</p>';
+		$output .= '<p>' . _x( 'Only a few more steps are required before you can publish your team, choose your starting city and start hunting for TeamSponsors!', 'Homework', 'h3-mgmt' ) . '<br />' .
+			_x( "Just get your homework done and let's hitch! :)", 'Homework', 'h3-mgmt' ) . '</p>';
 
 		$output .= '<h3>' . _x( 'Before publishing', 'Homework', 'h3-mgmt' ) . '</h3>' .
 			'<ul class="list homework-list">' .
@@ -1776,7 +1747,7 @@ class H3_MGMT_Teams {
 		$base_url = get_option( 'siteurl' );
 		$downloads_url = $base_url . '/downloads/';
 
-		$output .= '<p>* ' . sprintf( _x( 'Please mail the <a href="%sLIABILITY_WAIVER.pdf" title="Download form" target="_blank">Liability Waiver Form</a> to', 'Homework', 'h3-mgmt' ), $downloads_url ) . ': <br/>Club of Roam-Autostop! e.V. <br/>Fritz-Heckert-Str. 25 <br/>99817 Eisenach <br/>Germany</p>'; //<a title="Our main E-Mail address" href="mailto:info@tramprennen.org">info@tramprennen.org</a>
+		$output .= '<p>* ' . sprintf( _x( 'Please mail the <a href="%sliability_waiver_tr14.pdf" title="Download form" target="_blank">Liability Waiver Form</a> to', 'Homework', 'h3-mgmt' ), $downloads_url ) . ': <br/>Club of Roam-Autostop! e.V. <br/>Fritz-Heckert-Str. 25 <br/>99817 Eisenach <br/>Germany</p>'; //<a title="Our main E-Mail address" href="mailto:info@tramprennen.org">info@tramprennen.org</a>
 		$output .= '<p>** ' . _x( 'Please transfer <em>25 Euro</em> per participant for the HitchPackage.', 'Homework', 'h3-mgmt' ) . ' ' . _x( 'The Bank Account details have been sent to you via mail.', 'Homework', 'h3-mgmt' ) . '<br />' .
 			'<a href="' . get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?id=' . $team['id'] . '&todo=resend" ' .
 				'title="' . _x( 'Send the mail to yourself again.', 'Homework', 'h3-mgmt' ) . '">' .
@@ -1788,9 +1759,9 @@ class H3_MGMT_Teams {
 		if( $team['complete'] == 1 ) {
 			$output .= '<li><span class="to-do-confirm">' . _x( 'Your Team is fully registered!', 'Homework', 'h3-mgmt' ) . '</span></li>';
 			if( ! empty( $team['route_id'] ) ) {
-				$output .= '<li><span class="to-do-route" style="text-shadow:0 0 2px #' .$h3_mgmt_races->get_route_color( $team['route_id'] ) . ';">' . _x( 'Starting point chosen', 'Homework', 'h3-mgmt' ) . ': ' . $h3_mgmt_races->get_route_name( $team['route_id'] ) . '</span></li>';
+				$output .= '<li><span class="to-do-route" style="text-shadow:0 0 2px #' .$h3_mgmt_races->get_route_color( $team['route_id'] ) . ';">' . _x( 'Route chosen', 'Homework', 'h3-mgmt' ) . ': ' . $h3_mgmt_races->get_route_name( $team['route_id'] ) . '</span></li>';
 			} else {
-				$output .= '<li><span class="to-do-can">' . _x( 'You may pick your starting point now!', 'Homework', 'h3-mgmt' ) . '</span></li>';
+				$output .= '<li><span class="to-do-can">' . _x( 'You may pick your route now!', 'Homework', 'h3-mgmt' ) . '</span></li>';
 			}
 			if( $owner ) {
 				$output .= '<li><span class="to-do-positive">' . _x( 'You have a TeamOwner', 'Homework', 'h3-mgmt' ) . ': ' . $owner['display_name'] . '</span></li>';
@@ -1804,7 +1775,7 @@ class H3_MGMT_Teams {
 			}
 		} else {
 			$output .= '<li><span class="to-do-negative">' . _x( 'Your team has not yet completed the registration process...', 'Homework', 'h3-mgmt' ) . '</span></li>';
-			$output .= '<li><span class="to-do-inactive">' . _x( 'You cannot yet chose a starting point...', 'Homework', 'h3-mgmt' ) . '</span></li>';
+			//$output .= '<li><span class="to-do-inactive">' . _x( 'You cannot yet chose a route...', 'Homework', 'h3-mgmt' ) . '</span></li>';
 			$output .= '<li><span class="to-do-inactive">' . _x( 'You cannot hunt for sponsors yet...', 'Homework', 'h3-mgmt' ) . '</span></li>';
 		}
 
@@ -1857,20 +1828,54 @@ class H3_MGMT_Teams {
 	 * @access public
 	 */
 	public function display_teams( $atts = '' ) {
+	global $wpdb;
+	
+	$start = 'Start  ';					//TEST
+	echo $start;
+	
+	
+	   $teams_query = $wpdb->get_results(
+			"SELECT id FROM " .
+			$wpdb->prefix."h3_mgmt_teams " .
+			"WHERE complete = 1",
+			ARRAY_A
+		);
+	print_r($teams_query);
+	foreach( $teams_query as $id ) {	
+		//if( $team['complete'] == 1) {		
+			$user_ids = $this->get_teammates( $id['id'] );
+			print_r($user_ids);
+			//echo $user_ids;
+			foreach( $user_ids as $user_id ) {
+				$mob_inf = get_user_meta( $user_id, 'public_mobile_inf', true );
+				$shirt = get_user_meta( $user_id, 'shirt_size', true );
+				if( empty($mob_inf)) {
+					update_user_meta( $user_id, 'public_mobile_inf', 'no');
+				}
+				if( empty($shirt)) {
+					update_user_meta( $user_id, 'shirt_size', 'mm');
+				}
+			}
+		//}
+	}
+	
+	
+	$end = ' ENDE  ';
+	echo $end;
 
-		extract( shortcode_atts( array(
-			'event' => 0,
-			'race' => 0,
-			'max' => 10
-		), $atts ) );
+	
+		// extract( shortcode_atts( array(
+			// 'event' => 0,
+			// 'race' => 0
+		// ), $atts ) );
 
-		$race_id = $race === 0 ? $event : $race;
+		// $race_id = $race === 0 ? $event : $race;
 
-		if( isset( $_GET['id'] ) && $this->team_exists( $_GET['id'] ) ) {
-			return $this->team_profile( $_GET['id'], $max );
-		}
+		// if( isset( $_GET['id'] ) && $this->team_exists( $_GET['id'] ) ) {
+			// return $this->team_profile( $_GET['id'] );
+		// }
 
-		return $this->team_overview( $race_id );
+		// return $this->team_overview( $race_id );
 	}
 
 	/**
@@ -1879,7 +1884,7 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function team_profile( $team_id, $max ) {
+	private function team_profile( $team_id ) {
 		global $h3_mgmt_races, $h3_mgmt_sponsors, $h3_mgmt_ticker, $h3_mgmt_utilities;
 
 		$race_id = $this->get_team_race( $team_id );
@@ -1937,17 +1942,14 @@ class H3_MGMT_Teams {
 			'type' => 'owner',
 			'team_id' => $team_id
 		));
-		
-		$owner['owner_pic'] = $h3_mgmt_utilities->pic_resize( $owner['owner_pic'], 250 ); //test rausnehen
+		//$owner['owner_pic'] = $h3_mgmt_utilities->pic_resize( $owner['owner_pic'], 250 ); //test rausnehen
 
 		$team = $this->get_team_data( $team_id, array( 'mates' ) );
-		$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 500 ); //test rausnehen
+		//$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 500 ); //test rausnehen
 
 		$routes_data =  $h3_mgmt_races->get_routes( array( 'race' => $race_id ) );
 
 		$output = '<h1>' . stripslashes( $team['team_name'] ) . '</h1>';
-		
-		$output .= $h3_mgmt_ticker->team_ticker_Page_map( $team_id );			//test erst bei rennsart  reinmachen
 
 		$output .= '<div class="flex_column av_one_third first avia-builder-el-0  el_before_av_one_third  avia-builder-el-first">';
 
@@ -1986,13 +1988,7 @@ class H3_MGMT_Teams {
 		}
 		$output .= '<p>' . $ddd . '</p>';
 
-		if ( $race_id < 4 ) {
 		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">Clean drinking water and basic needs are...</p>';
-		}
-		else {
-		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">For a Donation we would...</p>';
-		}
-		
 		$ddd = ! empty($team['meta_5']) ? $team['meta_5'] : '---';
 		$output .= '<p>' . $ddd . '</p>';
 
@@ -2004,21 +2000,16 @@ class H3_MGMT_Teams {
 		}
 
 
-		if ( $race_id < 5 ) {
-			$output .= '</p><p>' .       //ändern Rank
-					__( 'Current Race Rank', 'h3-mgmt' ) . ': <strong>' . $total_rank . '</strong><br />' .
-					__( 'Current Route Rank', 'h3-mgmt' ) . ': <strong>' . $route_rank . '</strong></p>';
-		}
-		else {
-			
-		}
+
+		$output .= '</p><p>' .
+				__( 'Current Race Rank', 'h3-mgmt' ) . ': <strong>' . $total_rank . '</strong><br />' .
+				__( 'Current Route Rank', 'h3-mgmt' ) . ': <strong>' . $route_rank . '</strong></p>';
 
 		$output .= '<p>' . stripslashes( $h3_mgmt_utilities->p1_nl2br( $team['description'] ) ) . '</p>';
 
 		$output .= '</p>';
-		
-		$output .= '<h3 class="topspace">' . _x( 'Ticker messages', 'Team Profile', 'h3-mgmt' ) . '</h3>';
-		$output .= $h3_mgmt_ticker->team_ticker( $team_id, $max );
+
+		$output .= $h3_mgmt_ticker->team_ticker( $team_id );
 
 		$output .= '</div><div class="flex_column av_one_third  avia-builder-el-0  avia-builder-el-last">' .
 			'<h3 class="no-margin-top">' . _x( 'Team Owner', 'Team Profile', 'h3-mgmt' ) . '</h3>' .
@@ -2159,7 +2150,7 @@ class H3_MGMT_Teams {
 
 		$output .= '<br /><a title="' .
 				_x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) .
-			'" href="' . _x( 'http://tramprennen.org/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $team_id . '">' .
+			'" href="' . _x( 'http://tramprennen.org/tramprennen/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $team_id . '">' .
 			'&rarr; ' . _x( 'view TeamProfile', 'Team', 'h3-mgmt' ) .
 			'</a></p>';
 
@@ -2192,9 +2183,19 @@ class H3_MGMT_Teams {
 			'orderby' => 'name',
 			'order' => 'ASC'
 		));
+		// foreach( $teams as $team ) { TEST
+			
+			// $user_test = $team['mates'];
+			// print_r($user_test);
+			// if $team['complete'] {
+				// get_user_meta( $current_user->ID, 'shirt_size', true );
+		// $own_data['public_mobile_inf'] = get_user_meta( $current_user->ID, 'public_mobile_inf', true );
+			// }
+			
+		// }
 		
 		foreach( $teams as $team ) {
-			$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
+			//$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
 			$mates_html = '';
 			$mcount = count( $team['mates'] );
 			$i = 0;
@@ -2511,8 +2512,7 @@ class H3_MGMT_Teams {
 
 			$new_team = false;
 		}
-		
-		//save update user_meta
+
 		$user_fields = $this->user_fields();
 		if ( ! empty( $user_fields ) ) {
 			foreach ( $user_fields as $field ) {
@@ -2612,7 +2612,7 @@ class H3_MGMT_Teams {
 		add_shortcode( 'h3-team-homework', array( $this, 'team_homework' ) );
 		add_shortcode( 'h3-user-panel-link', array( $this, 'user_panel_link' ) );
 		add_shortcode( 'h3-teams', array( $this, 'display_teams' ) );
-		add_shortcode( 'h3-rand-team', array( $this, 'random_team_info' ) );	
+		add_shortcode( 'h3-rand-team', array( $this, 'random_team_info' ) );
 	}
 } 
 

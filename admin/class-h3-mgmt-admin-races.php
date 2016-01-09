@@ -290,7 +290,7 @@ class H3_MGMT_Admin_Races {
 			$current_user->has_cap( 'h3_mgmt_edit_own_races' ) ||
 			$current_user->has_cap( 'h3_mgmt_edit_races' )
 		) {
-			$button = '<form method="post" action="admin.php' . $url . '&amp;todo=new">' .
+			$button = '<form method="post" action="' . $url . '&todo=new">' .
 				'<input type="submit" class="button-secondary" value="+ ' . __( 'add event / race', 'h3-mgmt' ) . '" />' .
 			'</form>';
 		}
@@ -365,7 +365,7 @@ class H3_MGMT_Admin_Races {
 			$current_user->has_cap( 'h3_mgmt_edit_own_races' ) ||
 			$current_user->has_cap( 'h3_mgmt_edit_races' )
 		) {
-			$button = '<form method="post" action="admin.php' . $url . '&amp;todo=new">' .
+			$button = '<form method="post" action="' . $url . '&amp;todo=new">' .
 				'<input type="submit" class="button-secondary" value="+ ' . __( 'add route', 'h3-mgmt' ) . '" />' .
 			'</form>';
 		}
@@ -439,7 +439,7 @@ class H3_MGMT_Admin_Races {
 			$current_user->has_cap( 'h3_mgmt_edit_own_races' ) ||
 			$current_user->has_cap( 'h3_mgmt_edit_races' )
 		) {
-			$button = '<form method="post" action="admin.php' . $url . '&amp;todo=new">' .
+			$button = '<form method="post" action="' . $url . '&amp;todo=new">' .
 				'<input type="submit" class="button-secondary" value="+ ' . __( 'add stage', 'h3-mgmt' ) . '" />' .
 			'</form>';
 		}

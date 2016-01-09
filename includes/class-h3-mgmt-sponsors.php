@@ -148,6 +148,28 @@ class H3_MGMT_Sponsors {
 					$donations_race = $donations_race + $sponsor['donation'];
 					$donations_paypal = $donations_paypal + $sponsor['donation'];
 				}
+			} elseif( $sponsor['method'] == 'Betterplace' && $sponsor['paid'] == 1 ) {
+				$paypal_count++;
+				$all_count++;
+				$donations_all = $donations_all + $sponsor['donation'];
+				if( $sponsor['type'] == 'sponsor' ) {
+					$sponsor_count++;
+					$donations_sponsor = $donations_sponsor + $sponsor['donation'];
+				} elseif( $sponsor['type'] == 'owner' ) {
+					$owner_count++;
+					$donations_owner = $donations_owner + $sponsor['donation'];
+				} elseif( $sponsor['type'] == 'patron' ) {
+					$patron_count++;
+					$donations_patron = $donations_patron + $sponsor['donation'];
+				} elseif( $sponsor['type'] == 'structure' ) {
+					$structure_count++;
+					$donations_structure = $donations_structure + $sponsor['donation'];
+				}
+				if( $sponsor['type'] != 'structure' ) {
+					$race_count++;
+					$donations_race = $donations_race + $sponsor['donation'];
+					$donations_paypal = $donations_paypal + $sponsor['donation'];
+				}
 			} elseif( $sponsor['method'] == 'paypal' && $sponsor['paid'] == 0 ) {
 				$paypal_unpaid_count++;
 			}
@@ -167,6 +189,8 @@ class H3_MGMT_Sponsors {
 								$sponsor['bank_name'];
 						} elseif ( 'race' === $field_id ) {
 							$sponsors[$key][$field_id] = $h3_mgmt_races->get_name( $h3_mgmt_teams->get_team_race( $sponsor['team_id'] ), 'race' );
+						} elseif ( 'code' === $field_id ) {
+							$sponsors[$key][$field_id] = $sponsor['team_id'].'-'.$sponsor['id'];
 						}
 					}
 				}
@@ -271,11 +295,7 @@ class H3_MGMT_Sponsors {
 				$exclude_unpaid_paypal_count++;
 				$sponsors['names-tooltip'] .= $sponsors_query[$i]['display_name'];
 				if( ! empty( $sponsors_query[$i]['message'] ) ) {
-					$sponsors['names-tooltip'] .= ' <span class="tip" onmouseover="tooltip(\'' .
-						preg_replace( "/\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3}/", "", preg_replace( "/\r|\n/", "<br />", ( str_replace( '"', '&quot;', str_replace( "'", '&apos;', $sponsors_query[$i]['message'] ) ) ) ) ) .
-						'\');" onmouseout="exit();">' .
-							'<img class="comments-bubble no-bsl-adjust" alt="Comments Bubble" src="' . H3_MGMT_RELPATH . 'img/comments-bubble.png" />' .
-						'</span>';
+					$sponsors['names-tooltip'] .= '<br /><span class="msg">' . $h3_mgmt_utilities->p1_nl2br( preg_replace( "/\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3}/", "", preg_replace( "/\r|\n/", "<br />", ( str_replace( '"', '&quot;', str_replace( "'", '&apos;', $sponsors_query[$i]['message'] ) ) ) ) ) ) . '</span>';
 				}
 				if( $sponsors_query[$i]['type'] == 'owner' && ! empty( $sponsors_query[$i]['owner_link'] ) ) {
 					$sponsors['names'] .= '<a class="incognito-link" title="' . _x( 'Visit the TeamOwner\'s website', 'Team Profile', 'h3-mgmt' ) . '" ' . 'href="' . $h3_mgmt_utilities->fix_urls( $sponsors_query[$i]['owner_link'] ) . '">' . $sponsors_query[$i]['display_name'] .  '</a>';
@@ -297,7 +317,7 @@ class H3_MGMT_Sponsors {
 			if( empty( $sponsors_query[0]['display_name']  ) ) {
 				$sponsors['owner_pic'] = H3_MGMT_RELPATH . 'img/owner-pic.png';
 				$sponsors['owner_link'] = '<p class="owner-link"><a title="' . _x( 'Become this team&apos;s TeamOwner!', 'Team Profile', 'h3-mgmt' ) . '" ' .
-					'href="' . _x( 'https://tramprennen.org/support-team/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?type=owner&id=' . $team_id . '">' .
+					'href="' . _x( 'http://tramprennen.org/support-team/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?type=owner&id=' . $team_id . '">' .
 						_x( 'No Owner yet.', 'Team Profile', 'h3-mgmt' ) . '<br />' .
 						_x( 'Become this team&apos;s TeamOwner!', 'Team Profile', 'h3-mgmt' ) .
 					'</a></p>';
@@ -323,9 +343,7 @@ class H3_MGMT_Sponsors {
 					$sponsors['raw_owner_link'] .= '</a>';
 				}
 				if( ! empty( $sponsors_query[0]['message'] ) ) {
-					$sponsors['owner_link'] .= ' <span class="tip" onmouseover="tooltip(\'' .
-						preg_replace( "/\r|\n/", "<br />", ( str_replace( '"', '&quot;', str_replace( "'", '&apos;', $sponsors_query[0]['message'] ) ) ) ) .
-						'\');" onmouseout="exit();"><img class="comments-bubble no-bsl-adjust" alt="Comments Bubble" src="' . H3_MGMT_RELPATH . 'img/comments-bubble.png" /></span>';
+					$sponsors['owner_link'] .= '<br /><span class="msg">' . $h3_mgmt_utilities->p1_nl2br( preg_replace( "/\r|\n/", "<br />", ( str_replace( '"', '&quot;', str_replace( "'", '&apos;', $sponsors_query[0]['message'] ) ) ) ) ) . '</span>';
 				}
 				$sponsors['owner_link'] .= '</p>';
 			}
@@ -352,18 +370,18 @@ class H3_MGMT_Sponsors {
 			'race' => 1
 		), $atts ) );
 
-		if( isset( $_GET['paypal'] ) && $_GET['paypal'] == 'success' && isset( $_GET['sponsor_id'] ) && ! empty( $_GET['sponsor_id'] ) ) {
-			$wpdb->update(
-				$wpdb->prefix.'h3_mgmt_sponsors',
-				array( 'paid' => 1, 'show' => 1 ),
-				array( 'id'=> $_GET['sponsor_id'] ),
-				array( '%d', '%d' ),
-				array( '%d' )
-			);
-			if( isset( $_GET['team_id'] ) && ! empty( $_GET['team_id'] ) ) {
-				//wp_redirect(  get_site_url() . '/follow-us/teams/?id='.$_GET['team_id'], 301 );
-			}
-		}
+		//if( isset( $_GET['paypal'] ) && $_GET['paypal'] == 'success' && isset( $_GET['sponsor_id'] ) && ! empty( $_GET['sponsor_id'] ) ) {
+		//	$wpdb->update(
+		//		$wpdb->prefix.'h3_mgmt_sponsors',
+		//		array( 'paid' => 1, 'show' => 1 ),
+		//		array( 'id'=> $_GET['sponsor_id'] ),
+		//		array( '%d', '%d' ),
+		//		array( '%d' )
+		//	);
+		//	if( isset( $_GET['team_id'] ) && ! empty( $_GET['team_id'] ) ) {
+		//		//wp_redirect(  get_site_url() . '/follow-us/teams/?id='.$_GET['team_id'], 301 );
+		//	}
+		//}
 
 		wp_enqueue_script( 'h3-mgmt-donation-selector' );
 		$donation_params = array(
@@ -380,7 +398,7 @@ class H3_MGMT_Sponsors {
 			if ( $valid === true ) {
 				return $this->save_donation( $race );
 			} else {
-				return $this->sponsoring_section_output( array( 'step' => 3, 'messages' => $errors, 'race' => $race ) );
+				return $this->sponsoring_section_output( array( 'step' => 2, 'messages' => $errors, 'race' => $race ) );
 			}
 		}
 
@@ -416,40 +434,37 @@ class H3_MGMT_Sponsors {
 
 		$step_strings = array();
 
-		$step_strings[1] = _x( 'Pick your sponsoring / donation type.<br />Choose to be a TeamSponsor or TeamOwner.<br />With both you support the WASH-project of Viva con Agua. Teams can have several TeamSponsors but only one TeamOwner, which can place a photo or a logo and a link in the team profile.', 'Sponsoring Form', 'h3-mgmt' );
+		$step_strings[1] = _x( 'Pick your sponsoring / donation type.<br />Choose to be a TeamSponsor or TeamOwner.<br />WithWith both you support the WASH-projects of Viva con Agua and the work of PRO ASYL. Teams can have several TeamSponsors but only one TeamOwner, which can place a photo or a logo and a link in the team profile.', 'Sponsoring Form', 'h3-mgmt' );
 
-		$step_strings[2] =	_x( 'You can donate via PayPal or have your donation deducted via direct debit.<br />The latter is only possible with German bank accounts.<br />In both cases, the donation is submitted directly to the Viva con Agua donations account.', 'Sponsoring Form', 'h3-mgmt' );
+		$step_strings[2] =	_x( 'Choose a team.<br />Select the amount of the donation you want to give.<br />By giving a donation you support Viva con Agua and PRO ASYL. TeamOwnerships go for a minimum of 100 Euro (Hey, they are special!). Submit your data and choose how your donation should be shown on the site.', 'Sponsoring Form', 'h3-mgmt' );
 
-		$step_strings[3] =	_x( 'Choose a team.<br />Select the amount of thumbs you want to give.<br />By giving a thumb you support VcA on its mission for global water access with the donation of 10 Euros. TeamOwnerships go for a minimum of 10 thumbs (Hey, they are special!). Submit your data and choose if and how your donation should be shown on the site.', 'Sponsoring Form', 'h3-mgmt' );
+		$step_strings[3] =	_x( 'Finish donation process. <br />Please choose the same amount of donation as you chose before. <br />Maybe it will open a new window. <br />To finish click Spenden. <br />The donation process is complete if you got an E-Mail from betterplace.org.', 'Sponsoring Form', 'h3-mgmt' );
 
-		$step_strings[4] =	_x( 'Thanks for your donation!<br />If you picked the debit method, you can relax now. If you chose to donate via PayPal, please execute the PayPal transaction.', 'Sponsoring Form', 'h3-mgmt' );
+		$output = '<div class="flex_column av_one_half first avia-builder-el-0  el_before_av_one_half  avia-builder-el-first">' .
+			'<h3>' . _x( 'Sponsoring Steps', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
 
-		$output = '<div class="grid-row"><div class="grid-block island col5"><div class="island-inside">' .
-			'<h2>' . _x( 'Sponsoring Steps', 'Sponsoring Form', 'h3-mgmt' ) . '</h2>';
-
-		for( $i = 1; $i <= 4; $i++ ) {
-			$output .= '<div class="overview-category">' .
-				'<img class="baseline-adjustable';
-			if ( 4 === $i ) {
-				$output .= ' no-margin-bottom';
-			}
-			$output .= '" src="' . H3_MGMT_RELPATH . 'img/jerrycan-' . $i;
-
-			if( $i == $step ) {
-				$output .= '-active';
-			}
-
-			$output .= '.png" alt="Jerrycan" />' .
-				'<div class="description';
+		for( $i = 1; $i <= 3; $i++ ) {
+			$output .= '<div class="overview-category"><div class="description';
 
 			if( $i != $step ) {
 				$output .= '';
 			}
 
-			$output .=	'">' .
-				'<p><strong>';
+			$output .=	'"><p>' .
+				'<img class="baseline-adjustable';
+			if ( 3 === $i ) {
+				$output .= ' no-margin-bottom';
+			}
+			$output .= '" src="' . H3_MGMT_RELPATH . 'img/jerrycan-' . $i . '-2014';
 
-			if( $step < 4 && $i != $step && $i < $step ) {
+			if( $i == $step ) {
+				$output .= '-alternate';
+			}
+
+			$output .= '.png" alt="Jerrycan" />' .
+				'<strong>';
+
+			if( false && $step < 4 && $i != $step && $i < $step ) {
 				$output .=	'<a title="' . _x( 'Navigate to step', 'Progressive Form Steps', 'h3-mgmt' ) . '" ' .
 					'href="' . get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] );
 
@@ -461,7 +476,7 @@ class H3_MGMT_Sponsors {
 			}
 
 			$output .= '<span ';
-			if( $i != $step ) {
+			if( false && $i != $step ) {
 				$output .= 'onmouseover="tooltip(\'' . $step_strings[$i] . '\');" onmouseout="exit();" class="tip ';
 			} else {
 				$output .= 'class="';
@@ -478,14 +493,12 @@ class H3_MGMT_Sponsors {
 			if( $i === 1 ) {
 				$output .=	_x( 'Select Sponsoring (Donation) Type', 'Sponsoring Form', 'h3-mgmt' );
 			} elseif( $i === 2 ) {
-				$output .=	_x( 'Select Donation Method', 'Sponsoring Form', 'h3-mgmt' );
+				$output .=	_x( 'Fill out the form for our homepage', 'Sponsoring Form', 'h3-mgmt' );
 			} elseif( $i === 3 ) {
-				$output .=	_x( 'Fill out the form', 'Sponsoring Form', 'h3-mgmt' );
-			} elseif( $i === 4 ) {
-				$output .=	_x( 'Afterwards', 'Sponsoring Form', 'h3-mgmt' );
+				$output .=	_x( 'Donate via betterplace.org', 'Sponsoring Form', 'h3-mgmt' );
 			}
 
-			if( $step < 4 && $i != $step && $i < $step ) {
+			if( $step < 3 && $i != $step && $i < $step ) {
 				$output .= '</a>';
 			}
 
@@ -500,29 +513,15 @@ class H3_MGMT_Sponsors {
 			$output .=	'</p></div></div>';
 		}
 
-		$output .= '</div>' .
-			'<div class="island-inside headspace">' .
-				'<h2>' . _x( 'Encryption', 'Sponsoring Form', 'h3-mgmt' ) . '</h2>' .
-				'<p>' . _x( 'Your data is transferred securely via a 256-bit SSL encrypted connection.', 'Sponsoring Form', 'h3-mgmt' ) . '</p>' .
-				'<a target="_blank" href="http://www.rapidssl.com/learn-ssl/ssl-faq/index.html" title="Rapid SSL"><img class="align-center no-margin-bottom" alt="' . _x( 'SSL Seal', 'Sponsoring Form', 'h3-mgmt' ) . '"' .
-				' src="' . H3_MGMT_RELPATH . 'img/ssl-seal.png" /></a>' .
-			'</div></div>';
-
-		$output .= '<div class="grid-block col7 last';
-		if( $step != 1 && $step != 2 ) {
-			$output .= ' island';
-		}
-		$output .= '"><div class="island-inside">';
+		$output .= '</div><div class="flex_column av_one_half avia-builder-el-1  el_before_av_one_half">';
 
 		if( $step === 1 ) {
 
 			$output .= $this->base_selector();
 
+			$output .= '</div>';
+
 		} elseif( $step === 2 ) {
-
-			$output .= $this->method_selector();
-
-		} elseif( $step === 3 ) {
 
 			$output .= $this->make_form( array(
 				'type' => isset( $_GET['type'] ) ? $_GET['type'] : 'sponsor',
@@ -531,19 +530,22 @@ class H3_MGMT_Sponsors {
 				'race' => $race
 			));
 
-		} elseif( $step === 4 ) {
+			$output .= '</div>';
 
-			$output .= $this->success_section( array(
-				'method' => $method,
-				'type' => $type,
+		} elseif( $step === 3 ) {
+
+			$output .= $this->betterplace( array (
+				'method' => 'betterplace',
+				'type' => isset( $type ) ? $type : ( isset( $_GET['type'] ) ? $_GET['type'] : 'sponsor' ),
 				'team_id' => $team_id,
 				'donation' => $donation,
-				'sponsor_id' => $sponsor_id
-			));
+				'sponsor_id' => $sponsor_id,
+				'race' => $race
+			) );
+
+			$output .= '</div>';
 
 		}
-
-		$output .= '</div></div></div>';
 
 		return $output;
 	}
@@ -554,7 +556,7 @@ class H3_MGMT_Sponsors {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function success_section( $args = array() ) {
+	private function betterplace( $args = array() ) {
 		global $current_user, $h3_mgmt_teams;
 
 		$default_args = array(
@@ -567,8 +569,8 @@ class H3_MGMT_Sponsors {
 		);
 		extract( wp_parse_args( $args, $default_args ), EXTR_SKIP );
 
-		$output = '<h2>' . _x( 'Thanks!', 'Sponsoring Form', 'h3-mgmt' ) . '</h2>';
-
+		//$output = '<h3>' . _x( 'Just one more step!', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
+		
 		$thumbs = intval( $donation ) / 10;
 		$team_name = $h3_mgmt_teams->get_team_name( $team_id );
 
@@ -583,37 +585,6 @@ class H3_MGMT_Sponsors {
 		if ( in_array( $current_user->ID, array( 1, 4, 2259 ) ) ) {
 			$paypal_sum = $paypal_sum / 100;
 		}
-
-		$vca_paypal_form = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post">' .
-				'<input type="hidden" name="cmd" value="_xclick">' .
-				'<input type="hidden" name="business" value="7FG37SLD3BEMU">' .
-				'<input type="hidden" name="lc" value="' .
-					_x( 'US', 'Locale', 'h3-mgmt' ) .
-				'">' .
-				'<input type="hidden" name="item_name" value="' .
-					_x( 'Donation to the current water project in India and Nepal via Tramprennen 2013', 'Sponsoring Form', 'h3-mgmt' ) .
-				'">' .
-				'<input type="hidden" name="amount" value="' .
-					$paypal_sum .
-				'">' .
-				'<input type="hidden" name="currency_code" value="EUR">' .
-				'<input type="hidden" name="button_subtype" value="services">' .
-				'<input type="hidden" name="no_note" value="1">' .
-				'<input type="hidden" name="no_shipping" value="1">' .
-				'<input type="hidden" name="return" value="' .
-					_x( 'https://tramprennen.org/support-team/become-sponsor/', 'utility translation', 'h3-mgmt' ) . '?team_id=' . $team_id . '&paypal=success&sponsor_id=' . $sponsor_id .
-				'">' .
-				'<input type="hidden" name="cbt" value="' .
-					_x( 'Return to tramprennen.org', 'Sponsoring Form', 'h3-mgmt' ) .
-				'">' .
-				'<input type="hidden" name="bn" value="PP-BuyNowBF:btn_donate_LG.gif:NonHosted">' .
-				'<input type="image" src="https://www.paypalobjects.com/' .
-					_x( 'en_US/', 'PayPal Button, double locale', 'h3-mgmt' ) .
-					'i/btn/btn_donate_LG.gif" border="0" name="submit" alt="Jetzt einfach, schnell und sicher online spenden – mit PayPal.">' .
-				'<img alt="" border="0" src="https://www.paypalobjects.com/' .
-					_x( 'en_US/', 'PayPal Button, simple locale', 'h3-mgmt' ) .
-					'i/scr/pixel.gif" width="1" height="1">' .
-			'</form>';
 
 		$type_strings = array(
 			'sponsor' => array (
@@ -640,20 +611,27 @@ class H3_MGMT_Sponsors {
 			)
 		);
 
-		$output .= '<p class="message">';
-		if( $method == 'paypal') {
-			$output .= sprintf( _x( 'You are about to become a %1$s. Please complete the PayPal transaction:', 'Sponsoring Form', 'h3-mgmt' ), $type_strings[$type]['title'] );
-		} else {
-			$output .= sprintf( _x( 'You have successfully become a %1$s!', 'Sponsoring Form', 'h3-mgmt' ), $type_strings[$type]['title'] );
-		}
-		$output .= '</p><p>';
-			if( $method == 'debit' ) {
-				$output .= $type_strings[$type]['debit-message'];
-			} elseif( $method == 'paypal' ) {
-				$output .= $type_strings[$type]['paypal-message'];
-			}
-		$output .= '</p>';
-
+		$output = '<iframe height="1350px" width="100%" frameborder="0" src=" https://www.betterplace.org/de/fundraising-events/tramprennen15/iframe_donations/new#eft" id="iFrameResizer0" scrolling="no" style="max-width: 600px; max-height: none; width: 100%; overflow: hidden; background-color: transparent;"></iframe>';
+		
+		// $output .= '<p class="message">';
+		// $output .= sprintf( _x( 'You now are almost a %1$s!', 'Sponsoring Form', 'h3-mgmt' ), $type_strings[$type]['title'] );
+		// $output .= '</p><p>';
+		// $output .= '<p>';
+		// $output .= str_replace( '%team_name%', $team_name, str_replace( '%donation%', $donation, str_replace( '%sponsoring_type%', $titles[$type], _x( 'You have chosen to become %sponsoring_type% of "%team_name%" by donating %donation% Euros.', 'Sponsoring Form', 'h3-mgmt' ) ) ) );
+		// $output .= '</p><h5 >';
+		// $output .= sprintf( _x( 'To complete the donation process:', 'Sponsoring Form', 'h3-mgmt' ));
+		// $output .= '</h5><p class="message">';
+		// $output .= str_replace( '%betterplace%', '<a style="font-size: xx-large;" target="_blank" href="https://www.betterplace.org/de/fundraising-events/tramprennen15/donations/new#eft" title="' . __( 'Complete the donation', 'h3-mgmt' ) . '">betterplace.org</a>', str_replace( '%code%', $team_id.'-'.$sponsor_id, _x( 'Follow the link to %betterplace%<br> and enter <font style="font-size: xx-large;">%code%</font> in the comments section!!!', 'Sponsoring Form', 'h3-mgmt' ) ) );
+		// $output .= '</p><p>';
+		// $output .= sprintf( _x( 'Important: You don\'t have to donate extra money for Betterplace!', 'Sponsoring Form', 'h3-mgmt' ));
+		// $output .= '</p>';
+		$output .= '<h3 style="text-align: center; margin-top: 0px;">';
+		$output .= sprintf( _x( 'Thanks!', 'Sponsoring Form', 'h3-mgmt' ));
+		$output .= '</h3>';		
+		// $output .= str_replace( '%betterplace%', '<a target="_blank" href="https://www.betterplace.org/de/fundraising-events/tramprennen15" title="' . __( 'Complete the donation', 'h3-mgmt' ) . '">betterplace.org</a>', str_replace( '%team_name%', $team_name, str_replace( '%donation%', $donation, str_replace( '%sponsoring_type%', $titles[$type], _x( 'You have chosen to become %sponsoring_type% of "%team_name%" by donating %donation% Euros. Be so kind as to complete the transaction via %betterplace%.', 'Sponsoring Form', 'h3-mgmt' ) ) ) ) );
+		// $output .= '</p><p>';
+		// $output .= str_replace( '%code%', $team_id.'-'.$sponsor_id, _x( 'If you want to appear in the team&apos;s profile, please do not forget enter the following code "%code%" in betterplace&apos;s comments section!', 'Sponsoring Form', 'h3-mgmt' ) );
+		
 		return $output;
 	}
 
@@ -699,7 +677,7 @@ class H3_MGMT_Sponsors {
 		$default_args = array(
 			'orderby' => 'team_name',
 			'order' => 'ASC',
-			'please_select' => false,
+			'please_select' => true,
 			'exclude_with_owner' => false,
 			'exclude_incomplete' => true,
 			'show_mates' => true,
@@ -752,24 +730,24 @@ class H3_MGMT_Sponsors {
 	public function donor_fields() {
 
 		$donor_fields = array(
-			array (
-				'label'	=> _x( 'First Name', 'Sponsoring Form', 'h3-mgmt' ),
-				'id'	=> 'first_name',
-				'type'	=> 'text'
-			),
-			array (
-				'label'	=> _x( 'Last Name', 'Sponsoring Form', 'h3-mgmt' ),
-				'id'	=> 'last_name',
-				'type'	=> 'text'
-			),
-			array (
-				'label'	=> _x( 'E-Mail', 'Sponsoring Form', 'h3-mgmt' ),
-				'id'	=> 'email',
-				'type'	=> 'text'
-			),
+			// array (
+				// 'label'	=> _x( 'First Name', 'Sponsoring Form', 'h3-mgmt' ),
+				// 'id'	=> 'first_name',
+				// 'type'	=> 'text'
+			// ),
+			// array (
+				// 'label'	=> _x( 'Last Name', 'Sponsoring Form', 'h3-mgmt' ),
+				// 'id'	=> 'last_name',
+				// 'type'	=> 'text'
+			// ),
+			// array (
+				// 'label'	=> _x( 'E-Mail', 'Sponsoring Form', 'h3-mgmt' ),
+				// 'id'	=> 'email',
+				// 'type'	=> 'text'
+			// ),
 			array (
 				'label'	=> _x( 'Display Name', 'Sponsoring Form', 'h3-mgmt' ),
-				'tooltip'	=> _x( 'Choose how your Name should be displayed on the website (and in the Team Profile, if applicable). If you do not want your name to show at all, simply leave this field blank.', 'Sponsoring Form', 'h3-mgmt' ),
+				'desc'	=> _x( 'Choose how your Name should be displayed on the website (and in the Team Profile, if applicable). If you do not want your name to show at all, simply leave this field blank.', 'Sponsoring Form', 'h3-mgmt' ),
 				'id'	=> 'display_name',
 				'type'	=> 'text'
 			)
@@ -885,13 +863,13 @@ class H3_MGMT_Sponsors {
 				'label'	=> _x( 'Owner Pic', 'Sponsoring Form', 'h3-mgmt' ),
 				'id'	=> 'owner_pic',
 				'type'	=> 'single-pic-upload',
-				'tooltip' => _x( "This picture/logo will appear in the sponsored team profile. You may upload .jpg, .gif or .png files.", 'Sponsoring Form', 'h3-mgmt' )
+				'desc' => _x( "This picture/logo will appear in the sponsored team profile. You may upload .jpg, .gif or .png files.", 'Sponsoring Form', 'h3-mgmt' )
 			),
 			array (
 				'label'	=> _x( 'Link', 'Sponsoring Form', 'h3-mgmt' ),
 				'id'	=> 'owner_link',
 				'type'	=> 'text',
-				'tooltip' => _x( "If you submit a link, your picture/logo will link to said site.", 'Sponsoring Form', 'h3-mgmt' )
+				'desc' => _x( "If you submit a link, your picture/logo will link to said site.", 'Sponsoring Form', 'h3-mgmt' )
 			)
 		);
 
@@ -956,14 +934,14 @@ class H3_MGMT_Sponsors {
 				'title' => _x( 'TeamSponsor', 'Sponsoring Form', 'h3-mgmt' ),
 				'call' => _x( 'Become a TeamSponsor', 'Sponsoring Form', 'h3-mgmt' ),
 				'image' => 'sponsoring-type-sponsor.png',
-				'description' => _x( 'With one thumb&apos;s up you can morally support your team and financially support the current water project of Viva con Agua. One thumb translates to a donation of 10 Euros. Your name will be listed as a TeamSponsor in the sponsoring list and in the team&apos;s profile (unless you opt to remain anonymous).', 'Sponsoring Form', 'h3-mgmt' )
+				'description' => _x( 'With one donation you can morally support your team and financially support the WASH-projects of Viva con Agua and the work of PRO ASYL. Your name will be listed as a TeamSponsor in the sponsoring list and in the team&apos;s profile (unless you opt to remain anonymous).', 'Sponsoring Form', 'h3-mgmt' )
 			),
 			array(
 				'id' => 'owner',
 				'title' => _x( 'TeamOwner', 'Sponsoring Form', 'h3-mgmt' ),
 				'call' => _x( 'Become a TeamOwner', 'Sponsoring Form', 'h3-mgmt' ),
 				'image' => 'sponsoring-type-owner.png',
-				'description' => _x( 'For those who are tired of Chealsea or Hoffenheim, but still wanna play a little Abramovitch: As a TeamOwner you give a minimum of 10 thumbs (a donation of 100 Euros) for clean drinking water. As a Thank You, you may place a photo, picture or logo in the team profile which can optionally be linked to a URL of your choice.', 'Sponsoring Form', 'h3-mgmt' )
+				'description' => _x( 'For those who are tired of Chealsea or Hoffenheim, but still wanna play a little Abramovitch: As a TeamOwner you give a minimum of 100 Euros for Viva con Agua and PRO ASYL. As a Thank You, you may place a photo, picture or logo in the team profile which can optionally be linked to a URL of your choice.', 'Sponsoring Form', 'h3-mgmt' )
 			)
 		);
 
@@ -974,7 +952,7 @@ class H3_MGMT_Sponsors {
 					'alt="' . $strings[$i]['title'] . '"' .
 					'title="' . '" class="no-bsl-adjust no-margin-bottom" />' .
 				'<div class="description">' .
-					'<h2 class="first">' .  $strings[$i]['title'] . '</h2>' .
+					'<h3 class="first">' .  $strings[$i]['title'] . '</h3>' .
 						'<p><em>' . $strings[$i]['description'] . '</em></p>' .
 						'<p class="no-margin-bottom"><a title="' .
 								$strings[$i]['call'] .
@@ -1085,14 +1063,13 @@ class H3_MGMT_Sponsors {
 			$output .= '<div class="form-row donation-selector-row">' .
 					'<div class="arrow-wrap"><span class="less-arrow horiz-arrow arrow">&lt;&lt;</span></div>' .
 					'<div class="donation-info-wrap">' .
-						'<div class="thumbs-wrap">' .
+						'<div class="thumbs-wrap" style="display:none;">' .
 							'<span class="thumbs-text">' .
 								'<span class="thumbs">' . $start_val . '</span>'. ' ' .
 								_x( 'Thumbs', 'Sponsoring Form', 'h3-mgmt' ) .
 							'</span>' .
 						'</div>' .
 						'<span class="donation-text">' .
-							_x( 'which are', 'Sponsoring Form', 'h3-mgmt' ) . ': ' .
 							'<span class="donation">' . $don_val . '</span>' . ' Euros'.
 						'</span>' .
 					'</div>' .
@@ -1126,7 +1103,23 @@ class H3_MGMT_Sponsors {
 				$output .= '<p class="' . $message['type'] . '">' . $message['message'] . '</p>';
 			}
 		}
-
+		
+		//$output .= '<p class="message" style="font-weight: bold;">' . _x( 'Please note: <br>you have to fill out the form with your <br><b style="font-size: 1.4em;">bank account information directly</b><br>after you gave us the information for our website! <br>Thanks a lot!', 'Sponsoring Form', 'h3-mgmt' ) //. '<br>'
+		$output .= '<p class="message" style="font-weight: bold;">' . _x( 'Please note: <br>First: you have to fill out the form here then click next. 
+																						<br>Second: you have to fill out the form from <b style="font-size: 1.4em;">betterplace.org</b> with your <b style="font-size: 1.4em;">bank account information</b> then click spenden.
+																						<br>Maybe it will open a other window, finish the donation there.
+																						<br>The donatin process is just <b style="font-size: 1.4em;">finished</b> after you got an <b style="font-size: 1.4em;">E-Mail</b> from betterplace.org.
+																						<br>Thanks a lot!', 'Sponsoring Form', 'h3-mgmt' )
+					// . _x( '- Fill out the form for our homepage! (this will appear in the Teamprofile)', 'Sponsoring Form', 'h3-mgmt' ) . '<br>'
+					// . _x( '- maybe it will open a new window then let this one still open and finish your donation at betterplace.org', 'Sponsoring Form', 'h3-mgmt' ) . '<br>'
+					// . _x( '- Then Fill out the form under the betterplace.org form!', 'Sponsoring Form', 'h3-mgmt' ) . '<br>'
+					// . _x( '  scroll down to find it!', 'Sponsoring Form', 'h3-mgmt' ) . '<br>'
+					// . _x( '- click on finish!', 'Sponsoring Form', 'h3-mgmt' ) . '<br>'
+					. '</p>';
+		
+		// $output .= '<h3 class="first">' . _x( 'First donate at betterplace.org', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
+		// $output = '<iframe height="1350px" width="100%" frameborder="0" src=" https://www.betterplace.org/de/fundraising-events/tramprennen15/iframe_donations/new#eft" id="iFrameResizer0" scrolling="no" style="max-width: 600px; max-height: none; width: 100%; overflow: hidden; background-color: transparent;"></iframe>';
+		
 		$output .= '<form name="h3_mgmt_donation_form" method="post" enctype="multipart/form-data" action="">' .
 			'<input type="hidden" name="submitted" value="y"/>' .
 			'<input type="hidden" name="type" id="type" value="' . $type . '"/>' .
@@ -1134,6 +1127,7 @@ class H3_MGMT_Sponsors {
 			'<div class="form-row trap-row"><label for="address">Please leave this blank...</label>' .
 			'<input type="text" name="address" id="address" value=""></div>';
 
+		// $output .= '<h3 class="first">' . _x( 'Then fill out the form for our hompage!', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
 		if( $type == 'sponsor' || $type == 'owner' ) {
 			$output .= '<h3 class="first">' . _x( 'The Team', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
 
@@ -1145,16 +1139,12 @@ class H3_MGMT_Sponsors {
 			require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
 		}
 
-		$output .= '<h3';
-		if( $type !== 'sponsor' && $type !== 'owner' ) {
-			$output .= ' class="first"';
-		}
-		$output .= '>' . _x( 'The Donation', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
+		$output .= '<h3 class="top-space-more">' . _x( 'The Donation', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
 
 		if( $type === 'owner' ) {
 			$output .= $this->donation_selector( 'normal', 10 );
 		} elseif( $type !== 'structure' ) {
-			$output .= $this->donation_selector( 'normal', 1 );
+			$output .= $this->donation_selector( 'normal', .5 );
 		} else {
 			$output .= $this->donation_selector( 'text' );
 		}
@@ -1165,29 +1155,29 @@ class H3_MGMT_Sponsors {
 			require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
 		}
 
-		$output .= '<h3>' . _x( 'About you', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
+		$output .= '<h3 class="top-space-more">' . _x( 'About you', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
 
 		$fields = $this->add_values( $this->donor_fields() );
 		require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
 
-		if( $method == 'debit' ) {
-			$output .= '<h3>' . _x( 'Bank Details', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
-			$fields = $this->add_values( $this->debit_fields() );
-			require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-		}
+		//if( $method == 'debit' ) {
+		//	$output .= '<h3>' . _x( 'Bank Details', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
+		//	$fields = $this->add_values( $this->debit_fields() );
+		//	require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
+		//}
 
-		$output .= '<h3>' . _x( 'Donation Receipt', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>' .
-			'<div id="no-donation-receipt-wrap">' .
-				'<p>' .
-					_x( 'Under a sum of 200 Euros, the German Tax Institution will accept a copy of the relevant bank statement as a valid proof of having donated. Should you choose to donate more, Viva con Agua e.V. will gladly mail you a formal receipt.', 'Sponsoring Form', 'h3-mgmt' ) .
-				'</p>' .
-			'</div>' .
-			'<div id="donation-receipt-wrap">';
-		$fields = $this->add_values( $this->address_fields() );
-		require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-		$output .= '</div>';
+		//$output .= '<h3>' . _x( 'Donation Receipt', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>' .
+		//	'<div id="no-donation-receipt-wrap">' .
+		//		'<p>' .
+		//			_x( 'Under a sum of 200 Euros, the German Tax Institution will accept a copy of the relevant bank statement as a valid proof of having donated. Should you choose to donate more, Viva con Agua e.V. will gladly mail you a formal receipt.', 'Sponsoring Form', 'h3-mgmt' ) .
+		//		'</p>' .
+		//	'</div>' .
+		//	'<div id="donation-receipt-wrap">';
+		//$fields = $this->add_values( $this->address_fields() );
+		//require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
+		//$output .= '</div>';
 
-		$output .= '<h3>' . _x( 'The Message', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
+		$output .= '<h3 class="top-space-more">' . _x( 'The Message', 'Sponsoring Form', 'h3-mgmt' ) . '</h3>';
 		if( $type == 'sponsor' || $type == 'owner' ) {
 			$fields = $this->add_values( $this->message_field( 'team' ) );
 		} else {
@@ -1198,7 +1188,7 @@ class H3_MGMT_Sponsors {
 		if ( $this->form_submittable ) {
 			$output .= '<div class="form-row">' .
 				'<input type="submit" id="donation-submit-' . $method . '" name="donation-submit-' . $method . '" value="' .
-					_x( 'Submit Donation', 'Team Dashboard', 'h3-mgmt' ) .
+					_x( 'Next', 'Team Dashboard', 'h3-mgmt' ) .
 				'" /></div>';
 		} else {
 			$output .= '<div class="form-row">' .
@@ -1240,39 +1230,34 @@ class H3_MGMT_Sponsors {
 			);
 			$valid = false;
 		}
+		
+		// if ( ! is_email( $_POST['email'] ) ) {
+			// $errors[] = array(
+				// 'type' => 'error',
+				// 'message' => _x( "The E-Mail address you entered appears to be invalid.", 'Form Validation Error', 'h3-mgmt' )
+			// );
+			// $valid = false;
+		// }
 
-		if ( ! is_email( $_POST['email'] ) ) {
-			$errors[] = array(
-				'type' => 'error',
-				'message' => _x( "The E-Mail address you entered appears to be invalid.", 'Form Validation Error', 'h3-mgmt' )
-			);
-			$valid = false;
-		}
+		//if ( $_GET['method'] != 'paypal' && ( ! isset( $_POST['debit_confirmation'] ) || $_POST['debit_confirmation'] != 1 ) ) {
+		//	$errors[] = array(
+		//		'type' => 'error',
+		//		'message' => _x( "You have chosen to donate via direct debit. Please check the debit confirmation. Thank you!", 'Sponsoring Form Error', 'h3-mgmt' )
+		//	);
+		//	$valid = false;
+		//}
 
-		if ( $_GET['method'] != 'paypal' && ( ! isset( $_POST['debit_confirmation'] ) || $_POST['debit_confirmation'] != 1 ) ) {
-			$errors[] = array(
-				'type' => 'error',
-				'message' => _x( "You have chosen to donate via direct debit. Please check the debit confirmation. Thank you!", 'Sponsoring Form Error', 'h3-mgmt' )
-			);
-			$valid = false;
-		}
-
-		if (
-			empty( $_POST['first_name'] ) ||
-			empty( $_POST['last_name'] ) ||
-			empty( $_POST['email'] ) ||
-			( $_POST['method'] == 'debit' && (
-				empty( $_POST['account_id'] ) ||
-				empty( $_POST['bank_id'] ) ||
-				empty( $_POST['bank_name'] )
-			) )
-		) {
-			$errors[] = array(
-				'type' => 'error',
-				'message' => _x( "You have not filled out all required fields.", 'Sponsoring Form Error', 'h3-mgmt' )
-			);
-			$valid = false;
-		}
+		// if (
+			// empty( $_POST['first_name'] ) ||
+			// empty( $_POST['last_name'] ) ||
+			// empty( $_POST['email'] )
+		// ) {
+			// $errors[] = array(
+				// 'type' => 'error',
+				// 'message' => _x( "You have not filled out all required fields.", 'Sponsoring Form Error', 'h3-mgmt' )
+			// );
+			// $valid = false;
+		// }
 
 		return array( $valid, $errors );
 	}
@@ -1300,14 +1285,14 @@ class H3_MGMT_Sponsors {
 				'race_id' => $race_id,
 				'team_id' => $team_id,
 				'type' => $_POST['type'],
-				'method' => $_POST['method'],
+				'method' => 'Betterplace',
 				'donation' => $_POST['donation'],
 				'display_name' => $_POST['display_name'],
 				'first_name' => $_POST['first_name'],
 				'last_name' => $_POST['last_name'],
 				'email' => $_POST['email'],
-				'paid' => 0,
-				'show' => 0,
+				'paid' => 1,
+				'show' => 1,
 				'message' => $_POST['message'],
 				'language' => $language
 			),
@@ -1357,54 +1342,54 @@ class H3_MGMT_Sponsors {
 		);
 
 
-		if( $_POST['donation'] >= 200 ) {
-			$wpdb->update(
-				$wpdb->prefix . 'h3_mgmt_sponsors',
-				array(
-					'receipt' => $_POST['receipt'],
-					'street' => $_POST['street'],
-					'zip_code' => $_POST['zip_code'],
-					'city' => $_POST['city'],
-					'country' => $_POST['country'],
-					'address_additional' => $_POST['address_additional']
-				),
-				array( 'id' => $sponsor_id ),
-				array( '%d', '%s', '%s', '%s', '%s', '%s' ),
-				array( '%d' )
-			);
-		}
+		//if( $_POST['donation'] >= 200 ) {
+		//	$wpdb->update(
+		//		$wpdb->prefix . 'h3_mgmt_sponsors',
+		//		array(
+		//			'receipt' => $_POST['receipt'],
+		//			'street' => $_POST['street'],
+		//			'zip_code' => $_POST['zip_code'],
+		//			'city' => $_POST['city'],
+		//			'country' => $_POST['country'],
+		//			'address_additional' => $_POST['address_additional']
+		//		),
+		//		array( 'id' => $sponsor_id ),
+		//		array( '%d', '%s', '%s', '%s', '%s', '%s' ),
+		//		array( '%d' )
+		//	);
+		//}
 
-		if( $_POST['method'] == 'debit' ) {
-			$wpdb->update(
-				$wpdb->prefix . 'h3_mgmt_sponsors',
-				array(
-					'account_id' => $_POST['account_id'],
-					'bank_id' => $_POST['bank_id'],
-					'bank_name' => $_POST['bank_name'],
-					'debit_confirmation' => $_POST['debit_confirmation'],
-					'show' => 1
-				),
-				array( 'id' => $sponsor_id ),
-				array( '%s', '%s', '%s', '%d', '%d' ),
-				array( '%d' )
-			);
-			if( $_POST['type'] == 'owner' ) {
-				$h3_mgmt_mailer->auto_response( $_POST['email'], 'debit-thanks-owner', $response_args, 'mail', $language );
-				$h3_mgmt_mailer->auto_response( $ids, 'new-owner', $response_args, 'id', $team_language );
-			} elseif( $_POST['type'] == 'sponsor' ) {
-				$h3_mgmt_mailer->auto_response( $_POST['email'], 'debit-thanks-sponsor', $response_args, 'mail', $language );
-				$h3_mgmt_mailer->auto_response( $ids, 'new-sponsor', $response_args, 'id', $team_language );
-			}
-		} else {
-			if( $_POST['type'] == 'owner' ) {
-				$h3_mgmt_mailer->auto_response( $_POST['email'], 'paypal-please-owner', $response_args, 'mail', $language );
-			} elseif( $_POST['type'] == 'sponsor' ) {
-				$h3_mgmt_mailer->auto_response( $_POST['email'], 'paypal-please-sponsor', $response_args, 'mail', $language );
-			}
-		}
+		//if( $_POST['method'] == 'debit' ) {
+		//	$wpdb->update(
+		//		$wpdb->prefix . 'h3_mgmt_sponsors',
+		//		array(
+		//			'account_id' => $_POST['account_id'],
+		//			'bank_id' => $_POST['bank_id'],
+		//			'bank_name' => $_POST['bank_name'],
+		//			'debit_confirmation' => $_POST['debit_confirmation'],
+		//			'show' => 1
+		//		),
+		//		array( 'id' => $sponsor_id ),
+		//		array( '%s', '%s', '%s', '%d', '%d' ),
+		//		array( '%d' )
+		//	);
+		//	if( $_POST['type'] == 'owner' ) {
+		//		$h3_mgmt_mailer->auto_response( $_POST['email'], 'debit-thanks-owner', $response_args, 'mail', $language );
+		//		$h3_mgmt_mailer->auto_response( $ids, 'new-owner', $response_args, 'id', $team_language );
+		//	} elseif( $_POST['type'] == 'sponsor' ) {
+		//		$h3_mgmt_mailer->auto_response( $_POST['email'], 'debit-thanks-sponsor', $response_args, 'mail', $language );
+		//		$h3_mgmt_mailer->auto_response( $ids, 'new-sponsor', $response_args, 'id', $team_language );
+		//	}
+		//} else {
+		//	if( $_POST['type'] == 'owner' ) {
+		//		$h3_mgmt_mailer->auto_response( $_POST['email'], 'paypal-please-owner', $response_args, 'mail', $language );
+		//	} elseif( $_POST['type'] == 'sponsor' ) {
+		//		$h3_mgmt_mailer->auto_response( $_POST['email'], 'paypal-please-sponsor', $response_args, 'mail', $language );
+		//	}
+		//}
 
 		return $this->sponsoring_section_output( array(
-			'step' => 4,
+			'step' => 3,
 			'method' => $_POST['method'],
 			'type' => $_POST['type'],
 			'team_id' => $_POST['team_id'],
@@ -1449,24 +1434,24 @@ class H3_MGMT_Sponsors {
 			$output .= '<p>';
 			$number = $number <= count( $sponsors_query ) ? $number : count( $sponsors_query );
 			for( $i = 0; $i < $number; $i++ ) {
-				$thumbs = intval( $sponsors_query[$i]['donation'] ) / 10;
+				$thumbs = intval( $sponsors_query[$i]['donation'] );
 				if( empty( $sponsors_query[$i]['display_name'] ) ) {
 					$sponsors_query[$i]['display_name'] = _x( 'Anonymous Sponsor', 'Sponsoring', 'h3-mgmt' );
 				}
 				if( $i !== ($number - 1) ) {
-					$output .= '<span class="item activity-stream bottom-border">';
+					$output .= '<div class="item activity-stream bottom-border"><p>';
 				} else {
-					$output .= '<span class="item activity-stream">';
+					$output .= '<div class="item activity-stream"><p>';
 				}
-				$output .= str_replace( '%donor%', '<em>' . stripslashes( $sponsors_query[$i]['display_name'] ) . '</em>', str_replace( '%thumbs%', $thumbs, str_replace( '%team%', '<a class="cursive-link" title="' . _x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) . '" href="' . _x( 'http://tramprennen.org/tramprennen/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $sponsors_query[$i]['team_id'] . '">' . $h3_mgmt_teams->get_team_name( $sponsors_query[$i]['team_id'] ) . '</a>', _x( '%donor% sponsored %team% with %thumbs% thumb(s)', 'Recent Activity Stream', 'h3-mgmt' ) ) ) );
-				if( ! empty( $sponsors_query[$i]['message'] ) ) {
-					$output .= ' <span class="tip" onmouseover="tooltip(\'' .
-							preg_replace( "/\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3}/", "", preg_replace( "/\r|\n/", "<br />", str_replace( '"', '&quot;', str_replace( "'", '&apos;', $sponsors_query[$i]['message'] ) ) ) ) .
-							'\');" onmouseout="exit();">' .
-								'<img class="comments-bubble no-bsl-adjust" alt="Comments Bubble" src="' . H3_MGMT_RELPATH . 'img/comments-bubble.png" />' .
-						'</span>';
-				}
-				$output .= '</span>';
+				$output .= str_replace( '%donor%', '<em>' . stripslashes( $sponsors_query[$i]['display_name'] ) . '</em>', str_replace( '%thumbs%', $thumbs, str_replace( '%team%', '<a class="cursive-link" title="' . _x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) . '" href="' . _x( get_site_url() . '/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $sponsors_query[$i]['team_id'] . '">' . $h3_mgmt_teams->get_team_name( $sponsors_query[$i]['team_id'] ) . '</a>', _x( '%donor% sponsored %team% with %thumbs% Euros', 'Recent Activity Stream', 'h3-mgmt' ) ) ) );
+				//if( ! empty( $sponsors_query[$i]['message'] ) ) {
+				//	$output .= ' <span class="tip" onmouseover="tooltip(\'' .
+				//			preg_replace( "/\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3}/", "", preg_replace( "/\r|\n/", "<br />", str_replace( '"', '&quot;', str_replace( "'", '&apos;', $sponsors_query[$i]['message'] ) ) ) ) .
+				//			'\');" onmouseout="exit();">' .
+				//				'<img class="comments-bubble no-bsl-adjust" alt="Comments Bubble" src="' . H3_MGMT_RELPATH . 'img/comments-bubble.png" />' .
+				//		'</span>';
+				//}
+				$output .= '</p></div>';
 			}
 			$output .= '</p>';
 		} else {

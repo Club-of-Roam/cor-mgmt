@@ -5,7 +5,7 @@ Plugin Name: HitchHikingHub Management
 Plugin URI: http://tramprennen.org
 Description: Core of the "HitchHikingHub", events/races, user profiles, team profiles
 Version: 1.1
-Author: Johannes Pilkahn, Jonas Damhuis
+Author: Johannes Pilkahn
 Author URI: http://nekkidgrandma.com
 License: GPL3
 */
@@ -52,17 +52,26 @@ if ( !defined( 'H3_MGMT_DIRNAME' ) )
  */
 function h3_mgmt_enqueue() {
 	/* register scripts */
+	wp_register_script( 'isotope', H3_MGMT_RELPATH . 'js/jquery.isotope.min.js', array( 'jquery' ), '1', true );
 	wp_register_script( 'h3-mgmt-isotope', H3_MGMT_RELPATH . 'js/h3-mgmt-isotope.js', array( 'jquery', 'isotope' ), '1.1.2', true );
-	wp_register_script( 'h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', array( 'jquery' ), '1.1.7', true );
+	wp_register_script( 'h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', array( 'jquery' ), '1.1.711111', true );
 	wp_register_script( 'h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', array( 'jquery' ), '1.1.2.3633', true );
+	wp_register_script( 'h3-mgmt-resize', H3_MGMT_RELPATH . 'js/resize.js' );
+	wp_register_script( 'h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js' );
+	wp_register_script( 'h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js' );
+	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js' );
+	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js' ); 
+	wp_register_script( 'googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&sensor=false', true );
+	wp_register_script( 'google-jsapi','https://www.google.com/jsapi', true ); 
 	/* register styles */
 	wp_register_style( 'h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', false, '1.1.88512111' );
-	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', false, '1.1.4' );
+	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', false, '1.1.41' );
 	wp_register_style( 'h3-mgmt-stages', H3_MGMT_RELPATH . 'css/h3-mgmt-stages.css', false, '1.1,1' );
-	wp_register_style( 'h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', false, '1.1.111' );
-	wp_register_style( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', false, '1.1.234' );
+	wp_register_style( 'h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', false, '1.1.1111111' );
+	wp_register_style( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', false, '1.1.23456' );
 	wp_register_style( 'h3-mgmt-xchange', H3_MGMT_RELPATH . 'css/h3-mgmt-xchange.css', false, '1.1' );
 	/* enqueue custom scripts */
+	wp_enqueue_script( 'isotope' );
 	wp_enqueue_script( 'h3-mgmt-isotope' );
 	/* enqueue stylesheets */
 	wp_enqueue_style( 'h3-mgmt-donation-counter-style' );
