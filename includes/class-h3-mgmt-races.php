@@ -1050,7 +1050,7 @@ class H3_MGMT_Races {
 			$flip_val = $flipper ? '1' : '2';
 			$output .= '<tr class="trow-alt-' . $flip_val . '">' .
 				'<th><span style="text-shadow: 0 0 0.2em #696969, 0 0 0.2em #696969; font-weight:700;border-bottom: 2px solid #' . $this->get_route_color( $team['route_id'] ) . ';">' .
-						'<a class="ranking_link" style="color:#' . $this->get_route_color( $team['route_id'] ) . ';" class="inkognito-link" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="http://' . __( 'tramprennen.org/follow-us/teams/?id=', 'h3-mgmt' ) . $team['id'] . '">' .
+						'<a class="ranking_link" style="color:#' . $this->get_route_color( $team['route_id'] ) . ';" class="inkognito-link" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="' . get_site_url() . __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team['id'] . '">' .
 							$team['team_name'] .
 						'</a>' .
 					'</span>' .

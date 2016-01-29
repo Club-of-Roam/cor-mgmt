@@ -1938,10 +1938,10 @@ class H3_MGMT_Teams {
 			'team_id' => $team_id
 		));
 		
-		$owner['owner_pic'] = $h3_mgmt_utilities->pic_resize( $owner['owner_pic'], 250 ); //test rausnehen
+		// $owner['owner_pic'] = $h3_mgmt_utilities->pic_resize( $owner['owner_pic'], 250 ); //test rausnehen
 
 		$team = $this->get_team_data( $team_id, array( 'mates' ) );
-		$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 500 ); //test rausnehen
+		// $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 500 ); //test rausnehen
 
 		$routes_data =  $h3_mgmt_races->get_routes( array( 'race' => $race_id ) );
 
@@ -2047,7 +2047,7 @@ class H3_MGMT_Teams {
 
 		$output .= '<p>' .
 			'<a class="sponsors-link" title="' . _x( 'Become this team&apos;s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) . '" ' .
-				'href="' . _x( 'http://tramprennen.org/support-team/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?type=sponsor&id=' . $team_id . '">' .
+				'href="'. get_site_url() . _x( '/support-team/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?id=' . $team_id . '">' .
 					_x( 'Become this team\'s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) .
 					'</a></p>';
 
@@ -2122,7 +2122,7 @@ class H3_MGMT_Teams {
 		));
 
 		$team = $this->get_team_data( $team_id, array( 'mates' ) );
-		$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 );		//test rausnehmen
+		// $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 );		//test rausnehmen
 
 		$race_id = $this->get_team_race( $team_id );
 		$routes_data =  $h3_mgmt_races->get_routes( array( 'race' => $race_id ) );
@@ -2159,7 +2159,7 @@ class H3_MGMT_Teams {
 
 		$output .= '<br /><a title="' .
 				_x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) .
-			'" href="' . _x( 'http://tramprennen.org/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $team_id . '">' .
+			'" href="' . get_site_url() . _x( '/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $team_id . '">' .
 			'&rarr; ' . _x( 'view TeamProfile', 'Team', 'h3-mgmt' ) .
 			'</a></p>';
 
@@ -2194,7 +2194,7 @@ class H3_MGMT_Teams {
 		));
 		
 		foreach( $teams as $team ) {
-			$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
+			// $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
 			$mates_html = '';
 			$mcount = count( $team['mates'] );
 			$i = 0;
@@ -2288,7 +2288,7 @@ class H3_MGMT_Teams {
 			'</a>';
 
 		$script_params = array(
-			'redirect' => __( 'http://tramprennen.org/follow-us/teams/', 'h3-mgmt' )
+			'redirect' => get_site_url() . __( '/follow-us/teams/', 'h3-mgmt' )
 		);
 		wp_localize_script( 'h3-mgmt-isotope', 'IsotopeParams', $script_params );
 

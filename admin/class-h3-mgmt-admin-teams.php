@@ -212,6 +212,111 @@ class H3_MGMT_Admin_Teams {
 				default:
 					$this->participants_list( $messages );
 			}
+		}elseif(isset( $_GET['bulk'] ) && is_array( $_GET['bulk'] ) ) {
+			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : $this->participants_list( $messages );
+			
+			foreach($_GET['bulk'] as $id){
+				$mate_query = $wpdb->get_results(
+					"SELECT * FROM " .
+					$wpdb->prefix."h3_mgmt_teammates " .
+					"WHERE id = " . $id . " LIMIT 1",
+					ARRAY_A
+				);
+
+				$user_id = isset( $mate_query[0]['user_id'] ) ? $mate_query[0]['user_id'] : NULL;
+				$team_id = isset( $mate_query[0]['team_id'] ) ? $mate_query[0]['team_id'] : NULL;
+
+				switch ( $todo ) {
+					case "bulk-paid":
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_teammates',
+							array( 'paid' => 1 ),
+							array( 'id'=> $id ),
+							array( '%d' ),
+							array( '%d' )
+						);
+						$response_args = array(
+							'team_name' => $h3_mgmt_teams->get_team_name( $team_id )
+						);
+						$h3_mgmt_mailer->auto_response( $user_id, 'package-paid', $response_args, 'id', $h3_mgmt_teams->get_participant_language( $user_id ) );
+						$h3_mgmt_teams->is_complete( $team_id );
+					break;
+
+					case "bulk-waiver-set":
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_teammates',
+							array( 'waiver' => 1 ),
+							array( 'id'=> $id ),
+							array( '%d' ),
+							array( '%d' )
+						);
+						$response_args = array(
+							'team_name' => $h3_mgmt_teams->get_team_name( $team_id )
+						);
+						$h3_mgmt_mailer->auto_response( $user_id, 'waiver-reached', $response_args, 'id', $h3_mgmt_teams->get_participant_language( $user_id ) );
+						$h3_mgmt_teams->is_complete( $team_id );
+					break;
+
+					case "bulk-unpaid":
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_teammates',
+							array( 'paid' => 0 ),
+							array( 'id'=> $id ),
+							array( '%d' ),
+							array( '%d' )
+						);
+						$h3_mgmt_teams->is_complete( $team_id );
+					break;
+
+					case "bulk-waiver-unset":
+							$wpdb->update(
+								$wpdb->prefix.'h3_mgmt_teammates',
+								array( 'waiver' => 0 ),
+								array( 'id'=> $id ), //$_GET['id']
+								array( '%d' ),
+								array( '%d' )
+							);
+							$h3_mgmt_teams->is_complete( $team_id );
+						break;
+
+					default:
+						$this->participants_list( $messages );
+				}
+			}	
+			switch ( $todo ) {
+				case "bulk-paid":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected participants HitchPackages have been paid.', 'h3-mgmt' )
+					);
+				break;
+
+				case "bulk-waiver-set":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected participants waivers have been set to received.', 'h3-mgmt' )
+					);
+				break;
+
+				case "bulk-unpaid":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected participants HitchPackagea were not yet paid, after all.', 'h3-mgmt' )
+					);
+				break;
+
+				case "bulk-waiver-unset":						
+						$messages[] = array(
+								'type' => 'message',
+								'message' => __( 'The selected participants waivers have not yet reached, after all.', 'h3-mgmt' )
+							);
+					break;
+
+				default:
+					$this->participants_list( $messages );
+			}
+			unset( $_GET['todo'], $_GET['bulk'] );
+			$this->participants_list( $messages );
 		} else {
 			$this->participants_list( $messages );
 		}
@@ -224,7 +329,7 @@ class H3_MGMT_Admin_Teams {
 	 * @access private
 	 */
 	private function teams_list( $messages = array() ) {
-		global $h3_mgmt_teams;
+		global $wpdb, $h3_mgmt_teams;
 
 		$url = 'admin.php?page=h3-mgmt-teams';
 
@@ -263,7 +368,7 @@ class H3_MGMT_Admin_Teams {
 
 		$team_args = array(
 			'orderby' => isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'team_name',
-			'order' => isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'ASC',
+			'order' => isset( $_GET['order'] ) ? $_GET['order'] : 'ASC',
 			'exclude_incomplete' => false,
 			'extra_fields' => array( 'mates', 'route', 'race' )
 		);
@@ -277,6 +382,18 @@ class H3_MGMT_Admin_Teams {
 			'messages' => $messages
 		);
 		$the_page = new H3_MGMT_Admin_Page( $page_args );
+
+		$filter = array( 'race', 'route', 'complete' );
+		$filter_dis_name = array( 'Event/Race', 'Route', 'Complete?' );
+		$filter_conversion = array( '', '', 'boolean' );
+		
+		$race_name = $wpdb->get_results(
+						"SELECT name FROM " . $wpdb->prefix . "h3_mgmt_races " .
+						"ORDER BY id DESC LIMIT 1", ARRAY_A
+					);
+		$race_name = $race_name[0]['name'];
+					
+		$pre_filtered = array( true, 'race', $race_name);
 
 		$tbl_args = array(
 			'orderby' => 'team_name',
@@ -293,7 +410,7 @@ class H3_MGMT_Admin_Teams {
 			'total_pages' => 1,
 			'current_page' => 1,
 			'dspl_cnt' => true,
-			'count' => $team_count,
+			'count' => count($rows),
 			'cnt_txt' => '%d ' . __( 'Teams', 'h3-mgmt' ),
 			'with_bulk' => false,
 			'bulk_btn' => 'Execute',
@@ -302,7 +419,11 @@ class H3_MGMT_Admin_Teams {
 			'bulk_param' => 'todo',
 			'bulk_desc' => '',
 			'extra_bulk_html' => '',
-			'bulk_actions' => array()
+			'bulk_actions' => array(),
+			'filter' => $filter,
+			'filter_dis_name' => $filter_dis_name,
+			'filter_conversion' => $filter_conversion,
+			'pre_filtered' => $pre_filtered
 		);
 		$the_table = new H3_MGMT_Admin_Table( $tbl_args, $columns, $rows );
 
@@ -422,7 +543,7 @@ class H3_MGMT_Admin_Teams {
 	 * @access private
 	 */
 	private function participants_list( $messages = array() ) {
-		global $h3_mgmt_teams;
+		global $h3_mgmt_teams, $wpdb;
 
 		$url = 'admin.php?page=h3-mgmt-participants';
 
@@ -492,9 +613,17 @@ class H3_MGMT_Admin_Teams {
 			)
 		);
 
+		// $team_args = array(
+			// 'orderby' => isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'first_name',
+			// 'order' => isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'ASC',
+			// 'exclude_incomplete' => false,
+			// 'extra_fields' => array( 'mates', 'route', 'race' )
+		// );
+		// list( $team_count, $complete_count, $incomplete_count, $rows ) = $h3_mgmt_teams->get_teams_meta( $team_args );
+		
 		$parts_args = array(
-			'orderby' => 'first_name',
-			'oder' => 'ASC',
+			'orderby' => isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'first_name',
+			'order' => isset( $_GET['order'] ) ? $_GET['order'] : 'ASC',
 			'exclude_incomplete' => false,
 			'extra_fields' => array( 'first_name', 'last_name', 'email', 'city', 'mobile', 'team', 'race', 'shirt', 'InfMobile' )
 		);
@@ -509,6 +638,29 @@ class H3_MGMT_Admin_Teams {
 		);
 		$the_page = new H3_MGMT_Admin_Page( $page_args );
 
+		$filter = array( 'shirt', 'InfMobile', 'race', 'waiver', 'paid' );
+		$filter_dis_name = array( 'Shirt', 'Inf. for Mobile', 'Event/Race', 'Waiver received?', 'Package paid?' );
+		$filter_conversion = array( '', '', '', 'boolean', 'boolean' );
+		
+		$race_name = $wpdb->get_results(
+						"SELECT name FROM " . $wpdb->prefix . "h3_mgmt_races " .
+						"ORDER BY id DESC LIMIT 1", ARRAY_A
+					);
+		$race_name = $race_name[0]['name'];
+					
+		$pre_filtered = array( true, 'race', $race_name);
+		
+		$bulk_actions = array(
+							array( 	'value' => 'bulk-waiver-set',
+									'label' => 'Waiver received!'),
+							array( 	'value' => 'bulk-waiver-unset',
+									'label' => 'Waiver not received!'),
+							array( 	'value' => 'bulk-paid',
+									'label' => 'HitchPackage paid!'),
+							array( 	'value' => 'bulk-unpaid',
+									'label' => 'Not yet paid...')
+							);
+
 		$tbl_args = array(
 			'orderby' => 'team',
 			'page_slug' => 'h3-mgmt-participants',
@@ -521,19 +673,23 @@ class H3_MGMT_Admin_Teams {
 			'show_empty_message' => true,
 			'empty_message' => '',
 			'pagination' => false,
-			'total_pages' => 1,
+			'total_pages' => 10,
 			'current_page' => 1,
 			'dspl_cnt' => true,
-			'count' => $participants_count,
+			'count' => count($rows),
 			'cnt_txt' => '%d ' . __( 'Participants', 'h3-mgmt' ),
-			'with_bulk' => false,
+			'with_bulk' => true,
 			'bulk_btn' => 'Execute',
 			'bulk_confirm' => '',
 			'bulk_name' => 'bulk',
 			'bulk_param' => 'todo',
 			'bulk_desc' => '',
 			'extra_bulk_html' => '',
-			'bulk_actions' => array()
+			'bulk_actions' => $bulk_actions,
+			'filter' => $filter,
+			'filter_dis_name' => $filter_dis_name,
+			'filter_conversion' => $filter_conversion,
+			'pre_filtered' => $pre_filtered
 		);
 		$the_table = new H3_MGMT_Admin_Table( $tbl_args, $columns, $rows );
 

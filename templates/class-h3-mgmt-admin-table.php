@@ -53,7 +53,11 @@ class H3_MGMT_Admin_Table {
 		'bulk_param' => 'todo',
 		'bulk_desc' => '',
 		'extra_bulk_html' => '',
-		'bulk_actions' => array()
+		'bulk_actions' => array(),
+		'filter' => array(),
+		'filter_dis_name' => array(),
+		'filter_conversion' => array(),
+		'pre_filtered' => array(false)
 	);
 	private $set_args = array();
 	public $args = array();
@@ -131,7 +135,23 @@ class H3_MGMT_Admin_Table {
 		extract( $this->args, EXTR_SKIP );
 		$columns = $this->columns;
 		$rows = $this->rows;
+		$filter  = $this->set_args['filter'];
+		
+		$rows = $this->get_filtered_rows( $filter, $rows );
 
+		if( $this->set_args['pre_filtered'][0] === true && !isset( $_GET['filter_name0'] ) && is_array( $rows ) && !empty( $rows ) ){
+			foreach( $rows as $row_is ) {
+				if( stripslashes( $this->set_args['pre_filtered'][2] == $row_is[$this->set_args['pre_filtered'][1]] ) ) {
+					$rows_new[] = $row_is;
+				}
+			} 
+			if( is_array( $rows_new ) && !empty( $rows_new ) ){
+			$rows = $rows_new;
+			}
+		}
+			
+		$count = count($rows);
+		
 		$output = '';
 
 		if ( $with_wrap ) {
@@ -159,7 +179,75 @@ class H3_MGMT_Admin_Table {
 			}
 			$output .= $headline . '</h3>';
 		}
+		
+		if( !empty($filter) ){
+			$filter_id = 0;
 
+			$cat = array();
+		
+			$output.='	<div class="alignleft actions extra1">
+						<form name="filter_form" method="get" action="">
+						<input type="hidden" name="page" value="'.$_GET['page'].'" />';
+			foreach($filter as $filter_is){
+				$output.='	<input type="hidden" name="filter_name'.$filter_id.'" value="'.$filter_is.'" />';
+				
+				$cat[$filter_is][] = dummy1;
+				$cat[$filter_is][] = dummy2;
+				if( is_array( $rows ) && !empty( $rows ) ){
+					foreach( $rows as $row_is ) {
+						if( !in_array($row_is[$filter_is], $cat[$filter_is]) && $row_is[$filter_is] != '') {
+							$cat[$filter_is][] = $row_is[$filter_is];
+						}
+					} 
+				}
+				$cat[$filter_is] = array_slice($cat[$filter_is], 2);	
+				sort($cat[$filter_is]);
+				
+				$output.='	<div class="alignleft actions extra1" style="padding:0px 5px 0px 0px;">
+							<span>'.$this->set_args['filter_dis_name'][$filter_id] .'</span><br>
+							<select name="filter_value'.$filter_id.'" id="filter_value">';
+							if( isset( $_GET['filter_value'.$filter_id] ) && $_GET['filter_value'.$filter_id] != '-1' && $_GET['filter_value'.$filter_id] != 'all'){
+								if( ! isset( $this->set_args['filter_conversion'][$filter_id] ) ) {
+									$val_show = stripslashes( $_GET['filter_value'.$filter_id]);
+								} else {
+									$val_show = $this->convert_data( stripslashes( $_GET['filter_value'.$filter_id]), $this->set_args['filter_conversion'][$filter_id], $row );
+								}
+								$output.='	<option value="'.stripslashes( $_GET['filter_value'.$filter_id]).'" >'.$val_show.'</option>';
+							}else{
+								$output.='	<option value="all" >all</option>';
+							}
+							
+							if( isset( $_GET['filter_value'.$filter_id] ) && $_GET['filter_value'.$filter_id] != 'all' ){
+								$output.='	<option value="all">show all</option>';
+							}
+						
+							foreach($cat[$filter_is] as $cat_is){
+								if( ! isset( $this->set_args['filter_conversion'][$filter_id] ) ) {
+									$cat_is_show = $cat_is;
+								} else {
+									$cat_is_show = $this->convert_data( $cat_is, $this->set_args['filter_conversion'][$filter_id], $row );
+								}
+								
+								if(stripslashes( $_GET['filter_value'.$filter_id]) != $cat_is){
+									if(  $cat_is == $this->set_args['pre_filtered'][2] && !isset( $_GET['filter_name0'] ) && $this->set_args['pre_filtered'][1] == $this->set_args['filter'][$filter_id] ){
+										$output.='<option selected value="'.$cat_is.'">'.$cat_is_show.'</option>';										
+									}else{
+										$output.='<option value="'.$cat_is.'">'.$cat_is_show.'</option>';
+									}
+								}
+							};
+				$output.='	</select>
+							</div>';						
+				$filter_id = $filter_id + 1;
+			}
+			$output.= '	<div class="alignleft actions extra1">
+						<span>   </span><br>
+						<input type="submit" id="filter" class="button action" value="filter">
+						</div>
+						</form>
+						</div> <br style="clear:left;">';
+		}
+							
 		if ( empty( $rows ) ) {
 
 			if ( $show_empty_message ) {
@@ -219,12 +307,21 @@ class H3_MGMT_Admin_Table {
 				}
 
 				$table_head .= '" style="" scope="col">';
-
+				
+				$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+				
 				if( isset( $column['sortable'] ) && true === $column['sortable'] ) {
-					$table_head .= '<a href="' .
-							get_option( 'site_url' ) . '/wp-admin/' .
-							$sort_url . '&amp;orderby=' . $column['id'] . '&amp;order=' . $col_toggle_order .
-						'">';
+					if( isset( $_GET['orderby'] ) ){
+						$table_head .= '<a href="' .
+								str_replace($_GET['order'], $col_toggle_order, str_replace($_GET['orderby'], $column['id'], $actual_link)) .
+							'">';
+					}else{
+						$table_head .= '<a href="' .
+								// get_site_url() . '/wp-admin/' . //get_option( 'site_url' ) . '/wp-admin/' .
+								// $sort_url . '&amp;orderby=' . $column['id'] . '&amp;order=' . $col_toggle_order .
+								$actual_link . '&amp;orderby=' . $column['id'] . '&amp;order=' . $col_toggle_order .
+							'">';
+					}
 				}
 
 				$table_head .= '<span>' . $column['title'] . '</span>';
@@ -328,14 +425,17 @@ class H3_MGMT_Admin_Table {
 
 			/* BEGIN: Rows */
 
+			$bulk_id = 0;
 			foreach ( $rows as $row ) {
 
 				$output .= '<tr valign="middle" class="alternate">';
 				if ( $with_bulk && is_array( $bulk_actions ) && ! empty( $bulk_actions ) ) {
 					$bulk_val = isset( $row['bulk'] ) ? $row['bulk'] : ( isset( $row['id'] ) ? $row['id'] : 0 );
 					$output .= '<th class="check-column" scope="row">' .
-							'<input type="checkbox" name="' . $bulk_name . '[]" value="' . $bulk_val . '">' .
+							// '<input type="checkbox" name="' . $bulk_name . '" value="' . $bulk_val . '">' .
+							'<input type="checkbox" name="' . $bulk_name . '['.$bulk_id.']" value="' . $bulk_val . '">' .
 						'</th>';
+					$bulk_id = $bulk_id + 1;
 				}
 
 				foreach ( $columns as $column ) {
@@ -728,8 +828,33 @@ class H3_MGMT_Admin_Table {
 		return $output;
 	}
 
+	/**
+	 * Returns table rows after filtering
+	 *
+	 * @since 1.1
+	 * @access private
+	 */
+	public function get_filtered_rows( $filter, $rows ) {
+		$filter_id = 0;
+		if( isset( $_GET['filter_name0'] ) ) {
+			foreach( $filter as $filter_is ){
+				if( $_GET['filter_value'.$filter_id] != '' && $_GET['filter_value'.$filter_id] != '-1' && $_GET['filter_value'.$filter_id] != 'all' ){
+					$rows_new = array();
+					foreach( $rows as $row_is ) {
+						if( stripslashes( $_GET['filter_value'.$filter_id]) == $row_is[$_GET['filter_name'.$filter_id]] ) {
+							$rows_new[] = $row_is;
+						}
+					} 
+					$rows = $rows_new;
+				}
+				$filter_id = $filter_id + 1;
+			}
+		}
+		return $rows;
+	}
+	
 } // class
 
 endif; // class exists
-
+	
 ?>

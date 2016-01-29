@@ -25,263 +25,374 @@ class H3_MGMT_Admin_Sponsors {
 		$messages = array();
 
 		$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : '';
+		
+		if ( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
+			switch ( $todo ) {
 
-		switch ( $todo ) {
+				case "delete":
+					if ($_GET['id']) {
+						$wpdb->query(
+							"DELETE FROM " .
+							$wpdb->prefix . "h3_mgmt_sponsors " .
+							"WHERE id = '" . $_GET['id'] . "' LIMIT 1"
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'The selected donor has been successfully deleted.', 'h3-mgmt' )
+						);
+					}
+					unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
+					if( 'debit' == $method ) {
+						$this->sponsors_list( 'debit', $messages );
+					} elseif( 'paypal' == $method ) {
+						$this->sponsors_list( 'paypal', $messages );
+					} elseif( 'betterplace' == $method ) {
+						$this->sponsors_list( 'betterplace', $messages );
+					} else {
+						$this->sponsors_list( 'all', $messages );
+					}
+				break;
 
-			case "delete":
-				if ($_GET['id']) {
-					$wpdb->query(
-						"DELETE FROM " .
-						$wpdb->prefix . "h3_mgmt_sponsors " .
-						"WHERE id = '" . $_GET['id'] . "' LIMIT 1"
-					);
-					$messages[] = array(
-						'type' => 'message',
-						'message' => __( 'The selected donor has been successfully deleted.', 'h3-mgmt' )
-					);
-				}
-				unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
-				if( 'debit' == $method ) {
-					$this->sponsors_list( 'debit', $messages );
-				} elseif( 'paypal' == $method ) {
-					$this->sponsors_list( 'paypal', $messages );
-				} else {
-					$this->sponsors_list( 'all', $messages );
-				}
-			break;
+				case "save":
+					if( isset( $_GET['id'] ) && $_GET['id'] != NULL ) {
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_sponsors',
+							array(
+								'type' => $_POST['type'],
+								'method' => $_POST['method'],
+								'donation' => $_POST['donation'],
+								'language' => $_POST['language'],
+								'display_name' => $_POST['display_name'],
 
-			case "save":
-				if( isset( $_GET['id'] ) && $_GET['id'] != NULL ) {
+								// 'first_name' => $_POST['first_name'],
+								// 'last_name' => $_POST['last_name'],
+								// 'accound_id' => $_POST['accound_id'],
+								// 'bank_id' => $_POST['bank_id'],
+								// 'bank_name' => $_POST['bank_name'],
+
+								'paid' => $_POST['paid'],
+								'message' => $_POST['message'],
+								'team_id' => $_POST['team_id'],
+								'show' => $_POST['show'],
+								'race_id' => $_POST['race_id'],
+
+								'email' => $_POST['email'],
+								'owner_pic' => $_POST['owner_pic'],
+								'owner_link' => $_POST['owner_link'],
+								'street' => $_POST['street'],
+								'zip_code' => $_POST['zip_code'],
+
+								'city' => $_POST['city'],
+								'country' => $_POST['country'],
+								'address_additional' => $_POST['address_additional'],
+								'receipt' => $_POST['receipt'],
+								'debit_confirmation' => isset( $_POST['debit_confirmation'] ) ? 1 : 0
+							),
+							array( 'id'=> $_GET['id'] ),
+							array(
+								'%s', '%s', '%d', '%s', '%s',
+								// '%s', '%s', '%s', '%s', '%s',
+								'%d', '%s', '%d', '%d', '%d',
+								'%s', '%s', '%s', '%s', '%s',
+								'%s', '%s', '%s', '%d', '%d'
+							),
+							array( '%d' )
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'Donor successfully updated!', 'h3-mgmt' )
+						);
+					} else {
+						$wpdb->insert(
+							$wpdb->prefix.'h3_mgmt_sponsors',
+							array(
+								'type' => $_POST['type'],
+								'method' => $_POST['method'],
+								'donation' => $_POST['donation'],
+								'language' => $_POST['language'],
+								'display_name' => $_POST['display_name'],
+
+								// 'first_name' => $_POST['first_name'],
+								// 'last_name' => $_POST['last_name'],
+								// 'accound_id' => $_POST['accound_id'],
+								// 'bank_id' => $_POST['bank_id'],
+								// 'bank_name' => $_POST['bank_name'],
+
+								'paid' => $_POST['paid'],
+								'message' => $_POST['message'],
+								'team_id' => $_POST['team_id'],
+								'show' => $_POST['show'],
+								'race_id' => $_POST['race_id'],
+
+								'email' => $_POST['email'],
+								'owner_pic' => $_POST['owner_pic'],
+								'owner_link' => $_POST['owner_link'],
+								'street' => $_POST['street'],
+								'zip_code' => $_POST['zip_code'],
+
+								'city' => $_POST['city'],
+								'country' => $_POST['country'],
+								'address_additional' => $_POST['address_additional'],
+								'receipt' => $_POST['receipt'],
+								'debit_confirmation' => isset( $_POST['debit_confirmation'] ) ? 1 : 0
+							),
+							array(
+								'%s', '%s', '%d', '%s', '%s',
+								// '%s', '%s', '%s', '%s', '%s',
+								'%d', '%s', '%d', '%d', '%d',
+								'%s', '%s', '%s', '%s', '%s',
+								'%s', '%s', '%s', '%d', '%d'
+							)
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'Donor successfully added!', 'h3-mgmt' )
+						);
+					}
+					if( 'debit' == $method ) {
+						$this->sponsors_list( 'debit', $messages );
+					} elseif( 'paypal' == $method ) {
+						$this->sponsors_list( 'paypal', $messages );
+					} elseif( 'betterplace' == $method ) {
+						$this->sponsors_list( 'betterplace', $messages );
+					} else {
+						$this->sponsors_list( 'all', $messages );
+					}
+				break;
+
+				case "paid":
 					$wpdb->update(
 						$wpdb->prefix.'h3_mgmt_sponsors',
-						array(
-							'type' => $_POST['type'],
-							'method' => $_POST['method'],
-							'donation' => $_POST['donation'],
-							'language' => $_POST['language'],
-							'display_name' => $_POST['display_name'],
-
-							'first_name' => $_POST['first_name'],
-							'last_name' => $_POST['last_name'],
-							'accound_id' => $_POST['accound_id'],
-							'bank_id' => $_POST['bank_id'],
-							'bank_name' => $_POST['bank_name'],
-
-							'paid' => $_POST['paid'],
-							'message' => $_POST['message'],
-							'team_id' => $_POST['team_id'],
-							'show' => $_POST['show'],
-							'race_id' => $_POST['race_id'],
-
-							'email' => $_POST['email'],
-							'owner_pic' => $_POST['owner_pic'],
-							'owner_link' => $_POST['owner_link'],
-							'street' => $_POST['street'],
-							'zip_code' => $_POST['zip_code'],
-
-							'city' => $_POST['city'],
-							'country' => $_POST['country'],
-							'address_additional' => $_POST['address_additional'],
-							'receipt' => $_POST['receipt'],
-							'debit_confirmation' => isset( $_POST['debit_confirmation'] ) ? 1 : 0
-						),
+						array( 'paid' => 1 ),
 						array( 'id'=> $_GET['id'] ),
-						array(
-							'%s', '%s', '%d', '%s', '%s',
-							'%s', '%s', '%s', '%s', '%s',
-							'%d', '%s', '%d', '%d', '%d',
-							'%s', '%s', '%s', '%s', '%s',
-							'%s', '%s', '%s', '%d', '%d'
-						),
+						array( '%d' ),
 						array( '%d' )
 					);
 					$messages[] = array(
 						'type' => 'message',
-						'message' => __( 'Donor successfully updated!', 'h3-mgmt' )
+						'message' => __( 'The selected donor&apos;s payment status has been set to &quot;paid&quot;.', 'h3-mgmt' )
 					);
-				} else {
-					$wpdb->insert(
+					
+					unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
+					if( 'debit' == $method ) {
+						$this->sponsors_list( 'debit', $messages );
+					} elseif( 'paypal' == $method ) {
+						$this->sponsors_list( 'paypal', $messages );
+					} elseif( 'betterplace' == $method ) {
+						$this->sponsors_list( 'betterplace', $messages );
+					} else {
+						$this->sponsors_list( 'all', $messages );
+					}
+				break;
+
+				case "unpaid":
+					$wpdb->update(
 						$wpdb->prefix.'h3_mgmt_sponsors',
-						array(
-							'type' => $_POST['type'],
-							'method' => $_POST['method'],
-							'donation' => $_POST['donation'],
-							'language' => $_POST['language'],
-							'display_name' => $_POST['display_name'],
-
-							'first_name' => $_POST['first_name'],
-							'last_name' => $_POST['last_name'],
-							'accound_id' => $_POST['accound_id'],
-							'bank_id' => $_POST['bank_id'],
-							'bank_name' => $_POST['bank_name'],
-
-							'paid' => $_POST['paid'],
-							'message' => $_POST['message'],
-							'team_id' => $_POST['team_id'],
-							'show' => $_POST['show'],
-							'race_id' => $_POST['race_id'],
-
-							'email' => $_POST['email'],
-							'owner_pic' => $_POST['owner_pic'],
-							'owner_link' => $_POST['owner_link'],
-							'street' => $_POST['street'],
-							'zip_code' => $_POST['zip_code'],
-
-							'city' => $_POST['city'],
-							'country' => $_POST['country'],
-							'address_additional' => $_POST['address_additional'],
-							'receipt' => $_POST['receipt'],
-							'debit_confirmation' => isset( $_POST['debit_confirmation'] ) ? 1 : 0
-						),
-						array(
-							'%s', '%s', '%d', '%s', '%s',
-							'%s', '%s', '%s', '%s', '%s',
-							'%d', '%s', '%d', '%d', '%d',
-							'%s', '%s', '%s', '%s', '%s',
-							'%s', '%s', '%s', '%d', '%d'
-						)
+						array( 'paid' => 0),
+						array( 'id'=> $_GET['id'] ),
+						array( '%d'),
+						array( '%d' )
 					);
 					$messages[] = array(
 						'type' => 'message',
-						'message' => __( 'Donor successfully added!', 'h3-mgmt' )
+						'message' => __( 'The selected donor&apos;s payment status has been set to &quot;not paid&quot;.', 'h3-mgmt' )
 					);
-				}
-				if( 'debit' == $method ) {
-					$this->sponsors_list( 'debit', $messages );
-				} elseif( 'paypal' == $method ) {
-					$this->sponsors_list( 'paypal', $messages );
-				} else {
-					$this->sponsors_list( 'all', $messages );
-				}
-			break;
-
-			case "paid":
-				$wpdb->update(
-					$wpdb->prefix.'h3_mgmt_sponsors',
-					array( 'paid' => 1, 'show' => 1 ),
-					array( 'id'=> $_GET['id'] ),
-					array( '%d', '%d' ),
-					array( '%d' )
-				);
-				$messages[] = array(
-					'type' => 'message',
-					'message' => __( 'The selected donor&apos;s payment status has been set to &quot;paid&quot;.', 'h3-mgmt' )
-				);
-				if( isset( $_GET['method'] ) && $_GET['method'] == 'paypal' ) {
-					$sponsor_query = $wpdb->get_results(
-						"SELECT * FROM " . $wpdb->prefix . "h3_mgmt_sponsors " .
-						"WHERE id = " . $_GET['id'] . " LIMIT 1", ARRAY_A
-					);
-					$sponsor = $sponsor_query[0];
-					$team_name = $h3_mgmt_teams->get_team_name( $sponsor['team_id'] );
-					if( $sponsor['type'] == 'sponsor' || $sponsor['type'] == 'owner' ) {
-						$ids = $h3_mgmt_teams->get_teammates( $sponsor['team_id'] );
+					unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
+					if( 'debit' == $method ) {
+						$this->sponsors_list( 'debit', $messages );
+					} elseif( 'paypal' == $method ) {
+						$this->sponsors_list( 'paypal', $messages );
+					} elseif( 'betterplace' == $method ) {
+						$this->sponsors_list( 'betterplace', $messages );
+					} else {
+						$this->sponsors_list( 'all', $messages );
 					}
-					$response_args = array(
-						'team_name' => $team_name,
-						'name' => $sponsor['first_name'] . ' ' . $sponsor['last_name'],
-						'donation' => $sponsor['donation'],
-						'thumbs' => intval( $sponsor['donation'] ) / 10
+				break;
+
+				case "show":
+					$wpdb->update(
+						$wpdb->prefix.'h3_mgmt_sponsors',
+						array( 'show' => 1 ),
+						array( 'id'=> $_GET['id'] ),
+						array( '%d' ),
+						array( '%d' )
 					);
-					$h3_mgmt_mailer->auto_response( $sponsor['email'], 'paypal-thanks', $response_args, 'mail', $h3_mgmt_sponsors->get_sponsor_language( $_GET['id'] ) );
-					if( $sponsor['type'] == 'sponsor' ) {
-						$h3_mgmt_mailer->auto_response( $ids, 'new-sponsor', $response_args, 'id', $h3_mgmt_teams->get_team_language( $sponsor['team_id'] ) );
-					} elseif( $sponsor['type'] == 'owner' ) {
-						$h3_mgmt_mailer->auto_response( $ids, 'new-owner', $response_args, 'id', $h3_mgmt_teams->get_team_language( $sponsor['team_id'] ) );
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected sponsor does now appear in the frontend.', 'h3-mgmt' )
+					);
+					unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
+					if( 'debit' == $method ) {
+						$this->sponsors_list( 'debit', $messages );
+					} elseif( 'paypal' == $method ) {
+						$this->sponsors_list( 'paypal', $messages );
+					} elseif( 'betterplace' == $method ) {
+						$this->sponsors_list( 'betterplace', $messages );
+					} else {
+						$this->sponsors_list( 'all', $messages );
 					}
-				}
-				unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
-				if( 'debit' == $method ) {
-					$this->sponsors_list( 'debit', $messages );
-				} elseif( 'paypal' == $method ) {
-					$this->sponsors_list( 'paypal', $messages );
-				} else {
-					$this->sponsors_list( 'all', $messages );
-				}
-			break;
+				break;
 
-			case "unpaid":
-				$show = 0;
-				if( isset( $_GET['method'] ) && $_GET['method'] == 'debit' ) {
-					$show = 1;
-				}
-				$wpdb->update(
-					$wpdb->prefix.'h3_mgmt_sponsors',
-					array( 'paid' => 0, 'show' => $show ),
-					array( 'id'=> $_GET['id'] ),
-					array( '%d', '%d' ),
-					array( '%d' )
-				);
-				$messages[] = array(
-					'type' => 'message',
-					'message' => __( 'The selected donor&apos;s payment status has been set to &quot;not paid&quot;.', 'h3-mgmt' )
-				);
-				unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
-				if( 'debit' == $method ) {
-					$this->sponsors_list( 'debit', $messages );
-				} elseif( 'paypal' == $method ) {
-					$this->sponsors_list( 'paypal', $messages );
-				} else {
-					$this->sponsors_list( 'all', $messages );
-				}
-			break;
+				case "hide":
+					$wpdb->update(
+						$wpdb->prefix.'h3_mgmt_sponsors',
+						array( 'show' => 0 ),
+						array( 'id'=> $_GET['id'] ),
+						array( '%d' ),
+						array( '%d' )
+					);
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected sponsor does not appear in the frontend anymore!', 'h3-mgmt' )
+					);
+					unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
+					if( 'debit' == $method ) {
+						$this->sponsors_list( 'debit', $messages );
+					} elseif( 'paypal' == $method ) {
+						$this->sponsors_list( 'paypal', $messages );
+					} elseif( 'betterplace' == $method ) {
+						$this->sponsors_list( 'betterplace', $messages );
+					} else {
+						$this->sponsors_list( 'all', $messages );
+					}
+				break;
 
-			case "show":
-				$wpdb->update(
-					$wpdb->prefix.'h3_mgmt_sponsors',
-					array( 'show' => 1 ),
-					array( 'id'=> $_GET['id'] ),
-					array( '%d' ),
-					array( '%d' )
-				);
-				$messages[] = array(
-					'type' => 'message',
-					'message' => __( 'The selected sponsor does now appear in the frontend.', 'h3-mgmt' )
-				);
-				unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
-				if( 'debit' == $method ) {
-					$this->sponsors_list( 'debit', $messages );
-				} elseif( 'paypal' == $method ) {
-					$this->sponsors_list( 'paypal', $messages );
-				} else {
-					$this->sponsors_list( 'all', $messages );
-				}
-			break;
+				case "edit":
+					$this->sponsors_edit( $_GET['id'] );
+				break;
 
-			case "hide":
-				$wpdb->update(
-					$wpdb->prefix.'h3_mgmt_sponsors',
-					array( 'show' => 0 ),
-					array( 'id'=> $_GET['id'] ),
-					array( '%d' ),
-					array( '%d' )
-				);
-				$messages[] = array(
-					'type' => 'message',
-					'message' => __( 'The selected sponsor does not appear in the frontend anymore!', 'h3-mgmt' )
-				);
-				unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
-				if( 'debit' == $method ) {
-					$this->sponsors_list( 'debit', $messages );
-				} elseif( 'paypal' == $method ) {
-					$this->sponsors_list( 'paypal', $messages );
-				} else {
-					$this->sponsors_list( 'all', $messages );
-				}
-			break;
+				default:
+					if( 'debit' == $method ) {
+						$this->sponsors_list( 'debit', $messages );
+					} elseif( 'paypal' == $method ) {
+						$this->sponsors_list( 'paypal', $messages );
+					} elseif( 'betterplace' == $method ) {
+						$this->sponsors_list( 'betterplace', $messages );
+					} else {
+						$this->sponsors_list( 'all', $messages );
+					}
+			}
+		}elseif(isset( $_GET['bulk'] ) && is_array( $_GET['bulk'] ) ) {
+			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : $this->participants_list( $messages );
+			
+			foreach($_GET['bulk'] as $id){
+				switch ( $todo ) {
+					case "bulk-delete":
+						$wpdb->query(
+							"DELETE FROM " .
+							$wpdb->prefix . "h3_mgmt_sponsors " .
+							"WHERE id = '" . $id . "' LIMIT 1"
+						);
+					break;
 
-			case "edit":
-				$this->sponsors_edit( $_GET['id'] );
-			break;
+					case "bulk-paid":
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_sponsors',
+							array( 'paid' => 1 ),
+							array( 'id'=> $id ),
+							array( '%d' ),
+							array( '%d' )
+						);
+					break;
 
-			default:
-				if( 'debit' == $method ) {
-					$this->sponsors_list( 'debit', $messages );
-				} elseif( 'paypal' == $method ) {
-					$this->sponsors_list( 'paypal', $messages );
-				} else {
-					$this->sponsors_list( 'all', $messages );
+					case "bulk-unpaid":
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_sponsors',
+							array( 'paid' => 0),
+							array( 'id'=> $id ),
+							array( '%d'),
+							array( '%d' )
+						);
+					break;
+
+					case "bulk-show":
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_sponsors',
+							array( 'show' => 1 ),
+							array( 'id'=> $id ),
+							array( '%d' ),
+							array( '%d' )
+						);
+					break;
+
+					case "bulk-hide":
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_sponsors',
+							array( 'show' => 0 ),
+							array( 'id'=> $id ),
+							array( '%d' ),
+							array( '%d' )
+						);
+					break;
+
+					default:
+						if( 'debit' == $method ) {
+							$this->sponsors_list( 'debit', $messages );
+						} elseif( 'paypal' == $method ) {
+							$this->sponsors_list( 'paypal', $messages );
+						} elseif( 'betterplace' == $method ) {
+							$this->sponsors_list( 'betterplace', $messages );
+						} else {
+							$this->sponsors_list( 'all', $messages );
+						}
 				}
+			}
+			switch ( $todo ) {
+				case "bulk-delete":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected donor has been successfully deleted.', 'h3-mgmt' )
+					);
+				break;
+
+				case "bulk-paid":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected donor&apos;s payment status has been set to &quot;paid&quot;.', 'h3-mgmt' )
+					);
+				break;
+
+				case "bulk-unpaid":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected donor&apos;s payment status has been set to &quot;not paid&quot;.', 'h3-mgmt' )
+					);
+				break;
+
+				case "bulk-show":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected sponsor does now appear in the frontend.', 'h3-mgmt' )
+					);
+				break;
+
+				case "bulk-hide":
+					$messages[] = array(
+						'type' => 'message',
+						'message' => __( 'The selected sponsor does not appear in the frontend anymore!', 'h3-mgmt' )
+					);
+				break;
+			}
+			unset( $_GET['todo'], $_GET['id'], $_GET['method'] );
+			if( 'debit' == $method ) {
+				$this->sponsors_list( 'debit', $messages );
+			} elseif( 'paypal' == $method ) {
+				$this->sponsors_list( 'paypal', $messages );
+			} elseif( 'betterplace' == $method ) {
+				$this->sponsors_list( 'betterplace', $messages );
+			} else {
+				$this->sponsors_list( 'all', $messages );
+			}
+		} else {
+			if( 'debit' == $method ) {
+				$this->sponsors_list( 'debit', $messages );
+			} elseif( 'paypal' == $method ) {
+				$this->sponsors_list( 'paypal', $messages );
+			} elseif( 'betterplace' == $method ) {
+				$this->sponsors_list( 'betterplace', $messages );
+			} else {
+				$this->sponsors_list( 'all', $messages );
+			}
 		}
 	}
 
@@ -306,17 +417,28 @@ class H3_MGMT_Admin_Sponsors {
 	}
 
 	/**
+	 * Sponsors (Betterplace only) administration menu
+	 *
+	 * @since 1.0
+	 * @access public
+	 */
+	public function betterplace_control() {
+		$this->sponsors_control( 'betterplace' );
+	}
+	
+	/**
 	 * List all sponsors
 	 *
 	 * @since 1.0
 	 * @access private
 	 */
 	private function sponsors_list( $method = 'all', $messages = array() ) {
-		global $h3_mgmt_sponsors;
+		global $wpdb, $h3_mgmt_sponsors, $H3_MGMT_Admin_Table;
 
 		$url = 'admin.php?page=h3-mgmt-sponsors';
 		$debit_url = 'admin.php?page=h3-mgmt-sponsors-debit';
 		$paypal_url = 'admin.php?page=h3-mgmt-sponsors-debit';
+		$betterplace_url = 'admin.php?page=h3-mgmt-sponsors-betterplace';
 
 		$columns = array(
 			array(
@@ -420,6 +542,12 @@ class H3_MGMT_Admin_Sponsors {
 				'sortable' => false
 			),
 			array(
+				'id' => 'type',
+				'title' => __( 'Type', 'h3-mgmt' ),
+				'sortable' => true,
+				'conversion' => 'type'
+			),
+			array(
 				'id' => 'paid',
 				'title' => __( 'Paid?', 'h3-mgmt' ),
 				'sortable' => true,
@@ -440,6 +568,11 @@ class H3_MGMT_Admin_Sponsors {
 				'title' => __( 'Donation', 'h3-mgmt' ),
 				'sortable' => true,
 				'conversion' => 'donation'
+			),
+			array(
+				'id' => 'display_name',
+				'title' => __( 'Display Name', 'h3-mgmt' ),
+				'sortable' => true
 			)
 		);
 
@@ -495,21 +628,90 @@ class H3_MGMT_Admin_Sponsors {
 				'title' => __( 'Donation', 'h3-mgmt' ),
 				'sortable' => true,
 				'conversion' => 'donation'
+			),
+			array(
+				'id' => 'display_name',
+				'title' => __( 'Display Name', 'h3-mgmt' ),
+				'sortable' => true
+			)
+		);
+		
+		$betterlace_columns = array(
+			array(
+				'id' => 'race',
+				'title' => __( 'Race', 'h3-mgmt' ),
+				'strong' => true,
+				'actions' => array( 'edit', 'delete' ),
+				'sortable' => true
+			),
+			array(
+				'id' => 'team_name',
+				'title' => __( 'Team', 'h3-mgmt' ),
+				'sortable' => true
+			),
+			array(
+				'id' => 'type',
+				'title' => __( 'Type', 'h3-mgmt' ),
+				'sortable' => true,
+				'conversion' => 'type'
+			),
+			array(
+				'id' => 'method',
+				'title' => __( 'Method', 'h3-mgmt' ),
+				'sortable' => true,
+				'conversion' => 'method'
+			),
+			array(
+				'id' => 'paid',
+				'title' => __( 'Paid?', 'h3-mgmt' ),
+				'sortable' => true,
+				'conversion' => 'paid',
+				'actions' => array( 'sponsor-payment' ),
+				'cap' => 'sponsors'
+			),
+			array(
+				'id' => 'show',
+				'title' => __( 'Show on front?', 'h3-mgmt' ),
+				'sortable' => true,
+				'conversion' => 'boolean',
+				'actions' => array( 'sponsor-show' ),
+				'cap' => 'sponsors'
+			),
+			array(
+				'id' => 'donation',
+				'title' => __( 'Donation', 'h3-mgmt' ),
+				'sortable' => true,
+				'conversion' => 'donation'
+			),
+			array(
+				'id' => 'display_name',
+				'title' => __( 'Display Name', 'h3-mgmt' ),
+				'sortable' => true
+			),
+			array(
+				'id' => 'donation_client_reference',
+				'title' => __( 'Donation Client Reference', 'h3-mgmt' ),
+				'sortable' => true
+			),
+			array(
+				'id' => 'donation_token',
+				'title' => __( 'Donation Token', 'h3-mgmt' ),
+				'sortable' => true
 			)
 		);
 
-		$orderby = isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'last_name';
+		$orderby = isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'team_name';
 		$order = isset( $_GET['order'] ) ? $_GET['order'] : 'ASC';
 
 		list( $rows, $sponsor_counts, $donations ) = $h3_mgmt_sponsors->get_sponsors_meta( array(
 			'orderby' => $orderby,
 			'order' => $order,
 			'type' => 'all',
-			'method' => $method,
+			'method' => $method == 'betterplace' ? 'Betterplace' : $method,
 			'exclude_unpaid' => false,
 			'extra_fields' => array( 'bank_info', 'race', 'code' )
 		));
-
+		
 		$title = _x( 'TeamSponsors &amp; TeamOwners', 'Sponsoring, Backend', 'h3-mgmt' );
 		if ( 'paypal' === $method ) {
 			$url = $paypal_url;
@@ -519,6 +721,10 @@ class H3_MGMT_Admin_Sponsors {
 			$url = $debit_url;
 			$columns = $debit_columns;
 			$title = _x( 'TeamSponsors &amp; TeamOwners, Donation Method: Debit', 'Sponsoring, Backend', 'h3-mgmt' );
+		} elseif ( 'betterplace' === $method ) {
+			$url = $betterplace_url;
+			$columns = $betterlace_columns;
+			$title = _x( 'TeamSponsors &amp; TeamOwners, Donation Method: Betterplace', 'Sponsoring, Backend', 'h3-mgmt' );
 		}
 
 		$page_args = array(
@@ -530,8 +736,33 @@ class H3_MGMT_Admin_Sponsors {
 		);
 		$the_page = new H3_MGMT_Admin_Page( $page_args );
 
+		$filter = array( 'race', 'team_name', 'type', 'paid', 'show' );
+		$filter_dis_name = array( 'Race', 'Team', 'Type', 'Paid?', 'Show on Front?');
+		$filter_conversion = array( '', '', '', 'boolean', 'boolean' );
+		
+		$race_name = $wpdb->get_results(
+						"SELECT name FROM " . $wpdb->prefix . "h3_mgmt_races " .
+						"ORDER BY id DESC LIMIT 1", ARRAY_A
+					);
+		$race_name = $race_name[0]['name'];
+					
+		$pre_filtered = array( true, 'race', $race_name);
+		
+		$bulk_actions = array(
+							array( 	'value' => 'bulk-paid',
+									'label' => 'Sponsor has paid!'),
+							array( 	'value' => 'bulk-unpaid',
+									'label' => 'Not yet paid...'),
+							array( 	'value' => 'bulk-show',
+									'label' => 'Show Sponsor!'),
+							array( 	'value' => 'bulk-hide',
+									'label' => 'Hide Sponsor...'),
+							array( 	'value' => 'bulk-delete',
+									'label' => 'Delete')
+							);
+		
 		$tbl_args = array(
-			'orderby' => 'last_name',
+			'orderby' => 'team_name',
 			'page_slug' => 'h3-mgmt-sponsors' . ( 'all' === $method ? '' : '-'.$method ),
 			'base_url' => $url,
 			'sort_url' => $url,
@@ -547,19 +778,38 @@ class H3_MGMT_Admin_Sponsors {
 			'dspl_cnt' => true,
 			'count' => $sponsor_counts[$method],
 			'cnt_txt' => '%d ' . __( 'Donors', 'h3-mgmt' ),
-			'with_bulk' => false,
+			'with_bulk' => true,
 			'bulk_btn' => 'Execute',
 			'bulk_confirm' => '',
 			'bulk_name' => 'bulk',
 			'bulk_param' => 'todo',
 			'bulk_desc' => '',
 			'extra_bulk_html' => '',
-			'bulk_actions' => array()
+			'bulk_actions' => $bulk_actions,
+			'filter' => $filter,
+			'filter_dis_name' => $filter_dis_name,
+			'filter_conversion' => $filter_conversion,
+			'pre_filtered' => $pre_filtered
 		);
+		
 		$the_table = new H3_MGMT_Admin_Table( $tbl_args, $columns, $rows );
 
+		echo 	'<br style="clear:left;">
+				<div class="message-secondary" style="float: right;"><p>	
+				- If Donation Client Reference and Donation Token has a value everything is ok!<br>
+				- If just Donation Client Reference has a value the donation broke at Betterplace (there was no redirect to our site)!<br>
+				- If both without value the Donor was added via the Backend!
+				</p></div>
+				<br style="clear:left;">';
+				
+		$button = 	'<form method="post" action="' . $url . '&amp;todo=edit">' .
+					'<input type="submit" class="button-secondary" value="+ ' . __( 'add donor', 'h3-mgmt' ) . '" />' .
+					'</form>';
+		
 		$the_page->top();
+		echo $button . '<br />';
 		$the_table->output();
+		echo $button . '<br />';
 		$the_page->bottom();
 	}
 
@@ -719,30 +969,34 @@ class H3_MGMT_Admin_Sponsors {
 							array(
 								'label' => _x( 'PayPal', 'Sponsoring Form', 'h3-mgmt' ),
 								'value' => 'paypal'
+							),
+							array(
+								'label' => _x( 'Betterplace', 'Sponsoring Form', 'h3-mgmt' ),
+								'value' => 'betterplace'
 							)
 						)
 					),
-					array (
-						'label'	=> _x( 'Account ID (KTN)', 'Sponsoring Form', 'h3-mgmt' ),
-						'id'	=> 'account_id',
-						'type'	=> 'text'
-					),
-					array (
-						'label'	=> _x( 'Bank ID (BLZ)', 'Sponsoring Form', 'h3-mgmt' ),
-						'id'	=> 'bank_id',
-						'type'	=> 'text'
-					),
-					array (
-						'label'	=> _x( 'Name of Bank', 'Sponsoring Form', 'h3-mgmt' ),
-						'id'	=> 'bank_name',
-						'type'	=> 'text'
-					),
-					array (
-						'label'	=> _x( 'Debit confirmation', 'Sponsoring Form', 'h3-mgmt' ),
-						'id'	=> 'debit_confirmation',
-						'type'	=> 'checkbox',
-						'desc' => _x( 'By checking this box the sponsor confirms that Viva con Agua e.V. may debit the above sum from his/her above bank account.', 'Sponsoring Form','h3-mgmt' )
-					)
+					// array (
+						// 'label'	=> _x( 'Account ID (KTN)', 'Sponsoring Form', 'h3-mgmt' ),
+						// 'id'	=> 'account_id',
+						// 'type'	=> 'text'
+					// ),
+					// array (
+						// 'label'	=> _x( 'Bank ID (BLZ)', 'Sponsoring Form', 'h3-mgmt' ),
+						// 'id'	=> 'bank_id',
+						// 'type'	=> 'text'
+					// ),
+					// array (
+						// 'label'	=> _x( 'Name of Bank', 'Sponsoring Form', 'h3-mgmt' ),
+						// 'id'	=> 'bank_name',
+						// 'type'	=> 'text'
+					// ),
+					// array (
+						// 'label'	=> _x( 'Debit confirmation', 'Sponsoring Form', 'h3-mgmt' ),
+						// 'id'	=> 'debit_confirmation',
+						// 'type'	=> 'checkbox',
+						// 'desc' => _x( 'By checking this box the sponsor confirms that Viva con Agua e.V. may debit the above sum from his/her above bank account.', 'Sponsoring Form','h3-mgmt' )
+					// )
 				)
 			),
 			array(

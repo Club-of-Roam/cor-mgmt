@@ -105,6 +105,14 @@ class H3_MGMT_Admin {
 		);
 		add_submenu_page(
 			'h3-mgmt-sponsors',
+			__( 'Sponsoring Method "Betterplace"', 'h3-mgmt' ),
+			__( 'Betterplace', 'h3-mgmt' ),
+			'h3_mgmt_view_sponsors',
+			'h3-mgmt-sponsors-betterplace',
+			array( &$h3_mgmt_admin_sponsors, 'betterplace_control' )
+		);
+		add_submenu_page(
+			'h3-mgmt-sponsors',
 			__( 'Sponsoring Method "Direct Debit"', 'h3-mgmt' ),
 			__( 'Direct Debit', 'h3-mgmt' ),
 			'h3_mgmt_view_sponsors',
@@ -119,14 +127,6 @@ class H3_MGMT_Admin {
 			'h3-mgmt-sponsors-paypal',
 			array( &$h3_mgmt_admin_sponsors, 'paypal_control' )
 		);
-		//add_submenu_page(
-		//	'h3-mgmt-sponsors',
-		//	__( 'Sponsoring Method "PayPal"', 'h3-mgmt' ),
-		//	__( 'Betterplace', 'h3-mgmt' ),
-		//	'h3_mgmt_view_sponsors',
-		//	'h3-mgmt-sponsors-betterplace',
-		//	array( &$h3_mgmt_admin_sponsors, 'betterplace_control' )
-		//);
 
 		/* Emails Menu */
 		add_menu_page(

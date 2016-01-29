@@ -108,74 +108,101 @@ class H3_MGMT_Admin_Races {
 		$messages = array();
 
 		$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : 'list';
+		if ( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
+			switch ( $todo ) {
 
-		switch ( $todo ) {
+				case "delete":
+					if ($_GET['id']) {
+						$wpdb->query(
+							"DELETE FROM " .
+							$wpdb->prefix . "h3_mgmt_routes " .
+							"WHERE id='" . $_GET['id'] . "' LIMIT 1"
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'The selected route has been successfully deleted.', 'h3-mgmt' )
+						);
+					}
+					unset( $_GET['todo'], $_GET['id'] );
+					$this->routes_list( $messages );
+				break;
 
-			case "delete":
-				if ($_GET['id']) {
-					$wpdb->query(
-						"DELETE FROM " .
-						$wpdb->prefix . "h3_mgmt_routes " .
-						"WHERE id='" . $_GET['id'] . "' LIMIT 1"
-					);
-					$messages[] = array(
-						'type' => 'message',
-						'message' => __( 'The selected route has been successfully deleted.', 'h3-mgmt' )
-					);
+				case "save":
+					if( isset( $_GET['id'] ) && $_GET['id'] != NULL ) {
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_routes',
+							array(
+								'race_id' => $_POST['race_id'],
+								'name' => $_POST['name'],
+								'color_code' => $_POST['color_code'],
+								'logo_url' => $_POST['logo_url'],
+								'max_teams' => $_POST['max_teams']
+							),
+							array( 'id'=> $_GET['id'] ),
+							array( '%d', '%s', '%s', '%s', '%d' ),
+							array( '%d' )
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'Route successfully updated!', 'h3-mgmt' )
+						);
+					} else {
+						$wpdb->insert(
+							$wpdb->prefix.'h3_mgmt_routes',
+							array(
+								'race_id' => $_POST['race_id'],
+								'name' => $_POST['name'],
+								'color_code' => $_POST['color_code'],
+								'logo_url' => $_POST['logo_url'],
+								'max_teams' => $_POST['max_teams']
+							),
+							array( '%d', '%s', '%s', '%s', '%d' )
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'Route successfully added!', 'h3-mgmt' )
+						);
+					}
+					$this->routes_list( $messages );
+				break;
+
+				case "edit":
+					$this->edit( 'route', $_GET['id'] );
+				break;
+
+				case "new":
+					$this->edit( 'route' );
+				break;
+
+				default:
+					$this->routes_list( $messages );
+			}
+		}elseif(isset( $_GET['bulk'] ) && is_array( $_GET['bulk'] ) ) {
+			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : $this->participants_list( $messages );
+			
+			foreach($_GET['bulk'] as $id){
+				switch ( $todo ) {
+
+				case "bulk-delete":
+						$wpdb->query(
+							"DELETE FROM " .
+							$wpdb->prefix . "h3_mgmt_routes " .
+							"WHERE id='" . $id . "' LIMIT 1"
+						);
+				break;
+				
+				default:
+					$this->routes_list( $messages );
 				}
-				unset( $_GET['todo'], $_GET['id'] );
-				$this->routes_list( $messages );
-			break;
-
-			case "save":
-				if( isset( $_GET['id'] ) && $_GET['id'] != NULL ) {
-					$wpdb->update(
-						$wpdb->prefix.'h3_mgmt_routes',
-						array(
-							'race_id' => $_POST['race_id'],
-							'name' => $_POST['name'],
-							'color_code' => $_POST['color_code'],
-							'logo_url' => $_POST['logo_url'],
-							'max_teams' => $_POST['max_teams']
-						),
-						array( 'id'=> $_GET['id'] ),
-						array( '%d', '%s', '%s', '%s', '%d' ),
-						array( '%d' )
-					);
-					$messages[] = array(
-						'type' => 'message',
-						'message' => __( 'Route successfully updated!', 'h3-mgmt' )
-					);
-				} else {
-					$wpdb->insert(
-						$wpdb->prefix.'h3_mgmt_routes',
-						array(
-							'race_id' => $_POST['race_id'],
-							'name' => $_POST['name'],
-							'color_code' => $_POST['color_code'],
-							'logo_url' => $_POST['logo_url'],
-							'max_teams' => $_POST['max_teams']
-						),
-						array( '%d', '%s', '%s', '%s', '%d' )
-					);
-					$messages[] = array(
-						'type' => 'message',
-						'message' => __( 'Route successfully added!', 'h3-mgmt' )
-					);
-				}
-				$this->routes_list( $messages );
-			break;
-
-			case "edit":
-				$this->edit( 'route', $_GET['id'] );
-			break;
-
-			case "new":
-				$this->edit( 'route' );
-			break;
-
-			default:
-				$this->routes_list( $messages );
+			}
+			$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'The selected routes have been successfully deleted.', 'h3-mgmt' )
+						);
+			unset( $_GET['todo'], $_GET['bulk'] );
+			$this->routes_list( $messages );
+		}else{
+			$this->routes_list( $messages );
 		}
 	}
 
@@ -191,77 +218,103 @@ class H3_MGMT_Admin_Races {
 		$messages = array();
 
 		$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : 'list';
+		if ( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
+			switch ( $todo ) {
 
-		switch ( $todo ) {
+				case "delete":
+					if ($_GET['id']) {
+						$wpdb->query(
+							"DELETE FROM " .
+							$wpdb->prefix . "h3_mgmt_stages " .
+							"WHERE id='" . $_GET['id'] . "' LIMIT 1"
+						);
+						echo '<div class="updated"><p><strong>' .
+						__( 'The selected stage has been successfully deleted.', 'h3-mgmt' ) .
+						'</strong></p></div>';
+					}
+					unset( $_GET['todo'], $_GET['id'] );
+					$this->stages_list( $messages );
+				break;
 
-			case "delete":
-				if ($_GET['id']) {
-					$wpdb->query(
-						"DELETE FROM " .
-						$wpdb->prefix . "h3_mgmt_stages " .
-						"WHERE id='" . $_GET['id'] . "' LIMIT 1"
-					);
-					echo '<div class="updated"><p><strong>' .
-					__( 'The selected stage has been successfully deleted.', 'h3-mgmt' ) .
-					'</strong></p></div>';
+				case "save":
+					if( isset( $_GET['id'] ) && $_GET['id'] != NULL ) {
+						$wpdb->update(
+							$wpdb->prefix.'h3_mgmt_stages',
+							array(
+								'race_id' => $h3_mgmt_races->get_route_parent( $_POST['route_id'] ),
+								'route_id' => $_POST['route_id'],
+								'number' => $_POST['number'],
+								'destination' => $_POST['destination'],
+								'country' => $_POST['country'],
+								'country_3166_alpha-2' => $_POST['country_3166_alpha-2'],
+								'meeting_point' => $_POST['meeting_point']
+							),
+							array( 'id'=> $_GET['id'] ),
+							array( '%d', '%d', '%d', '%s', '%s', '%s', '%s' ),
+							array( '%d' )
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'Stage successfully updated!', 'h3-mgmt' )
+						);
+					} else {
+						$wpdb->insert(
+							$wpdb->prefix.'h3_mgmt_stages',
+							array(
+								'race_id' => $h3_mgmt_races->get_route_parent( $_POST['route_id'] ),
+								'route_id' => $_POST['route_id'],
+								'number' => $_POST['number'],
+								'destination' => $_POST['destination'],
+								'country' => $_POST['country'],
+								'country_3166_alpha-2' => $_POST['country_3166_alpha-2'],
+								'meeting_point' => $_POST['meeting_point']
+							),
+							array( '%d', '%d', '%d', '%s', '%s', '%s', '%s' )
+						);
+						$messages[] = array(
+							'type' => 'message',
+							'message' => __( 'Stage successfully updated!', 'h3-mgmt' )
+						);
+					}
+					$this->stages_list( $messages );
+				break;
+
+				case "edit":
+					$this->edit( 'stage', $_GET['id'] );
+				break;
+
+				case "new":
+					$this->edit( 'stage' );
+				break;
+
+				default:
+					$this->stages_list( $messages );
+			}
+		}elseif(isset( $_GET['bulk'] ) && is_array( $_GET['bulk'] ) ) {
+			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : $this->participants_list( $messages );
+			
+			foreach($_GET['bulk'] as $id){
+				switch ( $todo ) {
+					case "bulk-delete":
+						$wpdb->query(
+							"DELETE FROM " .
+							$wpdb->prefix . "h3_mgmt_stages " .
+							"WHERE id='" . $id . "' LIMIT 1"
+						);
+					break;
+					
+					default:
+						$this->stages_list( $messages );
 				}
-				unset( $_GET['todo'], $_GET['id'] );
-				$this->stages_list( $messages );
-			break;
-
-			case "save":
-				if( isset( $_GET['id'] ) && $_GET['id'] != NULL ) {
-					$wpdb->update(
-						$wpdb->prefix.'h3_mgmt_stages',
-						array(
-							'race_id' => $h3_mgmt_races->get_route_parent( $_POST['route_id'] ),
-							'route_id' => $_POST['route_id'],
-							'number' => $_POST['number'],
-							'destination' => $_POST['destination'],
-							'country' => $_POST['country'],
-							'country_3166_alpha-2' => $_POST['country_3166_alpha-2'],
-							'meeting_point' => $_POST['meeting_point']
-						),
-						array( 'id'=> $_GET['id'] ),
-						array( '%d', '%d', '%d', '%s', '%s', '%s', '%s' ),
-						array( '%d' )
-					);
-					$messages[] = array(
+			}
+			unset( $_GET['todo'], $_GET['bulk'] );
+			$messages[] = array(
 						'type' => 'message',
-						'message' => __( 'Stage successfully updated!', 'h3-mgmt' )
+						'message' => __( 'The selected stages have been successfully deleted.', 'h3-mgmt' )
 					);
-				} else {
-					$wpdb->insert(
-						$wpdb->prefix.'h3_mgmt_stages',
-						array(
-							'race_id' => $h3_mgmt_races->get_route_parent( $_POST['route_id'] ),
-							'route_id' => $_POST['route_id'],
-							'number' => $_POST['number'],
-							'destination' => $_POST['destination'],
-							'country' => $_POST['country'],
-							'country_3166_alpha-2' => $_POST['country_3166_alpha-2'],
-							'meeting_point' => $_POST['meeting_point']
-						),
-						array( '%d', '%d', '%d', '%s', '%s', '%s', '%s' )
-					);
-					$messages[] = array(
-						'type' => 'message',
-						'message' => __( 'Stage successfully updated!', 'h3-mgmt' )
-					);
-				}
-				$this->stages_list( $messages );
-			break;
-
-			case "edit":
-				$this->edit( 'stage', $_GET['id'] );
-			break;
-
-			case "new":
-				$this->edit( 'stage' );
-			break;
-
-			default:
-				$this->stages_list( $messages );
+			$this->stages_list( $messages );
+		}else{
+			$this->stages_list( $messages );
 		}
 	}
 
@@ -349,7 +402,7 @@ class H3_MGMT_Admin_Races {
 	 * @access private
 	 */
 	private function routes_list( $messages = array() ) {
-		global $current_user, $h3_mgmt_races, $h3_mgmt_utilities;
+		global $wpdb, $current_user, $h3_mgmt_races, $h3_mgmt_utilities;
 
 		$url = 'admin.php?page=h3-mgmt-routes';
 
@@ -400,10 +453,43 @@ class H3_MGMT_Admin_Races {
 			)
 		);
 
+		$filter = array( 'race_id' );
+		$filter_dis_name = array( 'Event/Race' );
+		$filter_conversion = array( 'race-name' );
+		
+		$race_name = $wpdb->get_results(
+						"SELECT id FROM " . $wpdb->prefix . "h3_mgmt_races " .
+						"ORDER BY id DESC LIMIT 1", ARRAY_A
+					);
+		$race_name = $race_name[0]['id'];
+					
+		$pre_filtered = array( true, 'race_id', $race_name);
+		
+		$bulk_actions = array(
+							array( 	'value' => 'bulk-delete',
+									'label' => 'Delete')
+							);
+		
 		$args = array(
+			'page_slug' => 'h3-mgmt-routes',
 			'base_url' => $url,
 			'sort_url' => $url,
-			'echo' => false
+			'echo' => false,
+			'dspl_cnt' => true,
+			'count' => count($rows),
+			'cnt_txt' => '%d ' . __( 'Routes', 'h3-mgmt' ),
+			'with_bulk' => true,
+			'bulk_btn' => 'Delete',
+			'bulk_confirm' => '',
+			'bulk_name' => 'bulk',
+			'bulk_param' => 'todo',
+			'bulk_desc' => '',
+			'extra_bulk_html' => '',
+			'bulk_actions' => $bulk_actions,
+			'filter' => $filter,
+			'filter_dis_name' => $filter_dis_name,
+			'filter_conversion' => $filter_conversion,
+			'pre_filtered' => $pre_filtered
 		);
 		$the_table = new H3_MGMT_Admin_Table( $args, $columns, $rows );
 
@@ -423,7 +509,7 @@ class H3_MGMT_Admin_Races {
 	 * @access private
 	 */
 	private function stages_list( $messages = array() ) {
-		global $current_user, $h3_mgmt_races, $h3_mgmt_utilities;
+		global $wpdb, $current_user, $h3_mgmt_races, $h3_mgmt_utilities;
 
 		$url = 'admin.php?page=h3-mgmt-stages';
 
@@ -485,10 +571,43 @@ class H3_MGMT_Admin_Races {
 			)
 		);
 
+		$filter = array( 'route_id', 'race_id', 'number', 'country' );
+		$filter_dis_name = array( 'Route', 'Event/Race', 'Running Number', 'Country' );
+		$filter_conversion = array( 'route-name', 'race-name', '', '' );
+		
+		$race_name = $wpdb->get_results(
+						"SELECT race_id FROM " . $wpdb->prefix . "h3_mgmt_stages " .
+						"ORDER BY race_id DESC LIMIT 1", ARRAY_A
+					);
+		$race_name = $race_name[0]['race_id'];
+			
+		$pre_filtered = array( true, 'race_id', $race_name);
+		
+		$bulk_actions = array(
+							array( 	'value' => 'bulk-delete',
+									'label' => 'Delete')
+							);
+		
 		$args = array(
+			'page_slug' => 'h3-mgmt-stages',
 			'base_url' => $url,
 			'sort_url' => $url,
-			'echo' => false
+			'echo' => false,
+			'dspl_cnt' => true,
+			'count' => count($rows),
+			'cnt_txt' => '%d ' . __( 'Stages', 'h3-mgmt' ),
+			'with_bulk' => true,
+			'bulk_btn' => 'Delete',
+			'bulk_confirm' => '',
+			'bulk_name' => 'bulk',
+			'bulk_param' => 'todo',
+			'bulk_desc' => '',
+			'extra_bulk_html' => '',
+			'bulk_actions' => $bulk_actions,
+			'filter' => $filter,
+			'filter_dis_name' => $filter_dis_name,
+			'filter_conversion' => $filter_conversion,
+			'pre_filtered' => $pre_filtered
 		);
 		$the_table = new H3_MGMT_Admin_Table( $args, $columns, $rows );
 

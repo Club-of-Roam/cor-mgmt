@@ -571,7 +571,7 @@ class H3_MGMT_Ticker {
 						$display_data['hex_color'] = $h3_mgmt_teams->get_color_by_team( $team_id );
 						$display_data['team_name'] = $h3_mgmt_teams->get_team_name( $team_id );
 						$display_data['team_name_url'] = '<a style="border-color:#' . $display_data['hex_color'] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-							'" href="http://' . __( 'tramprennen.org/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
+							'" href="' . get_site_url() . __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
 							$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
 						$display_data['mates'] = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
 						// if ( $message['type'] > 2 ) {
@@ -696,7 +696,7 @@ class H3_MGMT_Ticker {
 					$display_data['hex_color'] = $h3_mgmt_teams->get_color_by_team( $team_id );
 					$display_data['team_name'] = $h3_mgmt_teams->get_team_name( $team_id );
 					$display_data['team_name_url'] = '<a style="border-color:#' . $display_data['hex_color'] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-						'" href="http://' . __( 'tramprennen.org/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
+						'" href="' . get_site_url(). __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
 						$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
 					$display_data['mates'] = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
 					// if ( $message['type'] > 2 ) {
@@ -830,7 +830,7 @@ class H3_MGMT_Ticker {
 								$display_data['route_image'] = '/wp-content/plugins/cor-mgmt/img/tramprennen-ticker.jpg';
 								$display_data['hex_color'] = "ff0000";
 								$display_data['team_name'] = '<a style="color:#' . $display_data['hex_color'] . '; border-color:#' . $display_data['hex_color'] . '" class="incognito-link ticker-message-team-name" title="' . __( "To Home", 'h3-mgmt' ) .
-									'" href="http://' . get_site_url() . '">Tramprennen</a>';
+									'" href="' . get_site_url() . '">Tramprennen</a>';
 								$display_data['mates'] = 'Tramprennen Orga-Team';
 								if ( $message['type'] == 4 || $message['type'] == 5 ) {
 									$display_data['img_path'] = $message['img_url'];
@@ -859,7 +859,7 @@ class H3_MGMT_Ticker {
 									$display_data['route_image'] = $race_routes[$team['route_id']]['logo_url'];
 									$display_data['hex_color'] = $h3_mgmt_teams->get_color_by_team( $team_id );
 									$display_data['team_name'] = '<a style="border-color:#' . $display_data['hex_color'] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-										'" href="http://' . __( 'tramprennen.org/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
+										'" href="' . get_site_url(). __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
 										$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
 									$display_data['mates'] = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
 									if ( $message['type'] == 4 || $message['type'] == 5 ) {
@@ -904,7 +904,7 @@ class H3_MGMT_Ticker {
 								$display_data['route_image'] = '/wp-content/plugins/cor-mgmt/img/tramprennen-ticker.jpg';
 								$display_data['hex_color'] = "ff0000";
 								$display_data['team_name'] = '<a style="color:#' . $display_data['hex_color'] . '; border-color:#' . $display_data['hex_color'] . '" class="incognito-link ticker-message-team-name" title="' . __( "To Home", 'h3-mgmt' ) .
-									'" href="http://' . get_site_url() . '">Tramprennen</a>';
+									'" href="' . get_site_url() . '">Tramprennen</a>';
 								$display_data['mates'] = 'Tramprennen Orga-Team';
 								if ( $message['type'] == 4 || $message['type'] == 5 ) {
 									$display_data['img_path'] = $message['img_url'];
@@ -932,7 +932,7 @@ class H3_MGMT_Ticker {
 									$display_data['route_image'] = $race_routes[$team['route_id']]['logo_url'];
 									$display_data['hex_color'] = $h3_mgmt_teams->get_color_by_team( $team_id );
 									$display_data['team_name'] = '<a style="border-color:#' . $display_data['hex_color'] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-										'" href="http://' . __( 'tramprennen.org/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
+										'" href="' . get_site_url(). __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
 										$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
 									$display_data['mates'] = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
 									if ( $message['type'] == 4 || $message['type'] == 5 ) {
@@ -1126,7 +1126,7 @@ class H3_MGMT_Ticker {
 								$display_data['route_image'] = $race_routes[$team['route_id']]['logo_url'];
 								$display_data['hex_color'] = $h3_mgmt_teams->get_color_by_team( $team_id );
 								$display_data['team_name'] = '<a class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-									'" href="http://' . __( 'tramprennen.org/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
+									'" href="' . get_site_url(). __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
 									$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
 								$display_data['mates'] = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
 								if ( $message['type'] == 4 || $message['type'] == 5 ) {
@@ -1170,7 +1170,7 @@ class H3_MGMT_Ticker {
 								$display_data['route_image'] = $race_routes[$team['route_id']]['logo_url'];
 								$display_data['hex_color'] = $h3_mgmt_teams->get_color_by_team( $team_id );
 								$display_data['team_name'] = '<a class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-									'" href="http://' . __( 'tramprennen.org/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
+									'" href="' . get_site_url(). __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team_id . '">' .
 									$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
 								$display_data['mates'] = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
 								if ( $message['type'] == 4 || $message['type'] == 5 ) {
