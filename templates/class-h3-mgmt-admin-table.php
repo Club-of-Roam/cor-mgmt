@@ -673,6 +673,71 @@ class H3_MGMT_Admin_Table {
 							'</span>';
 					break;
 
+					case 'liveticker':
+						$output .= '<span class="edit"><a title="' .
+								__( "Enable the Liveticker function for the race!", 'h3-mgmt' ) .
+								'" href="' . $url . '&amp;todo=liveticker-set&amp;id=' . $row['id'] . '">' .
+								__( 'Enable Liveticker!', 'h3-mgmt' ) .
+							'</a></span> | ' .
+							'<span class="delete">' .
+								'<a title="' .
+									__( 'Disable the Liveticker function for the race!', 'h3-mgmt' ) .
+								'" onclick="if ( confirm(\'' .
+										__( 'Really disable the Liveticker function for the race??', 'h3-mgmt' ) .
+									'\') ) { return true; } return false;" ' .
+									'href="' . $url . '&amp;todo=liveticker-unset&amp;id=' .
+									$row['id'] . '" class="submitdelete">' .
+									__( 'Disable Liveticker!', 'h3-mgmt' ) .
+								'</a>' .
+							'</span>';
+					break;
+
+					case 'active':
+						$output .= '<span class="edit"><a title="' .
+								__( "Set as active Race / Event!", 'h3-mgmt' ) .
+								'" href="' . $url . '&amp;todo=active&amp;id=' . $row['id'] . '">' .
+								__( 'Set as active!', 'h3-mgmt' ) .
+							'</a></span>';
+					break;
+					
+					case 'liveticker_front':
+						$output .= '<span class="edit"><a title="' .
+								__( "Show the Liveticker content at the Homepage", 'h3-mgmt' ) .
+								'" href="' . $url . '&amp;todo=liveticker-front-set&amp;id=' . $row['id'] . '">' .
+								__( 'Show Liveticker!', 'h3-mgmt' ) .
+							'</a></span> | ' .
+							'<span class="delete">' .
+								'<a title="' .
+									__( 'Hide the Liveticker content at the Homepage (Liveticker not started yet!)', 'h3-mgmt' ) .
+								'" onclick="if ( confirm(\'' .
+										__( 'Really hide the Liveticker content at the Homepage??', 'h3-mgmt' ) .
+									'\') ) { return true; } return false;" ' .
+									'href="' . $url . '&amp;todo=liveticker-front-unset&amp;id=' .
+									$row['id'] . '" class="submitdelete">' .
+									__( 'Hide Liveticker!', 'h3-mgmt' ) .
+								'</a>' .
+							'</span>';
+					break;
+
+					case 'donation':
+						$output .= '<span class="edit"><a title="' .
+								__( "Enable the Donation Tool function for the race!", 'h3-mgmt' ) .
+								'" href="' . $url . '&amp;todo=donation-set&amp;id=' . $row['id'] . '">' .
+								__( 'Enable Donation Tool!', 'h3-mgmt' ) .
+							'</a></span> | ' .
+							'<span class="delete">' .
+								'<a title="' .
+									__( 'Disable the Liveticker function for the race!', 'h3-mgmt' ) .
+								'" onclick="if ( confirm(\'' .
+										__( 'Really disable the Donation Tool function for the race??', 'h3-mgmt' ) .
+									'\') ) { return true; } return false;" ' .
+									'href="' . $url . '&amp;todo=donation-unset&amp;id=' .
+									$row['id'] . '" class="submitdelete">' .
+									__( 'Disable Donation Tool!', 'h3-mgmt' ) .
+								'</a>' .
+							'</span>';
+					break;
+
 					case 'package':
 						$output .= '<span class="edit"><a title="' .
 								__( "This participant has paid for his/her HitchPackage", 'h3-mgmt' ) .
@@ -765,6 +830,18 @@ class H3_MGMT_Admin_Table {
 					$output = '<span class="negative">' . __( 'No.', 'h3-mgmt' ) . '</span>';
 				}
 			break;
+			
+			case 'status':
+				if( 0 == $data ) {
+					$output = '<span class="status">' . __( 'bevor registration', 'h3-mgmt' ) . '</span>';
+				}elseif( 1 == $data ) {
+					$output = '<span class="status">' . __( 'registration open', 'h3-mgmt' ) . '</span>';
+				}elseif( 2 == $data ) {
+					$output = '<span class="status">' . __( 'registration closed and bevor race start', 'h3-mgmt' ) . '</span>';
+				}elseif( 3 == $data ) {
+					$output = '<span class="status">' . __( 'race started', 'h3-mgmt' ) . '</span>';
+				}
+			break;
 
 			case 'date':
 				$output = $h3_mgmt_utilities->h3_strftime( $data );
@@ -804,11 +881,7 @@ class H3_MGMT_Admin_Table {
 				if( 1 == $data ) {
 					$output = '<span class="positive">' . __( 'Yes.', 'h3-mgmt' ) . '</span>';
 				} elseif( 0 == $data ) {
-					if( 'debit' === $method ) {
-						$output = '<span class="semi-negative">' . __( 'No.', 'h3-mgmt' ) . '</span>';
-					} elseif( 'paypal' === $method ) {
-						$output = '<span class="negative">' . __( 'No!', 'h3-mgmt' ) . '</span>';
-					}
+					$output = '<span class="negative">' . __( 'No!', 'h3-mgmt' ) . '</span>';
 				}
 			break;
 

@@ -173,7 +173,7 @@ class H3_MGMT_Mailer {
 
 		$headers = "From: ";
 		if( $from_name == NULL ) {
-			$headers .= "Tramprennen ";
+			$headers .= "Tramprennen ";//$headers .= "Tramprennen ";
 		} else {
 			$headers .= $from_name . " ";
 		}

@@ -84,11 +84,11 @@ class H3_MGMT_Admin_Form {
 		$the_button = '<input type="submit" name="submit" id="submit" class="button-primary" value="' . $button . '">';
 
 		if ( $form ) {
-			$output .= '<form name="h3-mgmt-form" method="' . $method . '" action="' . $action . '"';
+			$output .= '<form name="h3-mgmt-form" enctype="multipart/form-data" method="' . $method . '" action="' . $action . '"';
 			if ( $headspace ) {
 				$output .= ' class="headspace"';
 			}
-			$output .= '>';
+			$output .= '> <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />';
 			if ( $back ) {
 				$output .= '<a href="' . $back_url . '" class="button-secondary margin" title="' . __( 'Back to where you came from...', 'h3-mgmt' ) . '">' .
 						'&larr; ' . __( 'back', 'h3-mgmt' ) .
@@ -126,7 +126,7 @@ class H3_MGMT_Admin_Form {
 				$output .= '><span>' . $box['title'] . '</span></h3>' .
 					'<div class="inside">' .
 						'<table class="form-table pool-form"><tbody>';
-
+                                        
 				foreach ( $box['fields'] as $field ) {
 					$output .= $this->field( $field );
 				}
@@ -192,15 +192,20 @@ class H3_MGMT_Admin_Form {
 				}
 				$output .= '"';
 			}
-			$output .= '><th scope="row">';
-			if( $field['type'] != 'section' && isset( $field['label'] ) && ! empty( $field['label'] ) ) {
-				$output .= '<label for="' .
-					$field['id'] .
-					'">' .
-					$field['label'] .
-					'</label>';
-			}
-			$output .= '</th><td>';
+                        $output .= '>';
+                        
+                        if( isset( $field['label'] ) ){
+                            $output .= '<th scope="row">';
+                            if( $field['type'] != 'section' && isset( $field['label'] ) && ! empty( $field['label'] ) ) {
+                                    $output .= '<label for="' .
+                                            $field['id'] .
+                                            '">' .
+                                            $field['label'] .
+                                            '</label>';
+                            }
+                            $output .= '</th>';
+                        }
+                        $output .= '<td>';
 		}
 
 		switch( $field['type'] ) {
@@ -241,7 +246,17 @@ class H3_MGMT_Admin_Form {
 			case 'textarea':
 				$output .= '<textarea name="' . $field['name'] .
 					'" id="' . $field['id'] .
-					'" cols="100" rows="10"';
+					'" cols="100" rows="5"';
+				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
+					$output .= ' disabled="disabled"';
+				}
+				$output .= '>' . $field['value'] . '</textarea>';
+			break;
+			
+			case 'textarea_long':
+				$output .= '<textarea  style="width: 100%;" name="' . $field['name'] .
+					'" id="' . $field['id'] .
+					'" cols="100" rows="5"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
@@ -455,6 +470,56 @@ class H3_MGMT_Admin_Form {
 					$output .= ' disabled="disabled"';
 				}
 				$output .= ' />';
+			break;
+			
+			case 'text_long':
+			default:
+				$output .= '<input type="text" style="width: 100%;"' .
+					'name="' . $field['name'] .
+					'" id="' . $field['id'] .
+					'" class="input regular-text"' .
+					'" value="' . $field['value'] . '" size="40"';
+				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
+					$output .= ' disabled="disabled"';
+				}
+				$output .= ' />';
+			break;
+
+			case 'password':
+			default:
+				$output .= '<input type="password"' .
+					'name="' . $field['name'] .
+					'" id="' . $field['id'] .
+					'" class="input regular-text"' .
+					'" value="' . $field['value'] . '" size="40"';
+				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
+					$output .= ' disabled="disabled"';
+				}
+				$output .= ' />';
+			break;
+                        
+                        case 'single-pic-upload':
+				if( isset( $field['value'] ) && ! empty( $field['value'] ) ) {
+						$output .= '<input type="hidden" ' .
+							'name="' . $field['id'] . '-tmp" ' .
+							'id="' . $field['id'] . '-tmp" ' .
+							'value="' . $field['value'] . '" />' .
+							'<img alt="Your Pic" src="' .
+								$field['value'] .
+							'" style="height:150px;"/><br>';
+				}
+				$output .= '<input type="file" name="' . $field['id'] .
+					'" id="' . $field['id'] .
+					'" accept="image/jpeg,image/gif,image/png"';
+				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
+					$output .= ' disabled="disabled"';
+				}
+				$output .= ' />';
+			break;
+                        
+                        case 'content':
+			default:
+				$output .= $field['value'];
 			break;
 		} // type switch
 

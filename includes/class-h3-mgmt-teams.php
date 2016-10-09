@@ -181,7 +181,7 @@ class H3_MGMT_Teams {
 			$wpdb->prefix."h3_mgmt_teammates",
 			ARRAY_A
 		);
-
+                
 		$participant_ids = array();
 		foreach( $participants_query as $participant ) {
 			if ( $this->user_has_team( $race_id, $participant['user_id'] ) && ! in_array( $participant['user_id'], $participant_ids ) ) {
@@ -191,6 +191,69 @@ class H3_MGMT_Teams {
 
 		return $participant_ids;
 	}
+	
+	/**
+	 * Returns ids of all user without team
+	 *
+	 * @since 1.0
+	 * @access public
+	 */
+	public function get_user_ids_without_team( $race_id = 1 ) {
+		global $wpdb;
+
+		//get all user who could join a team
+		$all_user = get_users( array( 	'fields' => 'ID' ,
+									'role' => 'administrator') );
+		$all_user = array_merge( $all_user, get_users( array( 	'fields' => 'ID' ,
+                                                                        'role' => 'editor') ) );
+		$all_user = array_merge( $all_user, get_users( array( 	'fields' => 'ID' ,
+                                                                        'role' => 'author') ) );
+		$all_user = array_merge( $all_user, get_users( array( 	'fields' => 'ID' ,
+                                                                        'role' => 'subscriber') ) );
+														
+		$participant_ids = $this->get_participant_ids( $race_id );
+		$users = array();
+                
+		foreach( $all_user as $user ) {
+			if ( ! in_array( $user, $participant_ids ) ) {
+				$users[] = $user;
+			}
+		}
+
+		return $users;
+	}
+        
+        
+        
+         /**
+	 * Returns team id of user_id and race_id
+	 *
+	 * @since 1.0
+	 * @access public
+	 */
+	public function get_team_by_user_and_race( $user_id, $race_id ) {
+            global $wpdb;
+            
+            $team_ids = $wpdb->get_col(
+                "SELECT team_id FROM " .
+                $wpdb->prefix."h3_mgmt_teammates " .
+                "WHERE user_id = " .$user_id.
+                " ORDER BY id DESC"
+            );
+            
+            $team_ids_race = $wpdb->get_col(
+                "SELECT id FROM " .
+                $wpdb->prefix."h3_mgmt_teams " .
+                "WHERE race_id = " .$race_id.
+                " ORDER BY id DESC"
+            );
+            
+            foreach( $team_ids as $team_id){
+                if( in_array($team_id, $team_ids_race) ){
+                    return $team_id;
+                }
+            }
+        }
 
 	/**
 	 * Returns the preferred language of a participant
@@ -212,7 +275,7 @@ class H3_MGMT_Teams {
 		$language_query = $wpdb->get_results(
 			"SELECT language FROM " .
 			$wpdb->prefix."h3_mgmt_teammates " .
-			"WHERE user_id = " . $user_id . " LIMIT 1",
+			"WHERE user_id = " . $user_id . " order by id DESC LIMIT 1",
 			ARRAY_A
 		);
 
@@ -341,7 +404,7 @@ class H3_MGMT_Teams {
 	 * @access public
 	 */
 	public function is_complete( $team_id ) {
-		global $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities;
+		global $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities, $h3_mgmt_races;
 
 		$hitchmates_query = $wpdb->get_results(
 			"SELECT * FROM " .
@@ -357,6 +420,9 @@ class H3_MGMT_Teams {
 			ARRAY_A
 		);
 		
+                $race_id = $this->get_team_race( $team_id );
+                $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+                
 		$current_status = isset( $current_status_query[0]['complete'] ) ? $current_status_query[0]['complete'] : 0;
 		
 		$user_ids = $this->get_teammates( $team_id );
@@ -366,16 +432,31 @@ class H3_MGMT_Teams {
 			$complete = 0;
 		} else {
 			foreach( $hitchmates_query as $mate ) {
-				if( 1 != $mate['paid'] || 1 != $mate['waiver'] ) {
+                            if( !$race_setting['dis_fee'] == 1 ){
+				if( 1 != $mate['paid'] ) {
 					$complete = 0;
 				}
+                            }
+                            if( !$race_setting['dis_waiver'] == 1 ){
+				if( 1 != $mate['waiver'] ) {
+					$complete = 0;
+				}
+                            }
 			}
 			foreach( $user_ids as $user_id ) {
 				$mob_inf = get_user_meta( $user_id, 'public_mobile_inf', true );
 				$shirt = get_user_meta( $user_id, 'shirt_size', true );
-				if( empty($mob_inf) || empty($shirt) ) {
-					$complete = 0;
-				}
+                                
+                                if( !$race_setting['dis_shirt_size'] == 1 ){
+                                    if( empty($shirt) ) {
+                                            $complete = 0;
+                                    }
+                                }
+                                if( !$race_setting['dis_mobile_inf'] == 1 ){
+                                    if( empty($mob_inf) ) {
+                                            $complete = 0;
+                                    }
+                                }
 			}
 		}
 			
@@ -451,12 +532,18 @@ class H3_MGMT_Teams {
 		$owner_query = $wpdb->get_results(
 			"SELECT * FROM " .
 			$wpdb->prefix."h3_mgmt_sponsors " .
-			"WHERE team_id = " . $team_id ." AND type = 'owner' LIMIT 1",
+			"WHERE team_id = " . $team_id ." AND type = 'owner' ", 
 			ARRAY_A
 		);
-
+                
+                date_default_timezone_set('Europe/Berlin');
+                
 		if( ! empty( $owner_query ) ) {
-			return $owner_query[0];
+                    foreach( $owner_query as $owner ){
+			if( $owner['paid'] == 1 && $owner['var_show'] == 1 || ( time() - strtotime($owner['timestamp']) ) < 600 || '0000-00-00 00:00:00' == $owner['timestamp'] ){
+                            return $owner['id'];
+                        }
+                    }
 		}
 
 		return false;
@@ -476,7 +563,7 @@ class H3_MGMT_Teams {
 		$sponsors_query = $wpdb->get_results(
 			"SELECT * FROM " .
 			$wpdb->prefix."h3_mgmt_sponsors " .
-			"WHERE team_id = " . $team_id ." AND type = 'sponsor'",
+			"WHERE team_id = " . $team_id ." AND type = 'sponsor' AND paid = 1", //
 			ARRAY_A
 		);
 
@@ -794,23 +881,25 @@ class H3_MGMT_Teams {
 	 * @access private
 	 */
 	private function allow_invitations( $team_id ) {
-		global $wpdb;
+		global $wpdb, $h3_mgmt_races;
 
 		$mates = $this->get_teammates( $team_id );
-		if( count( $mates ) > 2 ) {
+                $race_id = $this->get_team_race( $team_id );
+                
+                $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+                $num_teammember = intval( $race_setting['num_teammember'] );
+                
+                if( $num_teammember === NULL || !isset($race_setting['num_teammember'])){
+                    $num_teammember = 3;
+                }
+                
+		if( count( $mates ) > ( $num_teammember - 1) ) {
 			return false;
 		}
-		$route_query = $wpdb->get_results(
-			"SELECT route_id FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE id = " . $team_id .
-			" LIMIT 1", ARRAY_A
-		);
-		if( ! empty( $route_query[0]['route_id'] ) ) {
-			return false;
-		}
-		$allowed = 3 - count( $mates );
-		if( $allowed > 2 ) {
+                
+		$allowed = $num_teammember - count( $mates );
+                
+		if( $allowed > $num_teammember ) {
 			$allowed = 2;
 		}
 		return $allowed;
@@ -908,6 +997,8 @@ class H3_MGMT_Teams {
 	 */
 	public function team_fields( $with_mb = false ) {
 
+	global $information_text;
+	
 		$team_fields = array(
 			array (
 				'label'	=> _x( 'Team Name', 'Team Profile Form', 'h3-mgmt' ),
@@ -934,50 +1025,50 @@ class H3_MGMT_Teams {
 				'desc'	=> _x( "The amount of donations you wish to collect this year.", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "The common donation goal will be calculated from the sum of that of all teams.", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "(&quot;Zero&quot; is a perfectly acceptable answer...)", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "Please enter <strong>numbers only</strong> though.", 'Team Dashboard', 'h3-mgmt' )
 			),
 			array (
-				'label'	=> _x( 'Two weeks through Europe by thumb. Why?', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'What is your personal motivation to participate?', 'Team Profile Form', 'h3-mgmt' ),
+				'label'	=> stripcslashes( $information_text[1] ), //_x( 'Two weeks through Europe by thumb. Why?', 'Team Profile Form', 'h3-mgmt' ),
+				'desc'	=> stripcslashes( $information_text[6] ), //_x( 'What is your personal motivation to participate?', 'Team Profile Form', 'h3-mgmt' ),
 				'id'	=> 'meta_1',
 				'type'	=> 'textarea'
 			),
 			array (
-				'label'	=> _x( 'Why should a lift take us along?', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'Well...', 'Team Profile Form', 'h3-mgmt' ),
+				'label'	=> stripcslashes( $information_text[2] ), //_x( 'Why should a lift take us along?', 'Team Profile Form', 'h3-mgmt' ),
+				'desc'	=> stripcslashes( $information_text[7] ), //_x( 'Well...', 'Team Profile Form', 'h3-mgmt' ),
 				'id'	=> 'meta_2',
 				'type'	=> 'textarea'
 			),
 			array (
-				'label'	=> _x( 'Our best Autostop-experience so far', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'Tell the world about it!', 'h3-mgmt' ),
+				'label'	=> stripcslashes( $information_text[3] ), //_x( 'Our best Autostop-experience so far', 'Team Profile Form', 'h3-mgmt' ),
+				'desc'	=> stripcslashes( $information_text[8] ), //_x( 'Tell the world about it!', 'h3-mgmt' ),
 				'id'	=> 'meta_3',
 				'type'	=> 'textarea'
 			),
 			array (
-				'label'	=> _x( 'Our goal for the race', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'What do you want to achieve?', 'Team Profile Form', 'h3-mgmt' ),
+				'label'	=> stripcslashes( $information_text[4] ), //_x( 'Our goal for the race', 'Team Profile Form', 'h3-mgmt' ),
+				'desc'	=> stripcslashes( $information_text[9] ), //_x( 'What do you want to achieve?', 'Team Profile Form', 'h3-mgmt' ),
 				'id'	=> 'meta_4',
 				'type'	=> 'radio',
 				'options' => array(
 					array(
-						'label' => _x( 'Reach the destination. Participation is everything!', 'Team Profile Form', 'h3-mgmt' ),
+						'label' => stripcslashes( $information_text[12] ), //_x( 'Reach the destination. Participation is everything!', 'Team Profile Form', 'h3-mgmt' ),
 						'value' => 1
 					),
 					array(
-						'label' => _x( 'Fun, Fun, Fun!', 'Team Profile Form', 'h3-mgmt' ),
+						'label' => stripcslashes( $information_text[13] ), //_x( 'Fun, Fun, Fun!', 'Team Profile Form', 'h3-mgmt' ),
 						'value' => 2
 					),
 					array(
-						'label' => _x( 'Upper Midfield. And a stage victory.', 'Team Profile Form', 'h3-mgmt' ),
+						'label' => stripcslashes( $information_text[14] ), //_x( 'Upper Midfield. And a stage victory.', 'Team Profile Form', 'h3-mgmt' ),
 						'value' => 3
 					),
 					array(
-						'label' => _x( 'Win it! What else???', 'Team Profile Form', 'h3-mgmt' ),
+						'label' => stripcslashes( $information_text[15] ), //_x( 'Win it! What else???', 'Team Profile Form', 'h3-mgmt' ),
 						'value' => 4
 					)
 				)
 			),
 			array (
-				'label'	=> _x( 'For a Donation we would:', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> __( 'Thoughts?', 'h3-mgmt' ),
+				'label'	=> stripcslashes( $information_text[5] ), //_x( 'For a Donation we would:', 'Team Profile Form', 'h3-mgmt' ),
+				'desc'	=> stripcslashes( $information_text[10] ), //__( 'Thoughts?', 'h3-mgmt' ),
 				'id'	=> 'meta_5',
 				'type'	=> 'textarea'
 			)
@@ -1029,7 +1120,7 @@ class H3_MGMT_Teams {
 				}
 			}
 		}
-
+		
 		return $fields;
 	}
 
@@ -1149,29 +1240,71 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function primary_user_section() {
+	private function primary_user_section( $hide_shirt = 0, $hide_mobile = 0) {
 		global $current_user;
-
+                
 		$fields = $this->user_fields();
 
 		$fcount = count($fields);
 		if ( ! isset( $_POST['submitted'] ) ) {
-			get_currentuserinfo();
-			for ( $i = 0; $i < $fcount; $i++ ) {
-				$fields[$i]['value'] = esc_attr( get_user_meta( $current_user->ID, $fields[$i]['id'], true ) );
-			}
+                    get_currentuserinfo();
+                    for ( $i = 0; $i < $fcount; $i++ ) {
+                        $fields[$i]['value'] = esc_attr( get_user_meta( $current_user->ID, $fields[$i]['id'], true ) );
+
+                        if( $hide_shirt == 1){
+                            if( $fields[$i]['id'] == 'shirt_size' ){
+                                $fields[$i]['type'] = 'hidden';
+                                $fields[$i]['label'] = '';
+                                $fields[$i]['desc'] = '';
+                            }
+                        }
+                            
+                        if( $hide_mobile == 1){
+                            if( $fields[$i]['id'] == 'public_mobile_inf' ){
+                                $fields[$i]['type'] = 'hidden';
+                                $fields[$i]['label'] = '';
+                                $fields[$i]['desc'] = '';
+                            }
+                            if( $fields[$i]['id'] == 'addressMobile' ){
+                                $fields[$i]['type'] = 'hidden';
+                                $fields[$i]['label'] = '';
+                                $fields[$i]['desc'] = '';
+                            }
+                        }
+                    }
 		} else {
-			for ( $i = 0; $i < $fcount; $i++ ) {
-				if ( 'date' === $fields[$i]['type'] ) {
-					$fields[$i]['value'] = mktime( 0, 0, 0,
-						$_POST[ $fields[$i]['id'] . '-month' ],
-						$_POST[ $fields[$i]['id'] . '-day' ],
-						$_POST[ $fields[$i]['id'] . '-year' ]
-					);
-				} else {
-					$fields[$i]['value'] = $_POST[$fields[$i]['id']];
-				}
-			}
+                    for ( $i = 0; $i < $fcount; $i++ ) {
+                        if ( 'date' === $fields[$i]['type'] ) {
+                            $fields[$i]['value'] = mktime( 0, 0, 0,
+                                    $_POST[ $fields[$i]['id'] . '-month' ],
+                                    $_POST[ $fields[$i]['id'] . '-day' ],
+                                    $_POST[ $fields[$i]['id'] . '-year' ]
+                            );
+                        } else {
+                            $fields[$i]['value'] = $_POST[$fields[$i]['id']];
+
+                            if( $hide_shirt == 1){
+                                if( $fields[$i]['id'] == 'shirt_size' ){
+                                    $fields[$i]['type'] = 'hidden';
+                                    $fields[$i]['label'] = '';
+                                    $fields[$i]['desc'] = '';
+                                }
+                            }
+                            
+                            if( $hide_mobile == 1){
+                                if( $fields[$i]['id'] == 'public_mobile_inf' ){
+                                    $fields[$i]['type'] = 'hidden';
+                                    $fields[$i]['label'] = '';
+                                    $fields[$i]['desc'] = '';
+                                }
+                                if( $fields[$i]['id'] == 'addressMobile' ){
+                                    $fields[$i]['type'] = 'hidden';
+                                    $fields[$i]['label'] = '';
+                                    $fields[$i]['desc'] = '';
+                                }
+                            }
+                        }
+                    }
 		}
 
 		$flast = $fcount - 1;
@@ -1243,6 +1376,10 @@ class H3_MGMT_Teams {
 	 * @access private
 	 */
 	private function mate_section( $team_id ) {
+		global $wpdb, $h3_mgmt_races;
+		
+		$race_id = $this->get_team_race( $team_id );
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 		$mate_name_string = $this->mate_name_string( $team_id );
 
 		$output = '<h3 class="top-space-more">' . _x( 'Your Teammate(s)', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
@@ -1256,7 +1393,11 @@ class H3_MGMT_Teams {
 			}
 			$output .= ' ' . $mate_name_string . '.</p>';
 		} else {
-			$output .= '<p>' . _x( "So far, you don't have any teammates. You need at least one to complete the team registration. If you haven't invited any yet, it might be a good idea to do so...", 'Team Dashboard', 'h3-mgmt' ) . '</p>';
+			if( $race_setting['status'] >= 2 ){
+				$output .= '<p>' . _x( "So far, you don't have any teammates. You need at least one to complete the team registration. The registration is already closed. If you haven't invited any yet, you can't do it any more...", 'Team Dashboard', 'h3-mgmt' ) . '</p>';
+			}else{
+				$output .= '<p>' . _x( "So far, you don't have any teammates. You need at least one to complete the team registration. If you haven't invited any yet, it might be a good idea to do so...", 'Team Dashboard', 'h3-mgmt' ) . '</p>';
+			}
 		}
 
 		return $output;
@@ -1275,7 +1416,7 @@ class H3_MGMT_Teams {
 		$route_options = array(
 			0 => array(
 				'value' => 0,
-				'label' => _x( 'Please select your route...', 'Team Profile Form', 'h3-mgmt' )
+				'label' => _x( 'Please select your starting point...', 'Team Profile Form', 'h3-mgmt' )
 			)
 		);
 
@@ -1292,7 +1433,7 @@ class H3_MGMT_Teams {
 
 		$route_field = array(
 			array(
-				'label'	=> _x( 'Route', 'Team Profile Form', 'h3-mgmt' ),
+				'label'	=> _x( 'Starting Point', 'Team Profile Form', 'h3-mgmt' ),
 				'id'	=> 'route_id',
 				'type'	=> 'select',
 				'options' => $route_options
@@ -1347,25 +1488,86 @@ class H3_MGMT_Teams {
 	 * @access public
 	 * @see constructor
 	 */
+	public function team_dashboard_homework_control( $atts = '' ) {
+		extract( shortcode_atts( array(
+			'event' => 1,
+			'race' => 0
+		), $atts ) );
+		
+		global $current_user, $h3_mgmt_races, $wpdb, $information_text;
+		
+		$race_id = $race;
+		
+		if( $race == 'active'){
+			$race_id = $h3_mgmt_races->get_active_race();
+		}
+		
+		$information_text = $h3_mgmt_races->get_race_information_text( $race_id );
+		
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+		//if registration still isn't open return error message
+		if( $race_setting['status'] == 0 ){
+			$output .= '<p class="message" style="text-align: center;">' .
+						stripcslashes( $information_text[22] );
+						'</p>';
+			$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
+			return $output;	
+		}else{
+			$output .= 	'<div style=" width: 47%; float: left; ">';
+			$output .= do_shortcode( '[h3-team-dashboard race="' . $race_id . '"]' );
+			$output .= 	'</div>';
+			$output .=	'<div style=" width: 47%; float: right; ">';
+			$output .= do_shortcode( '[h3-team-homework race="' . $race_id . '"]' );
+	
+			return $output;
+		}
+		
+	}
+	
+	/**
+	 * Team Dashboard controller,
+	 * wordpress shortcode
+	 *
+	 * @since 1.0
+	 * @access public
+	 * @see constructor
+	 */
 	public function team_dashboard_control( $atts = '' ) {
-		global $current_user, $wpdb;
+		global $current_user, $h3_mgmt_races, $wpdb, $information_text;
 
 		extract( shortcode_atts( array(
 			'event' => 1,
 			'race' => 0
 		), $atts ) );
 
-		$race_id = $race === 0 ? $event : $race;
-
+		$race_id = $race;
+		
+		if( $race == 'active'){
+			$race_id = $h3_mgmt_races->get_active_race();
+		}
+		
+		$information_text = $h3_mgmt_races->get_race_information_text( $race_id );
+		
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+		
 		if ( is_user_logged_in() ) {
 			if( ( isset( $_GET['todo'] ) && $_GET['todo'] == 'leave' ) && isset( $_GET['id'] ) ) {
 				$team_id = $this->user_has_team( $race_id );
 				if( empty( $team_id ) ) {
-						$output .= '<p class="error">' .			//für registration closed einkommentieren
-							__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join Tramprennen 2016!', 'h3-mgmt' ) .	//für registration closed einkommentieren
-						'</p>';										//für registration closed einkommentieren
-						return $output;								//für registration closed einkommentieren
-						// return $this->team_dashboard( array( 'race_id' => $race_id ) );	//für registration closed auskommentieren
+					if( $race_setting['status'] == 2 ){
+						$output .= '<p class="error">' .			
+							__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join next year!', 'h3-mgmt' ) .	
+						'</p>';						
+						return $output;								
+					}elseif( $race_setting['status'] == 3 ){
+						$output .= '<p class="error">' .			
+							__( 'Sorry, the race already started! We would be lucky if you will join next year!', 'h3-mgmt' ) .	
+						'</p>';	
+						$output .= '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';						
+						return $output;								
+					}else{
+						return $this->team_dashboard( array( 'race_id' => $race_id ) );	
+					}
 				} else {
 					get_currentuserinfo();
 					$mates = $this->get_teammates( $team_id, false );
@@ -1432,7 +1634,9 @@ class H3_MGMT_Teams {
 		
 		$team_id = $this->user_has_team( $race_id );
 
-		global $wpdb;
+		global $wpdb, $h3_mgmt_races, $information_text;
+		
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 
 		if ( $team_id === false ) {
 			if ( $this->is_invitation() ) {
@@ -1445,20 +1649,37 @@ class H3_MGMT_Teams {
 						'message' => _x( 'Do you want to join this team? You still have to accept the invitation...', 'Team Dashboard', 'h3-mgmt' )
 					);
 				} else {
-					$output .= '<p class="error">' .
+					//if registration is closed just show error message and don't allow to create a new Team
+					if( $race_setting['status'] >= 2 ){
+						$output .= '<p class="error">' .
+							__( 'Sorry, the invitation code you are trying to use is outdated or false. The registration is already closed, so the participant can\'t invite you again and you can\'t create your own team...', 'h3-mgmt' ) .
+						'</p>';
+						return $output;										
+					}else{
+						$output .= '<p class="error">' .
 							__( 'Sorry, the invitation code you are trying to use is outdated or false. Either contact the participant that invited you and request a new invitation or create your own team.', 'h3-mgmt' ) .
 						'</p>';
-					return $output;										//für registration closed einkommentieren
-					// $team_id = 0;									//für registration closed auskommentieren
-					// $team_section = $this->team_section( false );	//für registration closed auskommentieren
+						$team_id = 0;									
+						$team_section = $this->team_section( false );	
+					}
 				}
 			} else {
-				$output .= '<p class="error">' .						//für registration closed einkommentieren
-						__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join Tramprennen 2016!', 'h3-mgmt' ) .	//für registration closed einkommentieren
-					'</p>';												//für registration closed einkommentieren
-				return $output;											//für registration closed einkommentieren
-				// $team_id = 0;										//für registration closed auskommentieren
-				// $team_section = $this->team_section( false );		//für registration closed auskommentieren
+				//if registration is closed just show error message and don't allow to create a new Team
+				if( $race_setting['status'] == 2 ){
+					$output .= '<p class="error">' .						
+						__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join next time!', 'h3-mgmt' ) .	//für registration closed einkommentieren
+					'</p>';						
+					return $output;											
+				}elseif( $race_setting['status'] == 3 ){
+					$output .= '<p class="error">' .			
+						__( 'Sorry, the race already started! We would be lucky if you will join next time!', 'h3-mgmt' ) .	
+					'</p>';	
+					$output .= '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';						
+					return $output;	
+				}else{
+					$team_id = 0;										
+					$team_section = $this->team_section( false );		
+				}
 			}
 		} else {
 			$team_section = $this->team_section( true, $team_id );
@@ -1475,25 +1696,20 @@ class H3_MGMT_Teams {
 			}
 		}
 		
-		//für registration closed Error Message at Team Dashboard
-		//----------------------------------------------------------------------------------------------------------------------------------
-		$output .= '<p class="error">' .
+		//registration closed information messages
+		if( $race_setting['status'] >= 2 ){
+			$output .= '<p class="error">' .
 					_x( 'Attention, the Registration is closed!', 'Team Dashboard', 'h3-mgmt' ) .
 				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- You can\'t invite other hitchmates any more!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- You could still change all your settings in your Profile!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- Also we will set your Team as complete if we will get your payment and the liability waiver form in the next days!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		$output .= '<p class="error">' .
-					_x( '- If you have chosen your starting point, you can\'t change it any more!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-		//----------------------------------------------------------------------------------------------------------------------------------
-		//für registration closed
+			$output .= 	_x( '	<li> You can\'t invite other hitchmates any more! </li>
+                                                <li> You could still change all your settings in your Profile!</li>
+                                                <li> Also we will set your Team as complete if we will get your payment and the liability waiver form in the next days!</li>
+                                                ', 'Team Dashboard', 'h3-mgmt' );
+                        if( $race_setting['startingpoint'] == 1 && $this->is_complete( $team_id )){
+                            $output .= 	_x( '   <li> If you have chosen your starting point, you can\'t change it any more!</li>', 'Team Dashboard', 'h3-mgmt' );
+                        }
+                        $output .= '<br>';
+		}
 
 		$output .= '<form name="h3_mgmt_team_dashboard_form" method="post" enctype="multipart/form-data" action="?">' .
 			'<input type="hidden" name="submitted" value="y"/>' .
@@ -1510,11 +1726,35 @@ class H3_MGMT_Teams {
 		$output .= '</h3><p>* ' . _x( 'Required fields', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
 
 		$fields = $team_section;
+		//if registration closed they can't change the Teamname
+		if( $race_setting['status'] >= 2 ){
+			$fields[0]['readonly'] = true;
+		}
 		require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
 
+		$team_data = $this->get_team_data( $team_id );
+		
+		//is just ne startingpoint for this race they can't chose a starting point
+		if( $race_setting['startingpoint'] == 1 ){
+			if( $this->is_complete( $team_id ) ) {
+				if( ( $team_data['route_id'] == 0 || $race_setting['status'] == 1 ) && $race_setting['status'] != 3) {	
+					$output .= '<h3 class="top-space-more">' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
+						stripcslashes( $information_text[11] ) ; //_x( 'Choose one of the city\'s. The number in the brackets shows the amount of free team slots left at the city. You can change your starting point selection until the 8th of August. After that it won\'t be possible for logistical reasons.', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
+					$fields = $this->route_section( $team_id );
+					require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
+				}elseif( $team_data['route_id'] == 0 && $race_setting['status'] == 3 ){
+					$output .= '<h3 class="top-space-more">' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
+						'<p>' . _x( 'You can\'t choose your starting point because the race is already started!', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
+				}else{
+					$output .= '<h3 class="top-space-more">' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
+						'<p>' . _x( 'You can\'t change your starting point anymore because the registration process is already closed!', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
+				}						
+			}
+		}
+		
 		$output .= '<h3 class="top-space-more">' . _x( 'About You', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
 
-		$fields = $this->primary_user_section();
+		$fields = $this->primary_user_section($race_setting['dis_shirt_size'], $race_setting['dis_mobile_inf']);
 		require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
 
 		if( isset( $is_invitation ) && true === $is_invitation && ( isset( $_POST['invitation'] ) || isset( $_GET['invitation'] ) ) ) {
@@ -1523,36 +1763,32 @@ class H3_MGMT_Teams {
 					$code .
 				'" />';
 		} else {
-			//for registration closed command out the whole next block
-			//----------------------------------------------------------------------------------------------------------------------------------
-			// $invitations = $this->allow_invitations( $team_id );
-			// if( $invitations ) {
-				// $output .= '<h3 class="top-space-more">' . _x( 'Invite teammate(s)', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
-				// if( $invitations === 2 ) {
-					// $output .= '<p>' . _x( 'Invite someone to join your team. You need a teammate for the team to be complete. You may invite up to two people at a time. If you have already invited two people and want to invite someone else, simply overwrite one or two of the above email adresses. Keep in mind that a team can consist of a maximum of three HitchMates and that you need to have both a guy and a girl.', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
-				// } else {
-					// $output .= '<p>' . _x( 'A team may also consist of up to three HitchMates. You need to be at least two people and minimum a guy and a girl.', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
-				// }
-				// $fields = $this->invitations_section( $team_id, $invitations );
-				// require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-			// }
-			//----------------------------------------------------------------------------------------------------------------------------------
-			//until here
+			//is registration closed no invitation of members
+			if( $race_setting['status'] < 2 ){
+				$invitations = $this->allow_invitations( $team_id );  
+                                
+				if( $invitations ) {
+                                    
+                                        $num_teammember = intval( $race_setting['num_teammember'] );
+                                        
+                                        if( $num_teammember == NULL || !isset($race_setting['num_teammember']) ){
+                                            $num_teammember = 3;
+                                        }
+                                        
+					$output .= '<h3 class="top-space-more">' . _x( 'Invite teammate(s)', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
+					if( $invitations === $num_teammember - 1 ) {
+						$output .= '<p>' . stripcslashes( $information_text[30] ) . '</p>';
+					} else {
+						$output .= '<p>' . stripcslashes( $information_text[31] ) . '</p>';
+					}
+					$fields = $this->invitations_section( $team_id, $invitations );
+					require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
+				}
+			}
 		}
 
 		$output .= $this->mate_section( $team_id );
-		$team_data = $this->get_team_data( $team_id );
 		
-		// if( $this->is_complete( $team_id ) ) {
-			// if( $team_data['route_id'] == 0) {	//für registration closed if they chose starting point they can't any more
-				// $output .= '<h3>' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
-					// '<p>' . _x( 'Choose one of the city\'s. The number in the brackets shows the amount of free team slots left at the city. You can change your starting point selection until the 8th of August. After that it won\'t be possible for logistical reasons.', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
-				// $fields = $this->route_section( $team_id );
-				// require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-			// }									//für registration closed if they chose starting point they can't any more
-		// }
-		
-
 		$output .= '<div class="form-row">' .
 			'<input type="submit" id="submit_form" name="submit_form" value="';
 
@@ -1587,7 +1823,8 @@ class H3_MGMT_Teams {
 	 * @access public
 	 */
 	public function team_homework( $atts = '' ) {
-		global $current_user, $wpdb, $h3_mgmt_mailer, $h3_mgmt_races, $h3_mgmt_utilities;
+		global $current_user, $wpdb, $h3_mgmt_mailer, $h3_mgmt_races, $h3_mgmt_utilities, $information_text, $h3_mgmt_sponsors;
+		
 		get_currentuserinfo();
 
 		extract( shortcode_atts( array(
@@ -1596,8 +1833,19 @@ class H3_MGMT_Teams {
 		), $atts ) );
 		$language = $h3_mgmt_utilities->user_language();
 
-		$race_id = $race === 0 ? $event : $race;
+		$race_id = $race;
+		
+		if( $race == 'active'){
+			$race_id = $h3_mgmt_races->get_active_race();
+		}
 
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+
+		//if registration isn't already open return nothing
+		if( $race_setting['status'] == 0 ){
+			return;	
+		}
+		
 		if( isset( $_GET['todo'] ) && $_GET['todo'] == 'resend' && isset( $_GET['id'] ) && $this->team_exists( $_GET['id'] ) ) {
 			$response_args = array(
 				'name' => $current_user->first_name,
@@ -1634,6 +1882,11 @@ class H3_MGMT_Teams {
 			);
 			$team = $team_query[0];
 		} else {
+			//if race started no invitation possible so don't show it
+			if( $race_setting['status'] == 3 ){
+				return;
+			}
+			
 			$output .= '<h3>' . _x( 'Or join a team...', 'Team Dashboard (Registration)', 'h3-mgmt' ) . '</h3>' .
 				'<p>' . _x( 'If someone else has already invited you via email to join his/her team, you have received an invitation code. Enter or paste it here.', 'Team Dashboard (Registration)', 'h3-mgmt' ) . '</p>';
 			$output .= $this->invitation_code_form();
@@ -1694,124 +1947,154 @@ class H3_MGMT_Teams {
 		$phones = $this->get_team_phones( $team_id ); 	
 		
 		
-		$output .= '<p>' . _x( 'Only a few more steps are required before you can publish your team, choose your starting point and start hunting for TeamSponsors!', 'Homework', 'h3-mgmt' ) . '</p>';
-			//_x( "Just get your homework done and let's hitch! :)", 'Homework', 'h3-mgmt' ) . '<br /><br />' . _x( "<b>For all of you who already joined Tramprennen with the present user account: Due to technical reasons we took for you the choice for the sim-card. So please scroll down to \"Could we give our partner Ortel Mobile...\", check it and change it to \"YES I will\" if you want to get your simc-ard. =)</b>", 'Homework', 'h3-mgmt' ) . '</p>';
-
+		$output .= '<p>' . stripcslashes( $information_text[32] ). '</p>';
+			
 		$output .= '<h3>' . _x( 'Before publishing', 'Homework', 'h3-mgmt' ) . '</h3>' .
-			'<ul class="list homework-list">' .
-				'<li>';
+			'<ul class="list homework-list">';
 
 		if( $invited === 1 ) {
-			$output .= '<span class="to-do-done">';
+			$output .= '<li><span class="to-do-done">';
 		} else {
-			$output .= '<span class="to-do-do">';
+			$output .= '<li><span class="to-do-do">';
 		}
-		$output .= _x( 'Invite HitchMate(s)', 'Homework', 'h3-mgmt' ) . '</span>' .
-		 '</li><li>';
+		$output .= stripcslashes( $information_text[33] ) . '</span>' .
+		 '</li>';
 
-		if( isset( $own_data['waiver'] ) && $own_data['waiver'] == 1 ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( 'Send your own liability waiver form', 'Homework', 'h3-mgmt' ) . ' *</span>' .
-		 '</li><li>';
+                if( $race_setting['dis_waiver'] != 1 ){
+                    if( isset( $own_data['waiver'] ) && $own_data['waiver'] == 1 ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[34] ) . ' *</span>' .
+                     '</li>';
 
-		if( $others_waiver == 1 ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( "Your HitchMate's liability waiver form(s)", 'Homework', 'h3-mgmt' ) . '</span>' .
-		 '</li><li>';
+                    if( $others_waiver == 1 ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[35] ) . '</span>' .
+                     '</li>';
+                }
 
-		if( isset( $own_data['paid'] ) && $own_data['paid'] == 1 ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( 'Pay the HitchPackage', 'Homework', 'h3-mgmt' ) . ' **</span>' .
-		 '</li><li>';
+                if( $race_setting['dis_fee'] != 1 ){
+                    if( isset( $own_data['paid'] ) && $own_data['paid'] == 1 ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[28] ) . ' **</span>' . 
+                     '</li>';
 
-		if( $others_paid == 1 ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( "Your HitchMate's HitchPackage payment", 'Homework', 'h3-mgmt' ) . '</span>' .
-			'</li><li>';
+                    if( $others_paid == 1 ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[29] ) . '</span>' . 
+                            '</li>';
+                }
+                
+                if( $race_setting['dis_shirt_size'] != 1 ){
+                    if( ! empty( $own_data['shirt'] ) ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[36] ) . '</span>' .
+                     '</li>';
 
-		if( ! empty( $own_data['shirt'] ) ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( 'Select your T-Shirt size', 'Homework', 'h3-mgmt' ) . '</span>' .
-		 '</li><li>';
+                    if( $others_shirt == 1 ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[37] ) . '</span>' .
+                            '</li>';
+                }
+		
+                if( $race_setting['dis_mobile_inf'] != 1 ){
+                    if( ! empty( $own_data['public_mobile_inf'] ) ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[38] ) . ' </span>' .
+                     '</li>';
 
-		if( $others_shirt == 1 ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( "Your HitchMate's Shirt sizes", 'Homework', 'h3-mgmt' ) . '</span>' .
-			'</li><li>';
-			
-		if( ! empty( $own_data['public_mobile_inf'] ) ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( 'Decide if we could give our mobile partner your personal information', 'Homework', 'h3-mgmt' ) . ' </span>' .
-		 '</li><li>';
-
-		if( $other_public_mobile_inf == 1 ) {
-			$output .= '<span class="to-do-done">';
-		} else {
-			$output .= '<span class="to-do-do">';
-		}
-		$output .= _x( "Your HitchMate's decision", 'Homework', 'h3-mgmt' ) . '</span>' .
-			'</li></ul>';
+                    if( $other_public_mobile_inf == 1 ) {
+                            $output .= '<li><span class="to-do-done">';
+                    } else {
+                            $output .= '<li><span class="to-do-do">';
+                    }
+                    $output .= stripcslashes( $information_text[39] ) . '</span>' .
+                            '</li>';
+                }
+                $output .= '</ul>';
 
 		$base_url = get_option( 'siteurl' );
 		$downloads_url = $base_url . '/downloads/';
-
-		$output .= '<p>* ' . sprintf( _x( 'Please mail the <a href="%sLIABILITY_WAIVER.pdf" title="Download form" target="_blank">Liability Waiver Form</a> to', 'Homework', 'h3-mgmt' ), $downloads_url ) . ': <br/>Club of Roam-Autostop! e.V. <br/>Fritz-Heckert-Str. 25 <br/>99817 Eisenach <br/>Germany</p>'; //<a title="Our main E-Mail address" href="mailto:info@tramprennen.org">info@tramprennen.org</a>
-		$output .= '<p>** ' . _x( 'Please transfer <em>25 Euro</em> per participant for the HitchPackage.', 'Homework', 'h3-mgmt' ) . ' ' . _x( 'The Bank Account details have been sent to you via mail.', 'Homework', 'h3-mgmt' ) . '<br />' .
-			'<a href="' . get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?id=' . $team['id'] . '&todo=resend" ' .
+                if( $race_setting['dis_waiver'] != 1 ){
+                    $output .= stripcslashes( $information_text[16] ); 
+                }
+                
+                if( $race_setting['dis_fee'] != 1 ){
+		$output .= stripcslashes( $information_text[17] ) 
+			. '<br />' .'<a href="' . get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?id=' . $team['id'] . '&todo=resend" ' .
 				'title="' . _x( 'Send the mail to yourself again.', 'Homework', 'h3-mgmt' ) . '">' .
 					_x( 'Resend Mail.', 'Homework', 'h3-mgmt' ) . '</a></p>';
+                }
 
 		$output .= '<h3>' . _x( 'After Team is complete', 'Homework', 'h3-mgmt' ) . '</h3>' .
 			'<ul class="list homework-list">';
 
 		if( $team['complete'] == 1 ) {
 			$output .= '<li><span class="to-do-confirm">' . _x( 'Your Team is fully registered!', 'Homework', 'h3-mgmt' ) . '</span></li>';
-			if( ! empty( $team['route_id'] ) ) {
-				$output .= '<li><span class="to-do-route" style="text-shadow:0 0 2px #' .$h3_mgmt_races->get_route_color( $team['route_id'] ) . ';">' . _x( 'Starting point chosen', 'Homework', 'h3-mgmt' ) . ': ' . $h3_mgmt_races->get_route_name( $team['route_id'] ) . '</span></li>';
-			} else {
-				$output .= '<li><span class="to-do-can">' . _x( 'You may pick your starting point now!', 'Homework', 'h3-mgmt' ) . '</span></li>';
+			$team_data = $this->get_team_data( $team_id );
+		
+			//is just one startingpoint for this race it dosen't dispplay the homework for choosing one
+			if( $race_setting['startingpoint'] == 1 ){
+				if( ! empty( $team['route_id'] ) ) {
+					$output .= '<li><span class="to-do-route" style="text-shadow:0 0 2px #' .$h3_mgmt_races->get_route_color( $team['route_id'] ) . ';">' . _x( 'Starting point chosen', 'Homework', 'h3-mgmt' ) . ': ' . $h3_mgmt_races->get_route_name( $team['route_id'] ) . '</span></li>';
+				} else {
+					$output .= '<li><span class="to-do-can">' . _x( 'You may pick your starting point now!', 'Homework', 'h3-mgmt' ) . '</span></li>';
+				}
 			}
-			if( $owner ) {
-				$output .= '<li><span class="to-do-positive">' . _x( 'You have a TeamOwner', 'Homework', 'h3-mgmt' ) . ': ' . $owner['display_name'] . '</span></li>';
-			} else {
-				$output .= '<li><span class="to-do-can">' . _x( "You don't have a TeamOwner yet. You can hunt for one now!", 'Homework', 'h3-mgmt' ) . '</span></li>';
-			}
+                        if( $race_setting['kind_of_donation_tool'] != 1 ){
+                            if( $owner ) {
+                                    $output .= '<li><span class="to-do-positive">' . _x( 'You have a TeamOwner', 'Homework', 'h3-mgmt' ) . ': ' . $owner['display_name'] . '</span></li>';
+                            } else {
+                                    $output .= '<li><span class="to-do-can">' . _x( "You don't have a TeamOwner yet. You can hunt for one now!", 'Homework', 'h3-mgmt' ) . '</span></li>';
+                            }
+                        }
 			if( $sponsors ) {
 				$output .= '<li><span class="to-do-positive">' . sprintf( _x( 'You have %d TeamSponsors', 'Homework', 'h3-mgmt' ), count( $sponsors ) ) . '</span></li>';
 			} else {
 				$output .= '<li><span class="to-do-can">' . _x( "You don't have TeamSponsors yet. You can hunt for 'em now!", 'Homework', 'h3-mgmt' ) . '</span></li>';
 			}
+                        
+                        if( $race_setting['show_donation_amount'] == 1 ){
+                            $amount = $h3_mgmt_sponsors->get_donation_amount( array('type'=>'team', 'id' => $team_id) );
+                            if( $amount > 0 ) {
+                                    $output .= '<li><span class="to-do-positive">' . sprintf( _x( 'Your team donations counter: %d€ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
+                            } else {
+                                    $output .= '<li><span class="to-do-can">' . sprintf( _x( 'Your team donations counter: %d€ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
+                            }
+                        }
+                        
 		} else {
 			$output .= '<li><span class="to-do-negative">' . _x( 'Your team has not yet completed the registration process...', 'Homework', 'h3-mgmt' ) . '</span></li>';
-			$output .= '<li><span class="to-do-inactive">' . _x( 'You cannot yet chose a starting point...', 'Homework', 'h3-mgmt' ) . '</span></li>';
+                        if( $race_setting['startingpoint'] == 1 ){
+                            $output .= '<li><span class="to-do-inactive">' . _x( 'You cannot yet chose a starting point...', 'Homework', 'h3-mgmt' ) . '</span></li>';
+                        }
 			$output .= '<li><span class="to-do-inactive">' . _x( 'You cannot hunt for sponsors yet...', 'Homework', 'h3-mgmt' ) . '</span></li>';
 		}
 
 		$output .= '</ul>';
 
 		if( $team['complete'] == 1 ) {
-			$output .= '<p>' . _x( 'Elvis has left the building!. You can go out and hunt for TeamSponsors to support the WASH-projects of Viva con Agua and the work of PRO ASYL!', 'Homework', 'h3-mgmt' ) . '</p>';
+			$output .= stripcslashes( $information_text[18] ); //'<p>' . _x( 'Elvis has left the building!. You can go out and hunt for TeamSponsors to support the WASH-projects of Viva con Agua and the work of PRO ASYL!', 'Homework', 'h3-mgmt' ) . '</p>';
 		}
 
 		return $output;
@@ -1831,6 +2114,10 @@ class H3_MGMT_Teams {
 			'race' => 0
 		), $atts ) );
 
+		if( $race == 'active'){
+			$race = $h3_mgmt_races->get_active_race();
+		}
+		
 		if( $this->user_has_team( $race ) ) {
 			$link = '<a title="' .
 				_x( 'Edit your team', 'User Panel', 'h3-mgmt' ) .
@@ -1863,9 +2150,28 @@ class H3_MGMT_Teams {
 			'race' => 0,
 			'max' => 10
 		), $atts ) );
-
-		$race_id = $race === 0 ? $event : $race;
-
+		
+		global $h3_mgmt_races, $information_text;
+		
+		$race_id = $race;
+		
+		if( $race == 'active'){
+			$race_id = $h3_mgmt_races->get_active_race();
+		}
+		
+		$information_text = $h3_mgmt_races->get_race_information_text( $race_id );
+		
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+		
+		//if registration still isn't open return error message
+		if( $race_setting['status'] == 0 ){
+			$output .= '<p class="message" style="text-align: center;">' .
+						stripcslashes( $information_text[25] );
+						'</p>';
+			$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
+			return $output;	
+		}
+		
 		if( isset( $_GET['id'] ) && $this->team_exists( $_GET['id'] ) ) {
 			return $this->team_profile( $_GET['id'], $max );
 		}
@@ -1880,9 +2186,10 @@ class H3_MGMT_Teams {
 	 * @access private
 	 */
 	private function team_profile( $team_id, $max ) {
-		global $h3_mgmt_races, $h3_mgmt_sponsors, $h3_mgmt_ticker, $h3_mgmt_utilities;
+		global $h3_mgmt_races, $h3_mgmt_sponsors, $h3_mgmt_ticker, $h3_mgmt_utilities, $information_text;
 
 		$race_id = $this->get_team_race( $team_id );
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 
 		list( $team_count, $complete_count, $incomplete_count, $teams ) = $this->get_teams_meta( array( 'orderby' => 'total_points', 'order' => 'DESC', 'exclude_incomplete' => true, 'parent' => intval( $race_id ), 'parent_type' => 'race' ) );
 
@@ -1938,16 +2245,19 @@ class H3_MGMT_Teams {
 			'team_id' => $team_id
 		));
 		
-		// $owner['owner_pic'] = $h3_mgmt_utilities->pic_resize( $owner['owner_pic'], 250 ); //test rausnehen
+		 $owner['owcner_pic'] = $h3_mgmt_utilities->pic_resize( $owner['owner_pic'], 250 ); //test rausnehen
 
 		$team = $this->get_team_data( $team_id, array( 'mates' ) );
-		// $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 500 ); //test rausnehen
+		 $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 500 ); //test rausnehen
 
 		$routes_data =  $h3_mgmt_races->get_routes( array( 'race' => $race_id ) );
 
 		$output = '<h1>' . stripslashes( $team['team_name'] ) . '</h1>';
 		
-		$output .= $h3_mgmt_ticker->team_ticker_Page_map( $team_id );			//test erst bei rennsart  reinmachen
+		//enable if status is race started
+		if( $race_setting['status'] == 3 && $race_id > 3){
+			$output .= $h3_mgmt_ticker->team_ticker_Page_map( $team_id );			
+		}
 
 		$output .= '<div class="flex_column av_one_third first avia-builder-el-0  el_before_av_one_third  avia-builder-el-first">';
 
@@ -1958,59 +2268,50 @@ class H3_MGMT_Teams {
 			$output .= '<img class="no-bsl-adjust team-profile-route-logo" alt="Route Logo" src="' .
 				get_option( 'siteurl' ) . $routes_data[$team['route_id']]['logo_url'] . '" />';
 		}
-
-		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">' . _x( 'Two weeks through Europe by thumb. Why?', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
+		
+		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;font-weight: bold;margin-bottom:0 !important;padding-bottom:0 !important;">' . stripcslashes( $information_text[1] ) . '</p>'; //_x( 'Two weeks through Europe by thumb. Why?', 'Team Profile Form', 'h3-mgmt' )
 		$ddd = ! empty($team['meta_1']) ? $team['meta_1'] : '---';
-		$output .= '<p>' . $ddd . '</p>';
+		$output .= '<p>' . stripcslashes( $ddd )  . '</p>';
 
-		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">' . _x( 'Why should a lift take us along?', 'Team Profile Form', 'h3-mgmt' ) . '</p>';
+		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;font-weight: bold;margin-bottom:0 !important;padding-bottom:0 !important;">' . stripcslashes( $information_text[2] ) . '</p>';//_x( 'Why should a lift take us along?', 'Team Profile Form', 'h3-mgmt' )
 		$ddd = ! empty($team['meta_2']) ? $team['meta_2'] : '---';
-		$output .= '<p>' . $ddd . '</p>';
+		$output .= '<p>' . stripcslashes( $ddd )  . '</p>';
 
-		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">' . _x( 'Our best Autostop-experience so far', 'Team Profile Form', 'h3-mgmt' ) . ':</p>';
+		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;font-weight: bold;margin-bottom:0 !important;padding-bottom:0 !important;">' . stripcslashes( $information_text[3] ) . '</p>';//_x( 'Our best Autostop-experience so far', 'Team Profile Form', 'h3-mgmt' ) . ':</p>';
 		$ddd = ! empty($team['meta_3']) ? $team['meta_3'] : '---';
-		$output .= '<p>' . $ddd . '</p>';
+		$output .= '<p>' . stripcslashes( $ddd )  . '</p>';
 
-		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">' . _x( 'Our goal for the race', 'Team Profile Form', 'h3-mgmt' ) . ':</p>';
+		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;font-weight: bold;margin-bottom:0 !important;padding-bottom:0 !important;">' . stripcslashes( $information_text[4] ) . '</p>';//_x( 'Our goal for the race', 'Team Profile Form', 'h3-mgmt' ) . ':</p>';
 		$ddd = ! empty($team['meta_4']) ? $team['meta_4'] : '---';
 		if (! empty($team['meta_4'])) {
 			if ($team['meta_4'] == 1) {
-				$ddd = _x( 'Reach the destination. Participation is everything!', 'Team Profile Form', 'h3-mgmt' );
+				$ddd = stripcslashes( $information_text[12] ); //_x( 'Reach the destination. Participation is everything!', 'Team Profile Form', 'h3-mgmt' );
 			} elseif ($team['meta_4'] == 2) {
-				$ddd = _x( 'Fun, Fun, Fun!', 'Team Profile Form', 'h3-mgmt' );
+				$ddd = stripcslashes( $information_text[13] ); //_x( 'Fun, Fun, Fun!', 'Team Profile Form', 'h3-mgmt' );
 			} elseif ($team['meta_4'] == 3) {
-				$ddd = _x( 'Upper Midfield. And a stage victory.', 'Team Profile Form', 'h3-mgmt' );
+				$ddd = stripcslashes( $information_text[14] ); //_x( 'Upper Midfield. And a stage victory.', 'Team Profile Form', 'h3-mgmt' );
 			} elseif ($team['meta_4'] == 4) {
-				$ddd = _x( 'Win it! What else???', 'Team Profile Form', 'h3-mgmt' );
+				$ddd = stripcslashes( $information_text[15] ); //_x( 'Win it! What else???', 'Team Profile Form', 'h3-mgmt' );
 			}
 		}
-		$output .= '<p>' . $ddd . '</p>';
+		$output .= '<p>' . stripcslashes( $ddd ) . '</p>';
 
-		if ( $race_id < 4 ) {
-		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">Clean drinking water and basic needs are...</p>';
-		}
-		else {
-		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;margin-bottom:0 !important;padding-bottom:0 !important;">For a Donation we would...</p>';
-		}
-		
+		$output .= '<p style="color:#666666;font-style:italic;font-size:1.2em;font-weight: bold;margin-bottom:0 !important;padding-bottom:0 !important;">' . stripcslashes( $information_text[5] ) . '</p>';
 		$ddd = ! empty($team['meta_5']) ? $team['meta_5'] : '---';
-		$output .= '<p>' . $ddd . '</p>';
+		$output .= '<p>' . stripcslashes( $ddd ) . '</p>';
 
 		$output .= '</div><div class="flex_column av_one_third avia-builder-el-0  el_before_av_one_third">';
 
 		$output .= '<p>';
 		foreach( $team['mates'] as $mate ) {
-			$output .= $mate['name'] . ' (' . $mate['age'] . ')<br />';
+			$output .= stripcslashes( $mate['name'] ) . ' (' . $mate['age'] . ')<br />';
 		}
 
-
-		if ( $race_id < 5 ) {
-			$output .= '</p><p>' .       //ändern Rank
+		//enable if status is race started
+		if( $race_setting['status'] == 3 ){
+			$output .= '</p><p>' .     
 					__( 'Current Race Rank', 'h3-mgmt' ) . ': <strong>' . $total_rank . '</strong><br />' .
 					__( 'Current Route Rank', 'h3-mgmt' ) . ': <strong>' . $route_rank . '</strong></p>';
-		}
-		else {
-			
 		}
 
 		$output .= '<p>' . stripslashes( $h3_mgmt_utilities->p1_nl2br( $team['description'] ) ) . '</p>';
@@ -2020,19 +2321,42 @@ class H3_MGMT_Teams {
 		$output .= '<h3 class="topspace">' . _x( 'Ticker messages', 'Team Profile', 'h3-mgmt' ) . '</h3>';
 		$output .= $h3_mgmt_ticker->team_ticker( $team_id, $max );
 
-		$output .= '</div><div class="flex_column av_one_third  avia-builder-el-0  avia-builder-el-last">' .
-			'<h3 class="no-margin-top">' . _x( 'Team Owner', 'Team Profile', 'h3-mgmt' ) . '</h3>' .
-			'<div class="owner-pic-wrap">';
-		if ( ! empty( $owner['owner_link_url'] ) ) {
-			$output .= '<a href="' . $owner['owner_link_url'] . '" title="' . _x( 'Visit the TeamOwner&apos;s website', 'Team Profile', 'h3-mgmt' ) . '">';
-		}
-		$output .= '<img class="owner-pic" alt="OwnerPic" src="' . $owner['owner_pic'] . '" />';
-		if ( ! empty( $owner['owner_link_url'] ) ) {
-			$output .= '</a>';
-		}
-		$output .= '</div>' .
-			$owner['owner_link'] .
-			'<h3 class="topspace">' . _x( 'Team Sponsors', 'Team Profile', 'h3-mgmt' ) . '</h3>';
+		$output .= '</div><div class="flex_column av_one_third  avia-builder-el-0  avia-builder-el-last">';
+		
+                if( $race_setting['kind_of_donation_tool'] != 1 ){
+                    $output .= '<h3 class="no-margin-top">' . _x( 'Team Owner', 'Team Profile', 'h3-mgmt' ) . '</h3>' .
+                            '<div class="owner-pic-wrap">';
+
+                    //enable if donation tool is started
+                    if( $race_setting['donation'] == 0 ){
+                         if ( ! empty( $owner['owner_link_url'] ) ) {
+                                $output .= '<a href="' . $owner['owner_link_url'] . '" title="' . _x( 'Visit the TeamOwner&apos;s website', 'Team Profile', 'h3-mgmt' ) . '">';
+                        }
+                        $output .= '<img class="owner-pic" alt="OwnerPic" src="' . $owner['owner_pic'] . '" />';
+                        if ( ! empty( $owner['owner_link_url'] ) ) {
+                                $output .= '</a>';
+                        }
+                        if( $this->get_owner($team_id) == false){
+                            $output .= '</div>' .
+                                        '<p> '._x( 'No Owner yet. <br> You can be a Owner after the donation process has been started!', 'Team Profile', 'h3-mgmt' ) . '</p>';
+                        }else{
+                            $output .= '</div>' .
+                                $owner['owner_link'];
+                        }
+                    }else{
+                        if ( ! empty( $owner['owner_link_url'] ) ) {
+                                $output .= '<a href="' . $owner['owner_link_url'] . '" title="' . _x( 'Visit the TeamOwner&apos;s website', 'Team Profile', 'h3-mgmt' ) . '">';
+                        }
+                        $output .= '<img class="owner-pic" alt="OwnerPic" src="' . $owner['owner_pic'] . '" />';
+                        if ( ! empty( $owner['owner_link_url'] ) ) {
+                                $output .= '</a>';
+                        }
+                        $output .= '</div>' .
+                                $owner['owner_link'];
+                    }
+                }
+			
+		$output .= '<h3 class="topspace">' . _x( 'Team Sponsors', 'Team Profile', 'h3-mgmt' ) . '</h3>';
 
 		if( ! empty( $sponsors['names-tooltip'] ) || ! empty( $sponsors['anonymous'] ) ) {
 			$output .= '<p class="team-profile-sponsors">';
@@ -2045,11 +2369,16 @@ class H3_MGMT_Teams {
 			$output .= '</p>';
 		}
 
-		$output .= '<p>' .
-			'<a class="sponsors-link" title="' . _x( 'Become this team&apos;s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) . '" ' .
-				'href="'. get_site_url() . _x( '/support-team/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?id=' . $team_id . '">' .
-					_x( 'Become this team\'s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) .
-					'</a></p>';
+		//enable if donation tool is started
+		if( $race_setting['donation'] == 0 ){
+			$output .= 	'<p> ' . _x( 'You can be a Sponsor after the donation process has been started!', 'Team Profile', 'h3-mgmt' ) . ' </p>';
+		}else{
+			$output .= '<p>' .
+				'<a class="sponsors-link" title="' . _x( 'Become this team&apos;s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) . '" ' .
+					'href="'. get_site_url() . _x( '/support-team/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?id=' . $team_id . '&type=sponsor">' .
+						_x( 'Become this team\'s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) .
+						'</a></p>';
+		}
 
 		$output .= '</div>';
 
@@ -2095,7 +2424,11 @@ class H3_MGMT_Teams {
 			'race' => 0
 		), $atts ) );
 
-		$race_id = $race === 0 ? $event : $race;
+		$race_id = $race;
+		
+		if( $race == 'active'){
+			$race_id = $h3_mgmt_races->get_active_race();
+		}
 
 		$team_id = $this->random_team( $race_id );
 
@@ -2122,7 +2455,7 @@ class H3_MGMT_Teams {
 		));
 
 		$team = $this->get_team_data( $team_id, array( 'mates' ) );
-		// $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 );		//test rausnehmen
+		 $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 );		//test rausnehmen
 
 		$race_id = $this->get_team_race( $team_id );
 		$routes_data =  $h3_mgmt_races->get_routes( array( 'race' => $race_id ) );
@@ -2194,7 +2527,7 @@ class H3_MGMT_Teams {
 		));
 		
 		foreach( $teams as $team ) {
-			// $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
+			 $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
 			$mates_html = '';
 			$mcount = count( $team['mates'] );
 			$i = 0;
@@ -2216,7 +2549,7 @@ class H3_MGMT_Teams {
 			}
 			$teams_html[] = '<a class="team-overview-route-' . $team['route_id'] . ' ' . $owner_class . '" title="' .
 				_x( "See this team's complete profile", 'Team Profile', 'h3-mgmt' ) .
-				'" href="' . get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?id=' . $team['id'] . '">' .
+				'" href="http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI] . '?id=' . $team['id'] . '">' . //get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] )
 				'<div style="box-shadow:none !important;" class="team-island team-overview-route-island-' . $team['route_id'] . '" ' .
 					'style="border: 2px solid #' . $routes_data[$team['route_id']]['color_code'] . '">' .
 					'<span class="team-overview-route" style="display:none;visibility:hidden;">' .
@@ -2288,7 +2621,7 @@ class H3_MGMT_Teams {
 			'</a>';
 
 		$script_params = array(
-			'redirect' => get_site_url() . __( '/follow-us/teams/', 'h3-mgmt' )
+			'redirect' => 'http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI]
 		);
 		wp_localize_script( 'h3-mgmt-isotope', 'IsotopeParams', $script_params );
 
@@ -2364,11 +2697,12 @@ class H3_MGMT_Teams {
 	 * @access private
 	 */
 	private function save_dashboard( $race_id = 1 ) {
-		global $current_user, $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities;
+		global $current_user, $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities, $h3_mgmt_races;
 		get_currentuserinfo();
 
 		$language = $h3_mgmt_utilities->user_language();
 		$success = array();
+                $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 
 		$team_insert = array(
 			'race_id' => $race_id,
@@ -2411,9 +2745,12 @@ class H3_MGMT_Teams {
 
 		/* Add route to saveable values */
 		if ( isset( $_POST['route_id'] ) && ! empty( $_POST['route_id'] ) ) {
-			$team_insert['route_id'] = $_POST['route_id'];
-			$team_data_types[] = '%d';
-		}
+                    $team_insert['route_id'] = $_POST['route_id'];
+                    $team_data_types[] = '%d';
+		}elseif( $race_setting['startingpoint'] == 0){
+                    $team_insert['route_id'] = $race_setting['start_route_id'];
+                    $team_data_types[] = '%d';
+                }
 
 		if ( ! $team_id ) {
 
@@ -2608,6 +2945,7 @@ class H3_MGMT_Teams {
 	 * @access public
 	 */
 	public function __construct() {
+		add_shortcode( 'h3-team-dashboard-homework', array( $this, 'team_dashboard_homework_control' ) );
 		add_shortcode( 'h3-team-dashboard', array( $this, 'team_dashboard_control' ) );
 		add_shortcode( 'h3-team-homework', array( $this, 'team_homework' ) );
 		add_shortcode( 'h3-user-panel-link', array( $this, 'user_panel_link' ) );

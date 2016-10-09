@@ -64,6 +64,7 @@ class H3_MGMT {
 		$caps[] = 'h3_mgmt_edit_own_sponsors';
 		$caps[] = 'h3_mgmt_delete_teams';
 		$caps[] = 'h3_mgmt_delete_own_teams';
+                $caps[] = 'h3-mgmt-view-statistics';
 		return $caps;
 	}
 

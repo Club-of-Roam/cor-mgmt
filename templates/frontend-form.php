@@ -33,7 +33,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 		if ( isset( $field['row-class'] ) && ! empty( $field['row-class'] ) ) {
 			$output .= ' ' . $field['row-class'];
 		}
-		if ( isset( $field['label'] ) && ! empty( $field['label'] ) ) {
+		if ( isset( $field['label'] ) ) { // && ! empty( $field['label'] )
 			$output .= '">' .
 				'<label for="' . $field['id'] . '">' .
 					$field['label'];
@@ -278,6 +278,9 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 					'" value="' . $field['value'] . '" size="30"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
+				}
+				if( isset( $field['readonly'] ) && $field['readonly'] === true ) {
+					$output .= ' readonly';
 				}
 				$output .= ' />';
 			break;

@@ -61,6 +61,7 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js' );
 	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js' );
 	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js' ); 
+	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js' ); 
 	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js' ); 
 	wp_register_script( 'googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&sensor=false', true );
 	wp_register_script( 'google-jsapi','https://www.google.com/jsapi', true ); 
@@ -71,6 +72,8 @@ function h3_mgmt_enqueue() {
 	wp_register_style( 'h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', false, '1.1.1111111' );
 	wp_register_style( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', false, '1.1.23456' );
 	wp_register_style( 'h3-mgmt-xchange', H3_MGMT_RELPATH . 'css/h3-mgmt-xchange.css', false, '1.1' );
+	wp_register_style( 'h3-mgmt-ranking', H3_MGMT_RELPATH . 'css/h3-mgmt-ranking.css', false, '1.1' );
+	/* enqueue custom scripts */
 	/* enqueue custom scripts */
 	wp_enqueue_script( 'isotope' );
 	wp_enqueue_script( 'h3-mgmt-isotope' );
@@ -81,6 +84,7 @@ function h3_mgmt_enqueue() {
 	wp_enqueue_style( 'h3-mgmt-teams' );
 	wp_enqueue_style( 'h3-mgmt-ticker' );
 	wp_enqueue_style( 'h3-mgmt-xchange' );
+	wp_enqueue_style( 'h3-mgmt-ranking' );
 }
 add_action( 'wp_enqueue_scripts', 'h3_mgmt_enqueue' );
 
@@ -179,6 +183,7 @@ if ( is_admin() ) {
 	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-races.php' );
 	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-sponsors.php' );
 	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-teams.php' );
+	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-statistics.php' );
 
 	/* template classes (non-OOP templates are included on the spot) */
 	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-form.php' );
@@ -196,6 +201,7 @@ if ( is_admin() ) {
 	$GLOBALS['h3_mgmt_admin_races'] =& new H3_MGMT_Admin_Races();
 	$GLOBALS['h3_mgmt_admin_sponsors'] =& new H3_MGMT_Admin_Sponsors();
 	$GLOBALS['h3_mgmt_admin_teams'] =& new H3_MGMT_Admin_Teams();
+	$GLOBALS['h3_mgmt_admin_statistics'] =& new H3_MGMT_Admin_Statistics();
 }
 
 /**

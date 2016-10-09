@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -54,6 +55,20 @@ class H3_MGMT_Races {
 				"ORDER BY " .
 				$orderby . " " . $order, ARRAY_A
 		);
+		
+		foreach ( $races_query as $race_data ) {
+			$json_array =  json_decode( $race_data['setting'], true );
+			if( !empty($json_array) ){
+				$json_array_keys = array_keys($json_array);
+				$json_id = 0;
+				foreach( $json_array as $json ) {
+					$race_data[$json_array_keys[$json_id]] = $json;
+					$json_id = $json_id + 1;
+				}
+			}
+			$races_query_buff[] = $race_data;
+		}
+		$races_query = $races_query_buff;	
 
 		if ( 'all' !== $data ) {
 			$races = array();
@@ -76,6 +91,25 @@ class H3_MGMT_Races {
 	}
 
 	/**
+	 * Returns the active race
+	 *
+	 * @since 1.1
+	 * @access public
+	 */
+	public function get_active_race() {
+		global $wpdb;
+		
+		$active_id = $wpdb->get_results(
+								"SELECT id FROM " . $wpdb->prefix . "h3_mgmt_races " .
+								"WHERE active = 1" , ARRAY_A
+							);
+		
+		$active_id = $active_id[0]['id'];
+		
+		return $active_id;
+	}
+	
+	/**
 	 * Returns an array of raw route data
 	 *
 	 * @since 1.0
@@ -85,13 +119,13 @@ class H3_MGMT_Races {
 		global $wpdb;
 
 		$default_args = array(
-			'race' => 1,
+			'race' => 0,
 			'orderby' => 'name',
 			'order' => 'ASC'
 		);
 		extract( wp_parse_args( $args, $default_args ), EXTR_SKIP );
 
-		if ( is_numeric( $race ) ) {
+		if ( $race != 0 ) {
 			$where = 'WHERE race_id = ' . $race . ' ';
 		} else {
 			$where = '';
@@ -214,6 +248,58 @@ class H3_MGMT_Races {
 	}
 
 	/**
+	 * Returns the race setting as array
+	 *
+	 * @since 1.0
+	 * @access public
+	 */
+	public function get_race_setting( $id ) {
+		global $wpdb;
+		
+		$data = $wpdb->get_results(
+				"SELECT setting FROM " .
+				$wpdb->prefix . "h3_mgmt_races " .
+				"WHERE id = " . $id . " LIMIT 1", ARRAY_A
+			);
+		$data = $data[0];
+		
+		$json_array =  json_decode( $data['setting'], true );
+		
+		return $json_array;
+	}
+	
+	/**
+	 * Returns the race information texts in the language of the user as array
+	 *
+	 * @since 1.0
+	 * @access public
+	 */
+	public function get_race_information_text( $id ) {
+		global $wpdb, $h3_mgmt_utilities;
+		
+		$data = $wpdb->get_results(
+				"SELECT information_text FROM " .
+				$wpdb->prefix . "h3_mgmt_races " .
+				"WHERE id = " . $id . " LIMIT 1", ARRAY_A
+			);
+		$data = $data[0];
+		
+		$json_array =  json_decode( $data['information_text'], true );
+                
+		$x = 1;
+		$language = $h3_mgmt_utilities->user_language();
+		
+                if( isset( $json_array, $language) && $json_array != 0 ){
+                    while( array_key_exists( $x . $language, $json_array ) ){
+                            $information_text_array[$x] = $json_array[$x . $language];
+                            $x ++;
+                    }
+                }
+		
+		return $information_text_array;
+	}
+	
+	/**
 	 * Returns an array of route user account IDs
 	 *
 	 * @since 1.0
@@ -236,6 +322,25 @@ class H3_MGMT_Races {
 		}
 
 		return $users;
+	}
+	
+	/**
+	 * Returns the route user account ID
+	 *
+	 * @since 1.0
+	 * @access private
+	 */
+	public function get_route_account( $route_id = 2 ) {
+		global $wpdb;
+
+		$users_query = $wpdb->get_results(
+			"SELECT user_id FROM " .
+			$wpdb->prefix."h3_mgmt_routes " .
+			"WHERE id = " . $route_id,
+			ARRAY_A
+		);
+                
+            return $users_query[0]['user_id'];
 	}
 
 	/**
@@ -375,12 +480,21 @@ class H3_MGMT_Races {
 			$raw = $this->get_races( array( 'orderby' => $orderby, 'order' => $order ) );
 		} elseif ( 'route' === $data ) {
 			$raw = $this->get_routes( array( 'race' => 'all', 'orderby' => $orderby, 'order' => $order ) );
-		} else {
+		} elseif( 'route_account' === $data ){
+                        $route_users = get_users( array('orderby' => $orderby, 'order' => $order, 'role' => 'route', 'fields' => array(  $value, $label ) ) );
+                        $raw = array();
+                        foreach ( $route_users as $route_user ) {
+                            $raw[] = array(
+                                $value => $route_user->$value,
+                                $label => $route_user->$label
+                                );
+                            }
+                }else {
 			$raw = $this->get_stages( array( 'parent' => $parent, 'parent_type' => $parent_type, 'orderby' => $orderby, 'order' => $order, 'omit_start' => $omit_start ) );
 		}
 
 		$options = array();
-
+                
 		foreach ( $raw as $single ) {
 			$options[] = array(
 				'value' => $single[$value],
@@ -416,7 +530,11 @@ class H3_MGMT_Races {
 		), $atts ) );
 
 		$race_id = $race === 0 ? $event : $race;
-
+		
+		if( $race == 'active'){
+			$race_id = $this->get_active_race();
+		}
+		
 		list( $team_count, $complete_count, $incomplete_count, $rows ) = $h3_mgmt_teams->get_teams_meta( array(
 			'orderby' => 'id',
 			'order' => 'ASC',
@@ -498,7 +616,11 @@ class H3_MGMT_Races {
 			'animation' => 0,
 			'offset' => 0
 		), $atts ) );
-
+		
+		if( $race == 'active'){
+			$race = $this->get_active_race();
+		}
+		
 		list( $sponsors, $sponsor_counts, $donations ) = $h3_mgmt_sponsors->get_sponsors_meta( array( 'parent' => $race, 'exclude_unpaid' => false ) );
 		
 		$min = 0;
@@ -560,6 +682,10 @@ class H3_MGMT_Races {
 			'class' => ''
 		), $atts ) );
 
+		if( $race == 'active'){
+			$race = $this->get_active_race();
+		}
+		
 		$routes = $this->get_routes( array( 'race' => $race ) );
 		$stages_html = array();
 
@@ -597,6 +723,10 @@ class H3_MGMT_Races {
 			'class' => ''
 		), $atts ) );
 
+		if( $race == 'active'){
+			$race = $this->get_active_race();
+		}
+		
 		$output = '<div class="isotope-wrap"><h2 class="isotope-heading">' . __( 'Filter Routes', 'h3-mgmt' ) . '</h2>' .
 			'<ul class="isotope-link-list" id="stages-filters"><li><a href="#" data-filter="*">' . __( 'All', 'h3-mgmt' ) . '</a></li>';
 
@@ -660,8 +790,10 @@ class H3_MGMT_Races {
 	public function ranking_submission_control() {
 		global $current_user;
 
+		$race_id = $this->get_active_race();
+		
 		$output = '';
-		$users = $this->get_route_users( 4 );
+		$users = $this->get_route_users( $race_id );
 
 		if( in_array( $current_user->ID, $users ) ) {
 			$route_id = $this->get_route_by_user( $current_user->ID );
@@ -694,10 +826,15 @@ class H3_MGMT_Races {
 			'parent' => $route_id,
 			'parent_type' => 'route'
 		));
-
+                
+                $race_id = $this->get_route_parent( $route_id );
+                $race_settings = $this->get_race_setting( $race_id );
+                
 		$stage_rank_string = 'rank_stage_' . $stage_number;
 		$extra_string = 'extra_stage_' . $stage_number;
-
+		$amount_extra_string = 'amount_extra_stage_' . $stage_number;
+		$vary_extra_string = 'vary_extra_stage_' . $stage_number;
+                
 		$output = '';
 
 		if( ! empty( $message ) ) {
@@ -783,22 +920,56 @@ class H3_MGMT_Races {
 			}
 			
 			if ( $stage_number < 6 ) {
-				$output .= '</select><br />' .
-						'<input type="checkbox" name="extra-' . $team['id'] . '" id="extra-' . $team['id'] . '"';
-				if( 1 == $team[$extra_string] ) {
-					$output .= ' checked="checked"';
-				}
-				$output .= ' />' .
-						'<label style="float: left;">' . __( 'Extra Point ?', 'h3-mgmt' ) . '</label>' .
-						'<hr> </div>';
+				$output .= '</select><br />';
+                                
+				if( !$race_settings['one_extra_point'] == NULL && !$race_settings['one_extra_point'] == 0 ){
+                                    $output .=  '<input type="checkbox" name="one_extra-' . $team['id'] . '" id="one_extra-' . $team['id'] . '"';
+                                    if( 1 == $team[$extra_string] ) {
+                                            $output .= ' checked="checked"';
+                                    }
+                                    $output .= ' />' .
+                                                    '<label style="float: left;">' . __( 'Extra point?', 'h3-mgmt' ) . '</label><br style="clear: left">';
+                                }
+                                
+                                if( !$race_settings['amount_extra_point'] == NULL && !$race_settings['one_extra_point'] == 0 ){
+                                    $output .=  '<input type="checkbox" name="amount_extra-' . $team['id'] . '" id="amount_extra-' . $team['id'] . '"';
+                                    if( 1 == $team[$amount_extra_string] ) {
+                                            $output .= ' checked="checked"';
+                                    }
+                                    $output .= ' />' .
+                                                    '<label style="float: left;">'.$race_settings['extra_point_amount'].' '. __( 'Extra points?', 'h3-mgmt' ) . '</label><br style="clear: left">';
+                                }
+                                
+				$output .= '<hr> </div>';
 			} else {
-				$output .= '</select><br />' .
-						'<label >' . __( 'Extra Point ?', 'h3-mgmt' ) . '</label>' . 
-						'<input type="text" name="extra-' . $team['id'] . '" id="extra-' . $team['id'] . '"';
-				$output .= ' value="' . $team[$extra_string] . '" size="2"';
-		
-				$output .= ' />' .
-						'<hr> </div>';
+				$output .= '</select><br />';
+                                
+                                if( !$race_settings['one_extra_point'] == NULL && !$race_settings['one_extra_point'] == 0 ){
+                                    $output .=  '<input type="checkbox" name="one_extra-' . $team['id'] . '" id="one_extra-' . $team['id'] . '"';
+                                    if( 1 == $team[$extra_string] ) {
+                                            $output .= ' checked="checked"';
+                                    }
+                                    $output .= ' />' .
+                                                    '<label style="float: left;">' . __( 'Extra point?', 'h3-mgmt' ) . '</label><br style="clear: left">';
+                                }
+                                
+                                if( !$race_settings['amount_extra_point'] == NULL && !$race_settings['one_extra_point'] == 0 ){
+                                    $output .=  '<input type="checkbox" name="amount_extra-' . $team['id'] . '" id="amount_extra-' . $team['id'] . '"';
+                                    if( 1 == $team[$amount_extra_string] ) {
+                                            $output .= ' checked="checked"';
+                                    }
+                                    $output .= ' />' .
+                                                    '<label style="float: left;">'.$race_settings['extra_point_amount'].' '. __( 'Extra points?', 'h3-mgmt' ) . '</label><br style="clear: left">';
+                                }
+                                
+                                if( !$race_settings['vary_extra_point_field'] == NULL && !$race_settings['vary_extra_point_field'] == 0 ){
+                                    $output .= 	'<label >' . __( 'Which extra point amount?', 'h3-mgmt' ) . '</label>' . 
+                                                    '<input type="text" name="vary_extra-' . $team['id'] . '" id="vary_extra-' . $team['id'] . '"';
+                                    $output .= ' value="' . $team[$vary_extra_string] . '" size="2"';
+
+                                    $output .= ' />';
+                                }
+				$output .= '<hr> </div>';
 			}
 		}
 
@@ -818,6 +989,9 @@ class H3_MGMT_Races {
 	public function save_ranking() {
 		global $wpdb, $h3_mgmt_teams;
 
+                $race_id = $this->get_route_parent( $_POST['route'] );
+                $race_settings = $this->get_race_setting( $race_id );
+                
 		$message = _x( 'Ranking successfully saved!', 'Ranking Submission', 'h3-mgmt' );
 
 		list( $team_count, $complete_count, $incomplete_count, $teams ) = $h3_mgmt_teams->get_teams_meta(
@@ -831,51 +1005,86 @@ class H3_MGMT_Races {
 		$stage = $_POST['stage'];
 		$stage_rank_string = 'rank_stage_' . $_POST['stage'];
 		$extra_string = 'extra_stage_' . $_POST['stage'];
-
+		$amount_extra_string = 'amount_extra_stage_' . $_POST['stage'];
+		$vary_extra_string = 'vary_extra_stage_' . $_POST['stage'];
+               
 		foreach( $teams as $team ) {
 			$rank_value_string = 'rank-' . $team['id'];
-			$extra_value_string = 'extra-' . $team['id'];
-
+			$one_extra_value_string = 'one_extra-' . $team['id'];
+			$amount_extra_value_string = 'amount_extra-' . $team['id'];
+			$vary_extra_value_string = 'vary_extra-' . $team['id'];
+                        $bit_amount_extra_value = 0;
+                        
 			if( $stage < 6 ) {
-				if( isset( $_POST[$extra_value_string] ) ) {
-					$extra_value = 1;
+				if( isset( $_POST[$one_extra_value_string] ) ) {
+					$one_extra_value = 1;
 				} else {
-					$extra_value = 0;
+					$one_extra_value = 0;
 				}
-			} else {
-				if( isset( $_POST[$extra_value_string] ) ) {
-					$extra_value = $_POST[$extra_value_string];
+				if( isset( $_POST[$amount_extra_value_string] ) ) {
+					$amount_extra_value = $race_settings['extra_point_amount'];
+                                        $bit_amount_extra_value = 1;
 				} else {
-					$extra_value = 0;
+					$amount_extra_value = 0;
+				}
+                                $vary_extra_value = 0;
+			} else {
+				if( isset( $_POST[$one_extra_value_string] ) ) {
+					$one_extra_value = 1;
+				} else {
+					$one_extra_value = 0;
+				}
+				if( isset( $_POST[$amount_extra_value_string] ) ) {
+					$amount_extra_value = $race_settings['extra_point_amount'];
+                                        $bit_amount_extra_value = 1;
+				} else {
+					$amount_extra_value = 0;
+                                        $bit_amount_extra_value = 0;
+				}
+				if( isset( $_POST[$vary_extra_value_string] ) ) {
+					$vary_extra_value = $_POST[$vary_extra_value_string];
+				} else {
+					$vary_extra_value = 0;
 				}
 			}
 
 			$points = 0;
-
+                        
 			for( $i = 1; $i <= 6; $i++ ) {
 				$srs = 'rank_stage_' . $i;
 				$ses = 'extra_stage_' . $i;
+				$amount = 'amount_extra_stage_' . $i;
+				$vary = 'vary_extra_stage_' . $i;
+                                
 				if( $_POST['stage'] != $i ) {
 					$temp_pts = $this->points_conversion( $team[$srs] );
 					if( 1 == $team[$ses] ) {
 						$points = $points + 1;
 					}
+					if( 1 == $team[$amount] ) {
+						$points = $points + $race_settings['extra_point_amount'];
+					}
+					if( 1 == $team[$vary] ) {
+						$points = $points + $vary_extra_value_string;
+					}
 				} else {
 					$temp_pts = $this->points_conversion( $_POST[$rank_value_string] );
-					$points = $points + $extra_value;
+					$points = $points + $one_extra_value + $vary_extra_value + $amount_extra_value;
 				}
 				$points = $points + $temp_pts;
 			}
-
+                        
 			$wpdb->update(
 				$wpdb->prefix . 'h3_mgmt_teams',
 				array(
-					$stage_rank_string => $_POST[$rank_value_string],
-					$extra_string => $extra_value,
-					'total_points' => $points
+                                    $stage_rank_string => $_POST[$rank_value_string],
+                                    $extra_string => $one_extra_value,
+                                    $amount_extra_string => $bit_amount_extra_value,
+                                    $vary_extra_string => $vary_extra_value,
+                                    'total_points' => $points
 				),
 				array( 'id' => $team['id'] ),
-				array( '%d', '%d', '%d' ),
+				array( '%d', '%d', '%d', '%d', '%d' ),
 				array( '%d' )
 			);
 
@@ -893,7 +1102,7 @@ class H3_MGMT_Races {
 	 * @access public
 	 */
 	public function ranking_table( $atts='' ) {
-		global $wpdb, $h3_mgmt_teams, $h3_mgmt_utilities;
+		global $wpdb, $h3_mgmt_teams, $h3_mgmt_utilities, $h3_mgmt_races, $information_text;
 
 		extract( shortcode_atts( array(
 			'top' => 0,
@@ -903,6 +1112,22 @@ class H3_MGMT_Races {
 			'show_stages' => 1,
 			'show_nav' => 1
 		), $atts ) );
+		
+		if( $race == 'active'){
+			$race = $this->get_active_race();
+		}
+		
+		$information_text = $h3_mgmt_races->get_race_information_text( $race );
+		
+		$race_setting = $h3_mgmt_races->get_race_setting( $race );
+		//if registration still isn't open return error message
+		if( $race_setting['status'] < 3 ){
+			$output .= '<p class="message" style="text-align: center;">' .
+							stripcslashes( $information_text[26] ) .
+						'</p>';
+			$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
+			return $output;	
+		}
 		
 		if ( isset( $_GET['ranking_route'] ) && $race === $this->get_route_parent( $_GET['ranking_route'] ) ) {
 			$parent = $_GET['ranking_route'];
@@ -942,7 +1167,7 @@ class H3_MGMT_Races {
 			$max = $top;
 		}
 
-		$table_head = '<tr class="trow-alt-1">' .
+		$table_head = '<tr class="trow-alt-1" style="background: #919191; color: black;">' .
 				'<th class="tal">' . _x( 'Team', 'Ranking', 'h3-mgmt' ) . '</th>' .
 				'<th>' . _x( 'Total Rank', 'Ranking', 'h3-mgmt' ) . '</th>' .
 				'<th>' . _x( 'Route Rank', 'Ranking', 'h3-mgmt' ) . '</th>' .
@@ -1013,25 +1238,22 @@ class H3_MGMT_Races {
 				5 => '',
 				6 => ''
 			);
-
-			if( $team['extra_stage_1'] == 1 ) {
-				$extra[1] = ' (+1)';
-			}
-			if( $team['extra_stage_2'] == 1 ) {
-				$extra[2] = ' (+1)';
-			}
-			if( $team['extra_stage_3'] == 1 ) {
-				$extra[3] = ' (+1)';
-			}
-			if( $team['extra_stage_4'] == 1 ) {
-				$extra[4] = ' (+1)';
-			}
-			if( $team['extra_stage_5'] == 1 ) {
-				$extra[5] = ' (+1)';
-			}
-			if( $team['extra_stage_6'] > 0 ) {
-				$extra[6] = ' (+' .$team['extra_stage_6']. ')';
-			}
+                        
+                        for ($i = 1; $i <= 6; $i++) {
+                            $amount_extra_points = 0;
+                            if( $team['extra_stage_'.$i] == 1 ) {
+                                $amount_extra_points += 1;
+                                $extra[$i] = ' (+'.$amount_extra_points.')';
+                            }
+                            if( $team['amount_extra_stage_'.$i] == 1 ) {
+                                $amount_extra_points += $race_setting['extra_point_amount'];
+                                $extra[$i] = ' (+'.$amount_extra_points.')';
+                            }
+                            if( $team['vary_extra_stage_'.$i] > 0 ) {
+                                $amount_extra_points += $team['vary_extra_stage_'.$i];
+                                $extra[$i] = ' (+'.$amount_extra_points.')';
+                            }
+                        }
 
 			if( $previous['total'] > $team['total_points'] ) {
 				$current_rank['total'] = $current_rank['total'] + $skip_rank['total'];
@@ -1046,11 +1268,11 @@ class H3_MGMT_Races {
 			} else {
 				$skip_rank[$team['route_id']] = $skip_rank[$team['route_id']] + 1;
 			}
-
-			$flip_val = $flipper ? '1' : '2';
+                        
+                        $flip_val = $flipper ? '1' : '2';
 			$output .= '<tr class="trow-alt-' . $flip_val . '">' .
-				'<th><span style="text-shadow: 0 0 0.2em #696969, 0 0 0.2em #696969; font-weight:700;border-bottom: 2px solid #' . $this->get_route_color( $team['route_id'] ) . ';">' .
-						'<a class="ranking_link" style="color:#' . $this->get_route_color( $team['route_id'] ) . ';" class="inkognito-link" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="' . get_site_url() . __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team['id'] . '">' .
+				'<th class="first_tac" style="border: none;"><span style="border-bottom: 2px solid #' . $this->get_route_color( $team['route_id'] ) . ';">' .
+						'<a class="ranking_link" style="color:black;" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="' . get_site_url() . __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team['id'] . '">' .
 							$team['team_name'] .
 						'</a>' .
 					'</span>' .

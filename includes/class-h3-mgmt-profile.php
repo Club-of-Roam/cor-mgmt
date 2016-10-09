@@ -18,7 +18,7 @@ class H3_MGMT_Profile {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function create_extra_profile_fields() {
+	function create_extra_profile_fields() {
 
 		$fields = array(
 			array(
@@ -39,6 +39,69 @@ class H3_MGMT_Profile {
 				'label' => _x( 'Date of Birth', 'User Profile', 'h3-mgmt' ),
 				'id' => 'birthday',
 				'type' => 'date'
+			),
+			array (
+				'label'	=> _x( 'Shirt Size', 'Team Profile Form', 'h3-mgmt' ),
+				'id'	=> 'shirt_size',
+				'type'	=> 'select',
+				'options' => array(
+					0 => array(
+						'value' => 0,
+						'label' => _x( 'Please select your size...', 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'ms',
+						'label' => _x( "Unisex S", 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'mm',
+						'label' => _x( "Unisex M", 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'ml',
+						'label' => _x( "Unisex L", 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'mx',
+						'label' => _x( "Unisex XL", 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'gs',
+						'label' => _x( 'Slimfit S', 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'gm',
+						'label' => _x( 'Slimfit M', 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'gl',
+						'label' => _x( 'Slimfit L', 'Team Profile Form', 'h3-mgmt' )
+					)
+				)
+			),
+			array (
+				'label'	=> _x( 'Could we give our partner Ortel Mobile your personal Information?', 'Team Profile Form', 'h3-mgmt' ),
+				'id'	=> 'public_mobile_inf',
+				'type'	=> 'select',
+				'options' => array(
+					0 => array(
+						'value' => 0,
+						'label' => _x( 'Please select if it is ok or not...', 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'yes',
+						'label' => _x( "YES, give them my personal information", 'Team Profile Form', 'h3-mgmt' )
+					),
+					array(
+						'value' => 'no',
+						'label' => _x( "Please not (So you do not get your sponsored sim-card", 'Team Profile Form', 'h3-mgmt' )
+					)					
+				)
+                        ),
+			array (
+				'label'	=> _x( 'Address for Ortel', 'Team Profile Form', 'h3-mgmt' ),
+                                'id'	=> 'addressMobile',
+				'type'	=> 'textarea'
 			),
 			array(
 				'label' => _x( 'Avatar', 'User Profile', 'h3-mgmt' ),

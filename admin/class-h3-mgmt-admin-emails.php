@@ -25,142 +25,142 @@ class H3_MGMT_Admin_Emails {
 	 */
 	public function mail_form() {
 
-		$url = 'admin.php?page=h3-mgmt-emails';
-		$form_action = $url . '&amp;todo=send';
-		$sent = false;
+            global $wpdb, $h3_mgmt_races;
+            
+            $url = 'admin.php?page=h3-mgmt-emails';
+            $form_action = $url . '&amp;todo=send';
+            $sent = false;
 
-		if( isset( $_GET['todo'] ) && $_GET['todo'] == 'send' ) {
-			$sent = $this->mail_send();
-		}
+            if( isset( $_GET['todo'] ) && $_GET['todo'] == 'send' ) {
+                    $sent = $this->mail_send();
+            }
 
-		$messages = array();
+            $messages = array();
 
-		if ( $sent ) {
-			$messages[] = array(
-				'type' => 'message',
-				'message' => sprintf(
-						_x( 'The Email titled &quot;%s&quot; has been successfully sent.', 'Admin Email Interface', 'h3-mgmt' ),
-						$_POST['subject']
-					)
-				);
-		}
+            if ( $sent ) {
+                    $messages[] = array(
+                            'type' => 'message',
+                            'message' => sprintf(
+                                            _x( 'The Email titled &quot;%s&quot; has been successfully sent.', 'Admin Email Interface', 'h3-mgmt' ),
+                                            $_POST['subject']
+                                    )
+                            );
+            }
 
-		if( isset( $_GET['email'] ) ) {
-			$receipient_field = array(
-				'type' => 'text',
-				'label' => _x( 'Receipient', 'Admin Email Interface', 'h3-mgmt' ),
-				'id' => 'receipient',
-				'disabled' => true,
-				'value' => $_GET['email'],
-				'desc' => _x( 'You are writing to a single user.', 'Admin Email Interface', 'h3-mgmt' )
-			);
-		} else {
-			$receipients = array(
-				array(
-					'label' => _x( 'Testmail to yourself', 'Admin Email Interface', 'h3-mgmt' ),
-					'value' => 'self'
-				),
-				array(
-					'label' => _x( 'All HHH Users', 'Admin Email Interface', 'h3-mgmt' ),
-					'value' => 'all'
-				),
-				array(
-					'label' => _x( 'All participants of Tramprennen 2012', 'Admin Email Interface', 'h3-mgmt' ),
-					'value' => 'race-1'
-				),
-				array(
-					'label' => _x( 'All participants of Tramprennen 2013', 'Admin Email Interface', 'h3-mgmt' ),
-					'value' => 'race-2'
-				),
-				array(
-					'label' => _x( 'All participants of Tramprennen 2014', 'Admin Email Interface', 'h3-mgmt' ),
-					'value' => 'race-3'
-				),
-				array(
-					'label' => _x( 'All participants of Tramprennen 2015', 'Admin Email Interface', 'h3-mgmt' ),
-					'value' => 'race-4'
-				)
-			);
-			$receipient_field = array(
-				'type' => 'select',
-				'label' => _x( 'Receipient', 'Admin Email Interface', 'h3-mgmt' ),
-				'id' => 'receipient',
-				'options' => $receipients,
-				'desc' => _x( 'Select who receives the email. Choose the &quot;Testmail to yourself&quot; option, to see how it will look in your own inbox.', 'Admin Email Interface', 'h3-mgmt' )
-			);
-		}
+            if( isset( $_GET['email'] ) ) {
+                    $receipient_field = array(
+                            'type' => 'text',
+                            'label' => _x( 'Receipient', 'Admin Email Interface', 'h3-mgmt' ),
+                            'id' => 'receipient',
+                            'disabled' => true,
+                            'value' => $_GET['email'],
+                            'desc' => _x( 'You are writing to a single user.', 'Admin Email Interface', 'h3-mgmt' )
+                    );
+            } else {
 
-		$metaboxes = array(
-			array(
-				'title' => _x( 'E-Mail Metadata', 'Admin Email Interface', 'h3-mgmt' ),
-				'fields' => array(
-					$receipient_field,
-					array(
-						'type' => 'select',
-						'label' => _x( 'Sender', 'Admin Email Interface', 'h3-mgmt' ),
-						'id' => 'sender',
-						'options' => array(
-							array(
-								'label' => _x( 'My own email address', 'Admin Email Interface', 'h3-mgmt' ),
-								'value' => 'own'
-							),
-							array(
-								'label' => 'no-reply@tramprennen.org',
-								'value' => 'nr'
-							)
-						),
-						'desc' => _x( 'Send the email either from your personal email address or select the generic &quot;no-reply&quot;.', 'Admin Email Interface', 'h3-mgmt' )
-					)
-				)
-			),
-			array(
-				'title' => _x( 'E-Mail Metadata', 'Admin Email Interface', 'h3-mgmt' ),
-				'fields' => array(
-					array(
-						'type' => 'text',
-						'label' =>  _x( 'Subject', 'Admin Email Interface', 'h3-mgmt' ),
-						'id' => 'subject',
-						'desc' => _x( 'The email&apos;s subject line', 'Admin Email Interface', 'h3-mgmt' )
-					),
-					array(
-						'type' => 'textarea',
-						'label' =>  _x( 'Message', 'Admin Email Interface', 'h3-mgmt' ),
-						'id' => 'message',
-						'desc' => _x( 'Message Body', 'Admin Email Interface', 'h3-mgmt' )
-					)
-				)
-			)
-		);
+                $receipients = array(
+                    array(
+                            'label' => _x( 'Testmail to yourself', 'Admin Email Interface', 'h3-mgmt' ),
+                            'value' => 'self'
+                    ),
+                    array(
+                            'label' => _x( 'All HHH Users', 'Admin Email Interface', 'h3-mgmt' ),
+                            'value' => 'all'
+                    )
+                );
+                
+                $races = $h3_mgmt_races->get_races( array( 'orderby' => 'id', 'race' => 'all' ) );
+                
+                
+                foreach( $races as $race){
+                    $receipients[] = array(
+                                        'label' => _x( 'All participants of "'.  $race['name'] .'"', 'Admin Email Interface', 'h3-mgmt' ),
+                                        'value' => ('race-'. $race['id'])
+                                    );
+                }
+                
+                $receipient_field = array(
+                        'type' => 'select',
+                        'label' => _x( 'Receipient', 'Admin Email Interface', 'h3-mgmt' ),
+                        'id' => 'receipient',
+                        'value' => 'race-'.$h3_mgmt_races->get_active_race(),
+                        'options' => $receipients,
+                        'desc' => _x( 'Select who receives the email. Choose the &quot;Testmail to yourself&quot; option, to see how it will look in your own inbox.', 'Admin Email Interface', 'h3-mgmt' )
+                );
+            }
 
-		$page_args = array(
-			'echo' => true,
-			'icon' => 'icon-mails',
-			'title' => _x( 'Send an email', 'Admin Email Interface', 'h3-mgmt' ),
-			'url' => $url,
-			'messages' => $messages
-		);
-		$the_page = new H3_MGMT_Admin_Page( $page_args );
+            $metaboxes = array(
+                    array(
+                            'title' => _x( 'E-Mail Metadata', 'Admin Email Interface', 'h3-mgmt' ),
+                            'fields' => array(
+                                    $receipient_field,
+                                    array(
+                                            'type' => 'select',
+                                            'label' => _x( 'Sender', 'Admin Email Interface', 'h3-mgmt' ),
+                                            'id' => 'sender',
+                                            'value' => 'nr',
+                                            'options' => array(
+                                                    array(
+                                                            'label' => _x( 'My own email address', 'Admin Email Interface', 'h3-mgmt' ),
+                                                            'value' => 'own'
+                                                    ),
+                                                    array(
+                                                            'label' => 'no-reply@tramprennen.org',
+                                                            'value' => 'nr'
+                                                    )
+                                            ),
+                                            'desc' => _x( 'Send the email either from your personal email address or select the generic &quot;no-reply&quot;.', 'Admin Email Interface', 'h3-mgmt' )
+                                    )
+                            )
+                    ),
+                    array(
+                            'title' => _x( 'E-Mail Metadata', 'Admin Email Interface', 'h3-mgmt' ),
+                            'fields' => array(
+                                    array(
+                                            'type' => 'text',
+                                            'label' =>  _x( 'Subject', 'Admin Email Interface', 'h3-mgmt' ),
+                                            'id' => 'subject',
+                                            'desc' => _x( 'The email&apos;s subject line', 'Admin Email Interface', 'h3-mgmt' )
+                                    ),
+                                    array(
+                                            'type' => 'textarea',
+                                            'label' =>  _x( 'Message', 'Admin Email Interface', 'h3-mgmt' ),
+                                            'id' => 'message',
+                                            'desc' => _x( 'Message Body', 'Admin Email Interface', 'h3-mgmt' )
+                                    )
+                            )
+                    )
+            );
 
-		$form_args = array(
-			'echo' => true,
-			'form' => true,
-			'method' => 'post',
-			'metaboxes' => true,
-			'js' => false,
-			'url' => $url,
-			'action' => $form_action,
-			'id' => $id,
-			'button' => __( 'Send E-Mail!', 'h3-mgmt' ),
-			'top_button' => true,
-			'back' => true,
-			'back_url' => $url,
-			'fields' => $metaboxes
-		);
-		$the_form = new H3_MGMT_Admin_Form( $form_args );
+            $page_args = array(
+                    'echo' => true,
+                    'icon' => 'icon-mails',
+                    'title' => _x( 'Send an email', 'Admin Email Interface', 'h3-mgmt' ),
+                    'url' => $url,
+                    'messages' => $messages
+            );
+            $the_page = new H3_MGMT_Admin_Page( $page_args );
 
-		$the_page->top();
-		$the_form->output();
-		$the_page->bottom();
+            $form_args = array(
+                    'echo' => true,
+                    'form' => true,
+                    'method' => 'post',
+                    'metaboxes' => true,
+                    'js' => false,
+                    'url' => $url,
+                    'action' => $form_action,
+                    'id' => $id,
+                    'button' => __( 'Send E-Mail!', 'h3-mgmt' ),
+                    'top_button' => true,
+                    'back' => true,
+                    'back_url' => $url,
+                    'fields' => $metaboxes
+            );
+            $the_form = new H3_MGMT_Admin_Form( $form_args );
+
+            $the_page->top();
+            $the_form->output();
+            $the_page->bottom();
 	}
 
 	/**

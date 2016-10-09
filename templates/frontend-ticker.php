@@ -50,7 +50,7 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 						'<p class="ticker-message-time" style="font-size:1.2em">' . $time . '</p>';
 						if( ! empty( $message['img_path'] ) ) {
 							$message['img_path'] = stripslashes($message['img_path']);
-							$output .= '<iframe max-width="560" max-height="315" src="https://www.youtube.com/embed/' .$message['img_path']. '" frameborder="0" allowfullscreen></iframe>';
+							$output .= '<div class="ticker-youtube"> <iframe width="560" height="315" src="https://www.youtube.com/embed/' .$message['img_path']. '" frameborder="0" allowfullscreen></iframe></div>';
 						}
 						if( ! empty( $message['message'] ) ) {    //------ wird für die marker info genutzt
 							$output .= '<p class="the-message">' . $message['message'] . '</p>';
@@ -71,13 +71,6 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 							src="https://www.google.com/maps/embed/v1/place?q=' .$message['img_path']. 
 							'&zoom=10&key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE"></iframe>
 							';
-							// $output .= //'<table><tr><td style="text-align:center;">' .
-								// '<a href="' .
-										// $message['img_path'] .
-									// '" title="' . __( 'Full-size Ticker Image', 'h3-mgmt' ) . '">' .// class="shutterset"
-										// '<img title="Pic sent on ' . $message['date'] . '" src="' . $message['img_path'] . '" />' .
-								// '</a>';// .
-								// '</td></tr></table>';
 						}
 						if( ! empty( $message['message'] ) ) {    //------ wird für die marker info genutzt
 							$output .= '<p class="the-message">' . $message['message'] . '</p>';
@@ -93,16 +86,15 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 						'<p class="ticker-message-time" style="font-size:1.2em">' . $time . '</p>';
 						
 						$img_url = strstr($message['img_path'], 'wp-content');
-						
-						if( ! empty( $message['img_path'] ) && file_exists($img_url) ) { // && file_exists ( $message['img_path'] )
+                                                
+						if( ! empty( $message['img_path'] ) && file_exists($img_url) && filesize($img_url) > 0 ) {
 										
-							$output .= //'<table><tr><td style="text-align:center;">' .
-								'<a href="' .
+							$output .= 
+								'<a class="ticker-message-pic" href="' .
 										get_site_url().'/'.$img_url .
-									'" title="' . __( 'Full-size Ticker Image', 'h3-mgmt' ) . '">' .// class="shutterset"
-										'<img style="display: block; margin-left: auto; margin-right: auto;" title="Pic sent on ' . $message['date'] . '" src="' . get_site_url().'/'.$img_url . '" />' .
-								'</a>';// .
-								//'</td></tr></table>';
+									'" title="' . __( 'Full-size Ticker Image', 'h3-mgmt' ) . '">' .// class="shutterset" 
+										'<img class="ticker-message-pic" title="Pic sent on ' . $message['date'] . '" src="' . get_site_url().'/'.$img_url . '" />' .
+								'</a>';
 								
 						}
 						if( ! empty( $message['message'] ) ) {
