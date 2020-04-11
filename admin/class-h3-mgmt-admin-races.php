@@ -231,52 +231,76 @@ class H3_MGMT_Admin_Races {
                             
                                 if( $_GET['id'] != NULL ){
                                     $setting_datbase = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-                                    $setting = array(   'status' => $_POST['status'],
-                                                        'startingpoint' => $_POST['startingpoint'],
-                                                        'liveticker' => $_POST['liveticker'],
-                                                        'donation' => $_POST['donation'],
-                                                        'liveticker_front' => $_POST['liveticker_front'],
-                                                        'kind_of_donation_tool' => $_POST['kind_of_donation_tool'],
-                                                        'dis_shirt_size' => $setting_datbase['dis_shirt_size'],
-                                                        'dis_mobile_inf' => $setting_datbase['dis_mobile_inf'],
-                                                        'dis_waiver' => $setting_datbase['dis_waiver'],
-                                                        'dis_fee' => $setting_datbase['dis_fee'],
-                                                        'start_route_id' => $_POST['start_route_id'],
-                                                        'num_teammember' => $setting_datbase['num_teammember'],
-                                                        'betterplace_redirect_link' => $_POST['betterplace_redirect_link'],
-                                                        'show_donation_amount' => $_POST['show_donation_amount'],
-                                                        'one_extra_point' => $_POST['one_extra_point'],
-                                                        'amount_extra_point' => $_POST['amount_extra_point'],
-                                                        'extra_point_amount' => $_POST['extra_point_amount'],
-                                                        'vary_extra_point_field' => $_POST['vary_extra_point_field']
+                                    $setting = array(   'status'                        => $_POST['status'],
+                                                        'startingpoint'                 => $_POST['startingpoint'],
+                                                        'liveticker'                    => $_POST['liveticker'],
+                                                        'donation'                      => $_POST['donation'],
+                                                        'liveticker_front'              => $_POST['liveticker_front'],
+                                                        'kind_of_donation_tool'         => $_POST['kind_of_donation_tool'],
+                                                        'dis_shirt_size'                => $setting_datbase['dis_shirt_size'],
+                                                        'dis_mobile_inf'                => $setting_datbase['dis_mobile_inf'],
+                                                        'dis_waiver'                    => $setting_datbase['dis_waiver'],
+                                                        'dis_fee'                       => $setting_datbase['dis_fee'],
+                                                        'start_route_id'                => $_POST['start_route_id'],
+                                                        'num_teammember'                => $setting_datbase['num_teammember'],
+                                                        'num_teammember_min'            => $setting_datbase['num_teammember_min'],
+                                                        'betterplace_redirect_link'     => $_POST['betterplace_redirect_link'],
+                                                        'show_donation_amount'          => $_POST['show_donation_amount'],
+                                                        'one_extra_point'               => $_POST['one_extra_point'],
+                                                        'amount_extra_point'            => $_POST['amount_extra_point'],
+                                                        'extra_point_amount'            => $_POST['extra_point_amount'],
+                                                        'vary_extra_point_field'        => $_POST['vary_extra_point_field'],
+                                                        'donation_link_link'            => $_POST['donation_link_link'],
+                                                        'question_1_invisible'          => $_POST['question_1_invisible'],
+                                                        'question_2_invisible'          => $_POST['question_2_invisible'],
+                                                        'question_3_invisible'          => $_POST['question_3_invisible'],
+                                                        'question_4_invisible'          => $_POST['question_4_invisible'],
+                                                        'question_5_invisible'          => $_POST['question_5_invisible'],
+                                                        'team_overview_link'            => $_POST['team_overview_link']
                                                     );
                                 }else{
-                                    if( intval( $_POST['num_teammember'] ) < 2 ){
-                                       $num_teammember = 2; 
+                                    if( intval( $_POST['num_teammember'] ) < 1 ){
+                                       $num_teammember = 1; 
                                     }elseif( intval( $_POST['num_teammember'] ) > 100 ){
                                         $num_teammember = 100;
                                     }else{
                                         $num_teammember = $_POST['num_teammember'];
                                     }
+                                    
+                                    if( intval( $_POST['num_teammember_min'] ) < 1 ){
+                                       $num_teammember_min = 1; 
+                                    }elseif( intval( $_POST['num_teammember_min'] ) > 100 ){
+                                        $num_teammember_min = 100;
+                                    }else{
+                                        $num_teammember_min = $_POST['num_teammember_min'];
+                                    }
                                      
-                                    $setting = array(   'status' => $_POST['status'],
-                                                        'startingpoint' => $_POST['startingpoint'],
-                                                        'liveticker' => $_POST['liveticker'],
-                                                        'donation' => $_POST['donation'],
-                                                        'liveticker_front' => $_POST['liveticker_front'],
-                                                        'kind_of_donation_tool' => $_POST['kind_of_donation_tool'],
-                                                        'dis_shirt_size' => $_POST['dis_shirt_size'],
-                                                        'dis_mobile_inf' => $_POST['dis_mobile_inf'],
-                                                        'dis_waiver' => $_POST['dis_waiver'],
-                                                        'dis_fee' => $_POST['dis_fee'],
-                                                        'start_route_id' => $_POST['start_route_id'],
-                                                        'num_teammember' => $num_teammember,
-                                                        'betterplace_redirect_link' => $_POST['betterplace_redirect_link'],
-                                                        'show_donation_amount' => $_POST['show_donation_amount'],
-                                                        'one_extra_point' => $_POST['one_extra_point'],
-                                                        'amount_extra_point' => $_POST['amount_extra_point'],
-                                                        'extra_point_amount' => $_POST['extra_point_amount'],
-                                                        'vary_extra_point_field' => $_POST['vary_extra_point_field']
+                                    $setting = array(   'status'                        => $_POST['status'],
+                                                        'startingpoint'                 => $_POST['startingpoint'],
+                                                        'liveticker'                    => $_POST['liveticker'],
+                                                        'donation'                      => $_POST['donation'],
+                                                        'liveticker_front'              => $_POST['liveticker_front'],
+                                                        'kind_of_donation_tool'         => $_POST['kind_of_donation_tool'],
+                                                        'dis_shirt_size'                => $_POST['dis_shirt_size'],
+                                                        'dis_mobile_inf'                => $_POST['dis_mobile_inf'],
+                                                        'dis_waiver'                    => $_POST['dis_waiver'],
+                                                        'dis_fee'                       => $_POST['dis_fee'],
+                                                        'start_route_id'                => $_POST['start_route_id'],
+                                                        'num_teammember'                => $num_teammember,
+                                                        'num_teammember_min'            => $num_teammember_min,
+                                                        'betterplace_redirect_link'     => $_POST['betterplace_redirect_link'],
+                                                        'show_donation_amount'          => $_POST['show_donation_amount'],
+                                                        'one_extra_point'               => $_POST['one_extra_point'],
+                                                        'amount_extra_point'            => $_POST['amount_extra_point'],
+                                                        'extra_point_amount'            => $_POST['extra_point_amount'],
+                                                        'vary_extra_point_field'        => $_POST['vary_extra_point_field'],
+                                                        'donation_link_link'            => $_POST['donation_link_link'],
+                                                        'question_1_invisible'          => $_POST['question_1_invisible'],
+                                                        'question_2_invisible'          => $_POST['question_2_invisible'],
+                                                        'question_3_invisible'          => $_POST['question_3_invisible'],
+                                                        'question_4_invisible'          => $_POST['question_4_invisible'],
+                                                        'question_5_invisible'          => $_POST['question_5_invisible'],
+                                                        'team_overview_link'            => $_POST['team_overview_link']
                                                     );
                                 }
 				$setting = json_encode($setting);
@@ -1083,7 +1107,7 @@ class H3_MGMT_Admin_Races {
 	 * @access private
 	 */
 	private function fields( $type = 'race', $id = NULL ) {
-		global $wpdb, $h3_mgmt_races, $h3_mgmt_utilities;
+		global $wpdb, $h3_mgmt_races, $h3_mgmt_utilities, $h3_mgmt_teams;
 		
 		$options_race_first_empty = array( 
                                                 array(
@@ -1098,6 +1122,8 @@ class H3_MGMT_Admin_Races {
                 }else{
                     $disabled = true;
                 }
+                
+                $startiing_points_array = $h3_mgmt_teams->route_field( $id );
                 
 		$race_fields = array(
 			array(
@@ -1114,7 +1140,13 @@ class H3_MGMT_Admin_Races {
 						'label' => __( 'Logo URL', 'h3-mgmt' ),
 						'id' => 'logo_url',
 						'desc' => __( 'If you want the event to have a special logo and you uploaded one to the site, set the URL here. (Optional. So far not implemented in the frontend.)', 'h3-mgmt' )
-					)
+					),
+                                        array(
+                                            'type' => 'text_long',
+                                            'label' => __( 'Enter the URL to the team overview page on your site.', 'h3-mgmt' ),
+                                            'id' => 'team_overview_link',
+                                            'desc' => __( 'Enter the URL (without http:// or https:// and your Domain. For example just "/team_overview/".) to the team overview page where the user get the overviwe about all teams and could see the team prfiles. Please make sure that the page with the ID of the event has the same ID as this event! The shortcode is "h3-teams race=ID_of_the_event"', 'h3-mgmt' )
+                                        )
 				)
 			),
 			array(
@@ -1181,7 +1213,7 @@ class H3_MGMT_Admin_Races {
 						'label' => __( 'Starting point if chosen just one starting point', 'h3-mgmt' ),
 						'id' => 'start_route_id',
 						'desc' => __( 'If chosen just one starting point the teams will be automatically added to this starting point.', 'h3-mgmt' ),
-                                                'options' => $h3_mgmt_races->options_array( array( 'data' => 'route' ) )
+                                                'options' => $startiing_points_array[0]['options']
                                         ),
 					array(
 						'type' => 'radio',
@@ -1292,6 +1324,14 @@ class H3_MGMT_Admin_Races {
                                     'fields' => array(
                                         array(
 						'type' => 'text',
+						'label' => __( 'How many participants per team minimum?', 'h3-mgmt' ),
+						'id' => 'num_teammember_min',
+                                                'disabled' => $disabled,
+						'desc' => __( 'How many team member a team must have?', 'h3-mgmt' ),
+                                                'value' => 2
+					),
+                                        array(
+						'type' => 'text',
 						'label' => __( 'How many participants per team maximum?', 'h3-mgmt' ),
 						'id' => 'num_teammember',
                                                 'disabled' => $disabled,
@@ -1388,11 +1428,20 @@ class H3_MGMT_Admin_Races {
                                             )
 					),
                                         array(
-                                            'type' => 'text',
-                                            'label' => __( 'Enter the redirect link to your Betterplace project.', 'h3-mgmt' ),
+                                            'type' => 'text_long',
+                                            'label' => __( 'Enter the redirect link to your Betterplace project on the Betterlace site.', 'h3-mgmt' ),
                                             'id' => 'betterplace_redirect_link',
-                                            'desc' => __( 'You will get the Third Party Link from Betterplace. If you need more information contact us. <br> Example: https://www.testtest.com/de/projects/1114/client_donations/new?client_id=xxxxxxx', 'h3-mgmt' ),
-                                            'value' => 3
+                                            'desc' => __( ' You will get the Third Party Link from Betterplace. If you need more information contact us. <br> Example: https://www.testtest.com/de/**your project or event**/**your id**/client_donations/new?client_id=**your client id** <br>'
+                                                    . '     How you get the Third Party Link you will find <a title="Info third party link URL" href="https://github.com/betterplace/betterplace_apidocs/blob/master/donation_form/third_party_app_donation_form.md#how-to-get-it">here</a> <br><br>'
+                                                    . '     Please let them know under the point "Description" that you use the tramprennen API <br>'
+                                                    . '     For "Callback url production" you have to  set up ONE page in Wordpress for all other Events. In this page you just enter this shortcode "[h3-handle-betterplace-redirect]". You could get the  right URL if you call the page and add "?status=Test" at the end of the URL <br>'
+                                                    . '     If you have any problems send a mail to web@tramprennen.org', 'h3-mgmt' ) 
+                                        ),
+                                        array(
+                                            'type' => 'text_long',
+                                            'label' => __( 'Enter the redirect link to the donation tool page on your site.', 'h3-mgmt' ),
+                                            'id' => 'donation_link_link',
+                                            'desc' => __( 'Enter the Link (without http:// or https:// and your Domain. For example just "/donate/".) to your page where the user also will donate. Thats the page where you add the shortcode to run the donation code. Please make sure that the page with the ID of the event has the same ID as this event! The shortcode is "h3-sponsoring-form race=ID_of_the_event"', 'h3-mgmt' )
                                         ),
 					array(
 						'type' => 'radio',
@@ -1442,7 +1491,7 @@ class H3_MGMT_Admin_Races {
 				)
 			),
 			array(  //Highest ID 31
-				'title' => __( 'Information Texts', 'h3-mgmt' ),
+				'title' => __( 'Questions in Team profiles', 'h3-mgmt' ),
 				'fields' => array(
 					array(
 						'type' => 'text_long',
@@ -1469,6 +1518,22 @@ class H3_MGMT_Admin_Races {
 						'desc' => __( 'In german', 'h3-mgmt' )
 					),
 					array(
+						'type' => 'radio',
+						'label' => __( 'Do you want to make this question invisible?', 'h3-mgmt' ),
+						'id' => 'question_1_invisible',
+						'desc' => __( 'If yes the question is invisible in team dashboard and profile.', 'h3-mgmt' ),
+						'options' => array( 
+							array(
+								'value' => 0,
+								'label' => 'No'
+							),
+							array(
+								'value' => 1,
+								'label' => 'Yes'
+							)
+						)
+					),
+					array(
 						'type' => 'text_long',
 						'label' => __( 'Team Profile Question 2', 'h3-mgmt' ),
 						'id' => '2en',
@@ -1493,6 +1558,22 @@ class H3_MGMT_Admin_Races {
 						'desc' => __( 'In german', 'h3-mgmt' )
 					),
 					array(
+						'type' => 'radio',
+						'label' => __( 'Do you want to make this question invisible?', 'h3-mgmt' ),
+						'id' => 'question_2_invisible',
+						'desc' => __( 'If yes the question is invisible in team dashboard and profile.', 'h3-mgmt' ),
+						'options' => array( 
+							array(
+								'value' => 0,
+								'label' => 'No'
+							),
+							array(
+								'value' => 1,
+								'label' => 'Yes'
+							)
+						)
+					),
+					array(
 						'type' => 'text_long',
 						'label' => __( 'Team Profile Question 3', 'h3-mgmt' ),
 						'id' => '3en',
@@ -1515,6 +1596,22 @@ class H3_MGMT_Admin_Races {
 						'label' => __( '', 'h3-mgmt' ),
 						'id' => '8de',
 						'desc' => __( 'In german', 'h3-mgmt' )
+					),
+					array(
+						'type' => 'radio',
+						'label' => __( 'Do you want to make this question invisible?', 'h3-mgmt' ),
+						'id' => 'question_3_invisible',
+						'desc' => __( 'If yes the question is invisible in team dashboard and profile.', 'h3-mgmt' ),
+						'options' => array( 
+							array(
+								'value' => 0,
+								'label' => 'No'
+							),
+							array(
+								'value' => 1,
+								'label' => 'Yes'
+							)
+						)
 					),
 					array(
 						'type' => 'text_long',
@@ -1589,6 +1686,22 @@ class H3_MGMT_Admin_Races {
 						'desc' => __( 'In german', 'h3-mgmt' )
 					),
 					array(
+						'type' => 'radio',
+						'label' => __( 'Do you want to make this question invisible?', 'h3-mgmt' ),
+						'id' => 'question_4_invisible',
+						'desc' => __( 'If yes the question is invisible in team dashboard and profile.', 'h3-mgmt' ),
+						'options' => array( 
+							array(
+								'value' => 0,
+								'label' => 'No'
+							),
+							array(
+								'value' => 1,
+								'label' => 'Yes'
+							)
+						)
+					),
+					array(
 						'type' => 'text_long',
 						'label' => __( 'Team Profile Question 5', 'h3-mgmt' ),
 						'id' => '5en',
@@ -1612,6 +1725,27 @@ class H3_MGMT_Admin_Races {
 						'id' => '10de',
 						'desc' => __( 'In german', 'h3-mgmt' )
 					),
+					array(
+						'type' => 'radio',
+						'label' => __( 'Do you want to make this question invisible?', 'h3-mgmt' ),
+						'id' => 'question_5_invisible',
+						'desc' => __( 'If yes the question is invisible in team dashboard and profile.', 'h3-mgmt' ),
+						'options' => array( 
+							array(
+								'value' => 0,
+								'label' => 'No'
+							),
+							array(
+								'value' => 1,
+								'label' => 'Yes'
+							)
+						)
+					)
+                                    )
+                            ),
+                            array(  
+				'title' => __( 'Information Texts', 'h3-mgmt' ),
+				'fields' => array(
 					array(
 						'type' => 'textarea_long',
 						'label' => __( 'Text under "Select starting point" in Team Dashboard', 'h3-mgmt' ),

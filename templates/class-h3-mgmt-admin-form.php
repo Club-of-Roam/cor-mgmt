@@ -460,7 +460,6 @@ class H3_MGMT_Admin_Form {
 			break;
 
 			case 'text':
-			default:
 				$output .= '<input type="text"' .
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
@@ -473,7 +472,6 @@ class H3_MGMT_Admin_Form {
 			break;
 			
 			case 'text_long':
-			default:
 				$output .= '<input type="text" style="width: 100%;"' .
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
@@ -486,7 +484,6 @@ class H3_MGMT_Admin_Form {
 			break;
 
 			case 'password':
-			default:
 				$output .= '<input type="password"' .
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .

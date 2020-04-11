@@ -36,7 +36,7 @@ class H3_MGMT_Admin_Emails {
             }
 
             $messages = array();
-
+                    
             if ( $sent ) {
                     $messages[] = array(
                             'type' => 'message',
@@ -64,13 +64,12 @@ class H3_MGMT_Admin_Emails {
                             'value' => 'self'
                     ),
                     array(
-                            'label' => _x( 'All HHH Users', 'Admin Email Interface', 'h3-mgmt' ),
+                            'label' => _x( 'All HHH Users who participated at Tramprennen', 'Admin Email Interface', 'h3-mgmt' ),
                             'value' => 'all'
                     )
                 );
                 
-                $races = $h3_mgmt_races->get_races( array( 'orderby' => 'id', 'race' => 'all' ) );
-                
+                $races = $h3_mgmt_races->get_races( array( 'orderby' => 'id', 'race' => 'all' ) );                
                 
                 foreach( $races as $race){
                     $receipients[] = array(
@@ -170,7 +169,7 @@ class H3_MGMT_Admin_Emails {
 	 * @access private
 	 */
 	private function mail_send() {
-		global $wpdb, $h3_mgmt_mailer, $h3_mgmt_teams;
+		global $wpdb, $h3_mgmt_mailer, $h3_mgmt_teams, $h3_mgmt_races;
 
 		if( isset( $_POST['receipient'] ) ) {
 			if( $_POST['receipient'] == 'self' ) {
@@ -178,11 +177,25 @@ class H3_MGMT_Admin_Emails {
 				get_currentuserinfo();
 				$to = $current_user->user_email();
 			} elseif( $_POST['receipient'] == 'all' ) {
-				$users = get_users();
 				$to = array();
-				foreach( $users as $user ) {
-					$to[] = $users->user_email;
-				}
+                                $race_ids = array();
+                                $participants = array();
+                                $participants_all = array();
+                                
+                                $race_ids = $h3_mgmt_races->get_races( array( 'orderby' => 'id', 'race' => 'all' ) ); 
+                                foreach( $race_ids as $race_id){
+                                    $participants_all = array_merge ( $participants_all, $h3_mgmt_teams->get_participant_ids( $race_id['id'] ) );
+                                }
+                                foreach( $participants_all as $participant_all){
+                                    if( !in_array($participant_all, $participants) ){
+                                        $participants[] = $participant_all;
+                                    }
+                                }
+                                
+				foreach( $participants as $participant ) {
+					$part_obj = new WP_User( $participant );
+					$to[] = $part_obj->user_email;
+				}                                
 			} elseif( substr( $_POST['receipient'], 0, 4 ) == 'race' ) {
 				$recipient_arr = explode( '-', $_POST['receipient'] );
 				$race_id = intval( $recipient_arr[1] );
@@ -202,7 +215,7 @@ class H3_MGMT_Admin_Emails {
 			$from_name = NULL;
 			$from_email = NULL;
 		}
-
+                
 		$h3_mgmt_mailer->send( $to, $_POST['subject'], $_POST['message'], $from_name, $from_email );
 
 		return true;

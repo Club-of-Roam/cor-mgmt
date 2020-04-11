@@ -69,3 +69,14 @@
     max-width: 100%;
     height: auto; 
 }
+
+.ticker-send-comment{
+    background-color: #f9f9f9;
+    padding: 5px;
+}
+
+.ticker-comment{
+    margin: 0px 0px 20px 0px;
+    background-color: #f9f9f9;
+    padding: 5px;
+}

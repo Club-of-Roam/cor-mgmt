@@ -428,7 +428,12 @@ class H3_MGMT_Teams {
 		$user_ids = $this->get_teammates( $team_id );
 
 		$complete = 1;
-		if( count( $hitchmates_query ) < 2 ) {
+                if(!isset($race_setting['num_teammember_min']))
+                {
+                    $race_setting['num_teammember_min'] = 2;
+                }
+                
+		if( count( $hitchmates_query ) < $race_setting['num_teammember_min'] ) {
 			$complete = 0;
 		} else {
 			foreach( $hitchmates_query as $mate ) {
@@ -458,8 +463,7 @@ class H3_MGMT_Teams {
                                     }
                                 }
 			}
-		}
-			
+		}	
 
 		if( $complete != $current_status ) {
 			$wpdb->update(
@@ -471,6 +475,19 @@ class H3_MGMT_Teams {
 				array( '%d' ),
 				array( '%d' )
 			);
+                        
+                        if( !$race_setting['startingpoint'] == 1 )
+                        {
+                            $wpdb->update(
+                                    $wpdb->prefix.'h3_mgmt_teams',
+                                    array(
+                                            'route_id' => $race_setting['start_route_id']
+                                    ),
+                                    array( 'id' => $team_id ),
+                                    array( '%d' ),
+                                    array( '%d' )
+                            );
+                        }
 			if( $complete === 1 ) {
 				$user_ids = $this->get_teammates( $team_id );
 				$response_args = array(
@@ -995,95 +1012,122 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access public
 	 */
-	public function team_fields( $with_mb = false ) {
+	public function team_fields( $with_mb = false, $race_id  ) {
 
-	global $information_text;
-	
-		$team_fields = array(
-			array (
-				'label'	=> _x( 'Team Name', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'The name of your team (maximum 50 characters)', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'team_name',
-				'type'	=> 'text'
-			),
-			array (
-				'label'	=> _x( 'Description', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'A description of you and your teammates. Maybe serious or funny. You have a maximum of 500 characters.', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'description',
-				'type'	=> 'textarea'
-			),
-			array(
-				'label'	=> _x( 'Team Picture', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'team_pic',
-				'type'	=> 'single-pic-upload',
-				'desc'	=> _x( "This picture will appear in your team profile. You may upload .jpeg, .gif or .png files.", 'Team Dashboard', 'h3-mgmt' )
-			),
-			array(
-				'label'	=> _x( 'Donation Goal', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'donation_goal',
-				'type'	=> 'slider',
-				'desc'	=> _x( "The amount of donations you wish to collect this year.", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "The common donation goal will be calculated from the sum of that of all teams.", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "(&quot;Zero&quot; is a perfectly acceptable answer...)", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "Please enter <strong>numbers only</strong> though.", 'Team Dashboard', 'h3-mgmt' )
-			),
-			array (
-				'label'	=> stripcslashes( $information_text[1] ), //_x( 'Two weeks through Europe by thumb. Why?', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> stripcslashes( $information_text[6] ), //_x( 'What is your personal motivation to participate?', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'meta_1',
-				'type'	=> 'textarea'
-			),
-			array (
-				'label'	=> stripcslashes( $information_text[2] ), //_x( 'Why should a lift take us along?', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> stripcslashes( $information_text[7] ), //_x( 'Well...', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'meta_2',
-				'type'	=> 'textarea'
-			),
-			array (
-				'label'	=> stripcslashes( $information_text[3] ), //_x( 'Our best Autostop-experience so far', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> stripcslashes( $information_text[8] ), //_x( 'Tell the world about it!', 'h3-mgmt' ),
-				'id'	=> 'meta_3',
-				'type'	=> 'textarea'
-			),
-			array (
-				'label'	=> stripcslashes( $information_text[4] ), //_x( 'Our goal for the race', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> stripcslashes( $information_text[9] ), //_x( 'What do you want to achieve?', 'Team Profile Form', 'h3-mgmt' ),
-				'id'	=> 'meta_4',
-				'type'	=> 'radio',
-				'options' => array(
-					array(
-						'label' => stripcslashes( $information_text[12] ), //_x( 'Reach the destination. Participation is everything!', 'Team Profile Form', 'h3-mgmt' ),
-						'value' => 1
-					),
-					array(
-						'label' => stripcslashes( $information_text[13] ), //_x( 'Fun, Fun, Fun!', 'Team Profile Form', 'h3-mgmt' ),
-						'value' => 2
-					),
-					array(
-						'label' => stripcslashes( $information_text[14] ), //_x( 'Upper Midfield. And a stage victory.', 'Team Profile Form', 'h3-mgmt' ),
-						'value' => 3
-					),
-					array(
-						'label' => stripcslashes( $information_text[15] ), //_x( 'Win it! What else???', 'Team Profile Form', 'h3-mgmt' ),
-						'value' => 4
-					)
-				)
-			),
-			array (
-				'label'	=> stripcslashes( $information_text[5] ), //_x( 'For a Donation we would:', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> stripcslashes( $information_text[10] ), //__( 'Thoughts?', 'h3-mgmt' ),
-				'id'	=> 'meta_5',
-				'type'	=> 'textarea'
-			)
-		);
+            global $information_text, $h3_mgmt_races;
+		
+            $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 
-		if ( $with_mb ) {
-			$team_fields = array(
-				array(
-					'title' => __( 'The Team' , 'h3-mgmt' ),
-					'fields' => $team_fields
-				)
-			);
-		}
+            $team_fields = array(
+                    array (
+                            'label'	=> _x( 'Team Name', 'Team Profile Form', 'h3-mgmt' ),
+                            'desc'	=> _x( 'The name of your team (maximum 50 characters)', 'Team Profile Form', 'h3-mgmt' ),
+                            'id'	=> 'team_name',
+                            'type'	=> 'text'
+                    ),
+                    array (
+                            'label'	=> _x( 'Description', 'Team Profile Form', 'h3-mgmt' ),
+                            'desc'	=> _x( 'A description of you and your teammates. Maybe serious or funny. You have a maximum of 500 characters.', 'Team Profile Form', 'h3-mgmt' ),
+                            'id'	=> 'description',
+                            'type'	=> 'textarea'
+                    ),
+                    array(
+                            'label'	=> _x( 'Team Picture', 'Team Profile Form', 'h3-mgmt' ),
+                            'id'	=> 'team_pic',
+                            'type'	=> 'single-pic-upload',
+                            'desc'	=> _x( "This picture will appear in your team profile. You may upload .jpeg, .gif or .png files.", 'Team Dashboard', 'h3-mgmt' )
+                    ),
+                    array(
+                            'label'	=> _x( 'Donation Goal', 'Team Profile Form', 'h3-mgmt' ),
+                            'id'	=> 'donation_goal',
+                            'type'	=> 'slider',
+                            'desc'	=> _x( "The amount of donations you wish to collect this year.", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "The common donation goal will be calculated from the sum of that of all teams.", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "(&quot;Zero&quot; is a perfectly acceptable answer...)", 'Team Dashboard', 'h3-mgmt' ) . '<br />' . _x( "Please enter <strong>numbers only</strong> though.", 'Team Dashboard', 'h3-mgmt' )
+                    )
+                );
+            
+            if(!$race_setting['question_1_invisible'])
+            {
+                $team_fields[] = 
+                        array (
+                                'label'	=> stripcslashes( $information_text[1] ), //_x( 'Two weeks through Europe by thumb. Why?', 'Team Profile Form', 'h3-mgmt' ),
+                                'desc'	=> stripcslashes( $information_text[6] ), //_x( 'What is your personal motivation to participate?', 'Team Profile Form', 'h3-mgmt' ),
+                                'id'	=> 'meta_1',
+                                'type'	=> 'textarea'
+                        );
+            }
+            
+            if(!$race_setting['question_2_invisible'])
+            {
+                $team_fields[] = 
+                        array (
+                                'label'	=> stripcslashes( $information_text[2] ), //_x( 'Why should a lift take us along?', 'Team Profile Form', 'h3-mgmt' ),
+                                'desc'	=> stripcslashes( $information_text[7] ), //_x( 'Well...', 'Team Profile Form', 'h3-mgmt' ),
+                                'id'	=> 'meta_2',
+                                'type'	=> 'textarea'
+                        );
+            }
+            
+            if(!$race_setting['question_3_invisible'])
+            {
+                $team_fields[] = 
+                        array (
+                                'label'	=> stripcslashes( $information_text[3] ), //_x( 'Our best Autostop-experience so far', 'Team Profile Form', 'h3-mgmt' ),
+                                'desc'	=> stripcslashes( $information_text[8] ), //_x( 'Tell the world about it!', 'h3-mgmt' ),
+                                'id'	=> 'meta_3',
+                                'type'	=> 'textarea'
+                        );
+            }
+            
+            if(!$race_setting['question_4_invisible'])
+            {
+                $team_fields[] = 
+                        array (
+                                'label'	=> stripcslashes( $information_text[4] ), //_x( 'Our goal for the race', 'Team Profile Form', 'h3-mgmt' ),
+                                'desc'	=> stripcslashes( $information_text[9] ), //_x( 'What do you want to achieve?', 'Team Profile Form', 'h3-mgmt' ),
+                                'id'	=> 'meta_4',
+                                'type'	=> 'radio',
+                                'options' => array(
+                                        array(
+                                                'label' => stripcslashes( $information_text[12] ), //_x( 'Reach the destination. Participation is everything!', 'Team Profile Form', 'h3-mgmt' ),
+                                                'value' => 1
+                                        ),
+                                        array(
+                                                'label' => stripcslashes( $information_text[13] ), //_x( 'Fun, Fun, Fun!', 'Team Profile Form', 'h3-mgmt' ),
+                                                'value' => 2
+                                        ),
+                                        array(
+                                                'label' => stripcslashes( $information_text[14] ), //_x( 'Upper Midfield. And a stage victory.', 'Team Profile Form', 'h3-mgmt' ),
+                                                'value' => 3
+                                        ),
+                                        array(
+                                                'label' => stripcslashes( $information_text[15] ), //_x( 'Win it! What else???', 'Team Profile Form', 'h3-mgmt' ),
+                                                'value' => 4
+                                        )
+                                )
+                        );
+            }
+            
+            if(!$race_setting['question_5_invisible'])
+            {
+                $team_fields[] = 
+                        array (
+                                'label'	=> stripcslashes( $information_text[5] ), //_x( 'For a Donation we would:', 'Team Profile Form', 'h3-mgmt' ),
+                                'desc'	=> stripcslashes( $information_text[10] ), //__( 'Thoughts?', 'h3-mgmt' ),
+                                'id'	=> 'meta_5',
+                                'type'	=> 'textarea'
+                        );
+            }
 
-		return $team_fields;
+            if ( $with_mb ) {
+                    $team_fields = array(
+                            array(
+                                    'title' => __( 'The Team' , 'h3-mgmt' ),
+                                    'fields' => $team_fields
+                            )
+                    );
+            }
+
+            return $team_fields;
 	}
 
 	/**
@@ -1092,10 +1136,11 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function team_section( $team_exists = false, $team_id = NULL ) {
+	private function team_section( $team_exists = false, $team_id = NULL, $race_id = NULL ) {
 		global $wpdb;
-
-		$fields = $this->team_fields();
+                
+		$fields = $this->team_fields(false, $race_id);
+                
 		$fcount = count($fields);
 
 		if ( $team_exists === true && empty( $_POST['submitted'] ) ) {
@@ -1643,7 +1688,7 @@ class H3_MGMT_Teams {
 				$team_id = $this->handle_invitation();
 				if ( ! empty( $team_id ) ) {
 					$is_invitation = true;
-					$team_section = $this->team_section( true, $team_id );
+					$team_section = $this->team_section( true, $team_id, $race_id );
 					$messages[] = array(
 						'type' => 'error',
 						'message' => _x( 'Do you want to join this team? You still have to accept the invitation...', 'Team Dashboard', 'h3-mgmt' )
@@ -1660,7 +1705,7 @@ class H3_MGMT_Teams {
 							__( 'Sorry, the invitation code you are trying to use is outdated or false. Either contact the participant that invited you and request a new invitation or create your own team.', 'h3-mgmt' ) .
 						'</p>';
 						$team_id = 0;									
-						$team_section = $this->team_section( false );	
+						$team_section = $this->team_section( false, $team_id, $race_id );	
 					}
 				}
 			} else {
@@ -1678,11 +1723,11 @@ class H3_MGMT_Teams {
 					return $output;	
 				}else{
 					$team_id = 0;										
-					$team_section = $this->team_section( false );		
+					$team_section = $this->team_section( false, $team_id, $race_id );		
 				}
 			}
 		} else {
-			$team_section = $this->team_section( true, $team_id );
+			$team_section = $this->team_section( true, $team_id, $race_id );
 			$team_query = $wpdb->get_results(
 				"SELECT team_name FROM " . $wpdb->prefix . "h3_mgmt_teams WHERE id = " . $team_id . " LIMIT 1",
 				ARRAY_A
@@ -2375,7 +2420,7 @@ class H3_MGMT_Teams {
 		}else{
 			$output .= '<p>' .
 				'<a class="sponsors-link" title="' . _x( 'Become this team&apos;s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) . '" ' .
-					'href="'. get_site_url() . _x( '/support-team/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?id=' . $team_id . '&type=sponsor">' .
+					'href="'. get_site_url() . $race_setting['donation_link_link'] . '?id=' . $team_id . '&type=sponsor">' .
 						_x( 'Become this team\'s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) .
 						'</a></p>';
 		}
@@ -2459,6 +2504,8 @@ class H3_MGMT_Teams {
 
 		$race_id = $this->get_team_race( $team_id );
 		$routes_data =  $h3_mgmt_races->get_routes( array( 'race' => $race_id ) );
+                
+                $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 
 		$output = '<div class="quick-info-wrap">';
 
@@ -2492,7 +2539,7 @@ class H3_MGMT_Teams {
 
 		$output .= '<br /><a title="' .
 				_x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) .
-			'" href="' . get_site_url() . _x( '/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $team_id . '">' .
+			'" href="' . get_site_url() . $race_setting['team_overview_link'] . '?id=' . $team_id . '">' .
 			'&rarr; ' . _x( 'view TeamProfile', 'Team', 'h3-mgmt' ) .
 			'</a></p>';
 
@@ -2525,6 +2572,11 @@ class H3_MGMT_Teams {
 			'orderby' => 'name',
 			'order' => 'ASC'
 		));
+
+		if( isset( $_GET[ 'todo' ] ) ) {
+			$output .= do_shortcode( '[h3-ticker-message race=' . $race_id . ' comment_get=false]' );
+			return $output;
+		}
 		
 		foreach( $teams as $team ) {
 			 $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen

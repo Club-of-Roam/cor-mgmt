@@ -61,6 +61,7 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js' );
 	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js' );
 	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js' ); 
+	wp_register_script( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', array( 'jquery' )  ); 
 	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js' ); 
 	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js' ); 
 	wp_register_script( 'googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&sensor=false', true );
@@ -77,6 +78,7 @@ function h3_mgmt_enqueue() {
 	/* enqueue custom scripts */
 	wp_enqueue_script( 'isotope' );
 	wp_enqueue_script( 'h3-mgmt-isotope' );
+	wp_enqueue_script( 'h3-mgmt-ticker' );
 	/* enqueue stylesheets */
 	wp_enqueue_style( 'h3-mgmt-donation-counter-style' );
 	wp_enqueue_style( 'h3-mgmt-sponsoring' );
@@ -168,8 +170,8 @@ require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-xchange.php' );
  * @global object $h3_mgmt
  * @since 1.0
  */
-$GLOBALS['h3_mgmt'] =& new H3_MGMT();
-$GLOBALS['h3_mgmt_utilities'] =& new H3_MGMT_utilities();
+$GLOBALS['h3_mgmt'] = new H3_MGMT();
+$GLOBALS['h3_mgmt_utilities'] = new H3_MGMT_utilities();
 
 /**
  * Admin UI
@@ -196,12 +198,12 @@ if ( is_admin() ) {
 	 *
 	 * @since 1.0
 	 */
-	$GLOBALS['h3_mgmt_admin'] =& new H3_MGMT_Admin();
-	$GLOBALS['h3_mgmt_admin_emails'] =& new H3_MGMT_Admin_Emails();
-	$GLOBALS['h3_mgmt_admin_races'] =& new H3_MGMT_Admin_Races();
-	$GLOBALS['h3_mgmt_admin_sponsors'] =& new H3_MGMT_Admin_Sponsors();
-	$GLOBALS['h3_mgmt_admin_teams'] =& new H3_MGMT_Admin_Teams();
-	$GLOBALS['h3_mgmt_admin_statistics'] =& new H3_MGMT_Admin_Statistics();
+	$GLOBALS['h3_mgmt_admin'] = new H3_MGMT_Admin();
+	$GLOBALS['h3_mgmt_admin_emails'] = new H3_MGMT_Admin_Emails();
+	$GLOBALS['h3_mgmt_admin_races'] = new H3_MGMT_Admin_Races();
+	$GLOBALS['h3_mgmt_admin_sponsors'] = new H3_MGMT_Admin_Sponsors();
+	$GLOBALS['h3_mgmt_admin_teams'] = new H3_MGMT_Admin_Teams();
+	$GLOBALS['h3_mgmt_admin_statistics'] = new H3_MGMT_Admin_Statistics();
 }
 
 /**

@@ -34,7 +34,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
 				// alert(request.response.url);
 			}
 		}
-		var process_url = app_vars.url_base + "/wp-content/uploads/ticker_images/process.php";
+		//var process_url = app_vars.url_base + "/wp-content/uploads/ticker_images/process.php";
+		//var process_url = "https://tramprennen.org/wp-content/uploads/ticker_images/process.php";
+		var process_url = "https://" + window.location.hostname + "/wp-content/uploads/ticker_images/process.php";
+		//alert(process_url);
 		request.open('POST', process_url );
 		// request.responseType = 'json';
 		request.send(formData);

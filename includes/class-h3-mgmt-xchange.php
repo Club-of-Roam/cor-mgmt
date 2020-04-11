@@ -125,7 +125,7 @@ class H3_MGMT_XChange {
 					_x( 'Submit / Update own message', 'XChange', 'h3-mgmt' ) .
 				'" /></div></form>';
 		} else {
-			$output .= '<p>' . _x( 'You must be <a title="Log in" href="http://tramprennen.org/login">logged in</a> to post a HitchMate search message.', 'XChange', 'h3-mgmt' ) . '</p>';
+			$output .= '<p>' . _x( 'You must be <a title="Log in" href=' . get_site_url() . '"/login">logged in</a> to post a HitchMate search message.', 'XChange', 'h3-mgmt' ) . '</p>';
 		}
 
 		$output .= '</div>';

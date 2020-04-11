@@ -1182,18 +1182,19 @@ class H3_MGMT_Races {
 		}
 		$table_head .= '</tr>';
 
+		$post = get_post();
+		$post_url = get_page_link($post->ID);
+                
 		if( $show_nav == 1 ) {
 			$output .= '<div class="isotope-wrap">' .
 					'<ul class="isotope-link-list">' .
-						'<li><a class="ranking_link" style="color:#333333;border-bottom: 1px dotted #333333;" href="' . get_site_url() .
-									_x( '/follow-us/ranking/', 'utility translation', 'h3-mgmt' ) .
+						'<li><a class="ranking_link" style="color:#333333;border-bottom: 1px dotted #333333;" href="' . $post_url .
 							'">' . __( 'All Routes', 'h3-mgmt' ) . '</a></li>';
 
 						$race_routes = $this->get_routes( array( 'race' => $race ) );
 
 						foreach ( $race_routes as $race_route ) {
-							$output .= '<li><a class="ranking_link" style="color:#' . $this->get_route_color( $race_route['id'] ) . ';border-bottom: 1px dotted #' . $this->get_route_color( $race_route['id'] ) . ';" href="' . get_site_url() .
-									_x( '/follow-us/ranking/', 'utility translation', 'h3-mgmt' ) .
+							$output .= '<li><a class="ranking_link" style="color:#' . $this->get_route_color( $race_route['id'] ) . ';border-bottom: 1px dotted #' . $this->get_route_color( $race_route['id'] ) . ';" href="' . $post_url .
 									'?ranking_race=' . $race . '&ranking_route=' . $race_route['id'] .
 								'">' . $race_route['name'] . '</a></li>';
 						}
@@ -1272,7 +1273,7 @@ class H3_MGMT_Races {
                         $flip_val = $flipper ? '1' : '2';
 			$output .= '<tr class="trow-alt-' . $flip_val . '">' .
 				'<th class="first_tac" style="border: none;"><span style="border-bottom: 2px solid #' . $this->get_route_color( $team['route_id'] ) . ';">' .
-						'<a class="ranking_link" style="color:black;" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="' . get_site_url() . __( '/follow-us/teams/?id=', 'h3-mgmt' ) . $team['id'] . '">' .
+						'<a class="ranking_link" style="color:black;" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="' . get_site_url() . $race_setting['team_overview_link'] . __( '?id=', 'h3-mgmt' ) . $team['id'] . '">' .
 							$team['team_name'] .
 						'</a>' .
 					'</span>' .

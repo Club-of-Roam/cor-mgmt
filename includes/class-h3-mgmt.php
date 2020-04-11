@@ -29,15 +29,15 @@ class H3_MGMT {
 		}
 
 		/* HHH MGMT's @global objects (these need to be accessible from other classes) */
-		$GLOBALS['h3_mgmt_mailer'] =& new H3_MGMT_Mailer();
-		$GLOBALS['h3_mgmt_races'] =& new H3_MGMT_Races();
-		$GLOBALS['h3_mgmt_sponsors'] =& new H3_MGMT_Sponsors();
-		$GLOBALS['h3_mgmt_teams'] =& new H3_MGMT_Teams();
-		$GLOBALS['h3_mgmt_ticker'] =& new H3_MGMT_Ticker();
+		$GLOBALS['h3_mgmt_mailer'] = new H3_MGMT_Mailer();
+		$GLOBALS['h3_mgmt_races'] = new H3_MGMT_Races();
+		$GLOBALS['h3_mgmt_sponsors'] = new H3_MGMT_Sponsors();
+		$GLOBALS['h3_mgmt_teams'] = new H3_MGMT_Teams();
+		$GLOBALS['h3_mgmt_ticker'] = new H3_MGMT_Ticker();
 
 		/* HHH MGMT's objects */
-		$h3_mgmt_profile =& new H3_MGMT_Profile();
-		$h3_mgmt_xchange =& new H3_MGMT_XChange();
+		$h3_mgmt_profile = new H3_MGMT_Profile();
+		$h3_mgmt_xchange = new H3_MGMT_XChange();
 	}
 
 	/**

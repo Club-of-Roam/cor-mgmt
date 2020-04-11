@@ -275,7 +275,7 @@ class H3_MGMT_Sponsors {
 	 * @see constructor
 	 */
 	public function list_sponsors( $args = array() ) {
-		global $wpdb, $h3_mgmt_teams, $h3_mgmt_utilities;
+		global $wpdb, $h3_mgmt_teams, $h3_mgmt_races, $h3_mgmt_utilities;
 
 		$default_args = array(
 			'type' => 'all',
@@ -315,7 +315,6 @@ class H3_MGMT_Sponsors {
 			"ORDER BY display_name ASC",
 			ARRAY_A
 		);
-                
 		$scount = count( $sponsors_query );
 		$sponsors = array(
 			'count' => $scount,
@@ -357,10 +356,13 @@ class H3_MGMT_Sponsors {
 		$sponsors['count'] = $exclude_unpaid_paypal_count;
 		
 		if( $team_id !== 'all' && $type === 'owner' ) {
+                        $race_id = $h3_mgmt_teams->get_team_race( $team_id );
+                        $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+                        
 			if( empty( $sponsors_query ) ) { 
 				$sponsors['owner_pic'] = H3_MGMT_RELPATH . 'img/owner-pic.png';
 				$sponsors['owner_link'] = '<p class="owner-link"><a title="' . _x( 'Become this team&apos;s TeamOwner!', 'Team Profile', 'h3-mgmt' ) . '" ' .
-					'href="'. get_site_url() . __( '/become-sponsor/', 'Team Profile', 'h3-mgmt' ) . '?id=' . $team_id . '&type=owner">' .
+					'href="'. get_site_url() . $race_setting['donation_link_link'] . '?id=' . $team_id . '&type=owner">' .
 						_x( 'No Owner yet.', 'Team Profile', 'h3-mgmt' ) . '<br />' .
 						_x( 'Become this team&apos;s TeamOwner!', 'Team Profile', 'h3-mgmt' ) .
 					'</a></p>';
@@ -488,10 +490,12 @@ class H3_MGMT_Sponsors {
                         // sleep 5 seconds to wait for betterplace database
                         sleep(5);
                         
-			if( !$this->donation_check( $_GET['donation_token'], $donation_client_reference, $client_id ) ){ 
+			if( !$this->donation_check( $_GET['donation_token'], $donation_client_reference, $client_id ) ){
+                            // Just a workaround because we have problems with checking the token!
+                            wp_mail('jonas@tramprennen.org', 'donation_check() failed', 'the token: ' . $_GET['donation_token'] . ' ----- donation_client_reference:' . $donation_client_reference . '  client_id: ' . $client_id);
                             return $this->save_donation( $race, 2 );    //Go hear if entry is not in the betterplace database or not confirmed
 			}else{
-				return $this->save_donation( $race, 2 );
+                            return $this->save_donation( $race, 2 );
 			}
 		}else {	//Enter at first call of page
 			return $this->sponsoring_section_output( array( 'step' => 1, 'race' => $race ) );
@@ -670,21 +674,27 @@ class H3_MGMT_Sponsors {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function technical_issue_section_output( ) {
+	private function technical_issue_section_output( $race_id ) {
+            
+            global $h3_mgmt_races;
 
-		$errors = array(
-		'type' => 'error',
-		'message' => _x( 'Sorry there is a technical issue! Please contact web@tramprennnen.org', 'Form Validation Error', 'h3-mgmt' )
-		);
-		
-		$output .= '<div style="text-align: center;">
-					<p class="' . $errors['type'] . '">' . $errors['message'] . '<br><br>
-					<strong><a title="BACK" href="'.get_home_url().'/become-sponsor">BACK</a></strong></p>
-					</div>
-					
-		';
-				
-		return $output;
+             $race_settings = $h3_mgmt_races->get_race_setting( $race_id[0]['race_id'] );
+
+            $redirect_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $race_settings['donation_link_link'].'?section=2&donation_client_reference='.$donation_client_reference.'&amount='.$amount.'&donation_token='.$donation_token;
+
+            $errors = array(
+            'type' => 'error',
+            'message' => _x( 'Sorry there is a technical issue! Please contact web@tramprennnen.org', 'Form Validation Error', 'h3-mgmt' )
+            );
+
+            $output .= '<div style="text-align: center;">
+                                    <p class="' . $errors['type'] . '">' . $errors['message'] . '<br><br>
+                                    <strong><a title="BACK" href="'.$redirect_url.'">BACK</a></strong></p>
+                                    </div>
+
+            ';
+
+            return $output;
 	}
 	
 	/**
@@ -1652,52 +1662,63 @@ class H3_MGMT_Sponsors {
 			);
 			$donation_token_db = $donation_token_db[0]['donation_token'];
 			
-			if( $amount >= '100' && $type == 'owner'){
-				if( $donation_token_db == ''  || empty( $donation_token_db ) ){
-					$wpdb->update(
-						$wpdb->prefix . 'h3_mgmt_sponsors',
-						array( 
-							'donation' => $amount, 
-							'donation_token' => $donation_token,
-							'paid' => 0,
-							'var_show' => 0,
-							'type' => 'owner'
-							),
-						array( 'donation_client_reference' => $donation_client_reference ),
-						array( 
-							'%s', 
-							'%s', 
-							'%d', 
-							'%d',
-							'%s',
-							),
-						array( '%s' )
-					);
-                                }
-                                return $this->technical_issue_section_output();
-			}else{
-				if( $donation_token_db == ''  || empty( $donation_token_db ) ){
-					$wpdb->update(
-						$wpdb->prefix . 'h3_mgmt_sponsors',
-						array( 
-							'donation' => $amount, 
-							'donation_token' => $donation_token,
-							'paid' => 0,
-							'var_show' => 0,
-							'type' => 'sponsor'
-							),
-						array( 'donation_client_reference' => $donation_client_reference ),
-						array( 
-							'%s', 
-							'%s', 
-							'%d', 
-							'%d',
-							'%s',
-							),
-						array( '%s' )
-					);
-                                }
-                                return $this->technical_issue_section_output();
+			if( $amount >= '100' && $type == 'owner'){ 
+                            $race_id = $wpdb->get_results(
+                                "SELECT race_id FROM " . $wpdb->prefix . "h3_mgmt_sponsors " .
+                                "WHERE donation_client_reference = '" . $donation_client_reference . "'"  , ARRAY_A 
+                            );
+                            
+                            if( $donation_token_db == ''  || empty( $donation_token_db ) ){
+                                    $wpdb->update(
+                                            $wpdb->prefix . 'h3_mgmt_sponsors',
+                                            array( 
+                                                    'donation' => $amount, 
+                                                    'donation_token' => $donation_token,
+                                                    'paid' => 0,
+                                                    'var_show' => 0,
+                                                    'type' => 'owner'
+                                                    ),
+                                            array( 'donation_client_reference' => $donation_client_reference ),
+                                            array( 
+                                                    '%s', 
+                                                    '%s', 
+                                                    '%d', 
+                                                    '%d',
+                                                    '%s',
+                                                    ),
+                                            array( '%s' )
+                                    );
+                            }
+                            
+                            return $this->technical_issue_section_output( $race_id[0]['race_id'] );
+			}else{ 
+                            $race_id = $wpdb->get_results(
+                                "SELECT race_id FROM " . $wpdb->prefix . "h3_mgmt_sponsors " .
+                                "WHERE donation_client_reference = '" . $donation_client_reference . "'"  , ARRAY_A 
+                            );
+                            
+                            if( $donation_token_db == ''  || empty( $donation_token_db ) ){
+                                    $wpdb->update(
+                                            $wpdb->prefix . 'h3_mgmt_sponsors',
+                                            array( 
+                                                    'donation' => $amount, 
+                                                    'donation_token' => $donation_token,
+                                                    'paid' => 0,
+                                                    'var_show' => 0,
+                                                    'type' => 'sponsor'
+                                                    ),
+                                            array( 'donation_client_reference' => $donation_client_reference ),
+                                            array( 
+                                                    '%s', 
+                                                    '%s', 
+                                                    '%d', 
+                                                    '%d',
+                                                    '%s',
+                                                    ),
+                                            array( '%s' )
+                                    );
+                            }
+                            return $this->technical_issue_section_output( $race_id[0]['race_id'] );
 			}			
 		}
 	}
@@ -1892,6 +1913,102 @@ class H3_MGMT_Sponsors {
 
 		return $language;
 	}
+        
+        /**
+	 * Handels the redirect from Betterplace, gets the setting in the event
+         * for the right reirect to the sponsor page
+	 *
+	 * @return redirect to URL in setting
+	 *
+	 * @since 1.0
+	 * @access public
+	 */
+        public function handle_betterplace_redirect() {
+            global $wpdb, $h3_mgmt_races;
+
+            if( isset( $_GET['status'] ) && ( $_GET['status'] == 'DONATION_COMPLETE' ) ){
+
+                $donation_client_reference = $_GET['donation_client_reference'];
+                $amount = $_GET['amount'];
+                $donation_token = $_GET['donation_token'];
+
+                $race_id = $wpdb->get_results(
+                                "SELECT race_id FROM " . $wpdb->prefix . "h3_mgmt_sponsors " .
+                                "WHERE donation_client_reference = '" . $donation_client_reference . "'"  , ARRAY_A 
+                            );
+                
+                if( $race_id[0]['race_id'] === NULL || $race_id[0]['race_id'] == '' || !isset( $race_id[0]['race_id'] ) ) {
+                    $redirect_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+                    
+                    $errors = array(
+                    'type' => 'error',
+                    'message' => _x( 'Sorry there is a technical issue! Please contact web@tramprennnen.org', 'Form Validation Error', 'h3-mgmt' )
+                    );
+
+                    $output .= '<div style="text-align: center;">
+                                            <p class="' . $errors['type'] . '">' . $errors['message'] . '<br><br>
+                                            <strong><a title="BACK" href="'.$redirect_url.'">BACK</a></strong></p>
+                                            </div>
+
+                    ';
+
+                    return $output;
+                }
+                $race_settings = $h3_mgmt_races->get_race_setting( $race_id[0]['race_id'] );
+
+                $redirect_url = get_site_url() . $race_settings['donation_link_link'].'?section=2&donation_client_reference='.$donation_client_reference.'&amount='.$amount.'&donation_token='.$donation_token;
+                
+                $output .= '<div style="text-align: center;">
+                                        <p class="message">You will be redirected in a few seconds and could finish the donation process. If not please click the link below!<br><br>
+                                        <strong><a title="redirect URL" href="'.$redirect_url.'">LINK</a></strong></p>
+                                        </div>
+
+                ';
+                
+                wp_enqueue_script( 'h3-mgmt-redirect' );
+
+                wp_localize_script('h3-mgmt-redirect', 'app_vars', array(
+                        'url' => $redirect_url
+                        )
+                );
+
+                return $output;
+                
+            }elseif( isset( $_GET['status'] ) && ( $_GET['status'] == 'Test' ) ){
+                
+		$redirect_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+                $betterplacce_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                $betterplacce_url = strstr($betterplacce_url, "/?", true);
+                
+                $output .= '<div style="text-align: center;">
+                                        <p class="message">The page exist. You could copy the URL: "' . $betterplacce_url . '" and give this to Betterplace as callback URL!<br><br>
+                                        <strong><a title="redirect URL" href="'.$redirect_url.'">Back to Main</a></strong></p>
+                                        </div>
+
+                ';
+
+                return $output;
+                
+            }else{
+		$redirect_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+                
+                $output .= '<div style="text-align: center;">
+                                        <p class="message">You will be redirected in a few seconds and could finish the donation process. If not please click the link below!<br><br>
+                                        <strong><a title="redirect URL" href="'.$redirect_url.'">Click here</a></strong></p>
+                                        </div>
+
+                ';
+                
+                wp_enqueue_script( 'h3-mgmt-redirect' );
+
+                wp_localize_script('h3-mgmt-redirect', 'app_vars', array(
+                        'url' => $redirect_url
+                        )
+                );
+
+                return $output;
+            }
+        }
 
 	/**
 	 * PHP4 style constructor
@@ -1913,6 +2030,7 @@ class H3_MGMT_Sponsors {
 		add_shortcode( 'h3-sponsoring-form', array( &$this, 'sponsoring_form_handler' ) );
 		add_shortcode( 'h3-recent-sponsors', array( &$this, 'recent_sponsors' ) );
 		add_shortcode( 'h3-list-sponsors', array( &$this, 'sponsors_overview' ) );
+		add_shortcode( 'h3-handle-betterplace-redirect', array( &$this, 'handle_betterplace_redirect' ) );
 	}
 
 } // class

@@ -660,7 +660,7 @@ class H3_MGMT_Admin_Teams {
                             'fields' => $h3_mgmt_teams->route_field( $h3_mgmt_teams->get_team_race( $team_id ), intval( $route_id ) )
                     );
 
-                     $race_mb['fields'][] = array(
+                    $race_mb['fields'][] = array(
                                 'id' => 'race_id',
                                 'type' => 'hidden',
                                 'value'	=> $race_id
@@ -731,7 +731,7 @@ class H3_MGMT_Admin_Teams {
                     
                     $fields[] = $team_member_fields; 
                     
-                    $fields_buff = $h3_mgmt_teams->team_fields( true );
+                    $fields_buff = $h3_mgmt_teams->team_fields( true, $race_id );
                     $fields[] = $fields_buff[0];
                 }
                 		

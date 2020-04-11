@@ -170,7 +170,7 @@ class H3_MGMT_Mailer {
 		if( ! is_array( $receipient ) ) {
 			$receipient = array( $receipient );
 		}
-
+                
 		$headers = "From: ";
 		if( $from_name == NULL ) {
 			$headers .= "Tramprennen ";//$headers .= "Tramprennen ";

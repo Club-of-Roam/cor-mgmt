@@ -10,6 +10,7 @@ if( ! isset( $output ) ) {
 }
 
 /* loop through fields */
+
 if ( isset ( $messages ) && ! empty( $messages ) ) {
 	foreach ( $messages as $message ) {
 
@@ -53,7 +54,7 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 							$output .= '<div class="ticker-youtube"> <iframe width="560" height="315" src="https://www.youtube.com/embed/' .$message['img_path']. '" frameborder="0" allowfullscreen></iframe></div>';
 						}
 						if( ! empty( $message['message'] ) ) {    //------ wird für die marker info genutzt
-							$output .= '<p class="the-message">' . $message['message'] . '</p>';
+							$output .= '<p class="the-message" style="font-weight:700;font-style:italic;">' . $message['message'] . '</p>';
 						}
 				break;
 				
@@ -73,7 +74,7 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 							';
 						}
 						if( ! empty( $message['message'] ) ) {    //------ wird für die marker info genutzt
-							$output .= '<p class="the-message">' . $message['message'] . '</p>';
+							$output .= '<p class="the-message" style="font-weight:700;font-style:italic;">' . $message['message'] . '</p>';
 						}
 				break;
 				
@@ -98,7 +99,7 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 								
 						}
 						if( ! empty( $message['message'] ) ) {
-							$output .= '<p class="the-message">' . $message['message'] . '</p>';
+							$output .= '<p class="the-message" style="font-weight:700;font-style:italic;">' . $message['message'] . '</p>';
 						}
 				break;
 				
@@ -120,7 +121,7 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 								'</td></tr></table>';
 						}
 						if( ! empty( $message['message'] ) ) {
-							$output .= '<p class="the-message">' . $message['message'] . '</p>';
+							$output .= '<p class="the-message" style="font-weight:700;font-style:italic;">' . $message['message'] . '</p>';
 						}
 				break;
 
@@ -137,6 +138,42 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 
 			} // type switch
 
+			if( count( $message['comments'] ) > 0 ) {
+					$output .= '<p class="ticker-show-comments-button"><a data-ticker_msg_id="' . $message['id'] . '" href="javascript:void(0);" class="ticker-show-comments"> + show ' . count( $message['comments'] ) . ' comment(s) </a></p> ';
+					$output .= '<div class="ticker-show-comments show-comments_close" id="ticker-show-comments_' . $message['id'] . '" style="display: none;" > ';
+					
+				foreach ( $message['comments'] as $comment ) {
+
+					$stamp_diff = time() - intval( $comment['time'] );
+					if( $stamp_diff < 3600 ) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['minute'], _x( '%time% minutes ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif( $stamp_diff < 86400 ) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['hour'], _x( '%time% hours ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif( $stamp_diff < 604800 ) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['day'], _x( '%time% days ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif( $stamp_diff < 2419200 ) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['week'], _x( 'weeks ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} else {
+						$diff_string = '';
+					}
+
+					$time = $comment['date'] . $diff_string;
+					$output .= '<div class="ticker-comment" id="ticker-comment_' . $comment['id'] . '"> ';
+					$output .= '<p class="ticker-message-title">' . $comment['name'] . '</p>' .
+							'<p class="ticker-message-time" style="font-size:1.2em">' . $time . '</p>' .
+							'<p class="the-message" style="font-weight:700;font-style:italic;">' . $comment['message'] . '</p>';
+					$output .= '</div>';
+				}
+				$output .= '</div>';
+			}
+				
+			if( $race_setting['liveticker'] == 1 && is_user_logged_in() ){
+				$output .= '<p><a data-ticker_msg_id="' . $message['id'] . '" href="javascript:void(0);" class="ticker-comment-button"> + send a comment </a></p> ';
+				$output .= '<div class="ticker-send-comment comment_close" id="ticker-send-comment_' . $message['id'] . '" style="display: none;" > ';
+				$output .= do_shortcode( '[h3-ticker-message race=' . $race . ' comment=true]' );
+				$output .= '</div>';
+			}
+			
 			$output .= '</div>';
 		//}
 
