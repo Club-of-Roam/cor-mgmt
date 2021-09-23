@@ -1,9 +1,6 @@
 /* UI FIXES
 ----------------------------------------- */
 
-#wpadminbar .quicklinks ul#wp-admin-bar-root-default {
-     display: none;
-}
 #adminmenu .wp-menu-image img {
 	width: 16px;
 	height: 16px;

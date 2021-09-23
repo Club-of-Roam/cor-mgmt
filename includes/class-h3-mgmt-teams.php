@@ -521,6 +521,10 @@ class H3_MGMT_Teams {
 	public function team_exists( $team_id ) {
 		global $wpdb;
 
+		if( empty( $team_id ) ) {
+			return false;
+		}
+
 		$team_query = $wpdb->get_results(
 			"SELECT * FROM " .
 			$wpdb->prefix."h3_mgmt_teams " .
@@ -825,6 +829,10 @@ class H3_MGMT_Teams {
 	 */
 	public function get_team_race( $team_id ) {
 		global $wpdb;
+
+		if( empty( $team_id ) ) {
+			return false;
+		}
 
 		$race_query = $wpdb->get_results(
 			"SELECT race_id FROM ".$wpdb->prefix."h3_mgmt_teams WHERE id = " . $team_id . " LIMIT 1",
@@ -1986,7 +1994,12 @@ class H3_MGMT_Teams {
 				$invited = 1;
 			}
 		}
-		$owner = $this->get_owner( $team_id );
+		
+		$owner = $h3_mgmt_sponsors->list_sponsors( array(
+			'type' => 'owner',
+			'team_id' => $team_id
+		));
+
 		$sponsors = $this->get_sponsors( $team_id );
 		
 		$phones = $this->get_team_phones( $team_id ); 	
@@ -2107,8 +2120,8 @@ class H3_MGMT_Teams {
 				}
 			}
                         if( $race_setting['kind_of_donation_tool'] != 1 ){
-                            if( $owner ) {
-                                    $output .= '<li><span class="to-do-positive">' . _x( 'You have a TeamOwner', 'Homework', 'h3-mgmt' ) . ': ' . $owner['display_name'] . '</span></li>';
+                            if( $this->get_owner( $team_id ) ) {
+                                    $output .= '<li><span class="to-do-positive">' . _x( 'You have a TeamOwner', 'Homework', 'h3-mgmt' ) . ': ' . $owner['names'] . '</span></li>';
                             } else {
                                     $output .= '<li><span class="to-do-can">' . _x( "You don't have a TeamOwner yet. You can hunt for one now!", 'Homework', 'h3-mgmt' ) . '</span></li>';
                             }
@@ -2601,7 +2614,7 @@ class H3_MGMT_Teams {
 			}
 			$teams_html[] = '<a class="team-overview-route-' . $team['route_id'] . ' ' . $owner_class . '" title="' .
 				_x( "See this team's complete profile", 'Team Profile', 'h3-mgmt' ) .
-				'" href="http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI] . '?id=' . $team['id'] . '">' . //get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] )
+				'" href="http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?id=' . $team['id'] . '">' . //get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] )
 				'<div style="box-shadow:none !important;" class="team-island team-overview-route-island-' . $team['route_id'] . '" ' .
 					'style="border: 2px solid #' . $routes_data[$team['route_id']]['color_code'] . '">' .
 					'<span class="team-overview-route" style="display:none;visibility:hidden;">' .
@@ -2673,7 +2686,7 @@ class H3_MGMT_Teams {
 			'</a>';
 
 		$script_params = array(
-			'redirect' => 'http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI]
+			'redirect' => 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
 		);
 		wp_localize_script( 'h3-mgmt-isotope', 'IsotopeParams', $script_params );
 
@@ -2979,16 +2992,6 @@ class H3_MGMT_Teams {
 	}
 
 	/*************** CONSTRUCTORS ***************/
-
-	/**
-	 * PHP4 style constructor
-	 *
-	 * @since 1.0
-	 * @access public
-	 */
-	public function H3_MGMT_Teams() {
-		$this->__construct();
-	}
 
 	/**
 	 * PHP5 style constructor

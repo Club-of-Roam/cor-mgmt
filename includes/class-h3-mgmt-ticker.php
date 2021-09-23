@@ -66,7 +66,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			);
 			$ids		 = array();
 			foreach ( $ids_querry as $id ) {
-				$ids[] = 'U_' . $id[ user_id ];
+				$ids[] = 'U_' . $id;
 			}
 			$ids[] = 'T_' . $team_id;
 
@@ -1669,16 +1669,6 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				);
 			}
 			echo '-- DONE 7';
-		}
-
-		/**
-		 * PHP4 style constructor
-		 *
-		 * @since 1.0
-		 * @access public
-		 */
-		public function H3_MGMT_Sponsors() {
-			$this->__construct();
 		}
 
 		/**

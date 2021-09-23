@@ -32,16 +32,6 @@ class H3_MGMT_Admin_Page {
 	private $args = array();
 
 	/**
-	 * PHP4 style constructor
-	 *
-	 * @since 1.1
-	 * @access public
-	 */
-	public function H3_MGMT_Admin_Form( $args = array() ) {
-		$this->__construct( $args = array() );
-	}
-
-	/**
 	 * PHP5 style constructor
 	 *
 	 * @since 1.1

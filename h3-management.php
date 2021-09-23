@@ -12,13 +12,13 @@ License: GPL3
 
 /*  Copyright 2012-2013  Johannes Pilkahn  (email : pille@nekkidgrandma.com)
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 3, as
-    published by the Free Software Foundation.
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License, version 3, as
+	published by the Free Software Foundation.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 /**
@@ -26,24 +26,60 @@ License: GPL3
  *
  * @since 1.0
  */
-if ( ! defined( 'H3_MGMT_ABSPATH' ) )
+if ( ! defined( 'H3_MGMT_ABSPATH' ) ) {
 	define( 'H3_MGMT_ABSPATH', dirname( __FILE__ ) );
+}
 
 /**
  * Holds the URL of HitchHikingHub Management
  *
  * @since 1.0
  */
-if ( ! defined( 'H3_MGMT_RELPATH' ) )
+if ( ! defined( 'H3_MGMT_RELPATH' ) ) {
 	define( 'H3_MGMT_RELPATH', plugin_dir_url( __FILE__ ) );
+}
 
 /**
  * Holds the name of the HitchHikingHub Management directory
  *
  * @since 1.0
  */
-if ( !defined( 'H3_MGMT_DIRNAME' ) )
+if ( ! defined( 'H3_MGMT_DIRNAME' ) ) {
 	define( 'H3_MGMT_DIRNAME', basename( H3_MGMT_ABSPATH ) );
+}
+
+/**
+ * Admin UI
+ *
+ * @since 1.0
+ */
+if ( is_admin() ) {
+	/* functional classes (usually insantiated only once) */
+	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin.php' );
+	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-emails.php' );
+	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-races.php' );
+	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-sponsors.php' );
+	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-teams.php' );
+	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-statistics.php' );
+
+	/* template classes (non-OOP templates are included on the spot) */
+	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-form.php' );
+	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-metaboxes.php' );
+	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-page.php' );
+	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-table.php' );
+
+	/**
+	 * h3_mgmt_admin object
+	 *
+	 * @since 1.0
+	 */
+	$GLOBALS['h3_mgmt_admin']            = new H3_MGMT_Admin();
+	$GLOBALS['h3_mgmt_admin_emails']     = new H3_MGMT_Admin_Emails();
+	$GLOBALS['h3_mgmt_admin_races']      = new H3_MGMT_Admin_Races();
+	$GLOBALS['h3_mgmt_admin_sponsors']   = new H3_MGMT_Admin_Sponsors();
+	$GLOBALS['h3_mgmt_admin_teams']      = new H3_MGMT_Admin_Teams();
+	$GLOBALS['h3_mgmt_admin_statistics'] = new H3_MGMT_Admin_Statistics();
+}
 
 /**
  * Enqueue the plugin's javascript
@@ -60,12 +96,12 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js' );
 	wp_register_script( 'h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js' );
 	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js' );
-	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js' ); 
-	wp_register_script( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', array( 'jquery' )  ); 
-	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js' ); 
-	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js' ); 
+	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js' );
+	wp_register_script( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', array( 'jquery' ) );
+	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js' );
+	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js' );
 	wp_register_script( 'googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&sensor=false', true );
-	wp_register_script( 'google-jsapi','https://www.google.com/jsapi', true ); 
+	wp_register_script( 'google-jsapi', 'https://www.google.com/jsapi', true );
 	/* register styles */
 	wp_register_style( 'h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', false, '1.1.88512111' );
 	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', false, '1.1.41' );
@@ -91,8 +127,8 @@ function h3_mgmt_enqueue() {
 add_action( 'wp_enqueue_scripts', 'h3_mgmt_enqueue' );
 
 function h3_mgmt_admin_enqueue() {
-	$jqui_params = array(
-		'monthNames' => array(
+	$jqui_params  = array(
+		'monthNames'  => array(
 			_x( 'January', 'Months', 'h3-mgmt' ),
 			_x( 'February', 'Months', 'h3-mgmt' ),
 			_x( 'March', 'Months', 'h3-mgmt' ),
@@ -104,7 +140,7 @@ function h3_mgmt_admin_enqueue() {
 			_x( 'September', 'Months', 'h3-mgmt' ),
 			_x( 'October', 'Months', 'h3-mgmt' ),
 			_x( 'November', 'Months', 'h3-mgmt' ),
-			_x( 'December', 'Months', 'h3-mgmt' )
+			_x( 'December', 'Months', 'h3-mgmt' ),
 		),
 		'dayNamesMin' => array(
 			_x( 'Sun', 'Weekdays, Shortform', 'h3-mgmt' ),
@@ -113,14 +149,14 @@ function h3_mgmt_admin_enqueue() {
 			_x( 'Wed', 'Weekdays, Shortform', 'h3-mgmt' ),
 			_x( 'Thu', 'Weekdays, Shortform', 'h3-mgmt' ),
 			_x( 'Fri', 'Weekdays, Shortform', 'h3-mgmt' ),
-			_x( 'Sat', 'Weekdays, Shortform', 'h3-mgmt' )
-		)
+			_x( 'Sat', 'Weekdays, Shortform', 'h3-mgmt' ),
+		),
 	);
 	$admin_params = array(
 		'strings' => array(
 			'btnDeselect' => __( 'Deselect all', 'h3-mgmt' ),
-			'btnSelect' => __( 'Select all', 'h3-mgmt' )
-		)
+			'btnSelect'   => __( 'Select all', 'h3-mgmt' ),
+		),
 	);
 
 	/* register scripts */
@@ -154,15 +190,15 @@ add_action( 'admin_enqueue_scripts', 'h3_mgmt_admin_enqueue' );
  * @since 1.0
  */
 /* core of the plugin, frontend (usually insantiated only once)*/
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-mailer.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-profile.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-races.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-sponsors.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-teams.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-ticker.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-utilities.php' );
-require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-xchange.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-mailer.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-profile.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-races.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-sponsors.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-teams.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-ticker.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-utilities.php' );
+require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-xchange.php' );
 
 /**
  * H3_MGMT Objects
@@ -170,48 +206,15 @@ require_once ( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-xchange.php' );
  * @global object $h3_mgmt
  * @since 1.0
  */
-$GLOBALS['h3_mgmt'] = new H3_MGMT();
+$GLOBALS['h3_mgmt']           = new H3_MGMT();
 $GLOBALS['h3_mgmt_utilities'] = new H3_MGMT_utilities();
-
-/**
- * Admin UI
- *
- * @since 1.0
- */
-if ( is_admin() ) {
-	/* functional classes (usually insantiated only once) */
-	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin.php' );
-	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-emails.php' );
-	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-races.php' );
-	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-sponsors.php' );
-	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-teams.php' );
-	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin-statistics.php' );
-
-	/* template classes (non-OOP templates are included on the spot) */
-	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-form.php' );
-	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-metaboxes.php' );
-	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-page.php' );
-	require_once( H3_MGMT_ABSPATH . '/templates/class-h3-mgmt-admin-table.php' );
-
-	/**
-	 * h3_mgmt_admin object
-	 *
-	 * @since 1.0
-	 */
-	$GLOBALS['h3_mgmt_admin'] = new H3_MGMT_Admin();
-	$GLOBALS['h3_mgmt_admin_emails'] = new H3_MGMT_Admin_Emails();
-	$GLOBALS['h3_mgmt_admin_races'] = new H3_MGMT_Admin_Races();
-	$GLOBALS['h3_mgmt_admin_sponsors'] = new H3_MGMT_Admin_Sponsors();
-	$GLOBALS['h3_mgmt_admin_teams'] = new H3_MGMT_Admin_Teams();
-	$GLOBALS['h3_mgmt_admin_statistics'] = new H3_MGMT_Admin_Statistics();
-}
 
 /**
  * Define globals
  *
  * @since 1.0
  */
-$h3_mgmt_db_version = "2.8";
+$h3_mgmt_db_version = '2.8';
 
 /**
  * Installation & Update Routines
@@ -225,182 +228,246 @@ $h3_mgmt_db_version = "2.8";
  * @since 1.0
  */
 function h3_mgmt_install() {
-   global $wpdb, $h3_mgmt_db_version;
+	global $wpdb, $h3_mgmt_db_version;
 
-	/* SQL statements to create required tables */
-	$sql = array();
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_auto_responses (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		action tinytext NOT NULL ,
-		switch tinyint UNSIGNED ,
-		subject text NOT NULL ,
-		message longtext NOT NULL ,
-		UNIQUE KEY id (id)
-	);";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_invitations (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		team_id int UNSIGNED NOT NULL ,
-		email varchar(255) NOT NULL ,
-		code bigint NOT NULL ,
-		UNIQUE KEY id (id)
-	);";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_races (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		name varchar(255) NOT NULL ,
-		start int UNSIGNED NOT NULL,
-		end int UNSIGNED NOT NULL,
-		UNIQUE KEY id (id)
-    );";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_routes (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		race_id int UNSIGNED NOT NULL ,
-		name varchar(255) NOT NULL ,
-		color_code varchar(255) NOT NULL ,
-		logo_url varchar(255) NOT NULL ,
-		max_teams smallint NOT NULL ,
-		user_id bigint UNSIGNED NOT NULL ,
-		UNIQUE KEY id (id)
-    );";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_stages (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		route int UNSIGNED NOT NULL ,
-		number tinyint UNSIGNED NOT NULL ,
-		destination varchar(255) NOT NULL ,
-		country varchar(255) NOT NULL ,
-		meeting_point text NOT NULL ,
-		UNIQUE KEY id (id)
-	);";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_sponsors (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		race_id int UNSIGNED NOT NULL ,
-		team_id int UNSIGNED NOT NULL ,
-		type tinytext NOT NULL ,
-		method tinytext NOT NULL ,
-		donation int UNSIGNED NOT NULL ,
-		display_name text NOT NULL ,
-		first_name text NOT NULL ,
-		last_name text NOT NULL ,
-		email varchar(255) NOT NULL ,
-		account_id varchar(255) NOT NULL ,
-		bank_id varchar(255) NOT NULL ,
-		bank_name text NOT NULL ,
-		paid tinyint UNSIGNED NOT NULL ,
-		show tinyint UNSIGNED NOT NULL ,
-		owner_pic varchar(255) NOT NULL ,
-		owner_link varchar(255) NOT NULL ,
-		street text NOT NULL ,
-		zip_code text NOT NULL ,
-		city text NOT NULL ,
-		country text NOT NULL ,
-		address_additional text NOT NULL ,
-		receipt tinyint UNSIGNED NOT NULL ,
-		debit_confirmation tinyint UNSIGNED NOT NULL ,
-		message text NOT NULL ,
-		UNIQUE KEY id (id)
-	);";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_teams (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		race int UNSIGNED NOT NULL ,
-		team_name text NOT NULL ,
-		description text NOT NULL ,
-		team_pic varchar(255) NOT NULL ,
-		complete tinyint UNSIGNED NOT NULL ,
-		route_id int UNSIGNED NOT NULL ,
-		team_phone varchar(255) NOT NULL ,
-		total_points int UNSIGNED NOT NULL ,
-		rank_stage_1 tinyint UNSIGNED NOT NULL ,
-		rank_stage_2 tinyint UNSIGNED NOT NULL ,
-		rank_stage_3 tinyint UNSIGNED NOT NULL ,
-		rank_stage_4 tinyint UNSIGNED NOT NULL ,
-		rank_stage_5 tinyint UNSIGNED NOT NULL ,
-		rank_stage_6 tinyint UNSIGNED NOT NULL ,
-		extra_stage_1 tinyint UNSIGNED NOT NULL ,
-		extra_stage_2 tinyint UNSIGNED NOT NULL ,
-		extra_stage_3 tinyint UNSIGNED NOT NULL ,
-		extra_stage_4 tinyint UNSIGNED NOT NULL ,
-		extra_stage_5 tinyint UNSIGNED NOT NULL ,
-		extra_stage_6 tinyint UNSIGNED NOT NULL ,
-		UNIQUE KEY id (id)
-	);";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_teammates (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		team_id int UNSIGNED NOT NULL ,
-		user_id int UNSIGNED NOT NULL ,
-		paid tinyint UNSIGNED NOT NULL ,
-		waiver tinyint UNSIGNED NOT NULL ,
-		UNIQUE KEY id (id)
-	);";
-	$sql[] = "CREATE TABLE " . $wpdb->prefix . "h3_mgmt_xchange (
-		id int UNSIGNED NOT NULL AUTO_INCREMENT ,
-		user_id int UNSIGNED NOT NULL ,
-		message text NOT NULL ,
-		time timestamp on update CURRENT_TIMESTAMP ,
-		UNIQUE KEY id (id)
-	);";
+	$installed_ver = get_option( 'h3_mgmt_db_version' );
 
-	/* comparison of above with db, db adjustments */
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	dbDelta($sql);
+	// if the plugin is not installed the db version is false
+	if ( false === $installed_ver ) {
 
-	/* works for now, but needs fixing */
-	$test = $wpdb->get_results(
-		"SELECT * FROM " . $wpdb->prefix . "h3_mgmt_auto_responses", ARRAY_A
-	);
-	if( ! isset( $test[0]['action'] ) ) {
-		$actions = array(
-			'team-creation',
-			'invitation',
-			'invitation-accepted-inviter',
-			'invitation-accepted-invitee',
-			'package-paid',
-			'waiver-reached',
-			'new-sponsor',
-			'new-owner',
-			'publishable',
-			'paypal-please-owner',
-			'paypal-please-sponsor',
-			//'paypal-please-patron',
-			//'paypal-please-structure',
-			'paypal-thanks',
-			'debit-thanks-owner',
-			'debit-thanks-sponsor',
-			//'debit-thanks-patron',
-			//'debit-thanks-structure'
-		);
-		foreach( $actions as $action ) {
-			$wpdb->insert(
-				$wpdb->prefix . 'h3_mgmt_auto_responses',
-				array(
-					'action' => $action,
-					'switch' => 1,
-					'language' => 'en'
-				),
-				array( '%s', '%d' )
-			);
-			$wpdb->insert(
-				$wpdb->prefix . 'h3_mgmt_auto_responses',
-				array(
-					'action' => $action,
-					'switch' => 1,
-					'language' => 'de'
-				),
-				array( '%s', '%d' )
-			);
-		}
+		/* SQL statements to create required tables */
+		$sql   = array();
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_auto_responses (
+				id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               action tinytext NOT NULL ,
+               language tinytext NOT NULL ,
+               switch tinyint UNSIGNED ,
+               subject text NOT NULL ,
+               message longtext NOT NULL ,
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_invitations (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               team_id int UNSIGNED NOT NULL ,
+               email varchar(255) NOT NULL ,
+               code bigint NOT NULL ,
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_races (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               name varchar(255) NOT NULL ,
+               start int UNSIGNED NOT NULL,
+               end int UNSIGNED NOT NULL,
+               logo_url varchar(255) NOT NULL,
+               setting longtext DEFAULT NULL, 
+               information_text longtext DEFAULT NULL,
+               active int DEFAULT NULL,
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_routes (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               race_id int UNSIGNED NOT NULL ,
+               name varchar(255) NOT NULL ,
+               color_code varchar(255) NOT NULL ,
+               logo_url varchar(255) NOT NULL ,
+               max_teams smallint NOT NULL ,
+               user_id bigint UNSIGNED NOT NULL ,
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_stages (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               race_id int UNSIGNED NOT NULL ,
+               route_id int UNSIGNED NOT NULL ,
+               number tinyint UNSIGNED NOT NULL ,
+               destination varchar(255) NOT NULL ,
+               country varchar(255) NOT NULL ,
+               meeting_point text NOT NULL ,
+               country_3166_alpha_2 varchar(255) NOT NULL ,
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_sponsors (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               type tinytext NOT NULL ,
+               method tinytext NOT NULL ,
+               donation int UNSIGNED NOT NULL ,
+               language tinytext NOT NULL, 
+               display_name text NOT NULL ,
+               first_name text NOT NULL ,
+               last_name text NOT NULL ,
+               account_id varchar(255) NOT NULL ,
+               bank_id varchar(255) NOT NULL ,
+               bank_name text NOT NULL ,
+               paid tinyint UNSIGNED NOT NULL ,
+               message text NOT NULL ,
+               team_id int UNSIGNED NOT NULL ,
+               var_show tinyint UNSIGNED NOT NULL ,
+               race_id int UNSIGNED NOT NULL ,
+               email varchar(255) NOT NULL ,
+               owner_pic varchar(255) NOT NULL ,
+               owner_link varchar(255) NOT NULL ,
+               street text NOT NULL ,
+               zip_code text NOT NULL ,
+               city text NOT NULL ,
+               country text NOT NULL ,
+               address_additional text NOT NULL ,
+               receipt tinyint UNSIGNED NOT NULL ,
+               debit_confirmation tinyint UNSIGNED NOT NULL ,
+               donation_client_reference varchar(255) NOT NULL ,
+               donation_token varchar(255) NOT NULL ,
+               timestamp datetime NOT NULL DEFAULT current_timestamp(), 
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_teams (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               description text NOT NULL ,
+               race_id int UNSIGNED NOT NULL ,
+               team_name text NOT NULL ,
+               team_pic varchar(255) NOT NULL ,
+               complete tinyint UNSIGNED NOT NULL ,
+               route_id int UNSIGNED NOT NULL ,
+               team_phone varchar(255) NOT NULL ,
+               rank_stage_1 smallint UNSIGNED NOT NULL ,
+               rank_stage_2 smallint UNSIGNED NOT NULL ,
+               rank_stage_3 smallint UNSIGNED NOT NULL ,
+               rank_stage_4 smallint UNSIGNED NOT NULL ,
+               rank_stage_5 smallint UNSIGNED NOT NULL ,
+               rank_stage_6 smallint UNSIGNED NOT NULL ,
+               extra_stage_1 smallint UNSIGNED NOT NULL ,
+               extra_stage_2 smallint UNSIGNED NOT NULL ,
+               extra_stage_3 smallint UNSIGNED NOT NULL ,
+               extra_stage_4 smallint UNSIGNED NOT NULL ,
+               extra_stage_5 smallint UNSIGNED NOT NULL ,
+               extra_stage_6 smallint UNSIGNED NOT NULL ,
+               total_points int UNSIGNED NOT NULL ,
+               meta_1 text NOT NULL,
+               meta_2 text NOT NULL,
+               meta_3 text NOT NULL,
+               meta_4 text NOT NULL,
+               meta_5 text NOT NULL,
+               donation_goal int UNSIGNED NOT NULL,
+               amount_extra_stage_1 tinyint UNSIGNED NOT NULL ,
+               amount_extra_stage_2 tinyint UNSIGNED NOT NULL ,
+               amount_extra_stage_3 tinyint UNSIGNED NOT NULL ,
+               amount_extra_stage_4 tinyint UNSIGNED NOT NULL ,
+               amount_extra_stage_5 tinyint UNSIGNED NOT NULL ,
+               amount_extra_stage_6 tinyint UNSIGNED NOT NULL ,
+               vary_extra_stage_1 tinyint UNSIGNED NOT NULL ,
+               vary_extra_stage_2 tinyint UNSIGNED NOT NULL ,
+               vary_extra_stage_3 tinyint UNSIGNED NOT NULL ,
+               vary_extra_stage_4 tinyint UNSIGNED NOT NULL ,
+               vary_extra_stage_5 tinyint UNSIGNED NOT NULL ,
+               vary_extra_stage_6 tinyint UNSIGNED NOT NULL ,
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_teammates (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               team_id int UNSIGNED NOT NULL ,
+               user_id int UNSIGNED NOT NULL ,
+               paid tinyint UNSIGNED NOT NULL ,
+               waiver tinyint UNSIGNED NOT NULL ,
+               language tinyint UNSIGNED NOT NULL ,
+               UNIQUE KEY id (id)
+       );';
+		$sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_xchange (
+               id int UNSIGNED NOT NULL AUTO_INCREMENT ,
+               user_id int UNSIGNED NOT NULL ,
+               message text NOT NULL ,
+               time timestamp on update CURRENT_TIMESTAMP ,
+               UNIQUE KEY id (id)
+		);';
+
+		/* comparison of above with db, db adjustments */
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+
+		/* works for now, but needs fixing */
+		// $test = $wpdb->get_results(
+		// 	'SELECT * FROM ' . $wpdb->prefix . 'h3_mgmt_auto_responses',
+		// 	ARRAY_A
+		// );
+		// if ( ! isset( $test[0]['action'] ) ) {
+		// 	$actions = array(
+		// 		'team-creation',
+		// 		'invitation',
+		// 		'invitation-accepted-inviter',
+		// 		'invitation-accepted-invitee',
+		// 		'package-paid',
+		// 		'waiver-reached',
+		// 		'new-sponsor',
+		// 		'new-owner',
+		// 		'publishable',
+		// 		'paypal-please-owner',
+		// 		'paypal-please-sponsor',
+		// 		//'paypal-please-patron',
+		// 		//'paypal-please-structure',
+		// 		'paypal-thanks',
+		// 		'debit-thanks-owner',
+		// 		'debit-thanks-sponsor',
+		// 		//'debit-thanks-patron',
+		// 		//'debit-thanks-structure'
+		// 	);
+		// 	foreach ( $actions as $action ) {
+		// 		$wpdb->insert(
+		// 			$wpdb->prefix . 'h3_mgmt_auto_responses',
+		// 			array(
+		// 				'action'   => $action,
+		// 				'switch'   => 1,
+		// 				'language' => 'en',
+		// 			),
+		// 			array( '%s', '%d' )
+		// 		);
+		// 		$wpdb->insert(
+		// 			$wpdb->prefix . 'h3_mgmt_auto_responses',
+		// 			array(
+		// 				'action'   => $action,
+		// 				'switch'   => 1,
+		// 				'language' => 'de',
+		// 			),
+		// 			array( '%s', '%d' )
+		// 		);
+		// 	}
+		// }
+		add_option( 'h3_mgmt_db_version', $h3_mgmt_db_version );
 	}
-
-	/* update db version number */
-   update_option( 'h3_mgmt_db_version', $h3_mgmt_db_version );
+	update_option( 'h3_mgmt_db_version', $h3_mgmt_db_version );
 }
+register_activation_hook( __FILE__, 'h3_mgmt_install' );
 
+/**
+ * Update Routine
+ *
+ * Checks if the databse is newer and will run the install routine again.
+ *
+ * @since 1.0
+ */
 function h3_mgmt_update_db_check() {
-    global $h3_mgmt_db_version;
-    if( get_site_option( 'h3_mgmt_db_version' ) != $h3_mgmt_db_version ) {
-        h3_mgmt_install();
-    }
+	global $h3_mgmt_db_version;
+	if ( get_site_option( 'h3_mgmt_db_version' ) != $h3_mgmt_db_version ) {
+		h3_mgmt_install();
+	}
 }
+add_action( 'plugins_loaded', 'h3_mgmt_update_db_check' );
 
-//add_action( 'plugins_loaded', 'h3_mgmt_update_db_check' );
-//register_activation_hook( __FILE__, 'h3_mgmt_install' );
+/**
+ * Uninstall Routine
+ *
+ * Delete the added Database tables
+ *
+ * @since 1.0
+ */
+function h3_mgmt_uninstall() {
+	// drop a custom database table
+	global $wpdb;
 
-?>
+	delete_option( 'h3_mgmt_db_version' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_auto_responses' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_invitations' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_races' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_routes' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_stages' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_sponsors' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_teams' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_teammates' );
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'h3_mgmt_xchange' );
+}
+register_uninstall_hook( __FILE__, 'h3_mgmt_uninstall' );

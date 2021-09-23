@@ -136,16 +136,6 @@ class H3_MGMT_XChange {
 	/*************** CONSTRUCTORS ***************/
 
 	/**
-	 * PHP4 style constructor
-	 *
-	 * @since 1.0
-	 * @access public
-	 */
-	public function H3_MGMT_Teams() {
-		$this->__construct();
-	}
-
-	/**
 	 * PHP5 style constructor
 	 *
 	 * @since 1.0
