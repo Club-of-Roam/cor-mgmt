@@ -187,7 +187,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 						{
 							$team_insert['team_pic'] = '';
 						}
-						var_dump($_POST );
+						
 						$wpdb->insert(
 							$wpdb->prefix . 'h3_mgmt_teams',
 							array(
