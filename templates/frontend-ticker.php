@@ -42,7 +42,6 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 			
 			switch( $message['type'] ) {
 				case 5: //video
-				default:
 					$output .= '<div class="ticker-message ticker-mms" '.$div_backround.'>' .
 						'<img class="no-bsl-adjust team-qi-route-logo" alt="Route Logo" src="' .
 							get_option( 'siteurl' ) . $message['route_image'] . '" style="width:33px;height:33px;float:left;padding:0;margin-right:10px;"/>' .
@@ -138,7 +137,7 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 
 			} // type switch
 
-			if( count( $message['comments'] ) > 0 ) {
+			if( $message['comments'] != null && count( $message['comments'] ) > 0 ) {
 					$output .= '<p class="ticker-show-comments-button"><a data-ticker_msg_id="' . $message['id'] . '" href="javascript:void(0);" class="ticker-show-comments"> + show ' . count( $message['comments'] ) . ' comment(s) </a></p> ';
 					$output .= '<div class="ticker-show-comments show-comments_close" id="ticker-show-comments_' . $message['id'] . '" style="display: none;" > ';
 					
