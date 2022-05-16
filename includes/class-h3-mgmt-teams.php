@@ -909,14 +909,14 @@ class H3_MGMT_Teams {
 		global $wpdb, $h3_mgmt_races;
 
 		$mates = $this->get_teammates( $team_id );
-                $race_id = $this->get_team_race( $team_id );
-                
-                $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
-                $num_teammember = intval( $race_setting['num_teammember'] );
-                
-                if( $num_teammember === NULL || !isset($race_setting['num_teammember'])){
-                    $num_teammember = 3;
-                }
+		$race_id = $this->get_team_race( $team_id );
+		
+		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+		$num_teammember = intval( $race_setting['num_teammember'] );
+		
+		if( $num_teammember === NULL || !isset($race_setting['num_teammember'])){
+			$num_teammember = 3;
+		}
                 
 		if( count( $mates ) > ( $num_teammember - 1) ) {
 			return false;
@@ -1401,6 +1401,11 @@ class H3_MGMT_Teams {
 
 		$field = $this->invitation_fields( $num_invitations );
 
+		if( $team_id == 0 )
+		{
+			return $field;
+		}
+
 		if ( empty( $_POST['form_submitted'] ) ) {
 			$invitations_query = $wpdb->get_results(
 				"SELECT * FROM ".$wpdb->prefix."h3_mgmt_invitations WHERE team_id = ".$team_id,
@@ -1822,11 +1827,11 @@ class H3_MGMT_Teams {
                                 
 				if( $invitations ) {
                                     
-                                        $num_teammember = intval( $race_setting['num_teammember'] );
-                                        
-                                        if( $num_teammember == NULL || !isset($race_setting['num_teammember']) ){
-                                            $num_teammember = 3;
-                                        }
+					$num_teammember = intval( $race_setting['num_teammember'] );
+					
+					if( $num_teammember == NULL || !isset($race_setting['num_teammember']) ){
+						$num_teammember = 3;
+					}
                                         
 					$output .= '<h3 class="top-space-more">' . _x( 'Invite teammate(s)', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
 					if( $invitations === $num_teammember - 1 ) {
@@ -2666,10 +2671,10 @@ class H3_MGMT_Teams {
 	private function isotope_links( $race_id = 1 ) {
 		global $h3_mgmt_races;
 
-		$output = '<div class="isotope-wrap"><h2 style="text-align:left;" class="isotope-heading">' .
+		$output = '<div class="isotope-wrap"><h2 style="width: 100%; text-align: left;" class="isotope-heading">' .
 				__( 'Jump to TeamProfile', 'h3-mgmt' ) .
 			'</h2>' .
-			'<select class="team-selector" style="display:inline;margin-right:1.4em;">';
+			'<select class="team-selector" style="display:inline-block;margin-right:1.4em; width:auto; font-size: 1.5em;">';
 		$options = $this->select_options( array(
 			'please_select' => true,
 			'exclude_with_owner' => false,
@@ -2681,7 +2686,7 @@ class H3_MGMT_Teams {
 		foreach( $options as $option ) {
 			$output .= '<option value=' . $option['value'] . '>' . $option['label'] . '</option>';
 		}
-		$output .= '</select><a style="margin-top:1px;font-size:1.4em;" class="jumper button" href="#" title="Show me the team!"> ' .
+		$output .= '</select><a style="margin-top:1px;font-size:1.4em;display:inline-block;" class="jumper button" href="#" title="Show me the team!"> ' .
 				__( 'Jump', 'h3-mgmt' ) .
 			'</a>';
 
@@ -2777,7 +2782,7 @@ class H3_MGMT_Teams {
 			'meta_1' => $_POST['meta_1'],
 			'meta_2' => $_POST['meta_2'],
 			'meta_3' => $_POST['meta_3'],
-			'meta_4' => $_POST['meta_4'],
+			'meta_4' => $_POST['meta_4'] === null ? 0 : $_POST['meta_4'],
 			'meta_5' => $_POST['meta_5']
 		);
 		$team_data_types = array(
@@ -2788,7 +2793,7 @@ class H3_MGMT_Teams {
 			'%s',
 			'%s',
 			'%s',
-			'%s',
+			'%d',
 			'%s'
 		);
 
@@ -2819,12 +2824,14 @@ class H3_MGMT_Teams {
 
 		if ( ! $team_id ) {
 
+			var_dump($team_insert);
 			$wpdb->insert(
 				$wpdb->prefix . 'h3_mgmt_teams',
 				$team_insert,
 				$team_data_types
 			);
 			$team_id = $wpdb->insert_id;
+			
 			$wpdb->insert(
 				$wpdb->prefix . 'h3_mgmt_teammates',
 				array(

@@ -200,7 +200,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 							),
 							array( '%d', '%s', '%s', '%s', '%s', '%d' )
 						);
-										$team_id = $wpdb->insert_id;
+						$team_id = $wpdb->insert_id;
 						//update or insert team member
 						//get old and new Teammate IDs
 						$new_members = array( $_POST['member1'], $_POST['member2'], $_POST['member3'] );

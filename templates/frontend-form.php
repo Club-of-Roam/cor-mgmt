@@ -42,7 +42,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 						str_replace( '"', '&quot;', str_replace( "'", '&apos;', $field['tooltip'] ) ) .
 						'\');" onmouseout="exit();"> (?)</span>';
 				}
-			$output .= '</label>' ;
+			$output .= '</label><br>' ;
 		}
 
 		switch( $field['type'] ) {

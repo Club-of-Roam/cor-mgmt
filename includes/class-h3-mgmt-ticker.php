@@ -743,7 +743,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 					$output .= '<li><a href="' .
 					_x( $post_url, 'utility translation', 'h3-mgmt' ) .
 					'?ticker_race=' . $race . '&ticker_route=' . $race_route[ 'id' ] .
-					'" style="color:#' . $race_route[ color_code ] . ';">' . $race_route[ 'name' ] . '</a></li>';
+					'" style="color:#' . $race_route[ 'color_code' ] . ';">' . $race_route[ 'name' ] . '</a></li>';
 				}
 
 				$output .= '</ul>' .
