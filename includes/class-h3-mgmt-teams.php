@@ -927,6 +927,10 @@ class H3_MGMT_Teams {
 		if( $allowed > $num_teammember ) {
 			$allowed = 2;
 		}
+		else if( $allowed == $num_teammember ) {
+			// if allowd as much as max teammember, there is no one in team, so the team will be created, invite just max teammember - yourself, so 1
+			$allowed = $allowed - 1;
+		}
 		return $allowed;
 	}
 
@@ -1735,7 +1739,6 @@ class H3_MGMT_Teams {
 					$output .= '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';						
 					return $output;	
 				}else{
-					$team_id = 0;										
 					$team_section = $this->team_section( false, $team_id, $race_id );		
 				}
 			}
@@ -1859,7 +1862,12 @@ class H3_MGMT_Teams {
 
 		$output .= '" /></div></form>';
 
-		$url = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?todo=leave&id=' . $team_id;
+		// $url = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?todo=leave&id=' . $team_id;
+		
+		$post     = get_post();
+		$post_url = get_page_link( $post->ID );
+		$url = $post_url . '?todo=leave&id=' . $team_id;
+		
 		$link = '<a title="' . _x( 'Click to leave the team!', 'Team Dashboard', 'h3-mgmt' ) . '" href="' . $url . '"' .
 				' onclick="if ( confirm(\'' .
 						__( 'Really leave your team', 'h3-mgmt' ) .
@@ -1867,7 +1875,7 @@ class H3_MGMT_Teams {
 				_x( 'click here', 'Team Dashboard', 'h3-mgmt' ) .
 			'</a>';
 
-		if( ! $this->is_invitation() || ! empty( $team_id ) ) {
+		if( ! $this->is_invitation() && ( ! empty( $team_id ) || false !== $team_id ) ) {
 			$output .= '<p>' . sprintf( _x( 'To leave your team for good, %s', 'Team Dashboard', 'h3-mgmt' ), $link ) . '.</p>';
 		}
 
@@ -2096,18 +2104,20 @@ class H3_MGMT_Teams {
                 }
                 $output .= '</ul>';
 
-		$base_url = get_option( 'siteurl' );
-		$downloads_url = $base_url . '/downloads/';
+				$base_url = get_option( 'siteurl' );
+				$downloads_url = $base_url . '/downloads/';
                 if( $race_setting['dis_waiver'] != 1 ){
                     $output .= stripcslashes( $information_text[16] ); 
                 }
                 
                 if( $race_setting['dis_fee'] != 1 ){
-		$output .= stripcslashes( $information_text[17] ) 
-			. '<br />' .'<a href="' . get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?id=' . $team['id'] . '&todo=resend" ' .
-				'title="' . _x( 'Send the mail to yourself again.', 'Homework', 'h3-mgmt' ) . '">' .
-					_x( 'Resend Mail.', 'Homework', 'h3-mgmt' ) . '</a></p>';
-                }
+					$post     = get_post();
+					$post_url = get_page_link( $post->ID );
+					$output .= stripcslashes( $information_text[17] ) 
+						. '<br />' .'<a href="' . $post_url . '?id=' . $team['id'] . '&todo=resend" ' .
+							'title="' . _x( 'Send the mail to yourself again.', 'Homework', 'h3-mgmt' ) . '">' .
+								_x( 'Resend Mail.', 'Homework', 'h3-mgmt' ) . '</a></p>';
+				}
 
 		$output .= '<h3>' . _x( 'After Team is complete', 'Homework', 'h3-mgmt' ) . '</h3>' .
 			'<ul class="list homework-list">';
@@ -2824,7 +2834,6 @@ class H3_MGMT_Teams {
 
 		if ( ! $team_id ) {
 
-			var_dump($team_insert);
 			$wpdb->insert(
 				$wpdb->prefix . 'h3_mgmt_teams',
 				$team_insert,
@@ -2876,7 +2885,10 @@ class H3_MGMT_Teams {
 					);
 
 					$inviter = $this->mate_name_string( $team_id );
-					$link = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] );
+					$post     = get_post();
+					$link = get_page_link( $post->ID );
+
+					// $link = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] );
 					$response_args = array(
 						'invitee' => $_POST['first_name'],
 						'inviter' => $inviter,
@@ -2973,7 +2985,9 @@ class H3_MGMT_Teams {
 					$new_inv++;
 
 					$inviter = $_POST['first_name'];
-					$link = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?invitation=' . $code;
+					$post     = get_post();
+					$link = get_page_link( $post->ID ) . '?invitation=' . $code;
+					// $link = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?invitation=' . $code;
 					$response_args = array(
 						'inviter' => $inviter,
 						'link' => $link,
