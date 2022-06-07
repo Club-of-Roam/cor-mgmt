@@ -64,9 +64,10 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			$wpdb->prefix . "h3_mgmt_teammates " .
 			"WHERE team_id = " . $team_id, ARRAY_A
 			);
+			
 			$ids		 = array();
 			foreach ( $ids_querry as $id ) {
-				$ids[] = 'U_' . $id;
+				$ids[] = 'U_' . $id['user_id'];
 			}
 			$ids[] = 'T_' . $team_id;
 
@@ -239,7 +240,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 								'race_id'	 => $race
 							), array( '%s', '%s', '%d', '%d' )
 							);
-
+							
 							$update_message = array(
 								'type'		 => 'message',
 								'message'	 => _x( 'Message has been sent.', 'Ticker Form', 'h3-mgmt' )
@@ -937,10 +938,11 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				);
 
 				foreach ( $teams as $team ) {
-					$ids = array_merge( $ids, $this->get_user_by_team( $team[ id ] ) );
+					$ids = array_merge( $ids, $this->get_user_by_team( $team[ 'id' ] ) );
 				}
 
 				$messages_query = $this->get_messages_by_ids( $ids, $race_id );
+				
 			} elseif ( $race != 0 ) {
 
 				$messages_query = $wpdb->get_results(
