@@ -332,12 +332,15 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 */
 		public function get_route_account( $route_id = 2 ) {
 			global $wpdb;
+			
+			if( is_null( $route_id ) ) {
+				return null;
+			}
 
 			$users_query = $wpdb->get_results(
 				'SELECT user_id FROM ' .
 				$wpdb->prefix . 'h3_mgmt_routes ' .
-				'WHERE id = ' . $route_id,
-				ARRAY_A
+				'WHERE id = ' . $route_id, ARRAY_A
 			);
 
 			return $users_query[0]['user_id'];
@@ -355,7 +358,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 			$route_query = $wpdb->get_results(
 				'SELECT id FROM ' .
 				$wpdb->prefix . 'h3_mgmt_routes ' .
-				'WHERE user_id = ' . $user_id,
+				'WHERE user_id = ' . $user_id, 
 				ARRAY_A
 			);
 

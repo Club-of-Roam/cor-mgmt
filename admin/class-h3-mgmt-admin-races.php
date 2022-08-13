@@ -646,7 +646,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 									'number'               => $_POST['number'],
 									'destination'          => $_POST['destination'],
 									'country'              => $_POST['country'],
-									'country_3166_alpha_2' => $_POST['country_3166_alpha_2'],
+									'country_3166_alpha-2' => $_POST['country_3166_alpha_2'],
 									'meeting_point'        => $_POST['meeting_point'],
 								),
 								array( 'id' => $_GET['id'] ),
@@ -666,14 +666,14 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 									'number'               => $_POST['number'],
 									'destination'          => $_POST['destination'],
 									'country'              => $_POST['country'],
-									'country_3166_alpha_2' => $_POST['country_3166_alpha_2'],
+									'country_3166_alpha-2' => $_POST['country_3166_alpha_2'],
 									'meeting_point'        => $_POST['meeting_point'],
 								),
 								array( '%d', '%d', '%d', '%s', '%s', '%s', '%s' )
 							);
 							$messages[] = array(
 								'type'    => 'message',
-								'message' => __( 'Stage successfully updated!', 'h3-mgmt' ),
+								'message' => __( 'Stage successfully created!', 'h3-mgmt' ),
 							);
 						}
 						$this->stages_list( $messages );
