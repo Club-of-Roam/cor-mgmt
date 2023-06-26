@@ -278,8 +278,33 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 			$extension = array_pop( $parts );
 			$path      = implode( '.', $parts );
 			$new_image = $path . '-' . $size . '.' . $extension;
+
 			if ( ! file_exists( str_replace( site_url() . '/', ABSPATH, $new_image ) ) ) {
-				image_resize( str_replace( site_url() . '/', ABSPATH, $image ), $size, $size, false, $size, null, 100 );
+				// image_resize( str_replace( site_url() . '/', ABSPATH, $image ), $size, $size, false, $size, null, 100 );
+				$editor = wp_get_image_editor( str_replace( site_url() . '/', ABSPATH, $image ) );
+				
+				if ( is_wp_error( $editor ) )
+				{
+					return $editor;
+				}
+
+				$editor->set_quality( 100 );
+
+				$resized = $editor->resize( $size, $size, false );
+				if ( is_wp_error( $resized ) )
+				{
+					return $image;
+				}
+				
+				$dest_file = $editor->generate_filename( $size, null );
+				$saved = $editor->save( $dest_file );
+
+				if ( is_wp_error( $saved ) )
+				{
+					return $image;
+				}
+
+				return $dest_file;
 			}
 
 			if ( file_exists( str_replace( site_url() . '/', ABSPATH, $new_image ) ) ) {
