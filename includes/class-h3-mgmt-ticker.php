@@ -791,7 +791,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			$ids			 = $this->get_user_by_team( $team_id );
 			$messages_query	 = $this->get_messages_by_ids( $ids, $race_id, $message_id );
 
-			$race_setting = $h3_mgmt_races->get_race_setting( $race );
+			$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 
 			$race_routes = $h3_mgmt_races->get_routes( array(
 				'race'		 => $race_id,
