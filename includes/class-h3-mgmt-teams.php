@@ -2317,7 +2317,7 @@ class H3_MGMT_Teams {
 			'type' => 'owner',
 			'team_id' => $team_id
 		));
-		
+
 		 $owner['owcner_pic'] = $h3_mgmt_utilities->pic_resize( $owner['owner_pic'], 250 ); //test rausnehen
 
 		$team = $this->get_team_data( $team_id, array( 'mates' ) );
@@ -2607,7 +2607,7 @@ class H3_MGMT_Teams {
 		}
 		
 		foreach( $teams as $team ) {
-			 $team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
+			$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
 			$mates_html = '';
 			$mcount = count( $team['mates'] );
 			$i = 0;

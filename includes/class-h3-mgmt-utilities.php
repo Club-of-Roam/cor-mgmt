@@ -285,7 +285,7 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 				
 				if ( is_wp_error( $editor ) )
 				{
-					return $editor;
+					return $image;
 				}
 
 				$editor->set_quality( 100 );
@@ -295,7 +295,7 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 				{
 					return $image;
 				}
-				
+
 				$dest_file = $editor->generate_filename( $size, null );
 				$saved = $editor->save( $dest_file );
 
