@@ -890,7 +890,7 @@ html;
                                 [
                                     'type' => $_POST['type'],
                                 ],
-                                ['id' => $donationId],
+                                ['id' => $results[0]->id],
                                 ['%s'],
                                 ['%d']
                             );
