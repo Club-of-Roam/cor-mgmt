@@ -884,6 +884,16 @@ html;
                                     '%s',
                                 )
                             );
+                        } else {
+                            $wpdb->update(
+                                "{$wpdb->prefix}h3_mgmt_sponsors",
+                                [
+                                    'type' => $_POST['type'],
+                                ],
+                                ['id' => $donationId],
+                                ['%s'],
+                                ['%d']
+                            );
                         }
 
                         // Text snippets for output
