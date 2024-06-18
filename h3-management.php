@@ -98,13 +98,14 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js' );
 	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js' );
 	wp_register_script( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', array( 'jquery' ) );
+    wp_register_script('h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'js/h3-mgmt-sponsoring.js', array('jquery', 'wp-i18n'), '1.0', true);
 	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js' );
 	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js' );
 	wp_register_script( 'googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&sensor=false', true );
 	wp_register_script( 'google-jsapi', 'https://www.google.com/jsapi', true );
 	/* register styles */
 	wp_register_style( 'h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', false, '1.1.88512111' );
-	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', false, '1.1.41' );
+    wp_register_style('h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', false, '1.1.42');
 	wp_register_style( 'h3-mgmt-stages', H3_MGMT_RELPATH . 'css/h3-mgmt-stages.css', false, '1.1,1' );
 	wp_register_style( 'h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', false, '1.1.1111111' );
 	wp_register_style( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', false, '1.1.23456' );
@@ -115,6 +116,7 @@ function h3_mgmt_enqueue() {
 	wp_enqueue_script( 'isotope' );
 	wp_enqueue_script( 'h3-mgmt-isotope' );
 	wp_enqueue_script( 'h3-mgmt-ticker' );
+    wp_enqueue_script('h3-mgmt-sponsoring');
 	/* enqueue stylesheets */
 	wp_enqueue_style( 'h3-mgmt-donation-counter-style' );
 	wp_enqueue_style( 'h3-mgmt-sponsoring' );
