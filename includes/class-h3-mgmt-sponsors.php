@@ -450,7 +450,7 @@ if ( ! class_exists( 'H3_MGMT_Sponsors' ) ) :
             $queryString = http_build_query($params);
 
             // Initialize cURL session
-            $ch = curl_init();
+            /*$ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url . '?' . $queryString);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
@@ -465,7 +465,21 @@ if ( ! class_exists( 'H3_MGMT_Sponsors' ) ) :
             }
 
             // Close cURL session
-            curl_close($ch);
+            curl_close($ch);*/
+
+            $header = get_headers($url . '?' . $queryString, true);
+
+            if (strpos($header[0], '200 OK') === false) {
+                // api error
+                return null;
+            }
+
+            $response = file_get_contents($url . '?' . $queryString);
+
+            if (empty($response)) {
+                // no response
+                return null;
+            }
 
             // Decode the JSON response
             $data = json_decode($response, true);
