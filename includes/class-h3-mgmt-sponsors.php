@@ -83,7 +83,7 @@ if ( ! class_exists( 'H3_MGMT_Sponsors' ) ) :
 				$amount += $sponsor['donation'];
 			}
 
-			return $amount;
+			return ($amount / 100);
 		}
 
 		/**

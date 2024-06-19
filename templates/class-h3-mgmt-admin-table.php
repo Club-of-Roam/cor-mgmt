@@ -871,7 +871,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 
 				case 'donation':
 					$cpk    = intval( $data ) / 20;
-					$output = '<span>' . $data . ' &euro;</span>';
+					$output = '<span>' . number_format($data / 100, 2) . ' &euro;</span>';
 					break;
 
 				case 'paid':
