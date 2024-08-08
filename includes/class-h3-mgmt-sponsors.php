@@ -83,7 +83,7 @@ if ( ! class_exists( 'H3_MGMT_Sponsors' ) ) :
 				$amount += $sponsor['donation'];
 			}
 
-			return ($amount / 100);
+			return $amount;
 		}
 
 		/**
@@ -630,7 +630,7 @@ html;
                 // Step 3: Donation done
                 $teamName = $h3_mgmt_teams->get_team_name($teamId);
 
-                $paragraphText = str_replace(['%amount%', '%team_name%'], [$amount ? $amount / 100 : '??', $teamName],
+                $paragraphText = str_replace(['%amount%', '%team_name%'], [$amount ?: '??', $teamName],
                     $type === 'owner' ?
                         _x(
                             'Great you just donated %amount%€ at Betterplace.' .
@@ -1009,10 +1009,12 @@ html;
                             $associatedDonations[0]['author']['name'] : '';*/
                         // $message = $associatedDonations[0]['message'];
 
+                        $amountInEuros = $amountInCents / 100;
+
                         $wpdb->update(
                             "{$wpdb->prefix}h3_mgmt_sponsors",
                             [
-                                'donation' => $amountInCents,
+                                'donation' => $amountInEuros,
                                 'paid' => 1,
                                 'var_show' => 1,
                             ],
@@ -1031,7 +1033,7 @@ html;
                                 $type,
                                 $teamId,
                                 $_POST['donation_token'],
-                                $amountInCents,
+                                $amountInEuros,
                                 $displayName,
                                 $message,
                                 $ownerLink,
@@ -1067,7 +1069,7 @@ html;
                         $ownerPic = '';
                         $ownerLink = '';
 
-                        if ($donationType === 'owner' && $donation >= 10000) {
+                        if ($donationType === 'owner' && $donation >= 100) {
                             if (!empty($_FILES['owner_pic']['name'])) {
                                 $ownerPicData = wp_upload_bits(
                                     $_FILES['owner_pic']['name'],
