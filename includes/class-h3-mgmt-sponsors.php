@@ -923,8 +923,15 @@ html;
                             'Sponsoring Form',
                             'h3-mgmt'
                         );
-                        $ownerNote = _x('If you want to become an <b>owner</b> of the team, make sure that the <b>checkbox “Show amount” is checked</b>.' .
+                        $ownerNote = _x(
+                            'If you want to become an <b>owner</b> of the team, make sure that the <b>checkbox “Show amount” is checked</b>.' .
                             ' Otherwise we will not be able to verify whether your donation is sufficient.',
+                            'Sponsoring Form',
+                            'h3-mgmt'
+                        );
+                        $clickDoneButtonNote = _x(
+                            'After you have completed the donation at betterplace.org, please <b>press the "Done" button</b> below to complete the donation here.' .
+                            ' You will not be automatically redirected back to our site.',
                             'Sponsoring Form',
                             'h3-mgmt'
                         );
@@ -946,6 +953,7 @@ html;
         <span>$moreText</span>
     </div>
     <div class="margin-top-20">$ownerNote</div>
+    <div class="margin-top-20">$clickDoneButtonNote</div>
     <div class="margin-top-50">
         <a id="donation-button" href="$fundraisingLink" target="_blank">$donateButtonText</a>
     </div>
