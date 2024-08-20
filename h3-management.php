@@ -4,7 +4,7 @@
 Plugin Name: HitchHikingHub Management
 Plugin URI: https://github.com/Club-of-Roam/cor-mgmt
 Description: Core of the "HitchHikingHub", events/races, user profiles, team profiles
-Version: 1.2.1
+Version: 1.2.2
 Author: Johannes Pilkahn
 Author URI: http://nekkidgrandma.com
 License: GPL3
