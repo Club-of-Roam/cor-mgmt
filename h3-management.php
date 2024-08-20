@@ -4,7 +4,7 @@
 Plugin Name: HitchHikingHub Management
 Plugin URI: https://github.com/Club-of-Roam/cor-mgmt
 Description: Core of the "HitchHikingHub", events/races, user profiles, team profiles
-Version: 1.2.2
+Version: 1.2.3
 Author: Johannes Pilkahn
 Author URI: http://nekkidgrandma.com
 License: GPL3
@@ -89,29 +89,29 @@ if (is_admin()) {
 function h3_mgmt_enqueue()
 {
     /* register scripts */
-    wp_register_script('isotope', H3_MGMT_RELPATH . 'js/jquery.isotope.min.js', array('jquery'), '1', true);
-    wp_register_script('h3-mgmt-isotope', H3_MGMT_RELPATH . 'js/h3-mgmt-isotope.js', array('jquery', 'isotope'), '1.1.2', true);
-    wp_register_script('h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', array('jquery'), '1.1.711111', true);
-    wp_register_script('h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', array('jquery'), '1.1.2.3633', true);
-    wp_register_script('h3-mgmt-resize', H3_MGMT_RELPATH . 'js/resize.js');
-    wp_register_script('h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js');
-    wp_register_script('h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js');
-    wp_register_script('h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js');
-    wp_register_script('h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js');
-    wp_register_script('h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', array('jquery'));
-    wp_register_script('h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'js/h3-mgmt-sponsoring.js', array('jquery', 'wp-i18n'), '1.0', true);
-    wp_register_script('h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js');
-    wp_register_script('h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js');
-    wp_register_script('googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&libraries=marker&v=quarterly', true);
-    wp_register_script('google-jsapi', 'https://www.google.com/jsapi', true);
+    wp_register_script('isotope', H3_MGMT_RELPATH . 'js/jquery.isotope.min.js', ['jquery'], '1.0', true);
+    wp_register_script('h3-mgmt-isotope', H3_MGMT_RELPATH . 'js/h3-mgmt-isotope.js', ['jquery', 'isotope'], '1.1.2', true);
+    wp_register_script('h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', ['jquery'], '1.2', true);
+    wp_register_script('h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', ['jquery'], '1.1.3', true);
+    wp_register_script('h3-mgmt-resize', H3_MGMT_RELPATH . 'js/resize.js', [], '1.0');
+    wp_register_script('h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js', [], '1.0');
+    wp_register_script('h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js', [], '1.0');
+    wp_register_script('h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js', [], '1.0');
+    wp_register_script('h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js', [], '1.1');
+    wp_register_script('h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', ['jquery'], '1.0');
+    wp_register_script('h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'js/h3-mgmt-sponsoring.js', ['jquery', 'wp-i18n'], '1.0', true);
+    wp_register_script('h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js', [], '1.0');
+    wp_register_script('h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js', [], '1.0');
+    wp_register_script('googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&libraries=marker&v=quarterly');
+    wp_register_script('google-jsapi', 'https://www.google.com/jsapi');
     /* register styles */
-    wp_register_style('h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', false, '1.1.88512111');
-    wp_register_style('h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', false, '1.1.42');
-    wp_register_style('h3-mgmt-stages', H3_MGMT_RELPATH . 'css/h3-mgmt-stages.css', false, '1.1,1');
-    wp_register_style('h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', false, '1.1.1111111');
-    wp_register_style('h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', false, '1.1.23456');
-    wp_register_style('h3-mgmt-xchange', H3_MGMT_RELPATH . 'css/h3-mgmt-xchange.css', false, '1.1');
-    wp_register_style('h3-mgmt-ranking', H3_MGMT_RELPATH . 'css/h3-mgmt-ranking.css', false, '1.1');
+    wp_register_style('h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', [], '1.2');
+    wp_register_style('h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', [], '1.2');
+    wp_register_style('h3-mgmt-stages', H3_MGMT_RELPATH . 'css/h3-mgmt-stages.css', [], '1.2');
+    wp_register_style('h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', [], '1.1.2');
+    wp_register_style('h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', [], '1.1.3');
+    wp_register_style('h3-mgmt-xchange', H3_MGMT_RELPATH . 'css/h3-mgmt-xchange.css', [], '1.1');
+    wp_register_style('h3-mgmt-ranking', H3_MGMT_RELPATH . 'css/h3-mgmt-ranking.css', [], '1.1');
     /* enqueue custom scripts */
     /* enqueue custom scripts */
     wp_enqueue_script('isotope');
@@ -132,8 +132,8 @@ add_action('wp_enqueue_scripts', 'h3_mgmt_enqueue');
 
 function h3_mgmt_admin_enqueue()
 {
-    $jqui_params = array(
-        'monthNames' => array(
+    $jqui_params = [
+        'monthNames' => [
             _x('January', 'Months', 'h3-mgmt'),
             _x('February', 'Months', 'h3-mgmt'),
             _x('March', 'Months', 'h3-mgmt'),
@@ -146,8 +146,8 @@ function h3_mgmt_admin_enqueue()
             _x('October', 'Months', 'h3-mgmt'),
             _x('November', 'Months', 'h3-mgmt'),
             _x('December', 'Months', 'h3-mgmt'),
-        ),
-        'dayNamesMin' => array(
+        ],
+        'dayNamesMin' => [
             _x('Sun', 'Weekdays, Shortform', 'h3-mgmt'),
             _x('Mon', 'Weekdays, Shortform', 'h3-mgmt'),
             _x('Tue', 'Weekdays, Shortform', 'h3-mgmt'),
@@ -155,23 +155,23 @@ function h3_mgmt_admin_enqueue()
             _x('Thu', 'Weekdays, Shortform', 'h3-mgmt'),
             _x('Fri', 'Weekdays, Shortform', 'h3-mgmt'),
             _x('Sat', 'Weekdays, Shortform', 'h3-mgmt'),
-        ),
-    );
-    $admin_params = array(
-        'strings' => array(
+        ],
+    ];
+    $admin_params = [
+        'strings' => [
             'btnDeselect' => __('Deselect all', 'h3-mgmt'),
             'btnSelect' => __('Select all', 'h3-mgmt'),
-        ),
-    );
+        ],
+    ];
 
     /* register scripts */
-    wp_register_script('h3-mgmt-admin', H3_MGMT_RELPATH . 'js/h3-mgmt-admin.js', array('jquery'), '1.1', true);
-    wp_register_script('h3-mgmt-ui', H3_MGMT_RELPATH . 'js/h3-mgmt-ui.js', array('jquery', 'jquery-ui-slider', 'jquery-ui-datepicker'), '1.1.1', true);
-    wp_register_script('custom-field-instances', H3_MGMT_RELPATH . 'js/repeatable-custom-fields.js', array('jquery'), '1.1.2', true);
-    wp_register_script('h3-mgmt-admin-sponsors', H3_MGMT_RELPATH . 'js/h3-mgmt-admin-sponsors.js', array('jquery'), '1.1.5', true);
+    wp_register_script('h3-mgmt-admin', H3_MGMT_RELPATH . 'js/h3-mgmt-admin.js', ['jquery'], '1.1', true);
+    wp_register_script('h3-mgmt-ui', H3_MGMT_RELPATH . 'js/h3-mgmt-ui.js', ['jquery', 'jquery-ui-slider', 'jquery-ui-datepicker'], '1.1.1', true);
+    wp_register_script('custom-field-instances', H3_MGMT_RELPATH . 'js/repeatable-custom-fields.js', ['jquery'], '1.1.2', true);
+    wp_register_script('h3-mgmt-admin-sponsors', H3_MGMT_RELPATH . 'js/h3-mgmt-admin-sponsors.js', ['jquery'], '1.1.5', true);
     /* register styles */
-    wp_register_style('jquery-ui-custom', H3_MGMT_RELPATH . 'css/jquery-ui-custom.css', false, '1.1');
-    wp_register_style('h3-mgmt-admin-style', H3_MGMT_RELPATH . 'css/h3-mgmt-admin.css', false, '1.1.5');
+    wp_register_style('jquery-ui-custom', H3_MGMT_RELPATH . 'css/jquery-ui-custom.css', [], '1.1');
+    wp_register_style('h3-mgmt-admin-style', H3_MGMT_RELPATH . 'css/h3-mgmt-admin.css', [], '1.1.5');
     /* enqueue core scripts */
     wp_enqueue_script('jquery-ui-datepicker');
     wp_enqueue_script('jquery-ui-slider');
@@ -243,7 +243,7 @@ function h3_mgmt_install()
     if (false === $installed_ver) {
 
         /* SQL statements to create required tables */
-        $sql = array();
+        $sql = [];
         $sql[] = 'CREATE TABLE ' . $wpdb->prefix . 'h3_mgmt_auto_responses (
 				id int UNSIGNED NOT NULL AUTO_INCREMENT ,
                action tinytext NOT NULL ,
