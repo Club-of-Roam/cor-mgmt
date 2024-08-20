@@ -24,6 +24,7 @@ function initMap() {
     const map = new google.maps.Map(document.getElementById('map-canvas'), {
         center: { lat: coord_center_lat, lng: coord_center_lng }, // lat: 46.3682855, lng: 14.4170272
         zoom: 5,
+        mapId: 'DEMO_MAP_ID',
     });
 
     const bounds = new google.maps.LatLngBounds();
