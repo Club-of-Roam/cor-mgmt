@@ -93,11 +93,11 @@ function bindInfoWindow(marker, marker_all, infoWindow, contentString) {
         infoWindow.close();
 
         for (let index = 0; index < marker_all.length; ++index) {
-            marker_all[index].classList.remove('bounce');
+            marker_all[index].content.classList.remove('bounce');
 
             if (marker_all[index].dataset.teamId === marker.dataset.teamId) {
-                lines.push(marker_all[index].position);
-                marker_all[index].classList.add('bounce');
+                lines.push(marker_all[index].content.position);
+                marker_all[index].content.classList.add('bounce');
             }
         }
 
