@@ -96,7 +96,7 @@ function bindInfoWindow(marker, marker_all, infoWindow, contentString) {
             marker_all[index].content.classList.remove('bounce');
 
             if (marker_all[index].dataset.teamId === marker.dataset.teamId) {
-                lines.push(marker_all[index].content.position);
+                lines.push(marker_all[index].position);
                 marker_all[index].content.classList.add('bounce');
             }
         }
