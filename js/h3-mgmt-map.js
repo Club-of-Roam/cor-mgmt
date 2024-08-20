@@ -54,7 +54,7 @@ function initMap() {
         }</p></div>`;
 
         const pin = new google.maps.marker.PinElement({
-            background: messages[i].hex_color,
+            background: `#${messages[i].hex_color}`,
         });
 
         const marker = new google.maps.marker.AdvancedMarkerElement({
