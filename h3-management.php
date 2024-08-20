@@ -102,7 +102,7 @@ function h3_mgmt_enqueue()
     wp_register_script('h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'js/h3-mgmt-sponsoring.js', array('jquery', 'wp-i18n'), '1.0', true);
     wp_register_script('h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js');
     wp_register_script('h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js');
-    wp_register_script('googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&libraries=map,marker', true);
+    wp_register_script('googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&libraries=marker&v=quarterly', true);
     wp_register_script('google-jsapi', 'https://www.google.com/jsapi', true);
     /* register styles */
     wp_register_style('h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', false, '1.1.88512111');
