@@ -1,258 +1,284 @@
 .donation-info-wrap {
-	text-align: center;
-	width: 80%;
-	display: inline;
-	display: inline-block;
-	font-size: 2em;
+    text-align: center;
+    width: 80%;
+    display: inline;
+    display: inline-block;
+    font-size: 2em;
 }
+
 .arrow-wrap {
-	width: 8%;
-	display: inline;
-	display: inline-block;
-	font-size: 2.8em;
-	padding: 0 1%;
-	cursor: pointer;
+    width: 8%;
+    display: inline;
+    display: inline-block;
+    font-size: 2.8em;
+    padding: 0 1%;
+    cursor: pointer;
 }
+
 .arrow-right {
-	text-align: right;
+    text-align: right;
 }
+
 .arrow:hover {
-	text-shadow: 0 0 3px #00cfff
+    text-shadow: 0 0 3px #00cfff
 }
+
 .arrow {
-	line-height: 1.6;
+    line-height: 1.6;
 }
+
 .address-row {
-	display: none;
+    display: none;
 }
+
 .team-profile-sponsors .msg,
 .owner-link .msg {
-	text-align: left;
-	display: inline-block;
-	position: relative;
-	overflow: hidden;
-	font-size: .8em;
-	font-style: italic;
-	color: #333;
+    text-align: left;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    font-size: .8em;
+    font-style: italic;
+    color: #333;
 }
+
 .comments-bubble {
-	margin: 0 !important;
-	position: absolute;
-	top: 0;
+    margin: 0 !important;
+    position: absolute;
+    top: 0;
 }
+
 .comments-bubble:hover {
-	top: -14px;
+    top: -14px;
 }
+
 .owner-link a {
-	color: #ffffff;
-	text-decoration: none;
-	border: 0;
+    color: #ffffff;
+    text-decoration: none;
+    border: 0;
 }
+
 .owner-link a:hover {
-	color: #ffffff;
-	text-shadow: 0 0 5px #b784bf;
-	text-decoration: none;
-	border: 0;
+    color: #ffffff;
+    text-shadow: 0 0 5px #b784bf;
+    text-decoration: none;
+    border: 0;
 }
+
 .sponsors-link {
-	color: #ffffff;
-	text-decoration: none;
-	border: 0;
+    color: #ffffff;
+    text-decoration: none;
+    border: 0;
 }
+
 .sponsors-link:hover {
-	color: #ffffff;
-	text-shadow: 0 0 2px #00cfff;
-	text-decoration: none;
-	border: 0;
+    color: #ffffff;
+    text-shadow: 0 0 2px #00cfff;
+    text-decoration: none;
+    border: 0;
 }
+
 div#donation-receipt-wrap {
-	display: none;
+    display: none;
 }
+
 div.donation-selector-row::-moz-selection {
-	background: transparent;
-	color: #ffffff;
-	text-shadow: none;
+    background: transparent;
+    color: #ffffff;
+    text-shadow: none;
 }
+
 div.donation-selector-row::selection {
-	background: transparent;
-	color: #ffffff;
-	text-shadow: none;
+    background: transparent;
+    color: #ffffff;
+    text-shadow: none;
 }
+
 .activity-stream {
-	padding: 1.5em;
-	background: #999999;
-	margin: 0 0 2.3em 0;
-	width: 100%;
+    padding: 1.5em;
+    background: #999999;
+    margin: 0 0 2.3em 0;
+    width: 100%;
 }
+
 .activity-stream :last-child {
-	padding-bottom: 0;
+    padding-bottom: 0;
 }
+
 .activity-stream:nth-child(2n) {
-	background: #F1F1F1; /*#dfe8ff;*/
+    background: #F1F1F1; /*#dfe8ff;*/
 }
+
 .activity-stream:nth-child(2n+1) {
-	background: #A0A0A0; /* #c79a52; */
+    background: #A0A0A0; /* #c79a52; */
 }
+
 .xchange-title {
-	font-weight: bold;
+    font-weight: bold;
 }
+
 .activity-stream p:last-child {
-	margin: 0;
-	padding: 0 !important;
+    margin: 0;
+    padding: 0 !important;
 }
 
 /* --- Donation (Betterplace) --- */
 
 .donation-container {
-	font-size: 1.5em;
+    font-size: 1.5em;
 }
 
 .flex-column-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .flex-row-container {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .margin-5 {
-	margin: 5px;
+    margin: 5px;
 }
 
 #donation-token {
-	background-color: lightgrey;
-	padding: 3px;
+    background-color: lightgrey;
+    padding: 3px;
 }
 
 .icon-button {
-	background-color: transparent;
-	background-image: url(../img/copy64.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	width: 1.8em;
-	height: 1.8em;
-	margin: 5px;
-	border-width: thin;
-	border-radius: 5px;
+    background-color: transparent;
+    background-image: url(../img/copy64.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 1.8em;
+    height: 1.8em;
+    margin: 5px;
+    border-width: thin;
+    border-radius: 5px;
 }
 
 /* Popup container */
 .popup {
-	position: relative;
-	display: inline-block;
-	cursor: pointer;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
 
 /* The actual popup (appears on top) */
 .popup .popuptext {
-	visibility: hidden;
-	width: 160px;
-	background-color: #555;
-	color: #fff;
-	text-align: center;
-	border-radius: 6px;
-	padding: 8px 0;
-	position: absolute;
-	z-index: 1;
-	bottom: 125%;
-	left: 50%;
-	margin-left: -80px;
-	opacity: 0;
-	transition: visibility 0s 1s, opacity 1s linear;
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
 }
 
 /* Popup arrow */
 .popup .popuptext::after {
-	content: "";
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	margin-left: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: #555 transparent transparent transparent;
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
 }
 
 /* Toggle this class when clicking on the popup container (hide and show the popup) */
 .popup .show {
-	visibility: visible;
-	opacity: 1;
-	transition: opacity 0.5s linear;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s linear;
 }
 
 .margin-top-20 {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 .margin-top-50 {
-	margin-top: 50px;
+    margin-top: 50px;
 }
 
 #donation-button {
-	background-color: rgb(126, 162, 8);
-	background-image: linear-gradient(rgb(126, 162, 8), rgb(104, 134, 6));
-	text-shadow: rgb(42, 99, 0) 1px 1px 0;
-	border-radius: 6px;
-	font-size: 18px;
-	padding: 8px 20px;
-	cursor: pointer;
-	border-color: rgba(140, 130, 115, 0.1) rgba(140, 130, 115, 0.1) rgba(140, 130, 115, 0.25);
-	box-shadow: rgba(24, 26, 27, 0.2) 0 1px 0 0 inset, rgba(0, 0, 0, 0.05) 0 1px 2px 0;
-	color: rgb(232, 230, 227);
-	text-decoration: none;
-	border-width: 1px;
-	border-style: solid;
-	text-align: center;
-	display: inline-block;
+    background-color: rgb(126, 162, 8);
+    background-image: linear-gradient(rgb(126, 162, 8), rgb(104, 134, 6));
+    text-shadow: rgb(42, 99, 0) 1px 1px 0;
+    border-radius: 6px;
+    font-size: 1.2em;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-color: rgba(140, 130, 115, 0.1) rgba(140, 130, 115, 0.1) rgba(140, 130, 115, 0.25);
+    box-shadow: rgba(24, 26, 27, 0.2) 0 1px 0 0 inset, rgba(0, 0, 0, 0.05) 0 1px 2px 0;
+    color: rgb(232, 230, 227);
+    text-decoration: none;
+    border-width: 1px;
+    border-style: solid;
+    text-align: center;
+    display: inline-block;
 }
 
 #donation-button:hover {
-	background-color: rgb(126, 162, 8);
-	background-image: linear-gradient(rgb(111, 143, 7), rgb(89, 114, 6));
+    background-color: rgb(126, 162, 8);
+    background-image: linear-gradient(rgb(111, 143, 7), rgb(89, 114, 6));
+}
+
+#donation-done-button {
+    padding: 8px 20px;
+    font-size: 1.2em;
 }
 
 button.avia-button.button {
-	border-radius: 6px;
-	font-size: 1em;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	margin: 20px;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 20px;
 }
 
 .loader {
-	display: none;
-	border: 0.3em solid transparent !important;
-	border-top: 0.3em solid lightgrey !important;
-	border-radius: 50%;
-	width: 1.2em;
-	height: 1.2em;
-	margin-left: 8px;
-	animation: spin 1.4s infinite linear;
+    display: none;
+    border: 0.3em solid transparent !important;
+    border-top: 0.3em solid lightgrey !important;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    margin-left: 8px;
+    animation: spin 1.4s infinite linear;
 }
 
 .loader.show {
-	display: inline-block;
+    display: inline-block;
 }
 
 @keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 #error-message {
-	visibility: hidden;
-	margin-top: 20px;
-	font-size: 1em !important;
+    visibility: hidden;
+    margin-top: 20px;
+    font-size: 1em !important;
 }
 
 #error-message.show {
-	visibility: visible;
+    visibility: visible;
 }
