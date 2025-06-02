@@ -954,7 +954,7 @@ html;
     <div class="margin-top-20">$ownerNote</div>
     <div class="margin-top-20">$clickDoneButtonNote</div>
     <iframe
-    	style="border: 0; padding: 0; margin: 0;"
+    	style="border: 0; padding: 0; margin: 20px 0 0;"
     	src="https://secure.betterplace.org/$language/donate/platform/fundraising-events/$fundraisingID"
     	width="100%"
     	height="500"></iframe>
