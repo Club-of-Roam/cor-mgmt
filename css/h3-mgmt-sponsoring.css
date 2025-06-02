@@ -235,6 +235,10 @@ div.donation-selector-row::selection {
     background-image: linear-gradient(rgb(111, 143, 7), rgb(89, 114, 6));
 }
 
+#donation-link {
+    font-style: italic;
+}
+
 #donation-done-button {
     padding: 8px 20px;
     font-size: 1.2em;

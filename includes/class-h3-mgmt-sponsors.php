@@ -958,9 +958,9 @@ html;
     	src="https://secure.betterplace.org/$language/donate/platform/fundraising-events/$fundraisingID"
     	width="100%"
     	height="500"></iframe>
-    <!--<div class="margin-top-50">
-        <a id="donation-button" href="$fundraisingLink" target="_blank">$donateButtonText</a>
-    </div>-->
+    <div class="margin-top-20">
+        <a id="donation-link" href="$fundraisingLink" target="_blank">$donateButtonText</a>
+    </div>
     <form id="donation-done-form" class="flex-row-container margin-top-20" method="post">
         <input type="hidden" name="type" value="{$_POST['type']}"/>
         <div class="form-row trap-row"><label for="address">Please leave this blank...</label>
