@@ -13,13 +13,13 @@ jQuery('#country-filters a').click(function(){
 jQuery('#stages-container').isotope({
   getSortData : {
     route : function ( $elem ) {
-      return $elem.find('.route').text();
+      return this.find('.route').text();
     },
     stage : function ( $elem ) {
-      return parseInt( $elem.find('.stage').text(), 10);
+      return parseInt( this.find('.stage').text(), 10);
     },
     country : function ( $elem ) {
-      return $elem.find('.country').text();
+      return this.find('.country').text();
     }
   }
 });
@@ -44,14 +44,14 @@ jQuery('#teams-other-filters a').click(function(){
 
 jQuery('#teams-container').isotope({
   getSortData : {
-    route : function ( $elem ) {
-      return $elem.find('.team-overview-route').text();
+   route : function ( $elem ) {
+      return this.find('.team-overview-route').textContent;
     },
     teamname : function ( $elem ) {
-      return $elem.find('.team-name').text();
-    },
+      return this.find('.team-name').textContent;
+   },
     sponsorcount : function ( $elem ) {
-      return parseInt( $elem.find('.sponsor-count').text(), 10);
+      return parseInt( this.find('.sponsor-count').textContent, 10);
     }
   }
 });
