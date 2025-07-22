@@ -92,7 +92,7 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-isotope', H3_MGMT_RELPATH . 'js/h3-mgmt-isotope.js', [
 		'jquery',
 		'isotope'
-	], '1.1.2', true );
+	], '1.1.3', true );
 	wp_register_script( 'h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', [ 'jquery' ], '1.2', true );
 	wp_register_script( 'h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', [ 'jquery' ], '1.1.3', true );
 	wp_register_script( 'h3-mgmt-resize', H3_MGMT_RELPATH . 'js/resize.js', [], '1.0' );
