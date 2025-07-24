@@ -4,21 +4,13 @@
 Plugin Name: HitchHikingHub Management
 Plugin URI: https://github.com/Club-of-Roam/cor-mgmt
 Description: Core of the "HitchHikingHub", events/races, user profiles, team profiles
-Version: 1.2.4
-Author: Johannes Pilkahn
-Author URI: http://nekkidgrandma.com
+Version: 1.2.5
+Author: Club of Roam – Autostop! e.V.
+Author URI: https://tramprennen.org/
 License: GPL3
-*/
-
-/*  Copyright 2012-2013  Johannes Pilkahn  (email : pille@nekkidgrandma.com)
-
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License, version 3, as
-	published by the Free Software Foundation.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Update URI: https://github.com/Club-of-Roam/cor-mgmt
+Domain Path: /languages
 */
 
 /**
@@ -88,11 +80,11 @@ if ( is_admin() ) {
  */
 function h3_mgmt_enqueue() {
 	/* register scripts */
-	wp_register_script( 'isotope', H3_MGMT_RELPATH . 'js/jquery.isotope.min.js', [ 'jquery' ], '1.0', true );
+	wp_register_script( 'isotope', H3_MGMT_RELPATH . 'js/isotope.pkgd.min.js', [ 'jquery' ], '3.0.6', true );
 	wp_register_script( 'h3-mgmt-isotope', H3_MGMT_RELPATH . 'js/h3-mgmt-isotope.js', [
 		'jquery',
 		'isotope'
-	], '1.1.2', true );
+	], '1.1.3' );
 	wp_register_script( 'h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', [ 'jquery' ], '1.2', true );
 	wp_register_script( 'h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', [ 'jquery' ], '1.1.3', true );
 	wp_register_script( 'h3-mgmt-resize', H3_MGMT_RELPATH . 'js/resize.js', [], '1.0' );
