@@ -1,4 +1,4 @@
-(function ($) { // closure
+($ => { // closure
     'use strict';
     $(() => {
         $('#stages-filters a').on('click', () => {
