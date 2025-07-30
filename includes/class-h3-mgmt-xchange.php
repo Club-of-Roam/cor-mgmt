@@ -11,7 +11,8 @@
 class H3_MGMT_XChange {
 
 	/**
-	 * Returns an array of messages with user_id as the key
+	 * Returns an array of messages where the user doesn't have a team in the active race.
+	 * To avoid old messages, only messages from the current year are returned.
 	 *
 	 * @since 1.0
 	 * @access private
@@ -22,7 +23,7 @@ class H3_MGMT_XChange {
 		$activeRace   = $h3_mgmt_races->get_active_race();
 		$current_year = date( 'Y-01-01' );
 
-		$messages_query = $wpdb->get_results(
+		return $wpdb->get_results(
 			"SELECT xc.*
 					FROM {$wpdb->prefix}h3_mgmt_xchange xc
 					    LEFT JOIN (SELECT tm.user_id
@@ -32,13 +33,72 @@ class H3_MGMT_XChange {
 					WHERE time > '${current_year}' AND j.user_id IS NULL
 					ORDER BY time DESC", ARRAY_A
 		);
+	}
 
-		$messages = [];
-		foreach ( $messages_query as $message ) {
-			$messages[ strval( $message['user_id'] ) ] = $message;
+	/**
+	 * Retrieves the last message of own user.
+	 *
+	 * @return array|null
+	 */
+	private function getOwnMessage(): ?array {
+		global $wpdb, $current_user;
+
+		if ( !is_user_logged_in() ) {
+			return null;
 		}
 
-		return $messages;
+		return $wpdb->get_row( "SELECT *
+											FROM {$wpdb->prefix}h3_mgmt_xchange
+											WHERE user_id = {$current_user->ID}
+											ORDER BY time DESC", ARRAY_A );
+	}
+
+	/**
+	 * Inserts, updates or deletes a message.
+	 * If id is given and $new_message isn't empty, updates the message with id.
+	 * If id is given and $new_message is empty, deletes the message.
+	 * If id is empty and $new_message isn't empty, inserts a new message.
+	 *
+	 * @param string $newMessage
+	 * @param int|null $id
+	 *
+	 * @return false|int
+	 */
+	public function insertUpdateDeleteMessage( string $newMessage, ?int $id ) {
+		global $wpdb, $current_user;
+
+		if ( !is_user_logged_in() ) {
+			return null;
+		}
+
+		$table = "{$wpdb->prefix}h3_mgmt_xchange";
+
+		if ( !empty( $newMessage ) && empty( $id ) ) {
+			return $wpdb->insert(
+				$wpdb->prefix . 'h3_mgmt_xchange',
+				[
+					'message' => $newMessage,
+					'user_id' => $current_user->ID
+				],
+				[ '%s', '%d' ],
+			);
+		}
+
+		if ( !empty( $newMessage ) && !empty( $id ) ) {
+			return $wpdb->update(
+				$table,
+				[ 'message' => $newMessage ],
+				[ 'id' => $id ],
+				[ '%s' ],
+				[ '%d' ],
+			);
+		}
+
+		return $wpdb->delete(
+			$table,
+			[ 'id' => $id ],
+			[ '%d' ],
+		);
 	}
 
 	/**
@@ -48,59 +108,30 @@ class H3_MGMT_XChange {
 	 * @access public
 	 */
 	public function xchange_control(): string {
-		global $current_user, $wpdb;
-		get_currentuserinfo();
+		$ownMessage = $this->getOwnMessage();
 
-		$messages = $this->get_messages();
-
-		if ( isset( $_POST['submitted'] ) ) {
-			$own_message = $_POST['message'];
-		} elseif ( array_key_exists( strval( $current_user->ID ), $messages ) ) {
-			$own_message = $messages[ strval( $current_user->ID ) ]['message'];
-		} else {
-			$own_message = '';
-		}
+		$ownMessageText = trim( $_POST['message'] ?? '' );
 
 		if ( isset( $_POST['submitted'] ) ) {
-			if ( array_key_exists( strval( $current_user->ID ), $messages ) ) {
-				$wpdb->update(
-					$wpdb->prefix . 'h3_mgmt_xchange',
-					[
-						'message' => $own_message
-					],
-					[ 'id' => $messages[ strval( $current_user->ID ) ]['id'] ],
-					[ '%s' ],
-					[ '%d' ]
-				);
-			} else {
-				$wpdb->insert(
-					$wpdb->prefix . 'h3_mgmt_xchange',
-					[
-						'message' => $own_message,
-						'user_id' => $current_user->ID
-					],
-					[ '%s' ]
-				);
-			}
+			$this->insertUpdateDeleteMessage( $ownMessageText, $ownMessage['id'] ?? null );
+		} elseif ( isset( $ownMessage['id'] ) ) {
+			$ownMessageText = $ownMessage['message'];
 		}
-
-		$messages = $this->get_messages();
 
 		$output = '<div class="flex_column av_one_half first  avia-builder-el-0  el_before_av_one_half  avia-builder-el-first">' .
 		          '<h3>' . _x( 'HitchMate XChange', 'XChange', 'h3-mgmt' ) . '</h3>';
 
-		foreach ( $messages as $message ) {
-			$test = rtrim( $message['message'] );
-			if ( !empty( $test ) ) {
-				$user_obj = new WP_User( $message['user_id'] );
-				$output   .= '<div class="xchange-message-wrap">' .
-				             '<p class="xchange-title">' .
-				             _x( 'Message by', 'XChange', 'h3-mgmt' ) . ': ' . $user_obj->first_name . ' (' . $message['time'] . ')' .
-				             '</p>' .
-				             '<p class="xchange-message no-margin-bottom">' .
-				             preg_replace( '#(<br */?>\s*){2,}#i', '<br /><br />', preg_replace( '/[\r|\n]/', '<br>', stripslashes( $message['message'] ) ) ) .
-				             '</p>' .
-				             '</div>';
+		foreach ( $this->get_messages() as $message ) {
+			$user = get_userdata( $message['user_id'] );
+			if ( !empty( trim( $message['message'] ) ) && $user !== false ) {
+				$output .= '<div class="xchange-message-wrap">' .
+				           '<p class="xchange-title">' .
+				           _x( 'Message by', 'XChange', 'h3-mgmt' ) . ': ' . $user->first_name . ' (' . $message['time'] . ')' .
+				           '</p>' .
+				           '<p class="xchange-message no-margin-bottom">' .
+				           preg_replace( '#(<br */?>\s*){2,}#i', '<br /><br />', preg_replace( '/[\r|\n]/', '<br>', stripslashes( $message['message'] ) ) ) .
+				           '</p>' .
+				           '</div>';
 			}
 		}
 
@@ -121,7 +152,7 @@ class H3_MGMT_XChange {
 					'type'  => 'textarea',
 					'id'    => 'message',
 					'label' => __( 'The message', 'h3-mgmt' ),
-					'value' => $own_message
+					'value' => $ownMessageText
 				]
 			];
 			require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
