@@ -2599,6 +2599,8 @@ html;
 				ARRAY_A
 			);
 
+			$race_setting = $h3_mgmt_races->get_race_setting( $race );
+
 			$output = '';
 			if ( !empty( $sponsors_query ) ) {
 				$output .= '<p>';
@@ -2613,14 +2615,13 @@ html;
 					} else {
 						$output .= '<div class="item activity-stream"><p>';
 					}
-					$output .= str_replace( '%donor%', '<em>' . stripslashes( $sponsors_query[ $i ]['display_name'] ) . '</em>', str_replace( '%thumbs%', $thumbs, str_replace( '%team%', '<a class="cursive-link" title="' . _x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) . '" href="' . _x( get_site_url() . '/follow-us/teams/', 'Team Link', 'h3-mgmt' ) . '?id=' . $sponsors_query[ $i ]['team_id'] . '">' . $h3_mgmt_teams->get_team_name( $sponsors_query[ $i ]['team_id'] ) . '</a>', _x( '%donor% sponsored %team% with %thumbs% Euros', 'Recent Activity Stream', 'h3-mgmt' ) ) ) );
-					// if( ! empty( $sponsors_query[$i]['message'] ) ) {
-					//	$output .= ' <span class="tip" onmouseover="tooltip(\'' .
-					//			preg_replace( "/\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3}/", "", preg_replace( "/\r|\n/", "<br />", str_replace( '"', '&quot;', str_replace( "'", '&apos;', $sponsors_query[$i]['message'] ) ) ) ) .
-					//			'\');" onmouseout="exit();">' .
-					//				'<img class="comments-bubble no-bsl-adjust" alt="Comments Bubble" src="' . H3_MGMT_RELPATH . 'img/comments-bubble.png" />' .
-					//		'</span>';
-					//}
+					$output .= str_replace( '%donor%',
+						'<em>' . stripslashes( $sponsors_query[ $i ]['display_name'] ) . '</em>',
+						str_replace( '%thumbs%',
+							$thumbs,
+							str_replace( '%team%',
+								'<a class="cursive-link" title="' . _x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) . '" href="' . get_home_url() . $race_setting['team_overview_link'] . '?id=' . $sponsors_query[ $i ]['team_id'] . '">' . $h3_mgmt_teams->get_team_name( $sponsors_query[ $i ]['team_id'] ) . '</a>',
+								_x( '%donor% sponsored %team% with %thumbs% Euros', 'Recent Activity Stream', 'h3-mgmt' ) ) ) );
 					$output .= '</p></div>';
 				}
 				$output .= '</p>';
