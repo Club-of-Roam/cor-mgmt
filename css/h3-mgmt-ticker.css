@@ -93,6 +93,10 @@
     padding: 5px;
 }
 
+.leaflet-popup .leaflet-popup-content p {
+	margin: 0;
+}
+
 .bounce {
     animation: bounce 2s infinite;
 }

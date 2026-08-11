@@ -611,7 +611,48 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 		}
 
 		/**
-		 * Shortcode Funktion to show google maps with all locations of teams
+		 * Returns the HTML for the OpenStreetMap / Leaflet embed.
+		 *
+		 * @param string $height Height of the map. Default: 500px
+		 *
+		 * @return string
+		 */
+		private function get_map( string $height = '500px' ): string {
+			$content = <<<HTML
+						<div id="embedded-map-container">
+							<div id="map" style="height: $height; margin: 0; padding: 0;"></div>
+							<script>initMap()</script>
+						</div>
+HTML;
+
+			wp_enqueue_style( 'leaflet' );
+			wp_enqueue_script( 'leaflet' );
+
+			if ( ! class_exists( 'epiphyt\Embed_Privacy\data\Providers' ) ) {
+				// embed privacy plugin isn't active/installed
+				return $content;
+			}
+
+			$provider = epiphyt\Embed_Privacy\data\Providers::get_instance()->get_by_name( 'OpenStreetMap' );
+
+			if ( ! $provider ) {
+				// provider not found
+				return $content;
+			}
+
+			if ( epiphyt\Embed_Privacy\data\Providers::is_always_active( $provider ) ) {
+				// user allowed always embedding this provider
+				return $content;
+			}
+
+			add_filter( 'embed_privacy_has_embed', '__return_true' );
+			epiphyt\Embed_Privacy\Embed_Privacy::get_instance()->frontend->print_assets();
+
+			return epiphyt\Embed_Privacy\embed\Template::get( $provider, $content );
+		}
+
+		/**
+		 * Shortcode Funktion to show a map with all sent locations of all teams in route / race.
 		 *
 		 * @since 1.0
 		 * @access public
@@ -698,9 +739,10 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				'order'		 => 'ASC'
 			) );
 
-			$coordinates = array();
-
 			date_default_timezone_set( 'Europe/Berlin' );
+
+			$anchorTitleText = __( "To the team's profile", 'h3-mgmt' );
+			$raceBaseUrl = get_site_url() . $race_setting[ 'team_overview_link' ];
 
 			foreach ( $messages_query as $message ) {
 				if ( ( $message[ 'race_id' ] == $race && !empty( $message[ 'img_url' ] ) ) ) {
@@ -710,22 +752,25 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 						$team_id = substr( $message[ 'send_from' ], 2 );
 					}
 					$team = $h3_mgmt_teams->get_team_data( $team_id );
-					if ( $h3_mgmt_teams->is_complete( $team_id ) && $race_routes[ $team[ 'route_id' ] ][ 'id' ] == $team[ 'route_id' ] ) {
-						$display_data[ 'team_id' ]		 = $team_id;
-						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $team[ 'route_id' ] ][ 'logo_url' ];
+					$route_id = $team[ 'route_id' ];
+					if ( $h3_mgmt_teams->is_complete( $team_id ) ) {
+						$display_data[ 'route_id' ]		 = $route_id;
+						$display_data[ 'route_name' ]	 = $race_routes[ $route_id ][ 'name' ];
+						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $route_id ][ 'logo_url' ];
 						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
+						$display_data[ 'team_id' ]		 = $team_id;
 						$display_data[ 'team_name' ]	 = $h3_mgmt_teams->get_team_name( $team_id );
-						$display_data[ 'team_name_url' ] = '<a style="border-color:#' . $display_data[ 'hex_color' ] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-						'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
-						$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
+						$display_data[ 'team_name_anchor' ] =<<<HTML
+							<a style="border-color:#{$display_data[ 'hex_color' ]}" class="incognito-link ticker-message-team-name"
+								title="$anchorTitleText" href="$raceBaseUrl?id=$team_id">{$display_data[ 'team_name' ]}
+							</a>
+HTML;
 						$display_data[ 'mates' ]		 = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
-						$coordinates[]					 = $message[ 'img_url' ];
+						$display_data[ 'coordinates' ]		 = $message[ 'img_url' ];
 						$display_data[ 'message' ]		 = stripslashes( $message[ 'msg' ] );
-						$display_data[ 'date' ]			 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
+						$display_data[ 'date' ]			 = date( 'Y-m-d H:i \G\M\TO', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]			 = $message[ 'timestamp' ];
 						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
-						$rgb							 = $h3_mgmt_utilities->hex2rgb( $display_data[ 'hex_color' ] );
-						$display_data[ 'color' ]		 = 'rgba(' . $rgb[ 0 ] . ', ' . $rgb[ 1 ] . ', ' . $rgb[ 2 ] . ', .85)';
 						$messages[]						 = $display_data;
 					}
 				}
@@ -752,15 +797,11 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				'</div>';
 			}
 
-			$output .= '<div id="map-canvas" style="height: 500px; margin: 0; padding: 0;"></div>';
+			$output .= $this->get_map('66vh');
 
-			wp_enqueue_script( 'googlemap' );
-			wp_enqueue_script( 'google-jsapi' );
 			wp_enqueue_script( 'h3-mgmt-map' );
 
-
 			wp_localize_script( 'h3-mgmt-map', 'app_vars', array(
-				'coordinates'		 => $coordinates,
 				'messages'			 => $messages,
 				'coord_center_lat'	 => $coord_center_lat,
 				'coord_center_lng'	 => $coord_center_lng
@@ -768,13 +809,11 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			);
 
 
-
-
 			return $output;
 		}
 
 		/**
-		 * Shortcode Funktion to show google maps with all locations of teams
+		 * Shortcode Funktion to show a map with all sent locations of a specific team.
 		 *
 		 * @since 1.0
 		 * @access public
@@ -800,8 +839,10 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				'order'		 => 'ASC'
 			) );
 
-			$coordinates = array();
-			$messages	 = array();
+			$messages	 = [];
+
+			$anchorTitleText = __( "To the team's profile", 'h3-mgmt' );
+			$raceBaseUrl = get_site_url() . $race_setting[ 'team_overview_link' ];
 
 			foreach ( $messages_query as $message ) {
 				if ( ( $message[ 'race_id' ] == $race_id && !empty( $message[ 'img_url' ] ) ) ) {
@@ -810,23 +851,26 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 					} else {
 						$team_id = substr( $message[ 'send_from' ], 2 );
 					}
-					if ( $h3_mgmt_teams->is_complete( $team_id ) && $race_routes[ $team[ 'route_id' ] ][ 'id' ] == $team[ 'route_id' ] ) {
-						$team							 = $h3_mgmt_teams->get_team_data( $team_id );
-						$display_data[ 'team_id' ]		 = $team_id;
-						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $team[ 'route_id' ] ][ 'logo_url' ];
+					$team = $h3_mgmt_teams->get_team_data( $team_id );
+					$route_id = $team[ 'route_id' ];
+					if ( $h3_mgmt_teams->is_complete( $team_id ) ) {
+						$display_data[ 'route_id' ]		 = $route_id;
+						$display_data[ 'route_name' ]	 = $race_routes[ $route_id ][ 'name' ];
+						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $route_id ][ 'logo_url' ];
 						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
+						$display_data[ 'team_id' ]		 = $team_id;
 						$display_data[ 'team_name' ]	 = $h3_mgmt_teams->get_team_name( $team_id );
-						$display_data[ 'team_name_url' ] = '<a style="border-color:#' . $display_data[ 'hex_color' ] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
-						'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
-						$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
+						$display_data[ 'team_name_anchor' ] =<<<HTML
+							<a style="border-color:#{$display_data[ 'hex_color' ]}" class="incognito-link ticker-message-team-name"
+								title="$anchorTitleText" href="$raceBaseUrl?id=$team_id">{$display_data[ 'team_name' ]}
+							</a>
+HTML;
 						$display_data[ 'mates' ]		 = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
-						$coordinates []					 = $message[ 'img_url' ];
+						$display_data[ 'coordinates' ]		 = $message[ 'img_url' ];
 						$display_data[ 'message' ]		 = stripslashes( $message[ 'msg' ] );
-						$display_data[ 'date' ]			 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
+						$display_data[ 'date' ]			 = date( 'Y-m-d H:i \G\M\TO', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]			 = $message[ 'timestamp' ];
 						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
-						$rgb							 = $h3_mgmt_utilities->hex2rgb( $display_data[ 'hex_color' ] );
-						$display_data[ 'color' ]		 = 'rgba(' . $rgb[ 0 ] . ', ' . $rgb[ 1 ] . ', ' . $rgb[ 2 ] . ', .85)';
 						$messages[]						 = $display_data;
 					}
 				}
@@ -836,21 +880,17 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 
 			$output .= '</div>';
 
-			$output .= '<div id="map-canvas" style="height: 300px; margin: 0; padding: 0;"></div>';
+			$output .= $this->get_map('300px');
 
 			$output .= '<p>   </p>';
 
-			wp_enqueue_script( 'googlemap' );
-			wp_enqueue_script( 'google-jsapi' );
 			wp_enqueue_script( 'h3-mgmt-map' );
 
-
-			wp_localize_script( 'h3-mgmt-map', 'app_vars', array(
-				'coordinates'		 => $coordinates,
+			wp_localize_script( 'h3-mgmt-map', 'app_vars', [
 				'messages'			 => $messages,
 				'coord_center_lat'	 => $coord_center_lat,
 				'coord_center_lng'	 => $coord_center_lng
-			)
+				]
 			);
 
 			return $output;

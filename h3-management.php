@@ -10,6 +10,7 @@ Author URI: https://tramprennen.org/
 License: GPL3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Update URI: https://github.com/Club-of-Roam/cor-mgmt
+Text Domain: h3-mgmt
 Domain Path: /languages
 */
 
@@ -99,8 +100,7 @@ function h3_mgmt_enqueue() {
 	], '1.0', true );
 	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js', [], '1.0' );
-	wp_register_script( 'googlemap', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDtdxfnAWhpou6zyzlRcMkZfxwbgrdvhnE&libraries=marker&v=quarterly' );
-	wp_register_script( 'google-jsapi', 'https://www.google.com/jsapi' );
+	wp_register_script('leaflet', H3_MGMT_RELPATH . 'lib/leaflet/leaflet.js', [], '1.9.4');
 	/* register styles */
 	wp_register_style( 'h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', [], '1.2' );
 	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', [], '1.2' );
@@ -109,6 +109,7 @@ function h3_mgmt_enqueue() {
 	wp_register_style( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', [], '1.1.3' );
 	wp_register_style( 'h3-mgmt-xchange', H3_MGMT_RELPATH . 'css/h3-mgmt-xchange.css', [], '1.1' );
 	wp_register_style( 'h3-mgmt-ranking', H3_MGMT_RELPATH . 'css/h3-mgmt-ranking.css', [], '1.1' );
+	wp_register_style('leaflet', H3_MGMT_RELPATH . 'lib/leaflet/leaflet.css', [], '1.9.4');
 	/* enqueue custom scripts */
 	/* enqueue custom scripts */
 	wp_enqueue_script( 'isotope' );
