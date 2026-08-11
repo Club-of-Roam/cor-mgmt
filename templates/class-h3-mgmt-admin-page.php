@@ -119,5 +119,3 @@ class H3_MGMT_Admin_Page {
 } // class
 
 endif; // class exists
-
-?>

@@ -143,5 +143,3 @@ class H3_MGMT_Admin_Metaboxes {
 } // class
 
 endif; // class exists
-
-?>

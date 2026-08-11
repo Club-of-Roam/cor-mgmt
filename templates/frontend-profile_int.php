@@ -244,5 +244,3 @@ if ( isset ( $fields ) && ! empty( $fields ) ) {
 		echo '</div>';
 	} // foreach field
 } // if ! empty
-
-?>

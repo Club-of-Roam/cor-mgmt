@@ -235,5 +235,3 @@ if ( isset ( $fields ) && ! empty( $fields ) ) {
 	} // foreach field
 	echo '</tbody></table>';
 } // if ! empty
-
-?>

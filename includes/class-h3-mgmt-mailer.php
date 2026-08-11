@@ -201,5 +201,3 @@ class H3_MGMT_Mailer {
 } // class
 
 endif; // class exists
-
-?>

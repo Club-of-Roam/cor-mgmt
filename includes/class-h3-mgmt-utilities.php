@@ -361,5 +361,3 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 	} // class
 
 endif; // class exists
-
-

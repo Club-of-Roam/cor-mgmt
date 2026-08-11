@@ -409,6 +409,3 @@ if ( isset ( $fields ) &&  ! empty( $fields ) ) {
 }// if ! empty
 
 $output .= '</table>';
-
-?>
-?>

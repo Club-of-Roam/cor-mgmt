@@ -90,5 +90,3 @@ class H3_MGMT_Race {
 } // class
 
 endif; // class exists
-
-?>

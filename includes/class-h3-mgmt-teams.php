@@ -3031,5 +3031,3 @@ class H3_MGMT_Teams {
 } 
 
 endif; // class exists
-
-?>

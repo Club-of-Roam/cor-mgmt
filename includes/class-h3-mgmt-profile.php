@@ -192,5 +192,3 @@ class H3_MGMT_Profile {
 }
 
 endif; // class exists
-
-?>
