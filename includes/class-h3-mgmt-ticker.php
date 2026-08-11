@@ -629,6 +629,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			), $atts ) );
 
 			$message_id = 4;
+			$output = '';
 
 			if ( $race == 'active' ) {
 				$race = $h3_mgmt_races->get_active_race();
@@ -670,7 +671,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				);
 
 				foreach ( $teams as $team ) {
-					$ids = array_merge( $ids, $this->get_user_by_team( $team[ id ] ) );
+					$ids = array_merge( $ids, $this->get_user_by_team( $team[ 'id' ] ) );
 				}
 
 				$messages_query = $this->get_messages_by_ids( $ids, $race, $message_id );
@@ -779,7 +780,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 		 * @access public
 		 */
 		public function team_ticker_Page_map( $team_id ) {
-			global $wpdb, $h3_mgmt_races, $h3_mgmt_teams, $h3_mgmt_utilities;
+			global $h3_mgmt_races, $h3_mgmt_teams, $h3_mgmt_utilities;
 
 			$coord_center_lat	 = 54.0237934;
 			$coord_center_lng	 = 9.3754401;
@@ -831,7 +832,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				}
 			}
 
-			$output .= '<div class="ticker-page-map" style="margin-left: auto;  margin-right: auto;	max-width: 500px;">'; // .                  //<div class="flex_column av_one_half   avia-builder-el-2  avia-builder-el-last">
+			$output = '<div class="ticker-page-map" style="margin-left: auto;  margin-right: auto;	max-width: 500px;">';
 
 			$output .= '</div>';
 
@@ -952,11 +953,10 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				"AND type < 100 ORDER BY id DESC", ARRAY_A
 				);
 			} else {
-
 				$messages_query = $wpdb->get_results(
 				"SELECT * FROM " .
 				$wpdb->prefix . "sms_ticker " .
-				"AND type < 100 ORDER BY id DESC", ARRAY_A
+				"WHERE type < 100 ORDER BY id DESC", ARRAY_A
 				);
 			}
 
@@ -1224,12 +1224,14 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			$messages_query = $this->get_messages_by_ids( $ids, $race_id );
 
 			$race_routes = $h3_mgmt_races->get_routes( array(
-				'race'		 => $race,
+				'race'		 => $race_id,
 				'orderby'	 => 'name',
 				'order'		 => 'ASC'
 			) );
 
 			$messages = array();
+			$count_all = 0;
+			$count_shown = 0;
 			foreach ( $messages_query as $message ) {
 				$team = $h3_mgmt_teams->get_team_data( $team_id );
 				if ( (!empty( $message[ 'msg' ] ) || $message[ 'type' ] > 2 ) && $race_routes[ $team[ 'route_id' ] ][ 'id' ] == $team[ 'route_id' ] ) {
@@ -1309,6 +1311,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			$race = $race_id;
 			
 			$max = $min + $max;
+			$output = '';
 			if ( $min == 0 && !empty( $messages ) && $reach_max == 1 ) {
 				$output .= '
 					<p align="right">
@@ -1693,4 +1696,3 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 	// class
 
 endif; // class exists
-?>
