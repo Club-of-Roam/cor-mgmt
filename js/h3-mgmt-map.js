@@ -98,7 +98,7 @@ function getLatLng(coordinate) {
 function initMap() {
 	'use strict';
 
-	if (typeof L === 'undefined' || document.getElementById('map') === null) {
+	if (typeof L === 'undefined' || document.getElementById('map') === null || document.getElementById('map').classList.contains('leaflet-container')) {
 		return;
 	}
 
