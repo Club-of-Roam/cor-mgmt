@@ -137,7 +137,7 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 
 			} // type switch
 
-			if( $message['comments'] != null && count( $message['comments'] ) > 0 ) {
+			if( !empty($message['comments']) ) {
 					$output .= '<p class="ticker-show-comments-button"><a data-ticker_msg_id="' . $message['id'] . '" href="javascript:void(0);" class="ticker-show-comments"> + show ' . count( $message['comments'] ) . ' comment(s) </a></p> ';
 					$output .= '<div class="ticker-show-comments show-comments_close" id="ticker-show-comments_' . $message['id'] . '" style="display: none;" > ';
 					
