@@ -279,10 +279,12 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 			$path      = implode( '.', $parts );
 			$new_image = $path . '-' . $size . '.' . $extension;
 
-			if ( ! file_exists( str_replace( site_url() . '/', ABSPATH, $new_image ) ) ) {
-				// image_resize( str_replace( site_url() . '/', ABSPATH, $image ), $size, $size, false, $size, null, 100 );
-				$editor = wp_get_image_editor( str_replace( site_url() . '/', ABSPATH, $image ) );
-				
+			$image_path = ABSPATH . ltrim( parse_url( $image, PHP_URL_PATH ), '/' );
+			$new_image_path = ABSPATH . ltrim( parse_url( $new_image, PHP_URL_PATH ), '/' );
+
+			if ( ! file_exists( $new_image_path ) ) {
+				$editor = wp_get_image_editor( $image_path );
+
 				if ( is_wp_error( $editor ) )
 				{
 					return $image;
@@ -307,7 +309,7 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 				return $dest_file;
 			}
 
-			if ( file_exists( str_replace( site_url() . '/', ABSPATH, $new_image ) ) ) {
+			if ( file_exists( $new_image_path ) ) {
 				return $new_image;
 			}
 
@@ -321,6 +323,9 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 		 * @access public
 		 */
 		public function hex2rgb( $color ) {
+			if ( empty( $color ) ) {
+				return false;
+			}
 
 			if ( $color[0] == '#' ) {
 				$color = substr( $color, 1 );

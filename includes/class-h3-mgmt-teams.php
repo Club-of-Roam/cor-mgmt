@@ -232,28 +232,30 @@ class H3_MGMT_Teams {
 	 * @access public
 	 */
 	public function get_team_by_user_and_race( $user_id, $race_id ) {
-            global $wpdb;
-            
-            $team_ids = $wpdb->get_col(
-                "SELECT team_id FROM " .
-                $wpdb->prefix."h3_mgmt_teammates " .
-                "WHERE user_id = " .$user_id.
-                " ORDER BY id DESC"
-            );
-            
-            $team_ids_race = $wpdb->get_col(
-                "SELECT id FROM " .
-                $wpdb->prefix."h3_mgmt_teams " .
-                "WHERE race_id = " .$race_id.
-                " ORDER BY id DESC"
-            );
-            
-            foreach( $team_ids as $team_id){
-                if( in_array($team_id, $team_ids_race) ){
-                    return $team_id;
-                }
-            }
-        }
+		global $wpdb;
+
+		$team_ids = $wpdb->get_col(
+			"SELECT team_id FROM " .
+			$wpdb->prefix . "h3_mgmt_teammates " .
+			"WHERE user_id = " . $user_id .
+			" ORDER BY id DESC"
+		);
+
+		$team_ids_race = $wpdb->get_col(
+			"SELECT id FROM " .
+			$wpdb->prefix . "h3_mgmt_teams " .
+			"WHERE race_id = " . $race_id .
+			" ORDER BY id DESC"
+		);
+
+		foreach ( $team_ids as $team_id ) {
+			if ( in_array( $team_id, $team_ids_race ) ) {
+				return $team_id;
+			}
+		}
+
+		return 0;
+	}
 
 	/**
 	 * Returns the preferred language of a participant
@@ -1024,7 +1026,7 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access public
 	 */
-	public function team_fields( $with_mb = false, $race_id  ) {
+	public function team_fields( $with_mb, $race_id  ) {
 
             global $information_text, $h3_mgmt_races;
 		
@@ -1570,7 +1572,7 @@ class H3_MGMT_Teams {
 		//if registration still isn't open return error message
 		if( $race_setting['status'] == 0 ){
 			$output .= '<p class="message" style="text-align: center;">' .
-						stripcslashes( $information_text[22] );
+						stripcslashes( $information_text[22] ) .
 						'</p>';
 			$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
 			return $output;	
@@ -2239,7 +2241,7 @@ class H3_MGMT_Teams {
 		//if registration still isn't open return error message
 		if( $race_setting['status'] == 0 ){
 			$output .= '<p class="message" style="text-align: center;">' .
-						stripcslashes( $information_text[25] );
+						stripcslashes( $information_text[25] ) .
 						'</p>';
 			$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
 			return $output;	
@@ -2541,7 +2543,7 @@ class H3_MGMT_Teams {
 			$output .= '<img class="no-bsl-adjust team-qi-route-logo" alt="Route Logo" src="' .
 				get_option( 'siteurl' ) . $routes_data[$team['route_id']]['logo_url'] . '" />';
 		} else {
-			$output .= '<span style="font-size:2.1em;font-family:BebasNeue;float:left;">?</span>';
+			$output .= '<span style="font-size: 2.1em; font-family: BebasNeue, sans-serif; float:left;">?</span>';
 		}
 
 		$output .= '<h2 class="first">' . stripslashes( $team['team_name'] ) . '</h2>';
@@ -2602,8 +2604,7 @@ class H3_MGMT_Teams {
 		));
 
 		if( isset( $_GET[ 'todo' ] ) ) {
-			$output .= do_shortcode( '[h3-ticker-message race=' . $race_id . ' comment_get=false]' );
-			return $output;
+			return do_shortcode( "[h3-ticker-message race=$race_id comment_get=false]" );
 		}
 		
 		foreach( $teams as $team ) {
@@ -2679,8 +2680,6 @@ class H3_MGMT_Teams {
 	 * @access private
 	 */
 	private function isotope_links( $race_id = 1 ) {
-		global $h3_mgmt_races;
-
 		$output = '<div class="isotope-wrap"><h2 style="width: 100%; text-align: left;" class="isotope-heading">' .
 				__( 'Jump to TeamProfile', 'h3-mgmt' ) .
 			'</h2>' .
@@ -2698,41 +2697,7 @@ class H3_MGMT_Teams {
 		}
 		$output .= '</select><a style="margin-top:1px;font-size:1.4em;display:inline-block;" class="jumper button" href="#" title="Show me the team!"> ' .
 				__( 'Jump', 'h3-mgmt' ) .
-			'</a>';
-
-		$script_params = array(
-			'redirect' => 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
-		);
-		wp_localize_script( 'h3-mgmt-isotope', 'IsotopeParams', $script_params );
-
-		//$output .= '<h2 class="isotope-heading">' . __( 'Filter by route', 'h3-mgmt' ) . '</h2>' .
-		//	'<ul class="isotope-link-list" id="teams-route-filters">' .
-		//		'<li><a href="#" data-filter="*">' . __( 'All', 'h3-mgmt' ) . '</a></li>' .
-		//		'<li><a href="#" data-filter=".team-overview-route-0">' . __( 'Unchosen', 'h3-mgmt' ) . '</a></li>';
-		//
-		//$routes = $h3_mgmt_races->get_route_ids( $race_id );
-		//
-		//foreach( $routes as $rid => $rname ) {
-		//	$output .= '<li><a href="#" data-filter=".team-overview-route-' . $rid . '">' . $rname . '</a></li>';
-		//}
-		//
-		//$output .= '</ul><h2 class="isotope-heading">' . __( 'Other Filters', 'h3-mgmt' ) . '</h2>' .
-		//	'<ul class="isotope-link-list" id="teams-other-filters"><li><a href="#" data-filter="*">' . __( 'All', 'h3-mgmt' ) . '</a></li>';
-		//
-		//$output .= '<li><a href="#" data-filter=".owner-yes">' .
-		//		_x( 'With TeamOwner', 'Team Profile', 'h3-mgmt' ) .
-		//	'</a></li>' .
-		//	'<li><a href="#" data-filter=".owner-not">' .
-		//		_x( 'Without TeamOwner', 'Team Profile', 'h3-mgmt' ) .
-		//	'</a></li>';
-
-		//$output .= '</ul><h2 class="isotope-heading">' . __( 'Sort by', 'h3-mgmt' ) . '</h2>' .
-		//	'<ul class="isotope-link-list" id="teams-sort-by">' .
-		//		'<li><a href="#teamname">' . __( 'Team Name', 'h3-mgmt' ) . '</a></li>' .
-		//		'<li><a href="#route">' . __( 'Route', 'h3-mgmt' ) . '</a></li>' .
-		//		'<li><a href="#sponsorcount">' . __( 'Sponsor Count', 'h3-mgmt' ) . '</a></li>' .
-		//	'</ul>';
-		$output .= '</div>';
+			'</a></div>';
 
 		return $output;
 	}

@@ -1202,7 +1202,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 			$race_setting = $h3_mgmt_races->get_race_setting( $race );
 			//if registration still isn't open return error message
 			if ( $race_setting['status'] < 3 ) {
-				$output .= '<p class="message" style="text-align: center;">' .
+				$output = '<p class="message" style="text-align: center;">' .
 							stripcslashes( $information_text[26] ) .
 						'</p>';
 				$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
