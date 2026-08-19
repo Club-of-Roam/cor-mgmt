@@ -701,7 +701,7 @@ class H3_MGMT_Teams {
 
 		if ( is_numeric( $team_id ) ) {
 			if ( $exclude_current === true ) {
-				get_currentuserinfo();
+				wp_get_current_user();
 				$mates_query = $wpdb->get_results(
 					"SELECT user_id FROM " .
 					$wpdb->prefix."h3_mgmt_teammates " .
@@ -857,7 +857,7 @@ class H3_MGMT_Teams {
 	 */
 	public function user_has_team( $race_id = 1, $user = NULL ) {
 		global $current_user, $wpdb;
-		get_currentuserinfo();
+		wp_get_current_user();
 
 		$user_id = is_numeric( $user ) ? $user : $current_user->ID;
 
@@ -1306,7 +1306,7 @@ class H3_MGMT_Teams {
 
 		$fcount = count($fields);
 		if ( ! isset( $_POST['submitted'] ) ) {
-                    get_currentuserinfo();
+                    wp_get_current_user();
                     for ( $i = 0; $i < $fcount; $i++ ) {
                         $fields[$i]['value'] = esc_attr( get_user_meta( $current_user->ID, $fields[$i]['id'], true ) );
 
@@ -1633,7 +1633,7 @@ class H3_MGMT_Teams {
 						return $this->team_dashboard( array( 'race_id' => $race_id ) );	
 					}
 				} else {
-					get_currentuserinfo();
+					wp_get_current_user();
 					$mates = $this->get_teammates( $team_id, false );
 					
 					if( in_array( $current_user->ID, $mates ) ) {
@@ -1893,7 +1893,7 @@ class H3_MGMT_Teams {
 	public function team_homework( $atts = '' ) {
 		global $current_user, $wpdb, $h3_mgmt_mailer, $h3_mgmt_races, $h3_mgmt_utilities, $information_text, $h3_mgmt_sponsors;
 		
-		get_currentuserinfo();
+		wp_get_current_user();
 
 		extract( shortcode_atts( array(
 			'event' => 0,
@@ -2743,7 +2743,7 @@ class H3_MGMT_Teams {
 	 */
 	private function save_dashboard( $race_id = 1 ) {
 		global $current_user, $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities, $h3_mgmt_races;
-		get_currentuserinfo();
+		wp_get_current_user();
 
 		$language = $h3_mgmt_utilities->user_language();
 		$success = array();

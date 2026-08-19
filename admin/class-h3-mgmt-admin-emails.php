@@ -180,7 +180,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Emails' ) ) :
 			if ( isset( $_POST['receipient'] ) ) {
 				if ( $_POST['receipient'] == 'self' ) {
 					global $current_user;
-					get_currentuserinfo();
+					wp_get_current_user();
 					$to = $current_user->user_email();
 				} elseif ( $_POST['receipient'] == 'all' ) {
 					$to                           = array();

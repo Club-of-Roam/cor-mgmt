@@ -572,7 +572,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 		 */
 		private function actions( $actions, $row, $column, $cap = '' ) {
 			global $current_user;
-			get_currentuserinfo();
+			wp_get_current_user();
 
 			$output = '<br /><div class="row-actions">';
 
