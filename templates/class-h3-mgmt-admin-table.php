@@ -120,15 +120,14 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 		 * @access public
 		 */
 		public function output() {
-			global $current_user, $h3_mgmt_admin;
-			wp_get_current_user();
+			global $h3_mgmt_admin;
 
 			$row = null;
 
 			// extract( $this->args, EXTR_SKIP );
 			$columns = $this->columns;
 			$rows    = $this->rows;
-			$filter  = isset( $this->set_args['filter'] ) ? $this->set_args['filter'] : null;
+			$filter  = $this->set_args['filter'] ?? null;
 
 			$rows = $this->get_filtered_rows( $filter, $rows );
 
@@ -139,7 +138,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						$rows_new[] = $row_is;
 					}
 				}
-				if ( is_array( $rows_new ) && ! empty( $rows_new ) ) {
+				if ( ! empty( $rows_new ) && is_array( $rows_new ) ) {
 					$rows = $rows_new;
 				}
 			}
@@ -222,14 +221,14 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 							$cat_is_show = $this->convert_data( $cat_is, $this->set_args['filter_conversion'][ $filter_id ], $row );
 						}
 
-						if ( stripslashes( $_GET[ 'filter_value' . $filter_id ] ) != $cat_is ) {
+						if ( ! isset($_GET[ 'filter_value' . $filter_id ] ) || stripslashes( $_GET[ 'filter_value' . $filter_id ] ) != $cat_is ) {
 							if ( $cat_is == $this->set_args['pre_filtered'][2] && ! isset( $_GET['filter_name0'] ) && $this->set_args['pre_filtered'][1] == $this->set_args['filter'][ $filter_id ] ) {
 								$output .= '<option selected value="' . $cat_is . '">' . $cat_is_show . '</option>';
 							} else {
 								$output .= '<option value="' . $cat_is . '">' . $cat_is_show . '</option>';
 							}
 						}
-					};
+					}
 					$output   .= '	</select>
 							</div>';
 					$filter_id = $filter_id + 1;
