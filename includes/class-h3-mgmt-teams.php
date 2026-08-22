@@ -408,6 +408,10 @@ class H3_MGMT_Teams {
 	public function is_complete( $team_id ) {
 		global $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities, $h3_mgmt_races;
 
+		if ( empty( $team_id ) ) {
+			return false;
+		}
+
 		$hitchmates_query = $wpdb->get_results(
 			"SELECT * FROM " .
 			$wpdb->prefix."h3_mgmt_teammates " .
