@@ -878,6 +878,10 @@ HTML;
 				}
 			}
 
+			if ( empty( $messages ) ) {
+				return '';
+			}
+
 			$output = '<div class="ticker-page-map" style="margin-left: auto;  margin-right: auto;	max-width: 500px;">';
 
 			$output .= '</div>';
