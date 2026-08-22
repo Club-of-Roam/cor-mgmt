@@ -197,6 +197,8 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			$ticker_user				 = 'Tramprennen';
 			$tramprennen_ticker_phone	 = 999999999;
 
+			$output = '';
+
 			$information_text = $h3_mgmt_races->get_race_information_text( $race );
 			
 			$race_setting = $h3_mgmt_races->get_race_setting( $race );
@@ -1084,7 +1086,7 @@ HTML;
 									$message[ 'timestamp' ] .= 0;
 								}
 								$display_data[ 'route_image' ]	 = $race_routes[ $team[ 'route_id' ] ][ 'logo_url' ];
-								$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
+								$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id ) ?: '#000';
 								$display_data[ 'team_name' ]	 = '<a style="border-color:#' . $display_data[ 'hex_color' ] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
 								'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
 								$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
@@ -1121,10 +1123,12 @@ HTML;
 										if ( strlen( $comment[ 'timestamp' ] ) == 9 ) {
 											$comment[ 'timestamp' ] .= 0;
 										}
-										
+
+										$display_data[ 'comments' ][$key][ 'id' ]			= $comment[ 'id' ];
 										$display_data[ 'comments' ][$key][ 'name' ]			= $user->first_name . ' ' . $user->last_name;
 										$display_data[ 'comments' ][$key][ 'message' ]		= stripslashes( $comment['msg'] );
 										$display_data[ 'comments' ][$key][ 'time' ]			= $comment[ 'timestamp' ];
+										$display_data[ 'comments' ][$key][ 'diff' ]			= $h3_mgmt_utilities->date_diff( $comment[ 'timestamp' ], time() );
 										$display_data[ 'comments' ][$key][ 'type' ]			= $comment[ 'type' ];
 										$display_data[ 'comments' ][$key][ 'date' ]			= date( 'l, F jS G:i', intval( $comment[ 'timestamp' ] ) );
 									}	
@@ -1274,6 +1278,7 @@ HTML;
 			$messages = array();
 			$count_all = 0;
 			$count_shown = 0;
+			$reach_max = 0;
 			foreach ( $messages_query as $message ) {
 				$team = $h3_mgmt_teams->get_team_data( $team_id );
 				if ( (!empty( $message[ 'msg' ] ) || $message[ 'type' ] > 2 ) && $race_routes[ $team[ 'route_id' ] ][ 'id' ] == $team[ 'route_id' ] ) {
@@ -1285,7 +1290,7 @@ HTML;
 							$message[ 'timestamp' ] .= 0;
 						}
 						$display_data[ 'route_image' ]	 = $race_routes[ $team[ 'route_id' ] ][ 'logo_url' ];
-						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
+						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id ) ?: '#000';
 						$display_data[ 'team_name' ]	 = '<a class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
 						'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
 						$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
@@ -1303,7 +1308,7 @@ HTML;
 						$display_data[ 'date' ]		 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]		 = $message[ 'timestamp' ];
 						$display_data[ 'diff' ]		 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
-						$rgb						 = $h3_mgmt_utilities->hex2rgb( $h3_mgmt_teams->get_color_by_team( $team_id ) );
+						$rgb						 = $h3_mgmt_utilities->hex2rgb( $display_data[ 'hex_color' ] );
 						$display_data[ 'color' ]	 = 'rgba(' . $rgb[ 0 ] . ', ' . $rgb[ 1 ] . ', ' . $rgb[ 2 ] . ', .85)';
 						$display_data[ 'id' ]		 = $message[ 'id' ];
 								
@@ -1326,6 +1331,7 @@ HTML;
 								$display_data[ 'comments' ][$key][ 'name' ]			= $user->first_name . ' ' . $user->last_name;
 								$display_data[ 'comments' ][$key][ 'message' ]		= stripslashes( $comment['msg'] );
 								$display_data[ 'comments' ][$key][ 'time' ]			= $comment[ 'timestamp' ];
+								$display_data[ 'comments' ][$key][ 'diff' ]			= $h3_mgmt_utilities->date_diff( $comment[ 'timestamp' ], time() );
 								$display_data[ 'comments' ][$key][ 'type' ]			= $comment[ 'type' ];
 								$display_data[ 'comments' ][$key][ 'id' ]			= $comment[ 'id' ];
 								$display_data[ 'comments' ][$key][ 'date' ]			= date( 'l, F jS G:i', intval( $comment[ 'timestamp' ] ) );
