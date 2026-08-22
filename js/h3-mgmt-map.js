@@ -171,12 +171,8 @@ function initMap() {
 		marker.addTo(group);
 	}
 
-	if (routes.length === 0 || teams.size === 0) {
-		return;
-	}
-
 	const overlays = {};
-	const bounds = routes[0].group.getBounds();
+	const bounds = routes.length >= 1 ? routes[0].group.getBounds() : null;
 
 	if (routes.length > 1) {
 		routes.forEach((route, index) => {
@@ -196,7 +192,9 @@ function initMap() {
 		L.control.layers(null, overlays).addTo(map);
 	}
 
-	map.fitBounds(bounds);
+	if (bounds !== null) {
+		map.fitBounds(bounds);
+	}
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,

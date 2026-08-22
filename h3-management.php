@@ -92,7 +92,7 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js', [], '1.0' );
-	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js', [], '1.1' );
+	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js', [], '1.2' );
 	wp_register_script( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', [ 'jquery' ], '1.0' );
 	wp_register_script( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'js/h3-mgmt-sponsoring.js', [
 		'jquery',
