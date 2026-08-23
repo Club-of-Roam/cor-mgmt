@@ -913,7 +913,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Sponsors' ) ) :
 				$title = __( 'Add New Sponsor', 'h3-mgmt' );
 			} else {
 				$sponsor = $h3_mgmt_sponsors->get_sponsor( $id );
-				$title   = sprintf( __( 'Edit "%s"', 'h3-mgmt' ), stripslashes( $sponsor['first_name'] . ' ' . $sponsor['last_name'] ) );
+				$title   = sprintf( __( 'Edit "%s"', 'h3-mgmt' ), stripslashes( $sponsor['display_name'] ) );
 			}
 
 			wp_enqueue_script( 'h3-mgmt-admin-sponsors' );

@@ -127,14 +127,23 @@ class H3_MGMT_Teams {
 	public function get_team_data( $team_id, $extra_fields = array() ) {
 		global $wpdb, $h3_mgmt_races, $h3_mgmt_utilities;
 
+		if( empty( $team_id ) || ! is_numeric( $team_id ) ) {
+			return false;
+		}
+
+		$sql = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d LIMIT 1", $team_id );
+
 		$team_query = $wpdb->get_results(
-			"SELECT * FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE id = " . $team_id . " LIMIT 1",
+			$sql,
 			ARRAY_A
 		);
 
-		$team = isset( $team_query[0] ) ? $team_query[0] : false;
+		$team = $team_query[0] ?? false;
+
+		if( empty( $team ) ) {
+			return false;
+		}
+
 		$mates = $this->get_mate_names( $team['id'], false );
 
 		if( empty( $team['team_pic'] ) ) {
@@ -177,8 +186,7 @@ class H3_MGMT_Teams {
 		global $wpdb;
 
 		$participants_query = $wpdb->get_results(
-			"SELECT user_id FROM " .
-			$wpdb->prefix."h3_mgmt_teammates",
+			"SELECT user_id FROM {$wpdb->prefix}h3_mgmt_teammates",
 			ARRAY_A
 		);
                 
@@ -233,6 +241,10 @@ class H3_MGMT_Teams {
 	 */
 	public function get_team_by_user_and_race( $user_id, $race_id ) {
 		global $wpdb;
+
+		if ( empty( $user_id ) || empty( $race_id ) || ! is_numeric( $user_id ) || ! is_numeric( $race_id ) ) {
+			return 0;
+		}
 
 		$team_ids = $wpdb->get_col(
 			"SELECT team_id FROM " .
@@ -408,37 +420,37 @@ class H3_MGMT_Teams {
 	public function is_complete( $team_id ) {
 		global $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities, $h3_mgmt_races;
 
-		if ( empty( $team_id ) ) {
+		if ( empty( $team_id ) || ! is_numeric( $team_id ) ) {
 			return false;
 		}
 
+		$teammates_sql = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}h3_mgmt_teammates WHERE team_id = %d", $team_id);
+
 		$hitchmates_query = $wpdb->get_results(
-			"SELECT * FROM " .
-			$wpdb->prefix."h3_mgmt_teammates " .
-			"WHERE team_id = " . $team_id,
+			$teammates_sql,
 			ARRAY_A
 		);
-		
+
+		$complete_sql = $wpdb->prepare("SELECT complete FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d", $team_id);
+
 		$current_status_query = $wpdb->get_results(
-			"SELECT complete FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE id = " . $team_id,
+			$complete_sql,
 			ARRAY_A
 		);
-		
-                $race_id = $this->get_team_race( $team_id );
-                $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
-                
-		$current_status = isset( $current_status_query[0]['complete'] ) ? $current_status_query[0]['complete'] : 0;
-		
+
+        $race_id = $this->get_team_race( $team_id );
+        $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
+
+		$current_status = $current_status_query[0]['complete'] ?? 0;
+
 		$user_ids = $this->get_teammates( $team_id );
 
 		$complete = 1;
-                if(!isset($race_setting['num_teammember_min']))
-                {
-                    $race_setting['num_teammember_min'] = 2;
-                }
-                
+
+        if( ! isset($race_setting['num_teammember_min']) ) {
+            $race_setting['num_teammember_min'] = 2;
+        }
+
 		if( count( $hitchmates_query ) < $race_setting['num_teammember_min'] ) {
 			$complete = 0;
 		} else {
@@ -469,7 +481,7 @@ class H3_MGMT_Teams {
                                     }
                                 }
 			}
-		}	
+		}
 
 		if( $complete != $current_status ) {
 			$wpdb->update(
@@ -481,19 +493,18 @@ class H3_MGMT_Teams {
 				array( '%d' ),
 				array( '%d' )
 			);
-                        
-                        if( !$race_setting['startingpoint'] == 1 )
-                        {
-                            $wpdb->update(
-                                    $wpdb->prefix.'h3_mgmt_teams',
-                                    array(
-                                            'route_id' => $race_setting['start_route_id']
-                                    ),
-                                    array( 'id' => $team_id ),
-                                    array( '%d' ),
-                                    array( '%d' )
-                            );
-                        }
+
+            if( !$race_setting['startingpoint'] == 1 ) {
+                $wpdb->update(
+                        $wpdb->prefix.'h3_mgmt_teams',
+                        array(
+                                'route_id' => $race_setting['start_route_id']
+                        ),
+                        array( 'id' => $team_id ),
+                        array( '%d' ),
+                        array( '%d' )
+                );
+            }
 			if( $complete === 1 ) {
 				$user_ids = $this->get_teammates( $team_id );
 				$response_args = array(
@@ -527,14 +538,14 @@ class H3_MGMT_Teams {
 	public function team_exists( $team_id ) {
 		global $wpdb;
 
-		if( empty( $team_id ) ) {
+		if( empty( $team_id ) || ! is_numeric( $team_id ) ) {
 			return false;
 		}
 
+		$sql = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d LIMIT 1", $team_id );
+
 		$team_query = $wpdb->get_results(
-			"SELECT * FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE id = " . $team_id ." LIMIT 1",
+			$sql,
 			ARRAY_A
 		);
 
@@ -556,21 +567,29 @@ class H3_MGMT_Teams {
 	public function get_owner( $team_id ) {
 		global $wpdb;
 
+		if( empty( $team_id ) || ! is_numeric( $team_id ) ) {
+			return false;
+		}
+
+		$owner_sql = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}h3_mgmt_sponsors WHERE team_id = %d AND type = 'owner'", $team_id );
+
 		$owner_query = $wpdb->get_results(
-			"SELECT * FROM " .
-			$wpdb->prefix."h3_mgmt_sponsors " .
-			"WHERE team_id = " . $team_id ." AND type = 'owner' ", 
+			$owner_sql,
 			ARRAY_A
 		);
-                
-                date_default_timezone_set('Europe/Berlin');
-                
+
+        date_default_timezone_set('Europe/Berlin');
+
 		if( ! empty( $owner_query ) ) {
-                    foreach( $owner_query as $owner ){
-			if( $owner['paid'] == 1 && $owner['var_show'] == 1 || ( time() - strtotime($owner['timestamp']) ) < 600 || '0000-00-00 00:00:00' == $owner['timestamp'] ){
-                            return $owner['id'];
-                        }
-                    }
+            foreach( $owner_query as $owner ){
+	            if (
+		            ( $owner['paid'] == 1 && $owner['var_show'] == 1 ) ||
+		            time() - strtotime( $owner['timestamp'] ) < 600 ||
+		            '0000-00-00 00:00:00' == $owner['timestamp']
+	            ) {
+		            return $owner['id'];
+	            }
+            }
 		}
 
 		return false;
@@ -587,10 +606,14 @@ class H3_MGMT_Teams {
 	public function get_sponsors( $team_id ) {
 		global $wpdb;
 
+		if( empty( $team_id ) || ! is_numeric( $team_id ) ) {
+			return false;
+		}
+
+		$sponsors_sql = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}h3_mgmt_sponsors WHERE team_id = %d AND type = 'sponsor' AND paid = 1", $team_id );
+
 		$sponsors_query = $wpdb->get_results(
-			"SELECT * FROM " .
-			$wpdb->prefix."h3_mgmt_sponsors " .
-			"WHERE team_id = " . $team_id ." AND type = 'sponsor' AND paid = 1", //
+			$sponsors_sql,
 			ARRAY_A
 		);
 
@@ -610,10 +633,14 @@ class H3_MGMT_Teams {
 	public function get_team_name( $team_id ) {
 		global $wpdb;
 
+		if( empty( $team_id ) || ! is_numeric( $team_id ) ) {
+			return __( 'Ooops, no team...', 'h3-mgmt' );
+		}
+
+		$team_name_sql = $wpdb->prepare( "SELECT team_name FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d LIMIT 1", $team_id );
+
 		$team_query = $wpdb->get_results(
-			"SELECT team_name FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE id = " . $team_id ." LIMIT 1",
+			$team_name_sql,
 			ARRAY_A
 		);
 
@@ -636,26 +663,32 @@ class H3_MGMT_Teams {
 	public function get_team_phones( $team_id ) {
 		global $wpdb;
 
+		if ( empty( $team_id ) || ! is_numeric( $team_id ) ) {
+			return [];
+		}
+
+		$phone_sql = $wpdb->prepare( "SELECT team_phone FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d LIMIT 1", $team_id );
+
 		$phone_query = $wpdb->get_results(
-			"SELECT team_phone FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE id = " . $team_id ." LIMIT 1",
+			$phone_sql,
 			ARRAY_A
 		);
 
-		$phones = array();
-
-		if( ! empty( $phone_query[0]['team_phone'] ) ) {
-			$team_phones = $phone_query[0]['team_phone'];
-			$pos = stripos($team_phones, ' ', 3);
-			while ($pos !== false) {
-				$phones[] =substr($team_phones, 0, $pos);	
-				$team_phones = strpbrk($team_phones, ' ');
-				$team_phones = ltrim($team_phones);
-				$pos = stripos($team_phones, ' ', 3);
-			}
-			$phones[] =$team_phones;
+		if ( empty( $phone_query ) || empty( $phone_query[0]['team_phone'] ) ) {
+			return [];
 		}
+
+		$phones = [];
+
+		$team_phones = $phone_query[0]['team_phone'];
+		$pos         = stripos( $team_phones, ' ', 3 );
+		while ( $pos !== false ) {
+			$phones[]    = substr( $team_phones, 0, $pos );
+			$team_phones = strpbrk( $team_phones, ' ' );
+			$team_phones = ltrim( $team_phones );
+			$pos         = stripos( $team_phones, ' ', 3 );
+		}
+		$phones[] = $team_phones;
 
 		$teammates = $this->get_teammates( $team_id );
 
@@ -677,17 +710,25 @@ class H3_MGMT_Teams {
 	public function get_color_by_team( $team_id ) {
 		global $wpdb;
 
+		if ( empty( $team_id ) || ! is_numeric( $team_id ) ) {
+			return '000';
+		}
+
+		$team_sql = $wpdb->prepare( "SELECT route_id FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d LIMIT 1", $team_id );
+
 		$team_query = $wpdb->get_results(
-			"SELECT route_id FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE id = " . $team_id . " LIMIT 1",
+			$team_sql,
 			ARRAY_A
 		);
 
+		if ( empty( $team_query ) || empty( $team_query[0]['route_id'] ) ) {
+			return '000';
+		}
+
+		$color_sql = $wpdb->prepare( "SELECT color_code FROM {$wpdb->prefix}h3_mgmt_routes WHERE id = %d LIMIT 1", $team_query[0]['route_id'] );
+
 		$color_query = $wpdb->get_results(
-			"SELECT color_code FROM " .
-			$wpdb->prefix."h3_mgmt_routes " .
-			"WHERE id = " . $team_query[0]['route_id'] . " LIMIT 1",
+			$color_sql,
 			ARRAY_A
 		);
 
@@ -703,32 +744,28 @@ class H3_MGMT_Teams {
 	public function get_teammates( $team_id, $exclude_current = false ) {
 		global $current_user, $wpdb;
 
-		if ( is_numeric( $team_id ) ) {
-			if ( $exclude_current === true ) {
-				wp_get_current_user();
-				$mates_query = $wpdb->get_results(
-					"SELECT user_id FROM " .
-					$wpdb->prefix."h3_mgmt_teammates " .
-					"WHERE team_id = " . $team_id . " AND user_id != " . $current_user->ID,
-					ARRAY_A
-				);
-			} else {
-				$mates_query = $wpdb->get_results(
-					"SELECT user_id FROM " .
-					$wpdb->prefix."h3_mgmt_teammates " .
-					"WHERE team_id = " . $team_id,
-					ARRAY_A
-				);
-			}
-
-			$mates = array();
-			foreach( $mates_query as $mate ) {
-				$mates[] = $mate['user_id'];
-			}
-
-			return $mates;
+		if ( ! is_numeric( $team_id ) ) {
+			return [];
 		}
-		return array();
+
+		$raw_sql = "SELECT user_id FROM {$wpdb->prefix}h3_mgmt_teammates WHERE team_id = %d";
+
+		if ( $exclude_current === true ) {
+			wp_get_current_user();
+
+			$sql = $wpdb->prepare(
+				$raw_sql . " AND user_id != %d",
+				$team_id,
+				$current_user->ID
+			);
+		} else {
+			$sql = $wpdb->prepare(
+				$raw_sql,
+				$team_id
+			);
+		}
+
+		return $wpdb->get_col( $sql );
 	}
 
 	/**
@@ -738,12 +775,9 @@ class H3_MGMT_Teams {
 	 * @access private
 	 */
 	private function get_mate_names( $team_id, $exclude_current = true ) {
-		if( $exclude_current === true ) {
-			$mate_ids = $this->get_teammates( $team_id, true );
-		} else {
-			$mate_ids = $this->get_teammates( $team_id, false );
-		}
+		$mate_ids = $this->get_teammates( $team_id, $exclude_current );
 		$mate_names = array();
+
 		foreach( $mate_ids as $mate_id ) {
 			$mate_obj = new WP_User( $mate_id );
 			$mate_names[$mate_id] = $mate_obj->first_name;
@@ -762,9 +796,7 @@ class H3_MGMT_Teams {
 	public function mate_name_string( $team_id, $delimiter = ' &amp; ', $exclude_current = true ) {
 		$mate_names = $this->get_mate_names( $team_id, $exclude_current );
 
-		$mate_name_string = implode( $delimiter, $mate_names );
-
-		return $mate_name_string;
+		return implode( $delimiter, $mate_names );
 	}
 
 	/**
@@ -836,17 +868,18 @@ class H3_MGMT_Teams {
 	public function get_team_race( $team_id ) {
 		global $wpdb;
 
-		if( empty( $team_id ) ) {
+		if( empty( $team_id ) || ! is_numeric( $team_id) ) {
 			return false;
 		}
 
+		$sql = $wpdb->prepare( "SELECT race_id FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d LIMIT 1", $team_id );
+
 		$race_query = $wpdb->get_results(
-			"SELECT race_id FROM ".$wpdb->prefix."h3_mgmt_teams WHERE id = " . $team_id . " LIMIT 1",
+			$sql,
 			ARRAY_A
 		);
-		$race_id = isset( $race_query[0]['race_id'] ) ? $race_query[0]['race_id'] : 0;
 
-		return $race_id;
+		return $race_query[0]['race_id'] ?? 0;
 	}
 
 	/***************  REGISTRATION: UTILITY ***************/
@@ -1669,7 +1702,7 @@ class H3_MGMT_Teams {
 				if ( ! isset( $_POST['submitted'] ) ) {
 						return $this->team_dashboard( array( 'race_id' => $race_id ) );
 				} else {
-					list( $valid, $errors ) = $this->validate_submit();
+					[ $valid, $errors ] = $this->validate_submit();
 					if ( $valid !== true ) {
 						return $this->team_dashboard( array( 'messages' => $errors, 'race_id' => $race_id ) );
 					} else {
@@ -2270,7 +2303,7 @@ class H3_MGMT_Teams {
 		$race_id = $this->get_team_race( $team_id );
 		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 
-		list( $team_count, $complete_count, $incomplete_count, $teams ) = $this->get_teams_meta( array( 'orderby' => 'total_points', 'order' => 'DESC', 'exclude_incomplete' => true, 'parent' => intval( $race_id ), 'parent_type' => 'race' ) );
+		[ $team_count, $complete_count, $incomplete_count, $teams ] = $this->get_teams_meta( array( 'orderby' => 'total_points', 'order' => 'DESC', 'exclude_incomplete' => true, 'parent' => intval( $race_id ), 'parent_type' => 'race' ) );
 
 		$previous = array(
 			'total' => 999
@@ -2591,7 +2624,7 @@ class H3_MGMT_Teams {
 	private function team_overview( $race_id = 1 ) {
 		global $h3_mgmt_races, $h3_mgmt_utilities;
 
-		list( $team_count, $complete_count, $incomplete_count, $teams ) = $this->get_teams_meta( array(
+		[ $team_count, $complete_count, $incomplete_count, $teams ] = $this->get_teams_meta( array(
 			'orderby' => 'id',
 			'oderder' => 'ASC',
 			'exclude_incomplete' => true,
@@ -2660,7 +2693,7 @@ class H3_MGMT_Teams {
 
 		$output .= '<style>';
 		foreach( $routes_data as $route_id => $route ) {
-			list( $r, $g, $b ) = $h3_mgmt_utilities->hex2rgb( $route['color_code'] );
+			[ $r, $g, $b ] = $h3_mgmt_utilities->hex2rgb( $route['color_code'] );
 			$output .= '.no-touch .team-overview-route-island-' . $route_id . ':hover,' .
 				'.team-overview-route-island-' . $route_id . ':active {' .
 					'box-shadow: -2px 2px 5px 0 rgba(' . $r . ', ' . $g . ', ' . $b . ', .7);' .

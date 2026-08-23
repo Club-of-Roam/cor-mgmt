@@ -84,9 +84,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 		public function get_messages_by_ids( $ids, $race_id, $message_id = 0 ) {
 			global $wpdb;
 
-			if ( $ids != NULL ) {
-				$where = 'WHERE (';
-			}
+			$where = 'WHERE (';
 
 			foreach ( $ids as $id ) {
 				$where .= "send_from = '" . $id . "' OR ";
@@ -1090,7 +1088,7 @@ HTML;
 									$message[ 'timestamp' ] .= 0;
 								}
 								$display_data[ 'route_image' ]	 = $race_routes[ $team[ 'route_id' ] ][ 'logo_url' ];
-								$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id ) ?: '#000';
+								$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
 								$display_data[ 'team_name' ]	 = '<a style="border-color:#' . $display_data[ 'hex_color' ] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
 								'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
 								$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
@@ -1294,7 +1292,7 @@ HTML;
 							$message[ 'timestamp' ] .= 0;
 						}
 						$display_data[ 'route_image' ]	 = $race_routes[ $team[ 'route_id' ] ][ 'logo_url' ];
-						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id ) ?: '#000';
+						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
 						$display_data[ 'team_name' ]	 = '<a class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
 						'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
 						$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';

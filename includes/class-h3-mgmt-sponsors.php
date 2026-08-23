@@ -231,7 +231,13 @@ if ( !class_exists( 'H3_MGMT_Sponsors' ) ) :
 								                                 'BLZ: ' . $sponsor['bank_id'] . '<br />' .
 								                                 $sponsor['bank_name'];
 							} elseif ( 'race' === $field_id ) {
-								$sponsors[ $key ][ $field_id ] = $h3_mgmt_races->get_name( $h3_mgmt_teams->get_team_race( $sponsor['team_id'] ), 'race' );
+								$race_id = $h3_mgmt_teams->get_team_race( $sponsor['team_id'] );
+
+								if ( empty( $race_id ) ) {
+									$race_id = $sponsor['race_id'];
+								}
+
+								$sponsors[ $key ][ $field_id ] = $h3_mgmt_races->get_name( $race_id, 'race' );
 							} elseif ( 'code' === $field_id ) {
 								$sponsors[ $key ][ $field_id ] = $sponsor['team_id'] . '-' . $sponsor['id'];
 							}
