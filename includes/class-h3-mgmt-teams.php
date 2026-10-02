@@ -711,28 +711,22 @@ class H3_MGMT_Teams {
 		global $wpdb;
 
 		if ( empty( $team_id ) || ! is_numeric( $team_id ) ) {
-			return '000';
+			return null;
 		}
 
-		$team_sql = $wpdb->prepare( "SELECT route_id FROM {$wpdb->prefix}h3_mgmt_teams WHERE id = %d LIMIT 1", $team_id );
-
-		$team_query = $wpdb->get_results(
-			$team_sql,
-			ARRAY_A
+		$color_sql = $wpdb->prepare(
+			"SELECT r.color_code FROM {$wpdb->prefix}h3_mgmt_routes r " .
+			"INNER JOIN {$wpdb->prefix}h3_mgmt_teams t ON r.id = t.route_id WHERE t.id = %d LIMIT 1",
+			$team_id
 		);
 
-		if ( empty( $team_query ) || empty( $team_query[0]['route_id'] ) ) {
-			return '000';
+		$color_code = $wpdb->get_var( $color_sql );
+
+		if ( empty( $color_code ) ) {
+			return '4e4e4e';
 		}
 
-		$color_sql = $wpdb->prepare( "SELECT color_code FROM {$wpdb->prefix}h3_mgmt_routes WHERE id = %d LIMIT 1", $team_query[0]['route_id'] );
-
-		$color_query = $wpdb->get_results(
-			$color_sql,
-			ARRAY_A
-		);
-
-		return $color_query[0]['color_code'];
+		return $color_code;
 	}
 
 	/**

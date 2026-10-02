@@ -757,7 +757,7 @@ HTML;
 						$display_data[ 'route_id' ]		 = $route_id;
 						$display_data[ 'route_name' ]	 = $race_routes[ $route_id ][ 'name' ];
 						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $route_id ][ 'logo_url' ];
-						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
+						$display_data[ 'hex_color' ]	 = $h3_mgmt_races->get_route_color( $route_id );
 						$display_data[ 'team_id' ]		 = $team_id;
 						$display_data[ 'team_name' ]	 = $h3_mgmt_teams->get_team_name( $team_id );
 						$display_data[ 'team_name_anchor' ] =<<<HTML
@@ -857,7 +857,7 @@ HTML;
 						$display_data[ 'route_id' ]		 = $route_id;
 						$display_data[ 'route_name' ]	 = $race_routes[ $route_id ][ 'name' ];
 						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $route_id ][ 'logo_url' ];
-						$display_data[ 'hex_color' ]	 = $h3_mgmt_teams->get_color_by_team( $team_id );
+						$display_data[ 'hex_color' ]	 = $h3_mgmt_races->get_route_color( $route_id );
 						$display_data[ 'team_id' ]		 = $team_id;
 						$display_data[ 'team_name' ]	 = $h3_mgmt_teams->get_team_name( $team_id );
 						$display_data[ 'team_name_anchor' ] =<<<HTML

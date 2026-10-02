@@ -406,18 +406,15 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		public function get_route_color( $id ) {
 			global $wpdb;
 
-			$route_query = $wpdb->get_results(
-				'SELECT color_code FROM ' .
-				$wpdb->prefix . 'h3_mgmt_routes ' .
-				'WHERE id = ' . $id, ARRAY_A
-			);
-			if ( ! empty( $route_query ) ) {
-				$color = $route_query[0]['color_code'];
-			} else {
-				$color = '4e4e4e';
+			$sql = $wpdb->prepare( "SELECT color_code FROM {$wpdb->prefix}h3_mgmt_routes WHERE id = %d LIMIT 1", $id);
+
+			$color_code = $wpdb->get_var($sql);
+
+			if ( empty($color_code) ) {
+				return '4e4e4e';
 			}
 
-			return $color;
+			return $color_code;
 		}
 
 		/**
@@ -575,7 +572,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				$race_id = $this->get_active_race();
 			}
 
-			list( $team_count, $complete_count, $incomplete_count, $rows )                                   = $h3_mgmt_teams->get_teams_meta(
+			list( $team_count, $complete_count, $incomplete_count, $rows ) = $h3_mgmt_teams->get_teams_meta(
 				array(
 					'orderby'            => 'id',
 					'order'              => 'ASC',
@@ -617,9 +614,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 			} elseif ( $stat == 'participants-complete-count' ) {
 				return $participants_complete_count;
 			} elseif ( $stat == 'race-sponsors-count' ) {
-				$sponsor_counts['all'];
-			} elseif ( $stat == 'race-sponsors-count' ) {
-				$sponsor_counts['race'];
+				return $sponsor_counts['race'];
 			} elseif ( $stat == 'sponsors-count' ) {
 				return $sponsor_counts['sponsor'];
 			} elseif ( $stat == 'owners-count' ) {
@@ -634,15 +629,14 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 			} elseif ( $stat == 'thumbs' || $stat == 'cpk' ) {
 				return $donations['thumbs'];
 			} else {
-				$output = '<p>' .
-					_x( 'Registered Teams', 'Race Stats', 'h3-mgmt' ) . ': ' . $team_count . '<br />' .
-					_x( 'Completed Teams', 'Race Stats', 'h3-mgmt' ) . ': ' . $complete_count . '<br />' .
-					_x( 'Participants', 'Race Stats', 'h3-mgmt' ) . ': ' . $participants_complete_count . '<br />' .
-					_x( 'TeamSponsors', 'Race Stats', 'h3-mgmt' ) . ': ' . $sponsor_counts['sponsor'] . '<br />' .
-					_x( 'TeamOwners', 'Race Stats', 'h3-mgmt' ) . ': ' . $sponsor_counts['owner'] . '<br />' .
-					_x( 'Donations (Thumbs)', 'Race Stats', 'h3-mgmt' ) . ': ' . $donations['race'] . ' (' . $donations['thumbs'] . ')<br />' .
-				'</p>';
-				return $output;
+				return '<p>' .
+				       _x( 'Registered Teams', 'Race Stats', 'h3-mgmt' ) . ': ' . $team_count . '<br />' .
+				       _x( 'Completed Teams', 'Race Stats', 'h3-mgmt' ) . ': ' . $complete_count . '<br />' .
+				       _x( 'Participants', 'Race Stats', 'h3-mgmt' ) . ': ' . $participants_complete_count . '<br />' .
+				       _x( 'TeamSponsors', 'Race Stats', 'h3-mgmt' ) . ': ' . $sponsor_counts['sponsor'] . '<br />' .
+				       _x( 'TeamOwners', 'Race Stats', 'h3-mgmt' ) . ': ' . $sponsor_counts['owner'] . '<br />' .
+				       _x( 'Donations (Thumbs)', 'Race Stats', 'h3-mgmt' ) . ': ' . $donations['race'] . ' (' . $donations['thumbs'] . ')<br />' .
+				       '</p>';
 			}
 		}
 
@@ -1307,11 +1301,8 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				$skip_rank[ $tmp_route_id ]    = 1;
 			}
 
-			$i       = 0;
 			$flipper = false;
 			foreach ( $teams as $team ) {
-				$i++;
-
 				$extra = array(
 					1 => '',
 					2 => '',
