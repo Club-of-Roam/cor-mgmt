@@ -80,27 +80,42 @@ if ( is_admin() ) {
  * @since 1.0
  */
 function h3_mgmt_enqueue() {
-	/* register scripts */
-	wp_register_script( 'isotope', H3_MGMT_RELPATH . 'js/isotope.pkgd.min.js', [ 'jquery' ], '3.0.6', true );
+	/* register library scripts */
+	wp_register_script( 'isotope', H3_MGMT_RELPATH . 'js/isotope.pkgd.min.js', [ 'jquery-core' ], '3.0.6', [
+		'strategy'  => 'async',
+		'in_footer' => true,
+	] );
+	wp_register_script( 'leaflet', H3_MGMT_RELPATH . 'lib/leaflet/leaflet.js', [], '1.9.4', [
+		'strategy'  => 'async',
+		'in_footer' => true,
+	] );
+
+	/* register custom scripts */
 	wp_register_script( 'h3-mgmt-isotope', H3_MGMT_RELPATH . 'js/h3-mgmt-isotope.js', [
-		'jquery',
+		'jquery-core',
 		'isotope'
-	], '1.1.3' );
-	wp_register_script( 'h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', [ 'jquery' ], '1.2', true );
-	wp_register_script( 'h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', [ 'jquery' ], '1.1.3', true );
+	], '1.1.3', [
+		'strategy'  => 'defer',
+		'in_footer' => true,
+	] );
+	wp_register_script( 'h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', [ 'jquery-core' ], '1.2', true );
+	wp_register_script( 'h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', [ 'jquery-core' ], '1.1.3', true );
 	wp_register_script( 'h3-mgmt-resize', H3_MGMT_RELPATH . 'js/resize.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js', [], '1.0' );
-	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js', [], '1.2' );
-	wp_register_script( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', [ 'jquery' ], '1.0' );
+	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js', [ 'leaflet' ], '1.2', [
+		'strategy'  => 'defer',
+		'in_footer' => true,
+	] );
+	wp_register_script( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'js/h3-mgmt-ticker.js', [ 'jquery-core' ], '1.0' );
 	wp_register_script( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'js/h3-mgmt-sponsoring.js', [
-		'jquery',
+		'jquery-core',
 		'wp-i18n'
 	], '1.0', true );
 	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js', [], '1.0' );
-	wp_register_script('leaflet', H3_MGMT_RELPATH . 'lib/leaflet/leaflet.js', [], '1.9.4');
+
 	/* register styles */
 	wp_register_style( 'h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', [], '1.2' );
 	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', [], '1.2' );
@@ -110,12 +125,12 @@ function h3_mgmt_enqueue() {
 	wp_register_style( 'h3-mgmt-xchange', H3_MGMT_RELPATH . 'css/h3-mgmt-xchange.css', [], '1.1' );
 	wp_register_style( 'h3-mgmt-ranking', H3_MGMT_RELPATH . 'css/h3-mgmt-ranking.css', [], '1.1' );
 	wp_register_style('leaflet', H3_MGMT_RELPATH . 'lib/leaflet/leaflet.css', [], '1.9.4');
+
 	/* enqueue custom scripts */
-	/* enqueue custom scripts */
-	wp_enqueue_script( 'isotope' );
 	wp_enqueue_script( 'h3-mgmt-isotope' );
 	wp_enqueue_script( 'h3-mgmt-ticker' );
 	wp_enqueue_script( 'h3-mgmt-sponsoring' );
+
 	/* enqueue stylesheets */
 	wp_enqueue_style( 'h3-mgmt-donation-counter-style' );
 	wp_enqueue_style( 'h3-mgmt-sponsoring' );
@@ -162,24 +177,24 @@ function h3_mgmt_admin_enqueue() {
 	];
 
 	/* register scripts */
-	wp_register_script( 'h3-mgmt-admin', H3_MGMT_RELPATH . 'js/h3-mgmt-admin.js', [ 'jquery' ], '1.1', true );
+	wp_register_script( 'h3-mgmt-admin', H3_MGMT_RELPATH . 'js/h3-mgmt-admin.js', [ 'jquery-core' ], '1.1', true );
 	wp_register_script( 'h3-mgmt-ui', H3_MGMT_RELPATH . 'js/h3-mgmt-ui.js', [
-		'jquery',
+		'jquery-core',
 		'jquery-ui-slider',
 		'jquery-ui-datepicker'
 	], '1.1.1', true );
-	wp_register_script( 'custom-field-instances', H3_MGMT_RELPATH . 'js/repeatable-custom-fields.js', [ 'jquery' ], '1.1.2', true );
-	wp_register_script( 'h3-mgmt-admin-sponsors', H3_MGMT_RELPATH . 'js/h3-mgmt-admin-sponsors.js', [ 'jquery' ], '1.1.5', true );
+	wp_register_script( 'custom-field-instances', H3_MGMT_RELPATH . 'js/repeatable-custom-fields.js', [ 'jquery-core' ], '1.1.2', true );
+	wp_register_script( 'h3-mgmt-admin-sponsors', H3_MGMT_RELPATH . 'js/h3-mgmt-admin-sponsors.js', [ 'jquery-core' ], '1.1.5', true );
+
 	/* register styles */
 	wp_register_style( 'jquery-ui-custom', H3_MGMT_RELPATH . 'css/jquery-ui-custom.css', [], '1.1' );
 	wp_register_style( 'h3-mgmt-admin-style', H3_MGMT_RELPATH . 'css/h3-mgmt-admin.css', [], '1.1.5' );
-	/* enqueue core scripts */
-	wp_enqueue_script( 'jquery-ui-datepicker' );
-	wp_enqueue_script( 'jquery-ui-slider' );
+
 	/* enqueue custom scripts */
 	wp_enqueue_script( 'h3-mgmt-admin' );
 	wp_enqueue_script( 'h3-mgmt-ui' );
 	wp_enqueue_script( 'custom-field-instances' );
+
 	/* enqueue stylesheets */
 	wp_enqueue_style( 'jquery-ui-custom' );
 	wp_enqueue_style( 'h3-mgmt-admin-style' );

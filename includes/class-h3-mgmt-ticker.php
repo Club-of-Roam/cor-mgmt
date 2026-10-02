@@ -626,7 +626,6 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 HTML;
 
 			wp_enqueue_style( 'leaflet' );
-			wp_enqueue_script( 'leaflet' );
 
 			if ( ! class_exists( 'epiphyt\Embed_Privacy\data\Providers' ) ) {
 				// embed privacy plugin isn't active/installed
