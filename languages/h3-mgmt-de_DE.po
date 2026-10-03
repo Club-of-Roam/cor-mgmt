@@ -2,13 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HitchHikingHub Management v1.2.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-07-24 00:56:20+0000\n"
 "Last-Translator: Johannes Pilkahn <johannes@pilkahn.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2025-07-24 00:56:20+0000\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: CSL v1.x\n"
 "X-Poedit-Language: \n"
@@ -18,154 +19,129 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Textdomain-Support: yes"
+"X-Textdomain-Support: yes\n"
 
-#: includes/class-h3-mgmt-teams.php:1927
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1960
 msgctxt "Error Message"
 msgid "You have to be logged in to create or edit a team!"
 msgstr "Du musst eingeloggt sein um ein Team zu erstellen oder zu bearbeiten!"
 
-#: includes/class-h3-mgmt-teams.php:1722
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1755
 msgid "Sorry, the invitation code you are trying to use is outdated or false. Either contact the participant that invited you and request a new invitation or create your own team."
 msgstr "Sorry, der Einladungscode scheint falsch oder nicht mehr gültig zu sein. Schreib am besten deinen potentiellen Teampartner an mit der Bitte, die Einladung nochmals zu verschicken oder mach einfach dein eigenes Team auf."
 
-#: includes/class-h3-mgmt-teams.php:1816
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1849
 msgctxt "Team Dashboard"
 msgid "About You"
 msgstr "Über Dich"
 
-#: includes/class-h3-mgmt-teams.php:1839
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1872
 msgctxt "Team Dashboard"
 msgid "Invite teammate(s)"
 msgstr "Hitchmate(s) einladen"
 
-#: includes/class-h3-mgmt-teams.php:1461
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1494
 msgctxt "Team Dashboard"
 msgid "So far, you don't have any teammates. You need at least one to complete the team registration. If you haven't invited any yet, it might be a good idea to do so..."
 msgstr "Du hast im Moment noch keine Hitchmates. Um deine Anmeldung zu vervollständigen benötigst du mindestens einen Teampartner. Wenn du also noch niemand eingeladen hast, legen wir dir das stark ans Herz ;)"
 
-#: includes/class-h3-mgmt-teams.php:1447
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1480
 msgctxt "Team Dashboard"
 msgid "Your Teammate(s)"
 msgstr "Dein(e) Hitchmate(s)"
 
-#: includes/class-h3-mgmt-teams.php:1042
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1075
 msgctxt "Team Profile Form"
 msgid "A description of you and your teammates. Maybe serious or funny. You have a maximum of 500 characters."
 msgstr "Beschreibe dein Team! Ob bierernst oder zum Totlachen ist uns hierbei völlig Ladde. Du hast 500 Zeichen, um dich vom Rest der Welt abzuheben ;)"
 
-#: includes/class-h3-mgmt-teams.php:1206
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1239
 msgctxt "Team Profile Form"
 msgid "City"
 msgstr "Stadt"
 
-#: includes/class-h3-mgmt-teams.php:1041
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1074
 msgctxt "Team Profile Form"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: includes/class-h3-mgmt-teams.php:1387
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1420
 msgctxt "Team Profile Form"
 msgid "Email"
 msgstr "E-Mail"
 
-#: includes/class-h3-mgmt-teams.php:1194
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1227
 msgctxt "Team Profile Form"
 msgid "First Name"
 msgstr "Vorname"
 
-#: includes/class-h3-mgmt-teams.php:1213
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1246
 msgctxt "Team Profile Form"
 msgid "How old are you?"
 msgstr "Wie alt bist du?"
 
-#: includes/class-h3-mgmt-teams.php:1218
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1251
 msgctxt "Team Profile Form"
 msgid "Mobile Phone"
 msgstr "Handynummer"
 
-#: includes/class-h3-mgmt-teams.php:1035
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1068
 msgctxt "Team Profile Form"
 msgid "Team Name"
 msgstr "Teamname"
 
-#: includes/class-h3-mgmt-teams.php:1047
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1080
 msgctxt "Team Profile Form"
 msgid "Team Picture"
 msgstr "Teamfoto"
 
-#: includes/class-h3-mgmt-teams.php:1207
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1240
 msgctxt "Team Profile Form"
 msgid "Where are you from?"
 msgstr "Wo kommst du her?"
 
-#: includes/class-h3-mgmt-teams.php:1219
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1252
 msgctxt "Team Profile Form"
 msgid "Your mobile phone number. This information is important for the SMS/MMS-Liveticker and will not be visible publicly."
 msgstr "Deine Handynummer ist wichtig, damit wir dich während des Rennens dem richtigen Team zuordnen können, wenn du mit deiner eigenen Nummer Nachrichten an den SMS/MMS-Ticker schicken willst. Keine Sorge, die Nummer wird niemals irgendwo öffentlich zu sehen sein."
 
 #: includes/class-h3-mgmt-profile.php:25
-#@ h3-mgmt
 msgctxt "User Profile"
 msgid "About you"
 msgstr "Über dich"
 
 #: includes/class-h3-mgmt-profile.php:29
-#@ h3-mgmt
 msgctxt "User Profile"
 msgid "City"
 msgstr "Stadt"
 
 #: includes/class-h3-mgmt-profile.php:34
-#@ h3-mgmt
 msgctxt "User Profile"
 msgid "Mobile Phone"
 msgstr "Handynummer"
 
 #: admin/class-h3-mgmt-admin-emails.php:54
 #: admin/class-h3-mgmt-admin-emails.php:89
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Receipient"
 msgstr "Empfänger_in"
 
 #: admin/class-h3-mgmt-admin-emails.php:58
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "You are writing to a single user."
 msgstr "Du schreibst einem einzelnen User."
 
 #: admin/class-h3-mgmt-admin-emails.php:64
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Testmail to yourself"
 msgstr "Test-Mail an dich selbst"
 
 #: admin/class-h3-mgmt-admin-emails.php:104
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Sender"
 msgstr "Absender"
 
 #: admin/class-h3-mgmt-admin-emails.php:109
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "My own email address"
 msgstr "Meine eigene E-Mail Adresse"
@@ -185,7 +161,6 @@ msgstr "Meine eigene E-Mail Adresse"
 #: admin/class-h3-mgmt-admin-emails.php:520
 #: admin/class-h3-mgmt-admin-emails.php:543
 #: admin/class-h3-mgmt-admin-emails.php:566
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Subject"
 msgstr "Betreff"
@@ -205,13 +180,11 @@ msgstr "Betreff"
 #: admin/class-h3-mgmt-admin-emails.php:526
 #: admin/class-h3-mgmt-admin-emails.php:549
 #: admin/class-h3-mgmt-admin-emails.php:572
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Message"
 msgstr "Nachricht"
 
 #: admin/class-h3-mgmt-admin-emails.php:134
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Message Body"
 msgstr "Text der Nachricht"
@@ -230,57 +203,47 @@ msgstr "Text der Nachricht"
 #: admin/class-h3-mgmt-admin-emails.php:514
 #: admin/class-h3-mgmt-admin-emails.php:537
 #: admin/class-h3-mgmt-admin-emails.php:560
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Send Mail Switch"
 msgstr "Mail Schalter"
 
 #: admin/class-h3-mgmt-admin-emails.php:418
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "New Sponsor, Team Notification"
 msgstr "Neuer Sponsor, Benachrichtigung des Teams"
 
 #: admin/class-h3-mgmt-admin-emails.php:441
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "New Owner, Team Notification"
 msgstr "Neuer Owner, Benachrichtigung des Teams"
 
 #: admin/class-h3-mgmt-admin-emails.php:556
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "PayPal payment received, confirmation to sponsor/owner"
 msgstr "PayPal Zahlung eingegangen, Bestätigung an Sponsor/Owner"
 
 #: admin/class-h3-mgmt-admin-emails.php:660
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Edit Automatic Responses"
 msgstr "Automatische Antworten Editieren"
 
 #: admin/class-h3-mgmt-admin-emails.php:653
-#@ h3-mgmt
 msgid "Options successfully updated!"
 msgstr "Optionen wurden erfolgreich aktualisiert!"
 
 #: admin/class-h3-mgmt-admin-emails.php:692
-#@ h3-mgmt
 msgid "Save Automatic Response Texts"
 msgstr "Automatische Antworttexte speichern"
 
 #: admin/class-h3-mgmt-admin-races.php:427
-#@ h3-mgmt
 msgid "The selected route has been successfully deleted."
 msgstr "Die ausgewählte Route wurde erfolgreich gelöscht."
 
 #: admin/class-h3-mgmt-admin-races.php:632
-#@ h3-mgmt
 msgid "The selected stage has been successfully deleted."
 msgstr "Die ausgewählte Route wurde erfolgreich gelöscht."
 
 #: admin/class-h3-mgmt-admin-races.php:658
-#@ h3-mgmt
 msgid "Stage successfully updated!"
 msgstr "Etappe erfolgreich aktualisiert!"
 
@@ -288,14 +251,12 @@ msgstr "Etappe erfolgreich aktualisiert!"
 #: admin/class-h3-mgmt-admin-races.php:1008
 #: admin/class-h3-mgmt-admin-races.php:2215
 #: admin/class-h3-mgmt-admin-teams.php:536
-#: includes/class-h3-mgmt-races.php:817
+#: includes/class-h3-mgmt-races.php:811
 #: includes/class-h3-mgmt-utilities.php:83
-#@ h3-mgmt
 msgid "Route"
 msgstr "Route"
 
 #: admin/class-h3-mgmt-admin-races.php:906
-#@ h3-mgmt
 msgid "Max. Teams"
 msgstr "Maximale Anzahl an Teams"
 
@@ -303,77 +264,63 @@ msgstr "Maximale Anzahl an Teams"
 #: admin/class-h3-mgmt-admin-races.php:933
 #: admin/class-h3-mgmt-admin.php:46
 #: admin/class-h3-mgmt-admin.php:47
-#@ h3-mgmt
 msgid "Routes"
 msgstr "Routen"
 
 #: admin/class-h3-mgmt-admin-races.php:2098
-#@ h3-mgmt
 msgid "Name of route"
 msgstr "Name der Route"
 
 #: admin/class-h3-mgmt-admin-races.php:2100
-#@ h3-mgmt
 msgid "The name or title of the route"
 msgstr "Name oder Titel der Route"
 
 #: admin/class-h3-mgmt-admin-races.php:2104
-#@ h3-mgmt
 msgid "Maximum Teams"
 msgstr "Maximale Anzahl Teams"
 
 #: admin/class-h3-mgmt-admin-races.php:2106
-#@ h3-mgmt
 msgid "The maximum number (integer!) of teams that can register for this route"
 msgstr "Die maximale Anzahl (integer!) an Teams, die sich für diese Route anmelden können."
 
 #: admin/class-h3-mgmt-admin-races.php:2127
-#@ h3-mgmt
 msgid "Color"
 msgstr "Farbe"
 
 #: admin/class-h3-mgmt-admin-races.php:2129
-#@ h3-mgmt
 msgid "The 6-digit hex color code (no # !) of the route"
 msgstr "6-stelliger Hexcode (ohne # !) der Route"
 
 #: admin/class-h3-mgmt-admin-races.php:1169
 #: admin/class-h3-mgmt-admin-races.php:2133
-#@ h3-mgmt
 msgid "Logo URL"
 msgstr "Logo URL"
 
 #: admin/class-h3-mgmt-admin-races.php:2135
-#@ h3-mgmt
 msgid "The relative path (without the domain!) of the route's logo"
 msgstr "Der relative Pfad (ohne Domain!) des Logos der Route"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:916
 #, php-format
-#@ h3-mgmt
 msgid "Edit \"%s\""
 msgstr "\"%s\" bearbeiten"
 
 #: admin/class-h3-mgmt-admin-races.php:1000
-#@ h3-mgmt
 msgid "Stage Destination"
 msgstr "Etappenziel"
 
 #: admin/class-h3-mgmt-admin-races.php:1020
-#@ h3-mgmt
 msgid "Running Number"
 msgstr "fortlaufende Nummer"
 
 #: admin/class-h3-mgmt-admin-races.php:1025
 #: admin/class-h3-mgmt-admin-races.php:2192
-#: includes/class-h3-mgmt-races.php:819
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:813
 msgid "Country"
 msgstr "Land"
 
 #: admin/class-h3-mgmt-admin-races.php:1030
 #: admin/class-h3-mgmt-admin-races.php:2204
-#@ h3-mgmt
 msgid "Meeting Point"
 msgstr "Treffpunkt"
 
@@ -381,47 +328,38 @@ msgstr "Treffpunkt"
 #: admin/class-h3-mgmt-admin-races.php:1057
 #: admin/class-h3-mgmt-admin.php:54
 #: admin/class-h3-mgmt-admin.php:55
-#@ h3-mgmt
 msgid "Stages"
 msgstr "Etappen"
 
 #: admin/class-h3-mgmt-admin-races.php:2182
-#@ h3-mgmt
 msgid "The destination of the stage"
 msgstr "Das Ziel der Etappe"
 
 #: admin/class-h3-mgmt-admin-races.php:2186
-#@ h3-mgmt
 msgid "Number"
 msgstr "Nummer"
 
 #: admin/class-h3-mgmt-admin-races.php:2188
-#@ h3-mgmt
 msgid "The running number of the stage"
 msgstr "laufende Nummer der Etappe"
 
 #: admin/class-h3-mgmt-admin-races.php:2206
-#@ h3-mgmt
 msgid "Where the teams will meet in the destination city"
 msgstr "Wo werden die Teams sich treffen?"
 
 #: admin/class-h3-mgmt-admin-teams.php:52
-#@ h3-mgmt
 msgid "The selected team has been successfully deleted."
 msgstr "Das ausgewählte Team wurde gelöscht."
 
 #: admin/class-h3-mgmt-admin-teams.php:170
-#@ h3-mgmt
 msgid "Team successfully updated!"
 msgstr "Team erfolgreich aktualisiert!"
 
 #: admin/class-h3-mgmt-admin-teams.php:277
-#@ h3-mgmt
 msgid "Team successfully added!"
 msgstr "Team erfolgreich hinzugefügt!"
 
 #: admin/class-h3-mgmt-admin-teams.php:547
-#@ h3-mgmt
 msgid "Complete?"
 msgstr "Vollständig?"
 
@@ -431,7 +369,6 @@ msgstr "Vollständig?"
 #: admin/class-h3-mgmt-admin.php:64
 #: admin/class-h3-mgmt-admin.php:73
 #: admin/class-h3-mgmt-admin.php:74
-#@ h3-mgmt
 msgid "Teams"
 msgstr "Teams"
 
@@ -439,7 +376,6 @@ msgstr "Teams"
 #: admin/class-h3-mgmt-admin-sponsors.php:558
 #: admin/class-h3-mgmt-admin-sponsors.php:623
 #: admin/class-h3-mgmt-admin-teams.php:888
-#@ h3-mgmt
 msgid "First Name"
 msgstr "Vorname"
 
@@ -447,7 +383,6 @@ msgstr "Vorname"
 #: admin/class-h3-mgmt-admin-sponsors.php:564
 #: admin/class-h3-mgmt-admin-sponsors.php:629
 #: admin/class-h3-mgmt-admin-teams.php:893
-#@ h3-mgmt
 msgid "Last Name"
 msgstr "Nachname"
 
@@ -457,17 +392,14 @@ msgstr "Nachname"
 #: admin/class-h3-mgmt-admin-sponsors.php:695
 #: admin/class-h3-mgmt-admin-sponsors.php:996
 #: admin/class-h3-mgmt-admin-teams.php:913
-#@ h3-mgmt
 msgid "Team"
 msgstr "Team"
 
 #: admin/class-h3-mgmt-admin-teams.php:933
-#@ h3-mgmt
 msgid "Waiver received?"
 msgstr "Einverständniserklärung eingetroffen?"
 
 #: admin/class-h3-mgmt-admin-teams.php:942
-#@ h3-mgmt
 msgid "Package paid?"
 msgstr "Hitchpaket bezahlt?"
 
@@ -475,78 +407,64 @@ msgstr "Hitchpaket bezahlt?"
 #: admin/class-h3-mgmt-admin-teams.php:1020
 #: admin/class-h3-mgmt-admin.php:81
 #: admin/class-h3-mgmt-admin.php:82
-#@ h3-mgmt
 msgid "Participants"
 msgstr "Teilnehmer"
 
 #: admin/class-h3-mgmt-admin.php:133
 #: admin/class-h3-mgmt-admin.php:134
-#@ h3-mgmt
 msgid "Emails"
 msgstr "E-Mails"
 
 #: admin/class-h3-mgmt-admin.php:143
-#@ h3-mgmt
 msgid "Send an E-Mail"
 msgstr "E-Mail schicken"
 
 #: admin/class-h3-mgmt-admin.php:144
-#@ h3-mgmt
 msgid "Send Mail"
 msgstr "E-Mail senden"
 
 #: admin/class-h3-mgmt-admin.php:151
 #: admin/class-h3-mgmt-admin.php:152
-#@ h3-mgmt
 msgid "Auto Responses"
 msgstr "Automatische Antworten"
 
 #: includes/class-h3-mgmt-mailer.php:85
-#@ h3-mgmt
 msgid "Your team has been successfully created"
 msgstr "Dein Team wurde erfolgreich erstellt"
 
 #: includes/class-h3-mgmt-mailer.php:86
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! Your team \"%team_name%\" has been successfully created."
 msgstr "Moin %name%! Dein Team \"%team_name%\" wurde erfolgreich erstellt."
 
 #: includes/class-h3-mgmt-mailer.php:93
-#@ h3-mgmt
 msgid "Your invitation was accepted!"
 msgstr "Deine Einladung ist angenommen worden!"
 
 #: includes/class-h3-mgmt-mailer.php:97
-#@ h3-mgmt
 msgid "You have successfully joined a team!"
 msgstr "Du bist bist einem Team erfolgreich beigetreten!"
 
 #: includes/class-h3-mgmt-mailer.php:105
-#@ h3-mgmt
 msgid "Liability waiver received"
 msgstr "Einverständniserklärung angekommen"
 
 #: includes/class-h3-mgmt-mailer.php:106
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! We have received your signed liability waiver. Thank you. Check the status of your team via: %link%"
 msgstr "Moin %name%! Wir haben deine unterzeichnete Einverständniserklärung erhalten. Danke! Check den Status deines Teams: %link%"
 
 #: includes/class-h3-mgmt-mailer.php:110
 #, php-format
-#@ h3-mgmt
 msgid "Hello \"%team_name%\"! You just got a new sponsor! Awesomeness!"
 msgstr "Hallo \"%team_name%\"! Ihr habt eben einen neuen Sponsor bekommen! Stark!"
 
 #: includes/class-h3-mgmt-mailer.php:114
 #, php-format
-#@ h3-mgmt
 msgid "Hello \"%team_name%\"! You just got an owner! Awesomeness!"
 msgstr "Hallo \"%team_name%\"! Ihr habt eben einen Owner bekommen! Stark!"
 
 #: includes/class-h3-mgmt-mailer.php:117
-#@ h3-mgmt
 msgid "Team complete!"
 msgstr "Team vollständig!"
 
@@ -554,316 +472,262 @@ msgstr "Team vollständig!"
 #: includes/class-h3-mgmt-mailer.php:125
 #: includes/class-h3-mgmt-mailer.php:133
 #: includes/class-h3-mgmt-mailer.php:137
-#@ h3-mgmt
 msgid "Thank you for your donation!"
 msgstr "Danke für deine Spende!"
 
 #: includes/class-h3-mgmt-mailer.php:134
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! You have just become owner of team \"%team_name%\" and chosen to donate %donation% to Viva con Agua. You are now listed in the team's profile. The donation will be deducted from your bank account soon. Thank you!"
 msgstr "Moin %name%! Du bist soeben stolzer Besitzer des Teams  \"%team_name%\"  geworden und hast %donation% an Viva con Agua gespendet. Du wirst jetzt im TeamProfil des Teams angezeigt. Die Spende wird demnächst von deinem Konto abgebucht werden. Danke!"
 
 #: includes/class-h3-mgmt-mailer.php:138
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! You have just become sponsor of team \"%team_name%\" and chosen to donate %donation% to Viva con Agua. You are now listed in the team's profile. The donation will be deducted from your bank account soon. Thank you!"
 msgstr "Moin %name%! Du bist soeben TeamSponsor des Teams  \"%team_name%\"  geworden und hast %donation% an Viva con Agua gespendet. Du wirst jetzt im TeamProfil des Teams angezeigt. Die Spende wird demnächst von deinem Konto abgebucht werden. Danke!"
 
 #: includes/class-h3-mgmt-profile.php:107
-#@ h3-mgmt
 msgctxt "User Profile"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: includes/class-h3-mgmt-races.php:797
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:791
 msgid "Filter Routes"
 msgstr "Routen Filtern"
 
-#: includes/class-h3-mgmt-races.php:798
-#: includes/class-h3-mgmt-races.php:807
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:792
+#: includes/class-h3-mgmt-races.php:801
 msgid "All"
 msgstr "Alle"
 
-#: includes/class-h3-mgmt-races.php:806
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:800
 msgid "Filter Countries"
 msgstr "Länder filtern"
 
-#: includes/class-h3-mgmt-races.php:815
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:809
 msgid "Sort by"
 msgstr "Sortieren nach"
 
-#: includes/class-h3-mgmt-races.php:818
-#: includes/class-h3-mgmt-races.php:844
+#: includes/class-h3-mgmt-races.php:812
+#: includes/class-h3-mgmt-races.php:838
 #: includes/class-h3-mgmt-utilities.php:85
-#@ h3-mgmt
 msgid "Stage"
 msgstr "Etappe"
 
 #: templates/admin-custom-fields.php:145
-#@ h3-mgmt
 msgctxt "taxonomy selection for acitivity"
 msgid "Select One"
 msgstr "Wähle eine aus"
 
-#: templates/class-h3-mgmt-admin-table.php:635
+#: templates/class-h3-mgmt-admin-table.php:634
 #, php-format
-#@ h3-mgmt
 msgid "Edit %s"
 msgstr "%s Editieren"
 
-#: templates/class-h3-mgmt-admin-table.php:637
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:636
 msgid "Edit"
 msgstr "Editieren"
 
-#: templates/class-h3-mgmt-admin-table.php:645
+#: templates/class-h3-mgmt-admin-table.php:644
 #, php-format
-#@ h3-mgmt
 msgid "Delete %s"
 msgstr "%s Löschen"
 
-#: templates/class-h3-mgmt-admin-table.php:647
+#: templates/class-h3-mgmt-admin-table.php:646
 #, php-format
-#@ h3-mgmt
 msgid "Really delete &quot;%s&quot;?"
 msgstr " &quot;%s&quot; wirklich löschen?"
 
-#: templates/class-h3-mgmt-admin-table.php:651
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:650
 msgid "Delete"
 msgstr "Löschen"
 
 #: templates/frontend-profile.php:220
 #: templates/frontend-profile_int.php:220
-#@ h3-mgmt
 msgid "No local avatar is set. Falling back to a gravatar, if exists."
 msgstr "Kein lokales Avatar gespeichert. Es wird auf dein Gravatar zurückgegriffen, wenn du eins hast."
 
 #: templates/frontend-profile.php:222
 #: templates/frontend-profile_int.php:222
-#@ h3-mgmt
 msgid "Delete avatar"
 msgstr "Avatar löschen"
 
 #: templates/frontend-profile.php:222
 #: templates/frontend-profile_int.php:222
-#@ h3-mgmt
 msgid "Replace the local avatar by uploading a new avatar, or erase the local avatar (falling back to a gravatar) by checking the delete option."
 msgstr "Ersetze das aktuelle Avatar durch das Hochladen eines neuen oder löschen das aktuelle Avatar in dem du die Löschen Option aktivierst."
 
-#: includes/class-h3-mgmt-teams.php:1781
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1814
 msgctxt "Team Dashboard"
 msgid "Your Team"
 msgstr "Euer Team"
 
-#: includes/class-h3-mgmt-teams.php:1860
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1893
 msgctxt "Team Dashboard"
 msgid "Save &amp; Send"
 msgstr "Speichern &amp; Senden"
 
 #: admin/class-h3-mgmt-admin-teams.php:523
-#@ h3-mgmt
 msgid "Team Name"
 msgstr "Team Name"
 
 #: admin/class-h3-mgmt-admin-teams.php:541
-#: templates/class-h3-mgmt-admin-table.php:887
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:886
 msgid "HitchMates"
 msgstr "HitchMates"
 
-#: includes/class-h3-mgmt-races.php:638
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:633
 msgctxt "Race Stats"
 msgid "Registered Teams"
 msgstr "Registrierte Teams"
 
-#: includes/class-h3-mgmt-races.php:639
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:634
 msgctxt "Race Stats"
 msgid "Completed Teams"
 msgstr "Komplette Teams"
 
-#: includes/class-h3-mgmt-races.php:640
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:635
 msgctxt "Race Stats"
 msgid "Participants"
 msgstr "Teilnehmer"
 
-#: includes/class-h3-mgmt-races.php:641
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:636
 msgctxt "Race Stats"
 msgid "TeamSponsors"
 msgstr "TeamSponsoren"
 
-#: includes/class-h3-mgmt-races.php:642
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:637
 msgctxt "Race Stats"
 msgid "TeamOwners"
 msgstr "TeamOwner"
 
 #: includes/class-h3-mgmt-teams.php:91
-#: includes/class-h3-mgmt-teams.php:157
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:166
 msgctxt "Route"
 msgid "Not chosen yet..."
 msgstr "Noch nicht gewählt..."
 
-#: includes/class-h3-mgmt-teams.php:369
-#: includes/class-h3-mgmt-teams.php:617
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:383
+#: includes/class-h3-mgmt-teams.php:637
+#: includes/class-h3-mgmt-teams.php:650
 msgid "Ooops, no team..."
 msgstr "Uuuups, kein Team..."
 
-#: includes/class-h3-mgmt-teams.php:1050
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1083
 msgctxt "Team Dashboard"
 msgid "This picture will appear in your team profile. You may upload .jpeg, .gif or .png files."
 msgstr "Dieses Bild wird in eurem Teamprofil angezeigt. Du kannst .jpeg, .gif oder .png-Dateien hochladen"
 
-#: includes/class-h3-mgmt-teams.php:1944
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1977
 msgctxt "Homework"
 msgid "Homework Assignments"
 msgstr "Hausaufgabenliste"
 
-#: includes/class-h3-mgmt-teams.php:2023
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2056
 msgctxt "Homework"
 msgid "Before publishing"
 msgstr "Bevor euer Profil veröffentlicht werden kann"
 
-#: includes/class-h3-mgmt-teams.php:2122
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2155
 msgctxt "Homework"
 msgid "After Team is complete"
 msgstr "Wenn alles erledigt ist"
 
-#: includes/class-h3-mgmt-teams.php:2139
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2172
 msgctxt "Homework"
 msgid "You have a TeamOwner"
 msgstr "Du hast einen TeamOwner"
 
-#: includes/class-h3-mgmt-teams.php:2141
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2174
 msgctxt "Homework"
 msgid "You don't have a TeamOwner yet. You can hunt for one now!"
 msgstr "Ihr habt noch keinen TeamOwner. Jetzt könnt ihr euch für Viva con Agua und Pro Asyl aufkaufen lassen! :)"
 
-#: includes/class-h3-mgmt-teams.php:2145
+#: includes/class-h3-mgmt-teams.php:2178
 #, php-format
-#@ h3-mgmt
 msgctxt "Homework"
 msgid "You have %d TeamSponsors"
 msgstr "Ihr habt %d Teamsponsoren"
 
-#: includes/class-h3-mgmt-teams.php:2147
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2180
 msgctxt "Homework"
 msgid "You don't have TeamSponsors yet. You can hunt for 'em now!"
 msgstr "Ihr habt noch keine Teamsponsoren. Auf geht's! :)"
 
-#: includes/class-h3-mgmt-teams.php:2164
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2197
 msgctxt "Homework"
 msgid "You cannot hunt for sponsors yet..."
 msgstr "Noch könnt ihr nicht auf TeamSponsorenjagd gehen..."
 
-#: includes/class-h3-mgmt-teams.php:2196
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2229
 msgctxt "User Panel"
 msgid "Edit your team"
 msgstr "Team bearbeiten"
 
-#: includes/class-h3-mgmt-teams.php:2198
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2231
 msgctxt "User Panel"
 msgid "Edit Team"
 msgstr "Team bearbeiten"
 
 #: includes/class-h3-mgmt-utilities.php:117
-#@ h3-mgmt
 msgid "Visit Site"
 msgstr "Seite besuchen"
 
-#: templates/class-h3-mgmt-admin-table.php:826
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:825
 msgid "Yes!"
 msgstr "Ja!"
 
-#: templates/class-h3-mgmt-admin-table.php:828
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:827
 msgid "No."
 msgstr "No."
 
-#: templates/class-h3-mgmt-admin-table.php:657
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:656
 msgid "This participant's waiver form has been received"
 msgstr "Die Einverständniserklärung dieser/s Teilnehmerin/s ist angekommen"
 
-#: templates/class-h3-mgmt-admin-table.php:659
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:658
 msgid "Waiver received!"
 msgstr "Einverständniserklärung angekommen!"
 
-#: templates/class-h3-mgmt-admin-table.php:663
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:662
 msgid "Ooops, that was too quick. The waiver actually has not been received yet..."
 msgstr "Uuuups, das war zu schnell. Die Erklärung war doch noch nicht angekommmen..."
 
-#: templates/class-h3-mgmt-admin-table.php:665
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:664
 msgid "Really reset the waiver status of this participant to &quot;not received&quot;??"
 msgstr "Den Erklärungsstatus dieses Teilnehmers wirklich auf  &quot;nicht bekommen &quot; zurücksetzen??"
 
-#: templates/class-h3-mgmt-admin-table.php:669
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:668
 msgid "Not yet received..."
 msgstr "Noch nicht bekommen..."
 
-#: templates/class-h3-mgmt-admin-table.php:741
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:740
 msgid "This participant has paid for his/her HitchPackage"
 msgstr "Diese_r Teilnehmer_in hat sein/ihr HitchPaket bezahlt"
 
-#: templates/class-h3-mgmt-admin-table.php:743
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:742
 msgid "HitchPackage paid!"
 msgstr "HitchPaket bezahlt!"
 
-#: templates/class-h3-mgmt-admin-table.php:747
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:746
 msgid "Ooops, that was too quick. The package has actually not been paid yet..."
 msgstr "Uuups, das war zu schnell. Das Paket ist ja noch gar nicht bezahlt..."
 
-#: templates/class-h3-mgmt-admin-table.php:749
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:748
 msgid "Really reset the HitchPackage status of this participant to &quot;not paid&quot;?"
 msgstr "Den HitchPaket-Status dieser/s Teilnehmerin/s wirklich auf &quot;unbezahlt&quot; zurücksetzen?"
 
-#: templates/class-h3-mgmt-admin-table.php:753
-#: templates/class-h3-mgmt-admin-table.php:772
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:752
+#: templates/class-h3-mgmt-admin-table.php:771
 msgid "Not yet paid..."
 msgstr "Noch nicht bezahlt..."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:195
 #: admin/class-h3-mgmt-admin-sponsors.php:406
-#@ h3-mgmt
 msgid "The selected sponsor does now appear in the frontend."
 msgstr "Die ausgewählten Sponsoren erscheinen nun im Frontend."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:219
 #: admin/class-h3-mgmt-admin-sponsors.php:413
-#@ h3-mgmt
 msgid "The selected sponsor does not appear in the frontend anymore!"
 msgstr "Die ausgewählten Sponsoren erscheinen nun nicht mehr im Frontend."
 
@@ -871,12 +735,10 @@ msgstr "Die ausgewählten Sponsoren erscheinen nun nicht mehr im Frontend."
 #: admin/class-h3-mgmt-admin-sponsors.php:587
 #: admin/class-h3-mgmt-admin-sponsors.php:647
 #: admin/class-h3-mgmt-admin-sponsors.php:700
-#@ h3-mgmt
 msgid "Type"
 msgstr "Typ"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:522
-#@ h3-mgmt
 msgid "Method"
 msgstr "Methode"
 
@@ -884,7 +746,6 @@ msgstr "Methode"
 #: admin/class-h3-mgmt-admin-sponsors.php:593
 #: admin/class-h3-mgmt-admin-sponsors.php:653
 #: admin/class-h3-mgmt-admin-sponsors.php:706
-#@ h3-mgmt
 msgid "Paid?"
 msgstr "Bezahlt?"
 
@@ -892,7 +753,6 @@ msgstr "Bezahlt?"
 #: admin/class-h3-mgmt-admin-sponsors.php:601
 #: admin/class-h3-mgmt-admin-sponsors.php:661
 #: admin/class-h3-mgmt-admin-sponsors.php:714
-#@ h3-mgmt
 msgid "Show on front?"
 msgstr "Anzeigen?"
 
@@ -900,7 +760,6 @@ msgstr "Anzeigen?"
 #: admin/class-h3-mgmt-admin-sponsors.php:609
 #: admin/class-h3-mgmt-admin-sponsors.php:669
 #: admin/class-h3-mgmt-admin-sponsors.php:722
-#@ h3-mgmt
 msgid "Donation"
 msgstr "Spende"
 
@@ -908,787 +767,654 @@ msgstr "Spende"
 #: admin/class-h3-mgmt-admin-sponsors.php:615
 #: admin/class-h3-mgmt-admin-sponsors.php:675
 #: admin/class-h3-mgmt-admin-sponsors.php:728
-#@ h3-mgmt
 msgid "Display Name"
 msgstr "Anzeige Name"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:582
-#@ h3-mgmt
 msgid "Bank Info"
 msgstr "Bank Info"
 
 #: admin/class-h3-mgmt-admin.php:124
-#@ h3-mgmt
 msgid "TeamSponsors &amp; TeamOwners"
 msgstr "TeamSponsoren &amp; TeamOwner"
 
 #: admin/class-h3-mgmt-admin.php:108
-#@ h3-mgmt
 msgid "Sponsoring Method \"Direct Debit\""
 msgstr "Sponsor-Methode \"Bankeinzug\""
 
 #: admin/class-h3-mgmt-admin.php:109
-#@ h3-mgmt
 msgid "Direct Debit"
 msgstr "Bankeinzug"
 
 #: admin/class-h3-mgmt-admin.php:116
-#@ h3-mgmt
 msgid "Sponsoring Method \"PayPal\""
 msgstr "Sponsor-Methode \"PayPal\""
 
 #: admin/class-h3-mgmt-admin.php:117
-#: templates/class-h3-mgmt-admin-table.php:868
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:867
 msgid "PayPal"
 msgstr "PayPal"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:973
-#: includes/class-h3-mgmt-sponsors.php:1456
-#: includes/class-h3-mgmt-sponsors.php:1823
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1462
+#: includes/class-h3-mgmt-sponsors.php:1829
 msgctxt "Sponsoring Form"
 msgid "TeamSponsor"
 msgstr "TeamSponsor"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:977
-#: includes/class-h3-mgmt-sponsors.php:1457
-#: includes/class-h3-mgmt-sponsors.php:1831
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1463
+#: includes/class-h3-mgmt-sponsors.php:1837
 msgctxt "Sponsoring Form"
 msgid "TeamOwner"
 msgstr "TeamOwner"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1022
-#: includes/class-h3-mgmt-sponsors.php:1526
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1532
 msgctxt "Sponsoring Form"
 msgid "Donation Method"
 msgstr "Spendenmethode"
 
-#: includes/class-h3-mgmt-sponsors.php:1532
-#: includes/class-h3-mgmt-sponsors.php:1886
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1538
+#: includes/class-h3-mgmt-sponsors.php:1892
 msgctxt "Sponsoring Form"
 msgid "Debit (Germany only)"
 msgstr "Einzugsermächtigung (nur aus Deutschland möglich)"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1034
-#: includes/class-h3-mgmt-sponsors.php:1536
-#: includes/class-h3-mgmt-sponsors.php:1893
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1542
+#: includes/class-h3-mgmt-sponsors.php:1899
 msgctxt "Sponsoring Form"
 msgid "PayPal"
 msgstr "Paypal"
 
-#: includes/class-h3-mgmt-sponsors.php:1629
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1635
 msgctxt "Sponsoring Form"
 msgid "Display Name"
 msgstr "angezeigter Name"
 
-#: includes/class-h3-mgmt-sponsors.php:1648
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1654
 msgctxt "Sponsoring Form"
 msgid "Account ID (KTN)"
 msgstr "Kontonummer"
 
-#: includes/class-h3-mgmt-sponsors.php:1653
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1659
 msgctxt "Sponsoring Form"
 msgid "Bank ID (BLZ)"
 msgstr "Bankleitzahl"
 
-#: includes/class-h3-mgmt-sponsors.php:1658
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1664
 msgctxt "Sponsoring Form"
 msgid "Name of Bank"
 msgstr "Name der Bank"
 
-#: includes/class-h3-mgmt-sponsors.php:1742
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1748
 msgctxt "Sponsoring Form"
 msgid "Owner Pic"
 msgstr "TeamOwner Bild"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1124
-#: includes/class-h3-mgmt-sponsors.php:1749
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1755
 msgctxt "Sponsoring Form"
 msgid "Link"
 msgstr "Link"
 
-#: includes/class-h3-mgmt-sponsors.php:2160
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2166
 msgctxt "Form Validation Error"
 msgid "You have been identified as a spam bot. Screw you!"
 msgstr "Hallo Spambot! Am Arsch, hier gibts für dich nichts zu holen!"
 
-#: includes/class-h3-mgmt-sponsors.php:2168
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2174
 msgctxt "Sponsoring Form Error"
 msgid "Please select a Team you want to sponsor..."
 msgstr "Bitte wähle das Team aus, welches du sponsern möchtest..."
 
-#: includes/class-h3-mgmt-teams.php:797
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:829
 msgid "Please select..."
 msgstr "Bitte wähle..."
 
-#: includes/class-h3-mgmt-teams.php:1004
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1037
 msgctxt "Team Dashboard"
 msgid "Code"
 msgstr "Code"
 
-#: includes/class-h3-mgmt-teams.php:1013
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1046
 msgctxt "Team Dashboard"
 msgid "Submit Invitation Code"
 msgstr "Einladungscode abgeben"
 
-#: includes/class-h3-mgmt-teams.php:1200
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1233
 msgctxt "Team Profile Form"
 msgid "Last Name"
 msgstr "Nachname"
 
-#: includes/class-h3-mgmt-teams.php:1201
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1234
 msgctxt "Team Profile Form"
 msgid "Your last name will not be visible online - this info is only important for the waiver forms."
 msgstr "Dein Nachname wird online nicht zu sehen sein - diese Info ist nur für die Einverständniserklärung wichtig, damit wir dich zuordnen können."
 
 #: includes/class-h3-mgmt-profile.php:44
-#: includes/class-h3-mgmt-teams.php:1224
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1257
 msgctxt "Team Profile Form"
 msgid "Shirt Size"
 msgstr "T-Shirt Größe"
 
-#: includes/class-h3-mgmt-teams.php:1225
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1258
 msgctxt "Team Profile Form"
 msgid "Your T-Shirt size, important for the HitchPackage."
 msgstr "Deine T-Shirt Größe, wichtig für das Hitchpaket"
 
 #: includes/class-h3-mgmt-profile.php:50
-#: includes/class-h3-mgmt-teams.php:1231
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1264
 msgctxt "Team Profile Form"
 msgid "Please select your size..."
 msgstr "Bitte Shirtgröße wählen..."
 
-#: includes/class-h3-mgmt-teams.php:1452
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1485
 msgctxt "Team Dashboard"
 msgid "If you join this team, it will consist of you & "
 msgstr "Wenn du diesem Team beitrittst, besteht es aus dir & "
 
-#: includes/class-h3-mgmt-teams.php:1454
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1487
 msgctxt "Team Dashboard"
 msgid "The team currently consists of you yourself & "
 msgstr "Das Team besteht derzeit aus dir selbst & "
 
-#: includes/class-h3-mgmt-teams.php:1654
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1687
 msgctxt "Team Dashboard"
 msgid "You have successfully left the team..."
 msgstr "Du hast dem Team Adieu gesagt..."
 
-#: includes/class-h3-mgmt-teams.php:1787
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1820
 msgctxt "Team Dashboard"
 msgid "Required fields"
 msgstr "Erforderliche Angaben"
 
-#: includes/class-h3-mgmt-teams.php:1858
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1891
 msgctxt "Team Dashboard"
 msgid "Accept Invitation!"
 msgstr "Einladung annehmen!"
 
-#: includes/class-h3-mgmt-teams.php:1871
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1904
 msgctxt "Team Dashboard"
 msgid "Click to leave the team!"
 msgstr "Hier klicken, um das Team zu verlassen!"
 
-#: includes/class-h3-mgmt-teams.php:1873
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1906
 msgid "Really leave your team"
 msgstr "Team wirklich verlassen?"
 
-#: includes/class-h3-mgmt-teams.php:1875
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1908
 msgctxt "Team Dashboard"
 msgid "click here"
 msgstr "hier klicken"
 
-#: includes/class-h3-mgmt-teams.php:1879
+#: includes/class-h3-mgmt-teams.php:1912
 #, php-format
-#@ h3-mgmt
 msgctxt "Team Dashboard"
 msgid "To leave your team for good, %s"
 msgstr "Team für immer verlassen, %s"
 
-#: includes/class-h3-mgmt-teams.php:1956
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1989
 msgctxt "Team Dashboard (Registration)"
 msgid "Or join a team..."
 msgstr "Oder tritt einem Team bei..."
 
-#: includes/class-h3-mgmt-teams.php:1957
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1990
 msgctxt "Team Dashboard (Registration)"
 msgid "If someone else has already invited you via email to join his/her team, you have received an invitation code. Enter or paste it here."
 msgstr "Wenn dich bereits jemand in sein/ihr Team eingeladen hat, wirst du einen Einladungscode bekommen haben. Bitte füge diesen Code hier ein."
 
-#: includes/class-h3-mgmt-teams.php:2207
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2240
 msgctxt "User Panel"
 msgid "Register / Join Team"
 msgstr "Team anmelden / beitreten"
 
-#: includes/class-h3-mgmt-teams.php:2631
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2663
 msgctxt "Team Profile"
 msgid "See this team's complete profile"
 msgstr "Komplettes Teamprofil dieses Teams ansehen..."
 
-#: includes/class-h3-mgmt-teams.php:2755
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2751
 msgctxt "Team Dashboard"
 msgid "You have been identified as a spam bot. Screw you!"
 msgstr "Ha, Spambot! Abhaun!"
 
-#: includes/class-h3-mgmt-teams.php:2763
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2759
 msgctxt "Team Dashboard"
 msgid "The team could not be saved."
 msgstr "Das Team konnte nicht gespeichert werden."
 
-#: includes/class-h3-mgmt-teams.php:2763
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2759
 msgctxt "Team Dashboard"
 msgid "You have not filled out all required fields."
 msgstr "Du hast nicht alle erforderlichen Felder ausgefüllt."
 
-#: includes/class-h3-mgmt-teams.php:2855
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2851
 msgctxt "Team Dashboard"
 msgid "The team has been successfully registered."
 msgstr "Das Team wurde erfolgreich registriert."
 
-#: includes/class-h3-mgmt-teams.php:2908
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2904
 msgctxt "Team Dashboard"
 msgid "You have successfully joined the team"
 msgstr "Du bist dem Team erfolgreich beigetreten!"
 
-#: includes/class-h3-mgmt-teams.php:2921
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2917
 msgctxt "Team Dashboard"
 msgid "The team has been updated."
 msgstr "Das Team wurde aktualisiert."
 
-#: templates/class-h3-mgmt-admin-table.php:858
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:857
 msgid "Owner"
 msgstr "Owner"
 
-#: templates/class-h3-mgmt-admin-table.php:860
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:859
 msgid "Sponsor"
 msgstr "Sponsor"
 
-#: templates/class-h3-mgmt-admin-table.php:866
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:865
 msgid "Debit"
 msgstr "Einzugsermächtigung"
 
-#: templates/class-h3-mgmt-admin-table.php:880
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:879
 msgid "Yes."
 msgstr "Ja."
 
-#: templates/class-h3-mgmt-admin-table.php:882
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:881
 msgid "No!"
 msgstr "Nein!"
 
-#: templates/class-h3-mgmt-admin-table.php:760
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:759
 msgid "This sponsors payment has been received"
 msgstr "Die Spende dieses Sponsors ist eingetroffen."
 
-#: templates/class-h3-mgmt-admin-table.php:762
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:761
 msgid "Sponsor has paid!"
 msgstr "Der Sponsor hat bezahlt!"
 
-#: templates/class-h3-mgmt-admin-table.php:766
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:765
 msgid "Ooops, that was too quick. The sponsor's payment has actually not been received yet..."
 msgstr "Uuups, zu schnell! Der Sponsor hat doch noch nichts überwiesen..."
 
-#: templates/class-h3-mgmt-admin-table.php:768
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:767
 msgid "Really reset the Sponsors payment status to &quot;not paid&quot;?"
 msgstr "Sponsoring wirklich auf &quot;nicht bezahlt&quot; zurücksetzen?"
 
-#: templates/class-h3-mgmt-admin-table.php:779
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:778
 msgid "This sponsor should appear in the front end"
 msgstr "Dieser Sponsor sollte im Frontend auftauchen"
 
-#: templates/class-h3-mgmt-admin-table.php:781
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:780
 msgid "Show Sponsor!"
 msgstr "Sponsor zeigen!"
 
-#: templates/class-h3-mgmt-admin-table.php:785
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:784
 msgid "This sponsor should be hidden from the front end"
 msgstr "Dieser Sponsor sollte nicht im Frontend zu sehen sein"
 
-#: templates/class-h3-mgmt-admin-table.php:787
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:786
 msgid "Really hide the Sponsor from the front end"
 msgstr "Sponsor wirklich im Frontend verbergen"
 
-#: templates/class-h3-mgmt-admin-table.php:791
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:790
 msgid "Hide Sponsor..."
 msgstr "Sponsor verbergen..."
 
 #: admin/class-h3-mgmt-admin-emails.php:143
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Send an email"
 msgstr "E-Mail senden"
 
 #: admin/class-h3-mgmt-admin-emails.php:663
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "You can use the following placeholders (where they make sense):"
 msgstr "Du kannst die folgenden Platzhalter verwenden (dort, wo sie Sinn ergeben):"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:743
-#@ h3-mgmt
 msgctxt "Sponsoring, Backend"
 msgid "TeamSponsors &amp; TeamOwners"
 msgstr "TeamSponsoren &amp; TeamOwner"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:755
-#@ h3-mgmt
 msgctxt "Sponsoring, Backend"
 msgid "TeamSponsors &amp; TeamOwners, Donation Method: Debit"
 msgstr "TeamSponsoren &amp; TeamOwner, Spendenmethode: Einzugsermächtigung"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:749
-#@ h3-mgmt
 msgctxt "Sponsoring Backend"
 msgid "TeamSponsors &amp; TeamOwners, Donation Method: PayPal"
 msgstr "TeamSponsoren &amp; TeamOwner, Spendenmethode: PayPal"
 
-#: includes/class-h3-mgmt-sponsors.php:368
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:374
 msgctxt "Team Profile"
 msgid "No Owner yet."
 msgstr "Das Team hat bislang keinen TeamOwner."
 
-#: includes/class-h3-mgmt-sponsors.php:345
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:351
 msgctxt "Team Profile"
 msgid "Visit the TeamOwner's website"
 msgstr "Zur Website des TeamOwners"
 
-#: includes/class-h3-mgmt-sponsors.php:538
-#: includes/class-h3-mgmt-sponsors.php:1264
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:544
+#: includes/class-h3-mgmt-sponsors.php:1270
 msgctxt "Sponsoring Form"
 msgid "Sponsoring Steps"
 msgstr "So funktioniert's"
 
-#: includes/class-h3-mgmt-sponsors.php:1507
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1513
 msgctxt "Sponsoring Form"
 msgid "Thanks!"
 msgstr "Dankeschön!"
 
-#: includes/class-h3-mgmt-sponsors.php:1458
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1464
 msgctxt "Sponsoring Form"
 msgid "RacePatron"
 msgstr "RennPate"
 
-#: includes/class-h3-mgmt-sponsors.php:1459
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1465
 msgctxt "Sponsoring Form"
 msgid "Structural Sponsor"
 msgstr "StrukturSponsor"
 
-#: includes/class-h3-mgmt-sponsors.php:1583
-#: includes/class-h3-mgmt-sponsors.php:1593
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1589
+#: includes/class-h3-mgmt-sponsors.php:1599
 msgctxt "Sponsoring Form"
 msgid "Choose Team"
 msgstr "Wähle ein Team:"
 
-#: includes/class-h3-mgmt-sponsors.php:1630
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1636
 msgctxt "Sponsoring Form"
 msgid "Choose how your Name should be displayed on the website (and in the Team Profile, if applicable). If you do not want your name to show at all, simply leave this field blank."
 msgstr "Wie soll dein Name auf der Website im Profil deines Teams angezeigt werden? Wenn du anonym bleiben möchtest, kannst du das Feld auch einfach leer lassen."
 
-#: includes/class-h3-mgmt-sponsors.php:1824
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1830
 msgctxt "Sponsoring Form"
 msgid "Become a TeamSponsor"
 msgstr "TeamSponsor werden"
 
-#: includes/class-h3-mgmt-sponsors.php:1832
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1838
 msgctxt "Sponsoring Form"
 msgid "Become a TeamOwner"
 msgstr "TeamOwner werden"
 
-#: includes/class-h3-mgmt-sponsors.php:1896
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1902
 msgctxt "Sponsoring Form"
 msgid "If you are not from Germany or would rather use PayPal, choose this method."
 msgstr "Wenn du nicht aus Deutschland kommst oder PayPal bevorzugst, wähle diese Option."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1017
-#: includes/class-h3-mgmt-sponsors.php:1941
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1947
 msgctxt "Sponsoring Form"
 msgid "Donation (in Euro)"
 msgstr "Spende (in Euro)"
 
-#: includes/class-h3-mgmt-teams.php:2400
-#: includes/class-h3-mgmt-teams.php:2558
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2433
+#: includes/class-h3-mgmt-teams.php:2591
 msgctxt "Team Profile"
 msgid "Team Owner"
 msgstr "Team Owner"
 
-#: includes/class-h3-mgmt-teams.php:2432
-#: includes/class-h3-mgmt-teams.php:2565
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2465
+#: includes/class-h3-mgmt-teams.php:2598
 msgctxt "Team Profile"
 msgid "Team Sponsors"
 msgstr "Team Sponsoren"
 
-#: includes/class-h3-mgmt-teams.php:2440
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2473
 msgctxt "Team Profile"
 msgid "Anonymous Sponsor(s)"
 msgstr "Anonyme(r) Spende(r)"
 
-#: includes/class-h3-mgmt-teams.php:2452
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2485
 msgctxt "Team Profile"
 msgid "Become this team's TeamSponsor!"
 msgstr "Werde Sponsor dieses Teams!"
 
-#: includes/class-h3-mgmt-xchange.php:84
-#@ h3-mgmt
+#: includes/class-h3-mgmt-xchange.php:122
 msgctxt "XChange"
 msgid "HitchMate XChange"
 msgstr "Hitchmate Börse"
 
-#: includes/class-h3-mgmt-xchange.php:92
-#@ h3-mgmt
+#: includes/class-h3-mgmt-xchange.php:129
 msgctxt "XChange"
 msgid "Message by"
 msgstr "Nachricht von:"
 
-#: includes/class-h3-mgmt-xchange.php:102
-#@ h3-mgmt
+#: includes/class-h3-mgmt-xchange.php:139
 msgctxt "XChange"
 msgid "Your own message"
 msgstr "Deine Nachricht"
 
-#: includes/class-h3-mgmt-xchange.php:105
-#@ h3-mgmt
+#: includes/class-h3-mgmt-xchange.php:142
 msgctxt "XChange"
 msgid "If you want to post a HitchMate search message yourself, you can do so here. To delete an existing message, simply empty the text field and submit an empty message - your existing one will be deleted."
 msgstr "Wenn du selber auf der Suche nach einem Hitchmate bist, kannst du es hier kundtun! Um deine bestehende Nachricht zu löschen lass das Textfeld einfach leer und schicke eine leere Nachricht ab - sie wird dann automatisch gelöscht."
 
-#: includes/class-h3-mgmt-xchange.php:106
-#@ h3-mgmt
+#: includes/class-h3-mgmt-xchange.php:143
 msgctxt "XChange"
 msgid "Please do not forget to include some sort of contact information in your message."
 msgstr "Und vergiss nicht irgendeine Kontaktmöglichkeit zu hinterlassen (Mailadresse, Facebook, whatever)"
 
-#: includes/class-h3-mgmt-xchange.php:125
-#@ h3-mgmt
+#: includes/class-h3-mgmt-xchange.php:162
 msgctxt "XChange"
 msgid "Submit / Update own message"
 msgstr "Nachricht abschicken"
 
 #: admin/class-h3-mgmt-admin-teams.php:859
-#@ h3-mgmt
 msgid "Save Team"
 msgstr "Team Speichern"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:913
-#@ h3-mgmt
 msgid "Add New Sponsor"
 msgstr "Neuen Sponsor Hinzufügen"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1218
-#@ h3-mgmt
 msgid "Save Sponsor"
 msgstr "Sponsor Speichern"
 
-#: includes/class-h3-mgmt-sponsors.php:1663
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1669
 msgctxt "Sponsoring Form"
 msgid "Debit confirmation"
 msgstr "Einzugsermächtigung erteilen"
 
-#: includes/class-h3-mgmt-sponsors.php:1683
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1689
 msgctxt "Sponsoring Form"
 msgid "Receipt"
 msgstr "Quittung"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1087
-#: includes/class-h3-mgmt-sponsors.php:1698
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1704
 msgctxt "Sponsoring Form"
 msgid "Street Address"
 msgstr "Straße"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1092
-#: includes/class-h3-mgmt-sponsors.php:1704
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1710
 msgctxt "Sponsoring Form"
 msgid "Zip Code"
 msgstr "Postleitzahl"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1097
-#: includes/class-h3-mgmt-sponsors.php:1710
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1716
 msgctxt "Sponsoring Form"
 msgid "City"
 msgstr "Stadt"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1102
-#: includes/class-h3-mgmt-sponsors.php:1716
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1722
 msgctxt "Sponsoring Form"
 msgid "Country"
 msgstr "Land"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1107
-#: includes/class-h3-mgmt-sponsors.php:1722
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1728
 msgctxt "Sponsoring Form"
 msgid "Additional Adress Field"
 msgstr "zusätzliches Addressfeld"
 
-#: includes/class-h3-mgmt-teams.php:2118
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2151
 msgctxt "Homework"
 msgid "Send the mail to yourself again."
 msgstr "Mir die Nachricht erneut schicken"
 
-#: includes/class-h3-mgmt-teams.php:2119
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2152
 msgctxt "Homework"
 msgid "Resend Mail."
 msgstr "Nochmal verschicken."
 
 #: admin/class-h3-mgmt-admin-teams.php:898
-#@ h3-mgmt
 msgid "Email"
 msgstr "Email"
 
 #: admin/class-h3-mgmt-admin-teams.php:903
-#@ h3-mgmt
 msgid "City"
 msgstr "Stadt"
 
-#: includes/class-h3-mgmt-races.php:882
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:876
 msgid "Rankings can only be submitted from a specific route user account!"
 msgstr "Wertungen können nur von speziellen Routen-Beutzerkonten abgegeben weden!"
 
-#: includes/class-h3-mgmt-races.php:851
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:845
 msgctxt "Ranking Submission"
 msgid "Select Stage"
 msgstr "Etappe wählen"
 
-#: includes/class-h3-mgmt-races.php:932
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:926
 msgid "1st"
 msgstr "1."
 
-#: includes/class-h3-mgmt-races.php:936
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:930
 msgid "2nd"
 msgstr "2."
 
-#: includes/class-h3-mgmt-races.php:940
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:934
 msgid "3rd"
 msgstr "3."
 
-#: includes/class-h3-mgmt-races.php:944
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:938
 msgid "4th"
 msgstr "4."
 
-#: includes/class-h3-mgmt-races.php:948
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:942
 msgid "5th"
 msgstr "5."
 
-#: includes/class-h3-mgmt-races.php:952
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:946
 msgid "6th"
 msgstr "6."
 
-#: includes/class-h3-mgmt-races.php:956
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:950
 msgid "7th"
 msgstr "7."
 
-#: includes/class-h3-mgmt-races.php:960
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:954
 msgid "8th"
 msgstr "8."
 
-#: includes/class-h3-mgmt-races.php:964
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:958
 msgid "9th"
 msgstr "9."
 
-#: includes/class-h3-mgmt-races.php:968
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:962
 msgid "10th"
 msgstr "10."
 
-#: includes/class-h3-mgmt-races.php:972
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:966
 msgid "11th"
 msgstr "11."
 
-#: includes/class-h3-mgmt-races.php:976
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:970
 msgid "12th"
 msgstr "12."
 
-#: includes/class-h3-mgmt-races.php:980
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:974
 msgid "disqualified"
 msgstr "disqualifiziert"
 
-#: includes/class-h3-mgmt-races.php:987
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:981
 msgid "Rank"
 msgstr "Platzierung"
 
-#: includes/class-h3-mgmt-races.php:1053
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1047
 msgctxt "Ranking Submission"
 msgid "Save Ranking"
 msgstr "Platzierungen speichern"
 
-#: includes/class-h3-mgmt-races.php:1071
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1065
 msgctxt "Ranking Submission"
 msgid "Ranking successfully saved!"
 msgstr "Platzierungen erfolgreich gespeichert!"
 
-#: includes/class-h3-mgmt-races.php:1224
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1218
 msgctxt "Ranking"
 msgid "All Routes"
 msgstr "Alle Routen"
 
-#: includes/class-h3-mgmt-races.php:1232
+#: includes/class-h3-mgmt-races.php:1226
 #, php-format
-#@ h3-mgmt
 msgctxt "Ranking"
 msgid "Ranking Table: %route_name%"
 msgstr "Tabelle: %route_name%"
 
-#: includes/class-h3-mgmt-races.php:1253
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1247
 msgctxt "Ranking"
 msgid "Team"
 msgstr "Team"
 
-#: includes/class-h3-mgmt-races.php:1256
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1250
 msgctxt "Ranking"
 msgid "Total Points"
 msgstr "Punkte Gesamt"
 
-#: includes/class-h3-mgmt-races.php:1258
-#: includes/class-h3-mgmt-races.php:1259
-#: includes/class-h3-mgmt-races.php:1260
-#: includes/class-h3-mgmt-races.php:1261
-#: includes/class-h3-mgmt-races.php:1262
-#: includes/class-h3-mgmt-races.php:1263
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1252
+#: includes/class-h3-mgmt-races.php:1253
+#: includes/class-h3-mgmt-races.php:1254
+#: includes/class-h3-mgmt-races.php:1255
+#: includes/class-h3-mgmt-races.php:1256
+#: includes/class-h3-mgmt-races.php:1257
 msgctxt "Ranking"
 msgid "Stage"
 msgstr "Etappe"
 
-#: includes/class-h3-mgmt-sponsors.php:2609
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2617
 msgctxt "Sponsoring"
 msgid "Anonymous Sponsor"
 msgstr "Anonymer Sponsor"
 
-#: includes/class-h3-mgmt-sponsors.php:2616
-#: includes/class-h3-mgmt-teams.php:2569
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2629
+#: includes/class-h3-mgmt-teams.php:2602
 msgctxt "Team"
 msgid "Check the TeamProfile ..."
 msgstr "Check das TeamProfil..."
 
-#: includes/class-h3-mgmt-teams.php:2562
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2595
 msgctxt "Team Profile, TeamOwner"
 msgid "none"
 msgstr "none"
 
-#: includes/class-h3-mgmt-teams.php:2685
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2715
 msgid "Jump to TeamProfile"
 msgstr "Springe zum Teamprofil"
 
-#: includes/class-h3-mgmt-teams.php:2693
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2723
 msgid "Select team ..."
 msgstr "Wähle team ..."
 
-#: includes/class-h3-mgmt-teams.php:2700
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2730
 msgid "Jump"
 msgstr "Auf gehts"
 
-#: includes/class-h3-mgmt-ticker.php:717
-#: includes/class-h3-mgmt-ticker.php:818
-#: includes/class-h3-mgmt-ticker.php:1046
-#: includes/class-h3-mgmt-ticker.php:1245
-#@ h3-mgmt
+#: includes/class-h3-mgmt-ticker.php:743
+#: includes/class-h3-mgmt-ticker.php:843
+#: includes/class-h3-mgmt-ticker.php:1091
+#: includes/class-h3-mgmt-ticker.php:1295
 msgid "To the team's profile"
 msgstr "zum TeamProfil"
 
 #: templates/frontend-ticker.php:19
 #: templates/frontend-ticker.php:148
 #, php-format
-#@ h3-mgmt
 msgctxt "Ticker"
 msgid "%time% minutes ago"
 msgstr "vor %time% Minuten"
@@ -1696,7 +1422,6 @@ msgstr "vor %time% Minuten"
 #: templates/frontend-ticker.php:21
 #: templates/frontend-ticker.php:150
 #, php-format
-#@ h3-mgmt
 msgctxt "Ticker"
 msgid "%time% hours ago"
 msgstr "vor %time% Stunden"
@@ -1704,56 +1429,47 @@ msgstr "vor %time% Stunden"
 #: templates/frontend-ticker.php:23
 #: templates/frontend-ticker.php:152
 #, php-format
-#@ h3-mgmt
 msgctxt "Ticker"
 msgid "%time% days ago"
 msgstr "vor %time% Tagen"
 
-#: includes/class-h3-mgmt-races.php:1254
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1248
 msgctxt "Ranking"
 msgid "Total Rank"
 msgstr "Gesamt-Platzierung"
 
-#: includes/class-h3-mgmt-races.php:1255
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1249
 msgctxt "Ranking"
 msgid "Route Rank"
 msgstr "Routen-Platzierung"
 
-#: includes/class-h3-mgmt-ticker.php:1176
-#: includes/class-h3-mgmt-ticker.php:1351
-#@ h3-mgmt
+#: includes/class-h3-mgmt-ticker.php:1223
+#: includes/class-h3-mgmt-ticker.php:1403
 msgid "No messages sent yet..."
 msgstr "Noch keine Ticker-Nachrichten..."
 
 #: admin/class-h3-mgmt-admin-emails.php:99
 #: admin/class-h3-mgmt-admin-emails.php:122
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "E-Mail Metadata"
 msgstr "E-Mail Meta-Daten"
 
 #: admin/class-h3-mgmt-admin-emails.php:128
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "The email&apos;s subject line"
 msgstr "Der Betreff der E-Mail"
 
 #: admin/class-h3-mgmt-admin-emails.php:158
-#@ h3-mgmt
 msgid "Send E-Mail!"
 msgstr "E-Mail schicken!"
 
 #: admin/class-h3-mgmt-admin-emails.php:668
 #: admin/class-h3-mgmt-admin-sponsors.php:1175
-#@ h3-mgmt
 msgid "English"
 msgstr "Englisch"
 
 #: admin/class-h3-mgmt-admin-emails.php:673
 #: admin/class-h3-mgmt-admin-sponsors.php:1179
-#@ h3-mgmt
 msgid "German"
 msgstr "Deutsch"
 
@@ -1762,39 +1478,32 @@ msgstr "Deutsch"
 #: admin/class-h3-mgmt-admin.php:29
 #: admin/class-h3-mgmt-admin.php:38
 #: admin/class-h3-mgmt-admin.php:39
-#@ h3-mgmt
 msgid "Events / Races"
 msgstr "Events / Rennen"
 
 #: admin/class-h3-mgmt-admin-races.php:764
-#@ h3-mgmt
 msgid "Event"
 msgstr "Event"
 
 #: admin/class-h3-mgmt-admin-races.php:812
-#@ h3-mgmt
 msgid "Event ID"
 msgstr "Event ID"
 
 #: admin/class-h3-mgmt-admin-races.php:817
 #: admin/class-h3-mgmt-admin-races.php:1500
-#@ h3-mgmt
 msgid "Start"
 msgstr "Beginn"
 
 #: admin/class-h3-mgmt-admin-races.php:823
 #: admin/class-h3-mgmt-admin-races.php:1506
-#@ h3-mgmt
 msgid "End"
 msgstr "Ende"
 
 #: admin/class-h3-mgmt-admin-races.php:871
-#@ h3-mgmt
 msgid "add route"
 msgstr "Route hinzufügen"
 
 #: admin/class-h3-mgmt-admin-races.php:895
-#@ h3-mgmt
 msgid "Route ID"
 msgstr "Routen ID"
 
@@ -1805,126 +1514,103 @@ msgstr "Routen ID"
 #: admin/class-h3-mgmt-admin-teams.php:661
 #: admin/class-h3-mgmt-admin-teams.php:685
 #: includes/class-h3-mgmt-utilities.php:81
-#@ h3-mgmt
 msgid "Race"
 msgstr "Rennen"
 
 #: admin/class-h3-mgmt-admin-races.php:984
-#@ h3-mgmt
 msgid "add stage"
 msgstr "Etappe hinzufügen"
 
 #: admin/class-h3-mgmt-admin-races.php:1098
 #, php-format
-#@ h3-mgmt
 msgid "Add New %s"
 msgstr "%s hinzufügen"
 
 #: admin/class-h3-mgmt-admin-races.php:1102
 #, php-format
-#@ h3-mgmt
 msgid "Edit &quot;%s&quot;"
 msgstr "&quot;%s&quot; editieren"
 
 #: admin/class-h3-mgmt-admin-races.php:1165
-#@ h3-mgmt
 msgid "The name or title of the event"
 msgstr "Der Name oder Titel des Events"
 
 #: admin/class-h3-mgmt-admin-races.php:1496
-#@ h3-mgmt
 msgid "Timeframe"
 msgstr "Zeitraum"
 
 #: admin/class-h3-mgmt-admin-races.php:1502
-#@ h3-mgmt
 msgid "The start date of the event"
 msgstr "Das Datum des Beginns"
 
 #: admin/class-h3-mgmt-admin-races.php:1508
-#@ h3-mgmt
 msgid "The end date of the event (usually 2 days after arrival @ the destination)"
 msgstr "Das Datum des Ende des Events (oftmals 2 Tage nach erreichen des Zielorts)"
 
 #: admin/class-h3-mgmt-admin-races.php:2094
-#@ h3-mgmt
 msgid "The Route"
 msgstr "Die Route"
 
 #: admin/class-h3-mgmt-admin-races.php:2111
 #: admin/class-h3-mgmt-admin-races.php:2211
-#@ h3-mgmt
 msgid "Context"
 msgstr "Kontext"
 
 #: admin/class-h3-mgmt-admin-races.php:2117
 #: admin/class-h3-mgmt-admin-statistics.php:298
-#@ h3-mgmt
 msgid "The event this route belongs to"
 msgstr "Das Event oder Renen zu welchem die Route gehört"
 
 #: admin/class-h3-mgmt-admin-races.php:2123
-#@ h3-mgmt
 msgid "Design"
 msgstr "Design"
 
 #: admin/class-h3-mgmt-admin-races.php:2176
-#@ h3-mgmt
 msgid "The Stage"
 msgstr "Die Etappe"
 
 #: admin/class-h3-mgmt-admin-races.php:2180
-#@ h3-mgmt
 msgid "Destination"
 msgstr "Ziel"
 
 #: admin/class-h3-mgmt-admin-races.php:2194
-#@ h3-mgmt
 msgid "The destination city&apos;s country"
 msgstr "Das Land, in welchem das Ziel liegt"
 
 #: admin/class-h3-mgmt-admin-races.php:2198
-#@ h3-mgmt
 msgid "Country Code"
 msgstr "Länder-Code"
 
 #: admin/class-h3-mgmt-admin-races.php:2200
-#@ h3-mgmt
 msgid "The destination city&apos;s countries 2-letter country code (as defined by <a target=\"_blank\" title=\"Read the standard\" href=\"http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2\">ISO 3166-1-alpha-2</a>)"
 msgstr "Der 2-buchstabige Länder-Code (nach <a target=\"_blank\" title=\"Der Standard\" href=\"http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2\">ISO 3166-1-alpha-2</a>)"
 
 #: admin/class-h3-mgmt-admin-races.php:2217
-#@ h3-mgmt
 msgid "The route this stage belongs to"
 msgstr "Die Route, zu welcher diese Etappe gehört"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:844
 #: admin/class-h3-mgmt-admin.php:91
-#@ h3-mgmt
 msgid "Donors"
 msgstr "Spender"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:965
 #: admin/class-h3-mgmt-admin-sponsors.php:970
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Type"
 msgstr "Typ"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:990
-#@ h3-mgmt
 msgid "Race / Event"
 msgstr "Rennen / Event"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1027
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Method"
 msgstr "Methode"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1067
 #: admin/class-h3-mgmt-admin-sponsors.php:1071
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Donation Receipt"
 msgstr "Spendenquittung"
@@ -1932,57 +1618,48 @@ msgstr "Spendenquittung"
 #: admin/class-h3-mgmt-admin-sponsors.php:1077
 #: admin/class-h3-mgmt-admin-sponsors.php:1143
 #: admin/class-h3-mgmt-admin-sponsors.php:1159
-#: includes/class-h3-mgmt-sponsors.php:1692
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1698
 msgid "No"
 msgstr "Nein"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1081
 #: admin/class-h3-mgmt-admin-sponsors.php:1147
 #: admin/class-h3-mgmt-admin-sponsors.php:1163
-#: includes/class-h3-mgmt-sponsors.php:1688
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1694
 msgid "Yes"
 msgstr "Ja"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1129
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Picture / Photo / Logo"
 msgstr "Bild / Photo / Logo"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1139
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Has paid"
 msgstr "Hat gezahlt"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1150
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Set whether the donor&apos;s donation has been received."
 msgstr "Stelle ein, ob die Spende eingegangen ist."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1155
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Show in frontend"
 msgstr "Im Frontend anzeigen"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1166
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Set whether the donor should be shown to the public in the &quot;Donor&apos;s Overview&quot; page, as well as the relevant team&apos;s profile."
 msgstr "Stelle ein, ob der/die Spender_in der Öffentlichkeit auf der &quot;Spender Übersicht&quot; Seite und dem jeweiligen TeamProfil genannt werden soll."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1171
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Preferred Language"
 msgstr "Bevorzugte Sprache"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1182
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "The language the donor should receive E-Mails in. Automatically set when submitted from the frontend, depending on the language the website is viewed in."
 msgstr "Die Sprache, in welcher der Spender E-Mails erhalten sollte. When vom Frontend aus eingegeben, wird dieses automatisch, je nach Sprache in der der Spender die Webseite besucht, eingestellt."
@@ -1995,377 +1672,313 @@ msgstr "Die Sprache, in welcher der Spender E-Mails erhalten sollte. When vom Fr
 #: admin/class-h3-mgmt-admin-teams.php:531
 #: admin/class-h3-mgmt-admin-teams.php:667
 #: admin/class-h3-mgmt-admin-teams.php:928
-#@ h3-mgmt
 msgid "Event / Race"
 msgstr "Event / Rennen"
 
 #: admin/class-h3-mgmt-admin-teams.php:908
-#@ h3-mgmt
 msgid "Phone"
 msgstr "Telefon"
 
 #: admin/class-h3-mgmt-admin.php:125
-#@ h3-mgmt
 msgid "All Donors"
 msgstr "Alle Spender"
 
-#: h3-management.php:133
-#@ h3-mgmt
+#: h3-management.php:152
 msgctxt "Months"
 msgid "January"
 msgstr "Januar"
 
-#: h3-management.php:134
-#@ h3-mgmt
+#: h3-management.php:153
 msgctxt "Months"
 msgid "February"
 msgstr "Februar"
 
-#: h3-management.php:135
-#@ h3-mgmt
+#: h3-management.php:154
 msgctxt "Months"
 msgid "March"
 msgstr "März"
 
-#: h3-management.php:136
-#@ h3-mgmt
+#: h3-management.php:155
 msgctxt "Months"
 msgid "April"
 msgstr "April"
 
-#: h3-management.php:137
-#@ h3-mgmt
+#: h3-management.php:156
 msgctxt "Months"
 msgid "May"
 msgstr "Mai"
 
-#: h3-management.php:138
-#@ h3-mgmt
+#: h3-management.php:157
 msgctxt "Months"
 msgid "June"
 msgstr "Juni"
 
-#: h3-management.php:139
-#@ h3-mgmt
+#: h3-management.php:158
 msgctxt "Months"
 msgid "July"
 msgstr "Juli"
 
-#: h3-management.php:140
-#@ h3-mgmt
+#: h3-management.php:159
 msgctxt "Months"
 msgid "August"
 msgstr "August"
 
-#: h3-management.php:141
-#@ h3-mgmt
+#: h3-management.php:160
 msgctxt "Months"
 msgid "September"
 msgstr "September"
 
-#: h3-management.php:142
-#@ h3-mgmt
+#: h3-management.php:161
 msgctxt "Months"
 msgid "October"
 msgstr "October"
 
-#: h3-management.php:143
-#@ h3-mgmt
+#: h3-management.php:162
 msgctxt "Months"
 msgid "November"
 msgstr "November"
 
-#: h3-management.php:144
-#@ h3-mgmt
+#: h3-management.php:163
 msgctxt "Months"
 msgid "December"
 msgstr "Dezember"
 
-#: h3-management.php:147
-#@ h3-mgmt
+#: h3-management.php:166
 msgctxt "Weekdays, Shortform"
 msgid "Sun"
 msgstr "So"
 
-#: h3-management.php:148
-#@ h3-mgmt
+#: h3-management.php:167
 msgctxt "Weekdays, Shortform"
 msgid "Mon"
 msgstr "Mo"
 
-#: h3-management.php:149
-#@ h3-mgmt
+#: h3-management.php:168
 msgctxt "Weekdays, Shortform"
 msgid "Tue"
 msgstr "Di"
 
-#: h3-management.php:150
-#@ h3-mgmt
+#: h3-management.php:169
 msgctxt "Weekdays, Shortform"
 msgid "Wed"
 msgstr "Mi"
 
-#: h3-management.php:151
-#@ h3-mgmt
+#: h3-management.php:170
 msgctxt "Weekdays, Shortform"
 msgid "Thu"
 msgstr "Do"
 
-#: h3-management.php:152
-#@ h3-mgmt
+#: h3-management.php:171
 msgctxt "Weekdays, Shortform"
 msgid "Fri"
 msgstr "Fr"
 
-#: h3-management.php:153
-#@ h3-mgmt
+#: h3-management.php:172
 msgctxt "Weekdays, Shortform"
 msgid "Sat"
 msgstr "Sa"
 
-#: h3-management.php:158
+#: h3-management.php:177
 #: templates/class-h3-mgmt-admin-form.php:375
-#@ h3-mgmt
 msgid "Deselect all"
 msgstr "Alle deaktivieren"
 
-#: h3-management.php:159
-#@ h3-mgmt
+#: h3-management.php:178
 msgid "Select all"
 msgstr "Alle auswählen"
 
 #: includes/class-h3-mgmt-profile.php:39
-#@ h3-mgmt
 msgctxt "User Profile"
 msgid "Date of Birth"
 msgstr "Geburtsdatum"
 
 #: includes/class-h3-mgmt-races.php:216
 #, php-format
-#@ h3-mgmt
 msgid "The selected %s does not exist..."
 msgstr "%s existiert nicht..."
 
-#: includes/class-h3-mgmt-races.php:543
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:540
 msgid "Please create a parent item first!"
 msgstr "Bitte erstelle erst das Elternteil!"
 
-#: includes/class-h3-mgmt-races.php:643
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:638
 msgctxt "Race Stats"
 msgid "Donations (Thumbs)"
 msgstr "Spenden"
 
-#: includes/class-h3-mgmt-sponsors.php:387
-#: includes/class-h3-mgmt-sponsors.php:389
-#: includes/class-h3-mgmt-teams.php:2406
-#: includes/class-h3-mgmt-teams.php:2421
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:393
+#: includes/class-h3-mgmt-sponsors.php:395
+#: includes/class-h3-mgmt-teams.php:2439
+#: includes/class-h3-mgmt-teams.php:2454
 msgctxt "Team Profile"
 msgid "Visit the TeamOwner&apos;s website"
 msgstr "Besuche die Webseite des TeamOwners"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1012
-#: includes/class-h3-mgmt-sponsors.php:813
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:819
 msgctxt "Sponsoring Form"
 msgid "Donation"
 msgstr "Spende"
 
-#: includes/class-h3-mgmt-sponsors.php:1472
-#: includes/class-h3-mgmt-sponsors.php:1483
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1478
+#: includes/class-h3-mgmt-sponsors.php:1489
 msgctxt "Sponsoring Form"
 msgid "The donation will be deducted from your bank account within a month."
 msgstr "Die Spende wird innerhalb eines Monates von deinem Konto eingezogen werden."
 
-#: includes/class-h3-mgmt-sponsors.php:1474
-#: includes/class-h3-mgmt-sponsors.php:1477
-#: includes/class-h3-mgmt-sponsors.php:1485
-#: includes/class-h3-mgmt-sponsors.php:1488
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1480
+#: includes/class-h3-mgmt-sponsors.php:1483
+#: includes/class-h3-mgmt-sponsors.php:1491
+#: includes/class-h3-mgmt-sponsors.php:1494
 msgctxt "Sponsoring Form"
 msgid "Thanks in the name of the team, on behalf of Tramprennen and on behalf of Viva con Agua and the people in India and Nepal!"
 msgstr "Danke im Namen des gesponsorten Teams, im Namen des Tramprennens, in dem von Viva con Agua und nicht zu letzt im Namen der Menschen in Indien und Nepal!"
 
-#: includes/class-h3-mgmt-sponsors.php:1527
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1533
 msgctxt "Sponsoring Form"
 msgid "Donations can be submitted either via PayPal or via direct debit from a German bank account."
 msgstr "Spenden können entweder wieder PayPal oder via Lastschrift von einem deutschen Bankkonto getätigt werden."
 
-#: includes/class-h3-mgmt-sponsors.php:1586
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1592
 msgctxt "Sponsoring Form"
 msgid "Either no teams have completed the registration yet or all that have have a TeamOwner already..."
 msgstr "Entweder es haben noch keine Teams den Anmeldungsprozess vervollständigt, oder alle die es getan haben haben bereits TeamOwner..."
 
-#: includes/class-h3-mgmt-sponsors.php:1586
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1592
 msgctxt "Sponsoring Form"
 msgid "So far no teams have completed the registration yet..."
 msgstr "Es haben noch keine Teams den Anmeldungsprozess vervollständigt..."
 
-#: includes/class-h3-mgmt-sponsors.php:1666
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1672
 msgctxt "Sponsoring Form"
 msgid "By checking this box you confirm that Viva con Agua e.V. may debit the above sum from your above bank account. Thank you!"
 msgstr "Bitte bestätige, dass Viva con Agua de Sankt Pauli e.V. die obige Summe von deinem Bankkonto einziehen darf, in dem du hier das Häkchen setzt. Danke!"
 
-#: includes/class-h3-mgmt-sponsors.php:1745
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1751
 msgctxt "Sponsoring Form"
 msgid "This picture/logo will appear in the sponsored team profile. You may upload .jpg, .gif or .png files."
 msgstr "Dieses Bild/Logo wird im TeamProfil des gesponsorten Teams zu sehen sein. Du kannst .jpg, .png oder .gif Dateien hochladen."
 
-#: includes/class-h3-mgmt-sponsors.php:1768
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1774
 msgctxt "Sponsoring Form"
 msgid "Leave your team a note, if you&apos;d like"
 msgstr "Hinterlasse deinem Team eine Nachricht, wenn du möchtest"
 
-#: includes/class-h3-mgmt-sponsors.php:1775
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1781
 msgctxt "Sponsoring Form"
 msgid "Leave the HitchHikingHub-Crew a note, if you$apos;d like"
 msgstr "Hinterlasse dem HichHiking-Hub-Team eine Nachricht, wenn du möchtest"
 
-#: includes/class-h3-mgmt-sponsors.php:1889
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1895
 msgctxt "Sponsoring Form"
 msgid "If you have a German bank account, you can submit your donation via direct debit. The donation will be charged by Viva con Agua e.V. directly and that within a month from now."
 msgstr "Wenn du ein deutsches Bankkonto hast, kannst du deine Spende via Lastschriftverfahren einziehen lassen. Die Spende wird dann von Viva con Agua e.V. innerhalb des folgenden Monats eingezogen."
 
-#: includes/class-h3-mgmt-sponsors.php:1966
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1972
 msgctxt "Sponsoring Form"
 msgid "Thumbs"
 msgstr "Daumen"
 
-#: includes/class-h3-mgmt-teams.php:374
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:388
 msgid "not set..."
 msgstr "nicht gewählt..."
 
-#: includes/class-h3-mgmt-teams.php:1036
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1069
 msgctxt "Team Profile Form"
 msgid "The name of your team (maximum 50 characters)"
 msgstr "Der Name deines Team (maximal 50 Zeichen)"
 
-#: includes/class-h3-mgmt-teams.php:1136
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1169
 msgid "The Team"
 msgstr "Das Team"
 
-#: includes/class-h3-mgmt-teams.php:1195
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1228
 msgctxt "Team Profile Form"
 msgid "What is your name?"
 msgstr "Wie heisst du?"
 
-#: includes/class-h3-mgmt-teams.php:1212
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1245
 msgctxt "Team Profile Form"
 msgid "Date of Birth"
 msgstr "Geburtsdatum"
 
-#: includes/class-h3-mgmt-teams.php:2126
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2159
 msgctxt "Homework"
 msgid "Your Team is fully registered!"
 msgstr "Dein Team ist vollständigt angemeldet!"
 
-#: includes/class-h3-mgmt-teams.php:2160
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2193
 msgctxt "Homework"
 msgid "Your team has not yet completed the registration process..."
 msgstr "Dein Team hat den Anmeldungsprozess noch nicht vollständig beendet..."
 
-#: includes/class-h3-mgmt-teams.php:2203
+#: includes/class-h3-mgmt-teams.php:2236
 #, php-format
-#@ h3-mgmt
 msgctxt "User Panel"
 msgid "Register or join a team for %s"
 msgstr "Tritt einem Team bei oder melde ein neues Team für %s"
 
 #: includes/class-h3-mgmt-utilities.php:164
-#@ h3-mgmt
 msgid "not set"
 msgstr "nicht gewählt"
 
 #: templates/class-h3-mgmt-admin-form.php:49
-#@ h3-mgmt
 msgid "Save"
 msgstr "Speichern"
 
 #: templates/class-h3-mgmt-admin-form.php:83
-#@ h3-mgmt
 msgid "Back to where you came from..."
 msgstr "Zurück, wo du herkamst..."
 
 #: templates/class-h3-mgmt-admin-form.php:84
-#@ h3-mgmt
 msgid "back"
 msgstr "zurück"
 
 #: templates/class-h3-mgmt-admin-form.php:370
-#@ h3-mgmt
 msgid "There is no data to select..."
 msgstr "Es gibt keine Daten zum auswählen..."
 
 #: templates/class-h3-mgmt-admin-table.php:75
-#@ h3-mgmt
 msgid "&laquo; Previous"
 msgstr "&laquo; Zurück"
 
 #: templates/class-h3-mgmt-admin-table.php:76
-#@ h3-mgmt
 msgid "Next &raquo;"
 msgstr "Vor &raquo;"
 
 #: templates/class-h3-mgmt-admin-table.php:77
-#@ h3-mgmt
 msgid "Execute"
 msgstr "Ausführen"
 
-#: templates/class-h3-mgmt-admin-table.php:251
+#: templates/class-h3-mgmt-admin-table.php:250
 #, php-format
-#@ h3-mgmt
 msgid "Currently there is no data of type &quot;%s&quot;..."
 msgstr "Im Moment gibt es keine Daten des Typs &quot;%s&quot;..."
 
-#: templates/class-h3-mgmt-admin-table.php:253
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:252
 msgid "Currently there is no data to be displayed here..."
 msgstr "Im Moment gibt es keine Daten, die hier anzuzeigen wären..."
 
-#: templates/class-h3-mgmt-admin-table.php:588
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:587
 msgid "this event"
 msgstr "dieses Event"
 
-#: includes/class-h3-mgmt-sponsors.php:1887
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1893
 msgctxt "Sponsoring Form"
 msgid "Donate via direct debit"
 msgstr "via Lastschriftverfahren spenden"
 
-#: includes/class-h3-mgmt-sponsors.php:1894
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1900
 msgctxt "Sponsoring Form"
 msgid "Donate via PayPal"
 msgstr "via PayPal spenden"
 
 #: admin/class-h3-mgmt-admin-emails.php:93
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Select who receives the email. Choose the &quot;Testmail to yourself&quot; option, to see how it will look in your own inbox."
 msgstr "Wähle, wer die E-Mail erhalten soll. Nimm&apos; die &quot;Testmail to yourself&quot; Option, um zu sehen, wie die Mail in deiner Inbox aussieht."
 
 #: admin/class-h3-mgmt-admin-emails.php:117
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Send the email either from your personal email address or select the generic &quot;no-reply&quot;."
 msgstr "Versende die E-Mail entweder von deiner persönlichen E-Mail Adresse oder vom generischen &quot;no-reply&quot;."
@@ -2384,7 +1997,6 @@ msgstr "Versende die E-Mail entweder von deiner persönlichen E-Mail Adresse ode
 #: admin/class-h3-mgmt-admin-emails.php:516
 #: admin/class-h3-mgmt-admin-emails.php:539
 #: admin/class-h3-mgmt-admin-emails.php:562
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Enable/disable"
 msgstr "(De-)Aktivieren"
@@ -2403,7 +2015,6 @@ msgstr "(De-)Aktivieren"
 #: admin/class-h3-mgmt-admin-emails.php:522
 #: admin/class-h3-mgmt-admin-emails.php:545
 #: admin/class-h3-mgmt-admin-emails.php:568
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Subject line"
 msgstr "Betreffszeile"
@@ -2422,839 +2033,696 @@ msgstr "Betreffszeile"
 #: admin/class-h3-mgmt-admin-emails.php:528
 #: admin/class-h3-mgmt-admin-emails.php:551
 #: admin/class-h3-mgmt-admin-emails.php:574
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Message body"
 msgstr "Test der Nachricht"
 
 #: admin/class-h3-mgmt-admin-emails.php:45
 #, php-format
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "The Email titled &quot;%s&quot; has been successfully sent."
 msgstr "Die E-Mail mit Betreff &quot;%s&quot; wurde erfolgreich verschickt."
 
 #: admin/class-h3-mgmt-admin-emails.php:257
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Notification of successful team creation"
 msgstr "Benachrichtigung bei erfolgreicher Anmeldung eines neuen Teams"
 
 #: admin/class-h3-mgmt-admin-emails.php:280
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Invitation (sent to invitee)"
 msgstr "Einladung (Erste Mail an Eingeladene_n)"
 
 #: admin/class-h3-mgmt-admin-emails.php:303
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Notification of accepted invitation (sent to inviter)"
 msgstr "Benachrichtigung bei angenomenner Einladung (für Einladenden)"
 
 #: admin/class-h3-mgmt-admin-emails.php:326
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Notification of successful invitation acceptance (sent to invitee)"
 msgstr "Bestätigung der angenommenen Einladung (für Eingeladenen)"
 
 #: admin/class-h3-mgmt-admin-emails.php:349
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Notification of HitchPackage payment having been received"
 msgstr "Benachrichtigung, dass die Asche für das HitchPaket eingegangen ist"
 
 #: admin/class-h3-mgmt-admin-emails.php:372
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Notification of waiver form payment having been received"
 msgstr "Benachrichtigung, dass die Einverständniserklärung angekommen ist"
 
 #: admin/class-h3-mgmt-admin-emails.php:395
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "Notification when team is complete (homework done, route can be chosen)"
 msgstr "Benachrichtigung, dass der Anmeldungsprozess abgeschlossen ist (Route kann gewählt werden)"
 
 #: admin/class-h3-mgmt-admin-emails.php:464
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "New Sponsor, donor confirmation (debit)"
 msgstr "Neuer TeamSponsor, Bestätigung für Spender (Lastschrift)"
 
 #: admin/class-h3-mgmt-admin-emails.php:487
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "New Owner, donor confirmation (debit)"
 msgstr "Neuer TeamOwner, Bestätigung für Spender (Lastschrift)"
 
 #: admin/class-h3-mgmt-admin-emails.php:510
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "New Sponsor, donor notification (PayPal)"
 msgstr "Neuer TeamSponsor, Benachrichtigung für Spender (PayPal)"
 
 #: admin/class-h3-mgmt-admin-emails.php:533
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "New Owner, donor notification (PayPal)"
 msgstr "Neuer TeamOwner, Benachrichtigung für Spender (PayPal)"
 
 #: admin/class-h3-mgmt-admin-races.php:42
-#@ h3-mgmt
 msgid "The selected event or race has been successfully deleted."
 msgstr "Das ausgewählte Event oder Rennen wurde erfolgreich gelöscht."
 
 #: admin/class-h3-mgmt-admin-races.php:364
-#@ h3-mgmt
 msgid "Event successfully updated!"
 msgstr "Event erfolgreich aktualisiert!"
 
 #: admin/class-h3-mgmt-admin-races.php:382
-#@ h3-mgmt
 msgid "Event successfully added!"
 msgstr "Event erfolgreich hinzugefügt!"
 
 #: admin/class-h3-mgmt-admin-races.php:749
-#@ h3-mgmt
 msgid "add event / race"
 msgstr "Event / Rennen hinzufügen"
 
 #: admin/class-h3-mgmt-admin-races.php:1159
-#@ h3-mgmt
 msgid "The Event"
 msgstr "Das Event"
 
 #: admin/class-h3-mgmt-admin-races.php:1163
-#@ h3-mgmt
 msgid "Name of event"
 msgstr "Name des Events"
 
 #: admin/class-h3-mgmt-admin-races.php:1171
-#@ h3-mgmt
 msgid "If you want the event to have a special logo and you uploaded one to the site, set the URL here. (Optional. So far not implemented in the frontend.)"
 msgstr "Wenn das Event ein spezielles Logo haben soll und du eines hochgeladen hast, kannst du hier die URL angeben. (Optional, bis jetzt noch nicht im Frontend impementiert.)"
 
 #: includes/class-h3-mgmt-mailer.php:101
-#@ h3-mgmt
 msgid "HitchPackage payment received"
 msgstr "HitchPaket Zahlung eingegangen"
 
 #: includes/class-h3-mgmt-mailer.php:102
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! The payment for your HitchPackage has been received. Thank you. Check the status of your team via: %link%"
 msgstr "Moin %name%! Deine Zahlung des HitchPaketes ist eingegangen. Danke. Check den Status deines Teams via: %link%"
 
 #: includes/class-h3-mgmt-mailer.php:109
-#@ h3-mgmt
 msgid "New TeamSponsor"
 msgstr "Neuer TeamSponsor"
 
 #: includes/class-h3-mgmt-mailer.php:113
-#@ h3-mgmt
 msgid "New TeamOwner"
 msgstr "Neuer TeamOwner"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:961
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "The Donor"
 msgstr "Der/Die Spender_in"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:985
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Sponsored Team"
 msgstr "Gesponsortes Team"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1030
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Debit"
 msgstr "Lastschrift"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1114
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Message"
 msgstr "Nachricht"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1118
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Special TeamOwner Parameters"
 msgstr "Spezielle TeamOwner Parameter"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1134
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Administrative Parameters"
 msgstr "Verwaltungsparameter"
 
 #: admin/class-h3-mgmt-admin-teams.php:330
-#@ h3-mgmt
 msgid "The selected participant&apos;s HitchPackage has been paid."
 msgstr "Das HitchPaket des ausgewählten Teilnehmers ist bezahlt worden."
 
 #: admin/class-h3-mgmt-admin-teams.php:351
-#@ h3-mgmt
 msgid "The selected participant&apos;s waiver has been set to received."
 msgstr "Die Erklärung des ausgewählten Teilnehmers ist angekommen."
 
 #: admin/class-h3-mgmt-admin-teams.php:372
-#@ h3-mgmt
 msgid "The selected participant&apos;s HitchPackage was not yet paid, after all."
 msgstr "Das HitchPaket des ausgewählten Teilnehmers ist doch nicht bezahlt worden. Du Depp!"
 
 #: admin/class-h3-mgmt-admin-teams.php:389
-#@ h3-mgmt
 msgid "The selected participant&apos;s waiver has not yet reached, after all."
 msgstr "Die Erklärung des ausgewählten Teilnehmers ist doch nicht angekommen. Du Depp!"
 
-#: includes/class-h3-mgmt-sponsors.php:685
-#: includes/class-h3-mgmt-sponsors.php:2013
-#: includes/class-h3-mgmt-sponsors.php:2047
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:691
+#: includes/class-h3-mgmt-sponsors.php:2019
+#: includes/class-h3-mgmt-sponsors.php:2053
 msgctxt "Sponsoring Form"
 msgid "The Team"
 msgstr "Das Team"
 
-#: includes/class-h3-mgmt-sponsors.php:669
-#: includes/class-h3-mgmt-sponsors.php:2091
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:675
+#: includes/class-h3-mgmt-sponsors.php:2097
 msgctxt "Sponsoring Form"
 msgid "Owner Priviliges"
 msgstr "Owner Privilegien"
 
-#: includes/class-h3-mgmt-sponsors.php:674
-#: includes/class-h3-mgmt-sponsors.php:2096
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:680
+#: includes/class-h3-mgmt-sponsors.php:2102
 msgctxt "Sponsoring Form"
 msgid "About you"
 msgstr "Über dich"
 
-#: includes/class-h3-mgmt-sponsors.php:679
-#: includes/class-h3-mgmt-sponsors.php:2101
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:685
+#: includes/class-h3-mgmt-sponsors.php:2107
 msgctxt "Sponsoring Form"
 msgid "The Message"
 msgstr "Die Nachricht"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:43
 #: admin/class-h3-mgmt-admin-sponsors.php:385
-#@ h3-mgmt
 msgid "The selected donor has been successfully deleted."
 msgstr "Der/Die ausgewählte Spender_in wurde erfolgreich gelöscht."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:121
-#@ h3-mgmt
 msgid "Donor successfully updated!"
 msgstr "Spender_in erfolgreich aktualisiert!"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:304
-#@ h3-mgmt
 msgid "Donor successfully added!"
 msgstr "Spender_in erfolgreich hinzugefügt!"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:146
 #: admin/class-h3-mgmt-admin-sponsors.php:392
-#@ h3-mgmt
 msgid "The selected donor&apos;s payment status has been set to &quot;paid&quot;."
 msgstr "Der Zahlungsstatus des/der gewählten Spender_in wurde auf &quot;gezahlt&quot; gesetzt."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:171
 #: admin/class-h3-mgmt-admin-sponsors.php:399
-#@ h3-mgmt
 msgid "The selected donor&apos;s payment status has been set to &quot;not paid&quot;."
 msgstr "Der Zahlungsstatus des/der gewählten Spender_in wurde auf &quot;nicht gezahlt&quot; gesetzt."
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1084
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "If the donated amount surpasses 200 Euros, the donor may ask to receive a donation receipt."
 msgstr "Bei einer Spende ab 200 Euro kann der Spender um eine Spendenquittung bitten."
 
-#: includes/class-h3-mgmt-teams.php:2197
-#: includes/class-h3-mgmt-teams.php:2206
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2230
+#: includes/class-h3-mgmt-teams.php:2239
 msgctxt "utility translation"
 msgid "/participate/team-dashboard/"
 msgstr "/de/mitmachen/anmelden/"
 
 #: includes/class-h3-mgmt-mailer.php:122
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! You have just become owner of team \"%team_name%\" and chosen to donate %donation% to Viva con Agua. Be so kind as to complete the PayPal transaction now, if you haven't done so already. You will appear in the team's profile as soon as the PayPal transaction has been confirmed."
 msgstr "Moin %name%! Du bist soeben stolzer Besitzer des Teams  \"%team_name%\"  geworden und hast dich entschieden %donation% an Viva con Agua zu spenden. Bitte sei so gut und komplettiere jetzt noch den Vorgang, in dem du die PayPal Transaktion durchführst. Danch wirst du dann im TeamProfil des Teams angezeigt."
 
 #: includes/class-h3-mgmt-mailer.php:126
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! You have just become sponsor of team \"%team_name%\" and chosen to donate %donation% to Viva con Agua. Be so kind as to complete the PayPal transaction now, if you haven't done so already. You will appear in the team's profile as soon as the PayPal transaction has been confirmed."
 msgstr "Moin %name%! Du bist soeben TeamSponsor des Teams  \"%team_name%\"  geworden und hast dich entschieden %donation% an Viva con Agua zu spenden. Bitte sei so gut und komplettiere jetzt noch den Vorgang, in dem du die PayPal Transaktion durchführst. Danch wirst du dann im TeamProfil des Teams angezeigt."
 
 #: includes/class-h3-mgmt-mailer.php:129
-#@ h3-mgmt
 msgid "PayPal donation confirmed"
 msgstr "PayPal Spende bestätigt"
 
 #: includes/class-h3-mgmt-mailer.php:130
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! Your donation to Viva con Agua has been confirmed. Unless you opted to donate anonomously, you are now listed in the sponsor's overview and the team profile. Thanks again!"
 msgstr "Moin %name%! Deine Spende an Viva con Agua ist eingetroffen. Es sei denn, du hast gewählt anonym zu bleiben, wirst du nun in der Spender-Übersicht sowie im betreffenden TeamProfil angezeigt. Danke nochmal!"
 
-#: includes/class-h3-mgmt-teams.php:2571
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2604
 msgctxt "Team"
 msgid "view TeamProfile"
 msgstr "TeamProfil ansehen"
 
-#: includes/class-h3-mgmt-teams.php:1711
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1744
 msgctxt "Team Dashboard"
 msgid "Do you want to join this team? You still have to accept the invitation..."
 msgstr "Willst du diesem Team beitreten? Du musst die Einladung noch annehmen..."
 
-#: includes/class-h3-mgmt-sponsors.php:366
-#: includes/class-h3-mgmt-sponsors.php:369
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:372
+#: includes/class-h3-mgmt-sponsors.php:375
 msgctxt "Team Profile"
 msgid "Become this team&apos;s TeamOwner!"
 msgstr "TeamOwner dieses Teams werden!"
 
-#: includes/class-h3-mgmt-teams.php:2450
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2483
 msgctxt "Team Profile"
 msgid "Become this team&apos;s TeamSponsor!"
 msgstr "TeamSponsor dieses Teams werden!"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:517
-#@ h3-mgmt
 msgid "Code"
 msgstr "Code"
 
 #: admin/class-h3-mgmt-admin-teams.php:918
-#@ h3-mgmt
 msgid "Shirt"
 msgstr "Shirt"
 
 #: includes/class-h3-mgmt-mailer.php:90
 #, php-format
-#@ h3-mgmt
 msgid "Moin! You have been invited by %inviter% to join his/her team \"%team_name%\" for Tramprennen 2014. To accept the invitation, either click here: %link%, or enter the code %code% manually on tramprennen.org."
 msgstr ""
 
 #: includes/class-h3-mgmt-mailer.php:94
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! %invitee% has accepted your invitation to join \"%team_name%\" for Tramprennen 2014. Check the status of your time via: %link%"
 msgstr ""
 
 #: includes/class-h3-mgmt-mailer.php:98
 #, php-format
-#@ h3-mgmt
 msgid "Moin %name%! You have successfully accepted the invitation by %inviter% to join \"%team_name%\" for Tramprennen 2014. Check the status of your team via: %link%"
 msgstr ""
 
 #: includes/class-h3-mgmt-mailer.php:118
 #, php-format
-#@ h3-mgmt
 msgid "Moin %names%! Your team \"%team_name%\" is now complete. You can now choose your route and publish your team. Welcome to Tramprennen 2014! Check the status of your team via: %link%"
 msgstr ""
 
-#: includes/class-h3-mgmt-races.php:1274
-#: includes/class-h3-mgmt-ticker.php:741
-#: includes/class-h3-mgmt-ticker.php:1110
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1268
+#: includes/class-h3-mgmt-ticker.php:786
+#: includes/class-h3-mgmt-ticker.php:1157
 msgid "All Routes"
 msgstr "Alle Routen"
 
-#: includes/class-h3-mgmt-races.php:1357
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1348
 msgid "View TeamProfile"
 msgstr "Schaue dir das Teamprofil an"
 
-#: includes/class-h3-mgmt-teams.php:1053
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1086
 msgctxt "Team Profile Form"
 msgid "Donation Goal"
 msgstr "Spendenziel"
 
-#: includes/class-h3-mgmt-teams.php:1056
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1089
 msgctxt "Team Dashboard"
 msgid "The amount of donations you wish to collect this year."
 msgstr "Welche Spendensumme möchtet ihr erreichen?"
 
-#: includes/class-h3-mgmt-teams.php:1056
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1089
 msgctxt "Team Dashboard"
 msgid "The common donation goal will be calculated from the sum of that of all teams."
 msgstr "Das Spendenziel des Tramprennens erreichnet sich aus der Summe der Ziele der Teams."
 
-#: includes/class-h3-mgmt-teams.php:1056
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1089
 msgctxt "Team Dashboard"
 msgid "(&quot;Zero&quot; is a perfectly acceptable answer...)"
 msgstr "(&quot;Null&quot; ist auch eine absolut akzeptable Antwort...)"
 
-#: includes/class-h3-mgmt-teams.php:1056
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1089
 msgctxt "Team Dashboard"
 msgid "Please enter <strong>numbers only</strong> though."
 msgstr "Bitte gib nur <strong>Ziffern</strong> ein."
 
 #: includes/class-h3-mgmt-profile.php:54
-#: includes/class-h3-mgmt-teams.php:1235
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1268
 msgctxt "Team Profile Form"
 msgid "Unisex S"
 msgstr ""
 
 #: includes/class-h3-mgmt-profile.php:58
-#: includes/class-h3-mgmt-teams.php:1239
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1272
 msgctxt "Team Profile Form"
 msgid "Unisex M"
 msgstr ""
 
 #: includes/class-h3-mgmt-profile.php:62
-#: includes/class-h3-mgmt-teams.php:1243
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1276
 msgctxt "Team Profile Form"
 msgid "Unisex L"
 msgstr ""
 
 #: includes/class-h3-mgmt-profile.php:66
-#: includes/class-h3-mgmt-teams.php:1247
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1280
 msgctxt "Team Profile Form"
 msgid "Unisex XL"
 msgstr ""
 
 #: includes/class-h3-mgmt-profile.php:70
-#: includes/class-h3-mgmt-teams.php:1251
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1284
 msgctxt "Team Profile Form"
 msgid "Slimfit S"
 msgstr ""
 
 #: includes/class-h3-mgmt-profile.php:74
-#: includes/class-h3-mgmt-teams.php:1255
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1288
 msgctxt "Team Profile Form"
 msgid "Slimfit M"
 msgstr ""
 
 #: includes/class-h3-mgmt-profile.php:78
-#: includes/class-h3-mgmt-teams.php:1259
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1292
 msgctxt "Team Profile Form"
 msgid "Slimfit L"
 msgstr ""
 
-#: includes/class-h3-mgmt-xchange.php:117
-#@ h3-mgmt
+#: includes/class-h3-mgmt-xchange.php:154
 msgid "The message"
 msgstr "Die Nachricht"
 
 #: templates/frontend-ticker.php:95
 #: templates/frontend-ticker.php:117
-#@ h3-mgmt
 msgid "Full-size Ticker Image"
 msgstr ""
 
-#: includes/class-h3-mgmt-races.php:716
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:710
 msgctxt "Donation Counter"
 msgid "Euros"
 msgstr "Euro"
 
-#: includes/class-h3-mgmt-sponsors.php:2616
+#: includes/class-h3-mgmt-sponsors.php:2630
 #, php-format
-#@ h3-mgmt
 msgctxt "Recent Activity Stream"
 msgid "%donor% sponsored %team% with %thumbs% Euros"
 msgstr "%donor% hat Team %team% mit %thumbs% Euro gesponsort"
 
-#: includes/class-h3-mgmt-teams.php:2386
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2419
 msgid "Current Race Rank"
 msgstr "Aktuelle Platzierung im Rennen"
 
-#: includes/class-h3-mgmt-teams.php:2387
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2420
 msgid "Current Route Rank"
 msgstr "Aktuelle Platzierung auf Route"
 
 #: admin/class-h3-mgmt-admin-teams.php:923
-#@ h3-mgmt
 msgid "Inf. for Mobile"
 msgstr "Infos für unseren Mobilpartner"
 
 #: includes/class-h3-mgmt-profile.php:89
-#: includes/class-h3-mgmt-teams.php:1271
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1304
 msgctxt "Team Profile Form"
 msgid "Please select if it is ok or not..."
 msgstr "Bitte wählt aus ob es ok ist oder nicht..."
 
 #: includes/class-h3-mgmt-profile.php:93
-#: includes/class-h3-mgmt-teams.php:1275
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1308
 msgctxt "Team Profile Form"
 msgid "YES, give them my personal information"
 msgstr "Ja, gebt meine persönlichen Informationen weiter"
 
 #: includes/class-h3-mgmt-profile.php:97
-#: includes/class-h3-mgmt-teams.php:1279
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1312
 msgctxt "Team Profile Form"
 msgid "Please not (So you do not get your sponsored sim-card"
 msgstr "Bitte nicht ( in diesem Fall bekommst du keine gesponserte Simkarte)"
 
 #: includes/class-h3-mgmt-profile.php:83
-#: includes/class-h3-mgmt-teams.php:1264
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1297
 msgctxt "Team Profile Form"
 msgid "Could we give our partner Ortel Mobile your personal Information?"
 msgstr "Können wir unserem Partner Ortel Mobile deine persönlichen Daten übermitteln?"
 
-#: includes/class-h3-mgmt-teams.php:1265
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1298
 msgctxt "Team Profile Form"
 msgid "Do you accept if we send your personal information to our mobile partner to register your sim-card? They will delete them after 10 days and will use them only for registration of your sim-card!"
 msgstr "Ist es ok, dass wir deine persönlichen Daten an unseren Partner Ortel Mobile weitergeben um deine Simkarte zu registrieren? Ortel wird sie nach zehn Tagen löschen und ausschließlich für die Registrierung der Simkarte nutzen."
 
 #: includes/class-h3-mgmt-profile.php:102
-#: includes/class-h3-mgmt-teams.php:1284
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1317
 msgctxt "Team Profile Form"
 msgid "Address for Ortel"
 msgstr "Adresse für Ortel Mobile"
 
-#: includes/class-h3-mgmt-teams.php:1285
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1318
 msgctxt "Team Profile Form"
 msgid "Your address? Just if we are allowed to give your information to our partner Ortel Mobile!"
 msgstr "Deine Adresse? Nur wenn es ok ist, das wir die Daten an unseren Partner Ortel Mobile weitergeben."
 
-#: includes/class-h3-mgmt-teams.php:1802
-#: includes/class-h3-mgmt-teams.php:1807
-#: includes/class-h3-mgmt-teams.php:1810
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1835
+#: includes/class-h3-mgmt-teams.php:1840
+#: includes/class-h3-mgmt-teams.php:1843
 msgctxt "Team Dashboard"
 msgid "Select starting point"
 msgstr "Wählt einen Startort"
 
-#: includes/class-h3-mgmt-teams.php:2132
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2165
 msgctxt "Homework"
 msgid "Starting point chosen"
 msgstr "Startort ausgewählt"
 
-#: includes/class-h3-mgmt-teams.php:2134
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2167
 msgctxt "Homework"
 msgid "You may pick your starting point now!"
 msgstr "Ihr könnt euren Startort jetzt auswählen."
 
-#: includes/class-h3-mgmt-teams.php:2162
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2195
 msgctxt "Homework"
 msgid "You cannot yet chose a starting point..."
 msgstr "Ihr könnt noch keinen Startort auswählen..."
 
 #: admin/class-h3-mgmt-admin-teams.php:698
-#@ h3-mgmt
 msgid "Phones (for Ticker)"
 msgstr ""
 
 #: includes/class-h3-mgmt-mailer.php:89
-#@ h3-mgmt
 msgid "You have been invited to Tramprennen 2015"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:2394
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2427
 msgctxt "Team Profile"
 msgid "Ticker messages"
 msgstr "Ticker Nachrichten"
 
 #: includes/class-h3-mgmt-ticker.php:481
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Message"
 msgstr "Nachricht"
 
 #: includes/class-h3-mgmt-ticker.php:482
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Send a message like a SMS."
 msgstr "Sende eine Nachricht wie eine SMS"
 
 #: includes/class-h3-mgmt-ticker.php:402
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Not the correct format."
 msgstr "Falsches Format."
 
 #: includes/class-h3-mgmt-ticker.php:473
-#@ h3-mgmt
 msgctxt "ticker"
 msgid "Send a message"
 msgstr "Sende eine Nachricht."
 
 #: includes/class-h3-mgmt-ticker.php:492
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Send message"
 msgstr "Sende eine Nachricht."
 
 #: includes/class-h3-mgmt-ticker.php:497
-#@ h3-mgmt
 msgctxt "ticker"
 msgid "Send a picture + message"
 msgstr "Sende ein Bild und eine Nachricht."
 
 #: includes/class-h3-mgmt-ticker.php:514
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Message for picture"
 msgstr "Nachricht zum Bild"
 
 #: includes/class-h3-mgmt-ticker.php:515
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Send a message under your picture."
 msgstr "Sende eine Nachricht unter dem Bild."
 
 #: includes/class-h3-mgmt-ticker.php:246
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Message has been sent."
 msgstr "Nachricht wurde geschickt."
 
 #: includes/class-h3-mgmt-ticker.php:313
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Picture has been rotated ."
 msgstr "Bild wurde gedreht."
 
 #: includes/class-h3-mgmt-ticker.php:367
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Picture has been sent."
 msgstr "Bild wurde gesendet."
 
 #: includes/class-h3-mgmt-ticker.php:425
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Location has been sent."
 msgstr "Dein Standort wurd geschickt."
 
 #: includes/class-h3-mgmt-ticker.php:542
-#@ h3-mgmt
 msgctxt "ticker"
 msgid "Send your location"
 msgstr "Sende deinen Standort."
 
 #: includes/class-h3-mgmt-ticker.php:555
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Informations about position"
 msgstr "Information über den Standort."
 
 #: includes/class-h3-mgmt-ticker.php:556
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Information about your coordinates like city, lake or area."
 msgstr "Informationen über Koordinaten wie die Stadt, einen See oder die Umgebung."
 
 #: templates/frontend-ticker.php:25
 #: templates/frontend-ticker.php:154
-#@ h3-mgmt
 msgctxt "Ticker"
 msgid "weeks ago"
 msgstr "Wochen vorher..."
 
-#: includes/class-h3-mgmt-sponsors.php:547
-#: includes/class-h3-mgmt-sponsors.php:1316
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:553
+#: includes/class-h3-mgmt-sponsors.php:1322
 msgctxt "Sponsoring Form"
 msgid "Fill out the form for our homepage"
 msgstr "Fülle die Felder für unsere Homepage aus."
 
 #: includes/class-h3-mgmt-ticker.php:458
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Video has been sent."
 msgstr "Das Video wurde gesendet."
 
 #: includes/class-h3-mgmt-ticker.php:463
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Not the correct URL / Link."
 msgstr "keine korrekte URL/Link"
 
 #: includes/class-h3-mgmt-ticker.php:572
-#@ h3-mgmt
 msgctxt "ticker"
 msgid "Send a youtube video"
 msgstr "Sende ein Youtubevideo"
 
 #: includes/class-h3-mgmt-ticker.php:576
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Video URL / Link"
 msgstr "Video URL/Link"
 
 #: includes/class-h3-mgmt-ticker.php:577
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Send a video via the video URL from youtube."
 msgstr "Sende ein Video mit der URL/ dem Link von Youtube."
 
 #: includes/class-h3-mgmt-ticker.php:582
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Informations about your Video"
 msgstr "Informationen über dein Video."
 
 #: includes/class-h3-mgmt-ticker.php:583
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Information about your video."
 msgstr "Informationen über dein Video."
 
 #: includes/class-h3-mgmt-ticker.php:593
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Send video code"
 msgstr "Sende den Video Code."
 
-#: includes/class-h3-mgmt-teams.php:1763
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1796
 msgctxt "Team Dashboard"
 msgid "Attention, the Registration is closed!"
 msgstr "Beachtet bitte, dass die Anmeldungen geschlossen sind!"
 
 #: admin/class-h3-mgmt-admin-races.php:66
-#@ h3-mgmt
 msgid "The Liveticker function for the selected event or race has been successfully enabled."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:90
-#@ h3-mgmt
 msgid "The Liveticker function for the selected event or race has been successfully disabled."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:114
-#@ h3-mgmt
 msgid "The Liveticker content for the selected event or race will be successfully visible."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:138
-#@ h3-mgmt
 msgid "The Liveticker content for the selected event or race will be successfully unvisible."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:199
-#@ h3-mgmt
 msgid "The Donation Tool function for the selected event or race has been successfully enabled."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:223
-#@ h3-mgmt
 msgid "The Donation Tool function for the selected event or race has been successfully disabled."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:600
-#@ h3-mgmt
 msgid "The selected routes have been successfully deleted."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:713
-#@ h3-mgmt
 msgid "The selected stages have been successfully deleted."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:779
 #: admin/class-h3-mgmt-admin-races.php:1202
-#@ h3-mgmt
 msgid "Status"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:785
-#@ h3-mgmt
 msgid "More then 1 Start point?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:791
-#@ h3-mgmt
 msgid "Liveticker Send-Function enabled"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:798
 #: admin/class-h3-mgmt-admin-races.php:1265
-#@ h3-mgmt
 msgid "Show Liveticker Content"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:805
-#@ h3-mgmt
 msgid "Donation Tool enabled"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1204
-#@ h3-mgmt
 msgid "The Status of the event (bevor registration, registration closed...)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1226
-#@ h3-mgmt
 msgid "More then 1 starting point?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1228
-#@ h3-mgmt
 msgid "Could the Teams choose the starting point?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1249
-#@ h3-mgmt
 msgid "Liveticker Send-Function enabled?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1251
-#@ h3-mgmt
 msgid "Do you want to allow to send Liveticker messages?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1267
-#@ h3-mgmt
 msgid "Do you want to show the Liveticker content at the Frontend?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1281
-#@ h3-mgmt
 msgid "Donation Tool enabled?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1283
-#@ h3-mgmt
 msgid "Do you want to allow to donate for teams?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1778
-#@ h3-mgmt
 msgid "Information Texts"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1529
-#@ h3-mgmt
 msgid "Team Profile Question 1"
 msgstr ""
 
@@ -3290,7 +2758,6 @@ msgstr ""
 #: admin/class-h3-mgmt-admin-races.php:2048
 #: admin/class-h3-mgmt-admin-races.php:2060
 #: admin/class-h3-mgmt-admin-races.php:2072
-#@ h3-mgmt
 msgid "In english"
 msgstr ""
 
@@ -3326,306 +2793,251 @@ msgstr ""
 #: admin/class-h3-mgmt-admin-races.php:2054
 #: admin/class-h3-mgmt-admin-races.php:2066
 #: admin/class-h3-mgmt-admin-races.php:2078
-#@ h3-mgmt
 msgid "In german"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1569
-#@ h3-mgmt
 msgid "Team Profile Question 2"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1609
-#@ h3-mgmt
 msgid "Team Profile Question 3"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1649
-#@ h3-mgmt
 msgid "Team Profile Question 4"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-sponsors.php:733
-#@ h3-mgmt
 msgid "Donation Client Reference"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-sponsors.php:738
-#@ h3-mgmt
 msgid "Donation Token"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-sponsors.php:761
-#@ h3-mgmt
 msgctxt "Sponsoring, Backend"
 msgid "TeamSponsors &amp; TeamOwners, Donation Method: Betterplace"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-sponsors.php:870
-#@ h3-mgmt
 msgid "add donor"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-sponsors.php:1038
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Betterplace"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:474
-#@ h3-mgmt
 msgid "The selected participants HitchPackages have been paid."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:481
-#@ h3-mgmt
 msgid "The selected participants waivers have been set to received."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:488
-#@ h3-mgmt
 msgid "The selected participants HitchPackagea were not yet paid, after all."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:495
-#@ h3-mgmt
 msgid "The selected participants waivers have not yet reached, after all."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:620
-#@ h3-mgmt
 msgid "add team"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:737
-#@ h3-mgmt
 msgid "Team Member"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin.php:90
 #: admin/class-h3-mgmt-admin.php:100
-#@ h3-mgmt
 msgid "Sponsoring Method \"Betterplace\""
 msgstr ""
 
 #: admin/class-h3-mgmt-admin.php:101
-#@ h3-mgmt
 msgid "Betterplace"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:377
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:383
 msgctxt "Team Profile"
 msgid "There is an Anonymous Owner!"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:553
-#: includes/class-h3-mgmt-sponsors.php:1259
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:559
+#: includes/class-h3-mgmt-sponsors.php:1265
 msgctxt "Sponsoring Form"
 msgid "Fill out the Form<br />The Data will be shown at the Team-Profile"
 msgstr "Fülle das Formular aus<br />Die Daten werden im Team-Profil angezeigt"
 
-#: includes/class-h3-mgmt-sponsors.php:554
-#: includes/class-h3-mgmt-sponsors.php:1261
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:560
+#: includes/class-h3-mgmt-sponsors.php:1267
 msgctxt "Sponsoring Form"
 msgid "Donation process finish."
 msgstr "Spendenvorgang abgeschlossen."
 
-#: includes/class-h3-mgmt-sponsors.php:546
-#: includes/class-h3-mgmt-sponsors.php:1314
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:552
+#: includes/class-h3-mgmt-sponsors.php:1320
 msgctxt "Sponsoring Form"
 msgid "Choose a team."
 msgstr "Wähle ein Team."
 
-#: includes/class-h3-mgmt-sponsors.php:548
-#: includes/class-h3-mgmt-sponsors.php:1318
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:554
+#: includes/class-h3-mgmt-sponsors.php:1324
 msgctxt "Sponsoring Form"
 msgid "Finish"
 msgstr "Fertigstellen"
 
-#: includes/class-h3-mgmt-sponsors.php:1418
-#: includes/class-h3-mgmt-sponsors.php:2729
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1424
+#: includes/class-h3-mgmt-sponsors.php:2736
 msgctxt "Form Validation Error"
 msgid "Sorry there is a technical issue! Please contact web@tramprennnen.org"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:2079
+#: includes/class-h3-mgmt-sponsors.php:2085
 #, php-format
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Great you just donated %amount%€ at Betterplace. You are the Team Owner of %team_name% now! Please fill out the form below for our Homepage. The data will dislayed at the Team Profile."
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:2081
+#: includes/class-h3-mgmt-sponsors.php:2087
 #, php-format
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Great you just donated %amount%€ at Betterplace. You are a Team Sponsor of %team_name% now! Please fill out the form below for our Homepage. The data will dislayed at the Team Profile."
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:2134
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2140
 msgctxt "Sponsoring Form"
 msgid "FINISH"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:2139
+#: includes/class-h3-mgmt-sponsors.php:2145
 #, php-format
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Great you are finished now. Go to the %Profile% and see your entries!"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1459
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1492
 msgctxt "Team Dashboard"
 msgid "So far, you don't have any teammates. You need at least one to complete the team registration. The registration is already closed. If you haven't invited any yet, you can't do it any more..."
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1717
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1750
 msgid "Sorry, the invitation code you are trying to use is outdated or false. The registration is already closed, so the participant can't invite you again and you can't create your own team..."
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1808
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1841
 msgctxt "Team Dashboard"
 msgid "You can't choose your starting point because the race is already started!"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1811
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1844
 msgctxt "Team Dashboard"
 msgid "You can't change your starting point anymore because the registration process is already closed!"
 msgstr ""
 
 #: includes/class-h3-mgmt-ticker.php:430
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "ERROR"
 msgstr ""
 
 #: includes/class-h3-mgmt-ticker.php:598
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Your team has to be complete registered to send a Liveticker message."
 msgstr ""
 
 #: includes/class-h3-mgmt-ticker.php:601
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "You must have a team for the present race to send a Liveticker message."
 msgstr ""
 
-#: includes/class-h3-mgmt-ticker.php:984
-#@ h3-mgmt
+#: includes/class-h3-mgmt-ticker.php:1029
 msgid "To Home"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:676
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:675
 msgid "Enable the Liveticker function for the race!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:678
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:677
 msgid "Enable Liveticker!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:682
-#: templates/class-h3-mgmt-admin-table.php:728
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:681
+#: templates/class-h3-mgmt-admin-table.php:727
 msgid "Disable the Liveticker function for the race!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:684
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:683
 msgid "Really disable the Liveticker function for the race??"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:688
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:687
 msgid "Disable Liveticker!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:703
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:702
 msgid "Show the Liveticker content at the Homepage"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:705
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:704
 msgid "Show Liveticker!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:709
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:708
 msgid "Hide the Liveticker content at the Homepage (Liveticker not started yet!)"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:711
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:710
 msgid "Really hide the Liveticker content at the Homepage??"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:715
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:714
 msgid "Hide Liveticker!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:722
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:721
 msgid "Enable the Donation Tool function for the race!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:724
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:723
 msgid "Enable Donation Tool!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:730
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:729
 msgid "Really disable the Donation Tool function for the race??"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:734
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:733
 msgid "Disable Donation Tool!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:834
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:833
 msgid "bevor registration"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:836
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:835
 msgid "registration open"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:838
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:837
 msgid "registration closed and bevor race start"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:840
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:839
 msgid "race started"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-emails.php:68
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
 msgid "All HHH Users who participated at Tramprennen"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:175
-#@ h3-mgmt
 msgid "The selected event or race will be active."
 msgstr ""
 
@@ -3633,234 +3045,188 @@ msgstr ""
 #: admin/class-h3-mgmt-admin-races.php:499
 #: admin/class-h3-mgmt-admin-races.php:544
 #: admin/class-h3-mgmt-admin-races.php:574
-#@ h3-mgmt
 msgid "Route successfully created!"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:472
 #: admin/class-h3-mgmt-admin-races.php:549
-#@ h3-mgmt
 msgid "Route account name or E-Mail already exist!"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:478
 #: admin/class-h3-mgmt-admin-races.php:555
-#@ h3-mgmt
 msgid "The entered passwords are different or empty"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:676
-#@ h3-mgmt
 msgid "Stage successfully created!"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:772
-#@ h3-mgmt
 msgid "Active?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1175
-#@ h3-mgmt
 msgid "Enter the URL to the team overview page on your site."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1177
-#@ h3-mgmt
 msgid "Enter the URL (without http:// or https:// and your Domain. For example just \"/team_overview/\".) to the team overview page where the user get the overviwe about all teams and could see the team prfiles. Please make sure that the page with the ID of the event has the same ID as this event! The shortcode is \"h3-teams race=ID_of_the_event\""
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1182
-#@ h3-mgmt
 msgid "Settings Race functions"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1186
-#@ h3-mgmt
 msgid "Is the Race / Event the active one?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1188
-#@ h3-mgmt
 msgid "Is this Race / Event the present one?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1242
-#@ h3-mgmt
 msgid "Starting point if chosen just one starting point"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1244
-#@ h3-mgmt
 msgid "If chosen just one starting point the teams will be automatically added to this starting point."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1297
-#@ h3-mgmt
 msgid "Enable 1 extra Point for each Stage"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1299
-#@ h3-mgmt
 msgid "Do you want to enable the function of 1 extra point for each stage and Team in the ranking?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1313
-#@ h3-mgmt
 msgid "Enable a chosen amount of extra Point for each stage"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1315
-#@ h3-mgmt
 msgid "Do you want to enable the function of a chosen amount of extra points for each stage and Team in the ranking?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1329
-#@ h3-mgmt
 msgid "The amount of the field"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1331
-#@ h3-mgmt
 msgid "Enter the amount of extra points they could give the teams each route in the ranking."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1335
-#@ h3-mgmt
 msgid "Enable a extra field to give extra points only for the last stage"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1337
-#@ h3-mgmt
 msgid "Do you want to enable the function that they get a extra field where they could chose the amount of points they would give for the last stage in the ranking?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1352
-#@ h3-mgmt
 msgid "Settings Race functions (After creating you can't change  it anymore)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1356
-#@ h3-mgmt
 msgid "How many participants per team minimum?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1359
-#@ h3-mgmt
 msgid "How many team member a team must have?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1364
-#@ h3-mgmt
 msgid "How many participants per team maximum?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1367
-#@ h3-mgmt
 msgid "How many team member a team could have?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1372
-#@ h3-mgmt
 msgid "Disable liability waiver?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1375
-#@ h3-mgmt
 msgid "Do you want to disable the liability waiver? It's not visible in the team dashboard then and not required to get complete."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1389
-#@ h3-mgmt
 msgid "Disable to pay a fee for a Hitchpackage or something else?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1392
-#@ h3-mgmt
 msgid "Do you want to disable that the participants have to pay a fee? It's not visible in the team dashboard then and not required to get complete."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1406
-#@ h3-mgmt
 msgid "Disable choose shirt size?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1409
-#@ h3-mgmt
 msgid "Do you want to disable the shirt function? It's not visible in the team dashboard then."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1423
-#@ h3-mgmt
 msgid "Disable choose mobile information and extra field"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1426
-#@ h3-mgmt
 msgid "Do you want to disable the mobile information and extra field? It's not visible in the team dashboard then."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1441
-#@ h3-mgmt
 msgid "Settings Donation Tool"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1445
-#@ h3-mgmt
 msgid "Kind of donation tool"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1447
-#@ h3-mgmt
 msgid "How should the donation tool work? Select the functions of the donation tool"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1461
-#@ h3-mgmt
 msgid "Enter the redirect link to your Betterplace project on the Betterlace site."
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-races.php:1468
-#@ h3-mgmt
+#: admin/class-h3-mgmt-admin-races.php:1463
 msgid " You will get the Third Party Link from Betterplace. If you need more information contact us. <br> Example: https://www.testtest.com/de/**your project or event**/**your id**/client_donations/new?client_id=**your client id** <br>     How you get the Third Party Link you will find <a title=\"Info third party link URL\" href=\"https://github.com/betterplace/betterplace_apidocs/blob/master/donation_form/third_party_app_donation_form.md#how-to-get-it\">here</a> <br><br>     Please let them know under the point \"Description\" that you use the tramprennen API <br>     For \"Callback url production\" you have to  set up ONE page in Wordpress for all other Events. In this page you just enter this shortcode \"[h3-handle-betterplace-redirect]\". You could get the  right URL if you call the page and add \"?status=Test\" at the end of the URL <br>     If you have any problems send a mail to web@tramprennen.org"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1473
-#@ h3-mgmt
 msgid "Enter the redirect link to the donation tool page on your site."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1475
-#@ h3-mgmt
 msgid "Enter the Link (without http:// or https:// and your Domain. For example just \"/donate/\".) to your page where the user also will donate. Thats the page where you add the shortcode to run the donation code. Please make sure that the page with the ID of the event has the same ID as this event! The shortcode is \"h3-sponsoring-form race=ID_of_the_event\""
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1479
-#@ h3-mgmt
 msgid "Show donation amount in team homework?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1481
-#@ h3-mgmt
 msgid "Do you want to show the amount of collected donations in the teams homework list?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1513
-#@ h3-mgmt
 msgid "Load information text from older race"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1519
-#@ h3-mgmt
 msgid "From wich Race / Event you wanna copy? If you press save and select a race all data in the \"Information Texts\" section will be overwritten!!!"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1525
-#@ h3-mgmt
 msgid "Questions in Team profiles"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1541
-#@ h3-mgmt
 msgid "Description of Team Profile Question 1"
 msgstr ""
 
@@ -3869,7 +3235,6 @@ msgstr ""
 #: admin/class-h3-mgmt-admin-races.php:1633
 #: admin/class-h3-mgmt-admin-races.php:1721
 #: admin/class-h3-mgmt-admin-races.php:1761
-#@ h3-mgmt
 msgid "Do you want to make this question invisible?"
 msgstr ""
 
@@ -3878,57 +3243,46 @@ msgstr ""
 #: admin/class-h3-mgmt-admin-races.php:1635
 #: admin/class-h3-mgmt-admin-races.php:1723
 #: admin/class-h3-mgmt-admin-races.php:1763
-#@ h3-mgmt
 msgid "If yes the question is invisible in team dashboard and profile."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1581
-#@ h3-mgmt
 msgid "Description of Team Profile Question 2"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1621
-#@ h3-mgmt
 msgid "Description of Team Profile Question 3"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1661
-#@ h3-mgmt
 msgid "Team Profile Question 4 Answer 1"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1673
-#@ h3-mgmt
 msgid "Team Profile Question 4 Answer 2"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1685
-#@ h3-mgmt
 msgid "Team Profile Question 4 Answer 3"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1697
-#@ h3-mgmt
 msgid "Team Profile Question 4 Answer 4"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1709
-#@ h3-mgmt
 msgid "Description of Team Profile Question 4"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1737
-#@ h3-mgmt
 msgid "Team Profile Question 5"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1749
-#@ h3-mgmt
 msgid "Description of Team Profile Question 5"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1782
-#@ h3-mgmt
 msgid "Text under \"Select starting point\" in Team Dashboard"
 msgstr ""
 
@@ -3936,7 +3290,6 @@ msgstr ""
 #: admin/class-h3-mgmt-admin-races.php:1940
 #: admin/class-h3-mgmt-admin-races.php:1964
 #: admin/class-h3-mgmt-admin-races.php:1976
-#@ h3-mgmt
 msgid "In english (with HTML code)"
 msgstr ""
 
@@ -3944,362 +3297,293 @@ msgstr ""
 #: admin/class-h3-mgmt-admin-races.php:1946
 #: admin/class-h3-mgmt-admin-races.php:1970
 #: admin/class-h3-mgmt-admin-races.php:1982
-#@ h3-mgmt
 msgid "In german (with HTML code)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1794
-#@ h3-mgmt
 msgid "First Text under \"INVITE TEAMMATE(S)\" in Team Dashboard"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1796
-#@ h3-mgmt
 msgid "In english (Will displayed if the participant hasn't invited anyone yet.)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1802
-#@ h3-mgmt
 msgid "In german (Will displayed if the participant hasn't invited anyone yet.)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1806
-#@ h3-mgmt
 msgid "Second Text under \"INVITE TEAMMATE(S)\" in Team Dashboard"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1808
-#@ h3-mgmt
 msgid "In english (Will displayed if the participant has invited someone yet.)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1814
-#@ h3-mgmt
 msgid "In german (Will displayed if the participant has invited someone yet.)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1818
-#@ h3-mgmt
 msgid "Text under HOMEWORK ASSIGNMENTS"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1830
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: Invite Teampartner."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1842
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: liability waiver from participant."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1854
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: liability waiver from team mate"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1866
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: Fee from participant for Example: Hitchpackage."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1878
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: Fee from team mate for Example: Hitchpackage."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1890
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: T-Shirt from participant."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1902
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: T-Shirt from team mate"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1914
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: Extra from participant."
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1926
-#@ h3-mgmt
 msgid "Points for BEFORE PUBLISHING: Extra from team mate"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1938
-#@ h3-mgmt
 msgid "Text for Liability Waiver Form information"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1950
-#@ h3-mgmt
 msgid "Text for money transfer information"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1952
-#@ h3-mgmt
 msgid "In english (with HTML code BUT no < / p > at the end!!!)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1958
-#@ h3-mgmt
 msgid "In german (with HTML code BUT no < / p > at the end!!!)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1962
-#@ h3-mgmt
 msgid "Text under the points of \"After Team is complete\""
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1974
-#@ h3-mgmt
 msgid "Text under step one in \"Sponsoring Steps\""
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1986
-#@ h3-mgmt
 msgid "Text under Teamsponsor at the right"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:1998
-#@ h3-mgmt
 msgid "Text under Teamowner at the right"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2010
-#@ h3-mgmt
 msgid "Information text for registration isn't open yet"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2022
-#@ h3-mgmt
 msgid "Information text for liveticker isn't enabled yet"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2034
-#@ h3-mgmt
 msgid "Information text for donation tool isn't activated yet"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2046
-#@ h3-mgmt
 msgid "Information text for team overview when registration isn't open yet"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2058
-#@ h3-mgmt
 msgid "Information text for the Ranking table when race isn't started yet"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2070
-#@ h3-mgmt
 msgid "Information text for Liveticker when show liveticker content is disabled"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2140
-#@ h3-mgmt
 msgid "Route Account (After creating a account you can't change it anymore)"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2144
-#@ h3-mgmt
 msgid "Login Name"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2147
-#@ h3-mgmt
 msgid "The login name of the route account"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2151
-#@ h3-mgmt
 msgid "E-Mail"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2154
-#@ h3-mgmt
 msgid "The E-Mail Address of the route account"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2158
-#@ h3-mgmt
 msgid "Password"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2161
-#@ h3-mgmt
 msgid "The login password of the route account"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2165
-#@ h3-mgmt
 msgid "Repeat password"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-races.php:2168
-#@ h3-mgmt
 msgid "Repeat the login password of the route account"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-sponsors.php:683
-#@ h3-mgmt
 msgid "Date"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-statistics.php:292
-#@ h3-mgmt
 msgid "Which Race?"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:746
-#@ h3-mgmt
 msgid "Member "
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:753
-#@ h3-mgmt
 msgid "Language Member "
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:817
-#@ h3-mgmt
 msgid "Add New Team | Choose Race: "
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:819
-#@ h3-mgmt
 msgid "Add New Team for Race: "
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:821
 #, php-format
-#@ h3-mgmt
 msgid "Edit \"%s\" in Race: "
 msgstr ""
 
 #: admin/class-h3-mgmt-admin-teams.php:843
-#@ h3-mgmt
 msgid "Next"
 msgstr ""
 
 #: admin/class-h3-mgmt-admin.php:160
 #: admin/class-h3-mgmt-admin.php:161
-#@ h3-mgmt
 msgid "Statistics"
 msgstr ""
 
-#: includes/class-h3-mgmt-races.php:1007
-#: includes/class-h3-mgmt-races.php:1029
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1001
+#: includes/class-h3-mgmt-races.php:1023
 msgid "Extra point?"
 msgstr ""
 
-#: includes/class-h3-mgmt-races.php:1016
-#: includes/class-h3-mgmt-races.php:1038
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1010
+#: includes/class-h3-mgmt-races.php:1032
 msgid "Extra points?"
 msgstr ""
 
-#: includes/class-h3-mgmt-races.php:1042
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1036
 msgid "Which extra point amount?"
 msgstr ""
 
-#: includes/class-h3-mgmt-races.php:1357
-#: includes/class-h3-mgmt-ticker.php:718
-#: includes/class-h3-mgmt-ticker.php:819
-#: includes/class-h3-mgmt-ticker.php:1047
-#: includes/class-h3-mgmt-ticker.php:1246
-#@ h3-mgmt
+#: includes/class-h3-mgmt-races.php:1348
+#: includes/class-h3-mgmt-ticker.php:1092
+#: includes/class-h3-mgmt-ticker.php:1296
 msgid "?id="
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:2048
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2054
 msgctxt "Sponsoring Form"
 msgid "All shown Teams haven't a TeamOwner yet. Be there TeamOwner NOW!<br><br><b>Please Remember:</b> At the next Step you have to donate <b>at least 100€</b> to be a <b>TeamOwner</b> and to have the privileges to add a picture at their Team-Profile!"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:716
-#: includes/class-h3-mgmt-sponsors.php:2029
-#: includes/class-h3-mgmt-sponsors.php:2064
-#: includes/class-h3-mgmt-sponsors.php:2112
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:722
+#: includes/class-h3-mgmt-sponsors.php:2035
+#: includes/class-h3-mgmt-sponsors.php:2070
+#: includes/class-h3-mgmt-sponsors.php:2118
 msgctxt "Sponsoring Form"
 msgid "Next"
 msgstr "Weiter"
 
-#: includes/class-h3-mgmt-sponsors.php:720
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:725
 msgctxt "Sponsoring Form"
 msgid "This form is currently not submittable. Possibly due to the fact that currently no team can be chosen."
 msgstr "Dieses Formular ist derzeit nicht einreichbar. Möglicherweise, weil derzeit kein Team ausgewählt werden kann."
 
-#: includes/class-h3-mgmt-sponsors.php:1470
-#: includes/class-h3-mgmt-sponsors.php:1481
+#: includes/class-h3-mgmt-sponsors.php:1476
+#: includes/class-h3-mgmt-sponsors.php:1487
 #, php-format
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "You have successfully become %1$sponsoring_type% of \"%team_name%\" and chosen to donate %thumbs% thumbs (%2$donation% Euros)"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:1475
-#: includes/class-h3-mgmt-sponsors.php:1486
+#: includes/class-h3-mgmt-sponsors.php:1481
+#: includes/class-h3-mgmt-sponsors.php:1492
 #, php-format
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "In order to become %1$sponsoring_type% of \"%team_name%\" by donating %thumbs% thumbs (%2$donation% Euros), be so kind as to transfer the chosen amount via PayPal by clicking the below button."
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:2034
-#: includes/class-h3-mgmt-sponsors.php:2069
-#: includes/class-h3-mgmt-sponsors.php:2117
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2040
+#: includes/class-h3-mgmt-sponsors.php:2075
+#: includes/class-h3-mgmt-sponsors.php:2123
 msgctxt "Sponsoring Form"
 msgid "This form is currently not submittable. Possbily due to the fact that currently no team can be chosen."
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:2628
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:2635
 msgid "No donors yet..."
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1481
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1514
 msgctxt "Team Profile Form"
 msgid "Please select your starting point..."
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1498
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1531
 msgctxt "Team Profile Form"
 msgid "Starting Point"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1621
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1654
 msgid "Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join next year!"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1626
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1659
 msgid "Sorry, the race already started! We would be lucky if you will join next year!"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1732
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1765
 msgid "Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join next time!"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1737
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1770
 msgid "Sorry, the race already started! We would be lucky if you will join next time!"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1765
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1798
 msgctxt "Team Dashboard"
 msgid ""
 "\t<li> You can't invite other hitchmates any more! </li>\n"
@@ -4308,196 +3592,184 @@ msgid ""
 "                                                "
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:1770
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:1803
 msgctxt "Team Dashboard"
 msgid "   <li> If you have chosen your starting point, you can't change it any more!</li>"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:2153
-#: includes/class-h3-mgmt-teams.php:2155
+#: includes/class-h3-mgmt-teams.php:2186
+#: includes/class-h3-mgmt-teams.php:2188
 #, php-format
-#@ h3-mgmt
 msgctxt "Homework"
 msgid "Your team donations counter: %d€ "
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:2414
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2447
 msgctxt "Team Profile"
 msgid "No Owner yet. <br> You can be a Owner after the donation process has been started!"
 msgstr ""
 
-#: includes/class-h3-mgmt-teams.php:2447
-#@ h3-mgmt
+#: includes/class-h3-mgmt-teams.php:2480
 msgctxt "Team Profile"
 msgid "You can be a Sponsor after the donation process has been started!"
 msgstr ""
 
 #: includes/class-h3-mgmt-ticker.php:268
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "Comment has been sent."
 msgstr ""
 
 #: includes/class-h3-mgmt-ticker.php:385
-#@ h3-mgmt
 msgctxt "Ticker Form"
 msgid "There went something wrong, sorry! Please try again..."
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:695
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:694
 msgid "Set as active Race / Event!"
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-table.php:697
-#@ h3-mgmt
+#: templates/class-h3-mgmt-admin-table.php:696
 msgid "Set as active!"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:636
+#: includes/class-h3-mgmt-sponsors.php:638
 #, php-format
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Great you just donated %amount%€ at Betterplace. You are the Team Owner of %team_name% now! Please fill out the form below for our Homepage. The data will be displayed at the Team Profile."
 msgstr "Toll, du hast gerade %amount%€ bei Betterplace gespendet. Du bist jetzt der/die Teamowner:in von %team_name%! Bitte fülle das untenstehende Formular für unsere Homepage aus. Die Daten werden dann auf dem Teamprofil angezeigt."
 
-#: includes/class-h3-mgmt-sponsors.php:644
+#: includes/class-h3-mgmt-sponsors.php:646
 #, php-format
-#@ h3-mgmt
 msgctxt "Sponsoring Form"
 msgid "Great you just donated %amount%€ at Betterplace. You are a Team Sponsor of %team_name% now! Please fill out the form below for our Homepage. The data will be displayed at the Team Profile."
 msgstr "Toll, du hast gerade %amount%€ bei Betterplace gespendet. Du bist jetzt ein:e Teamsponsor:in von %team_name%! Bitte fülle das untenstehende Formular für unsere Homepage aus. Die Daten werden dann auf dem Teamprofil angezeigt."
 
-#: includes/class-h3-mgmt-sponsors.php:797
-#: includes/class-h3-mgmt-sponsors.php:985
-#: includes/class-h3-mgmt-sponsors.php:999
-#: includes/class-h3-mgmt-sponsors.php:1008
-#: includes/class-h3-mgmt-sponsors.php:1059
-#: includes/class-h3-mgmt-sponsors.php:1073
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:803
+#: includes/class-h3-mgmt-sponsors.php:991
+#: includes/class-h3-mgmt-sponsors.php:1005
+#: includes/class-h3-mgmt-sponsors.php:1014
+#: includes/class-h3-mgmt-sponsors.php:1065
+#: includes/class-h3-mgmt-sponsors.php:1079
 msgctxt "Sponsoring Form"
 msgid "An error occurred."
 msgstr "Ein Fehler ist aufgetreten."
 
-#: includes/class-h3-mgmt-sponsors.php:806
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:809
 msgctxt "Sponsoring Form"
 msgid "We encountered an issue setting cookies in your browser. Please ensure that cookies are enabled and try again. If the problem persists, contact support."
 msgstr "Es ist ein Problem beim Setzen von Cookies in deinem Browser aufgetreten. Bitte stelle sicher, dass Cookies aktiviert sind und versuche es erneut. Wenn das Problem weiterhin besteht, wende dich an den Support."
 
-#: includes/class-h3-mgmt-sponsors.php:836
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:840
 msgctxt "Sponsoring Form"
 msgid "You have already donated for this team. Would you like to make a new donation or edit your data for this donation?"
 msgstr "Du hast bereits für dieses Team gespendet. Möchtest du eine neue Spende tätigen oder deine Daten für diese Spende ändern?"
 
-#: includes/class-h3-mgmt-sponsors.php:840
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:846
 msgctxt "Sponsoring Form"
 msgid "Edit my data"
 msgstr "Meine Daten ändern"
 
-#: includes/class-h3-mgmt-sponsors.php:841
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:847
 msgctxt "Sponsoring Form"
 msgid "New donation"
 msgstr "Neue Spende"
 
-#: includes/class-h3-mgmt-sponsors.php:915
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:920
 msgctxt "Sponsoring Form"
 msgid "That we can assign your donation to a team, please <b>copy the following token into the public comment field</b>:"
 msgstr "Damit wir deine Spende einem Team zuordnen können, <b>kopiere bitte folgenden Token in das öffentliche Kommentarfeld</b>:"
 
-#: includes/class-h3-mgmt-sponsors.php:921
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:925
 msgctxt "Sponsoring Form"
 msgid "You just have to make sure that this token appears in the comment. You can still leave a comment before or after the token if you wish."
 msgstr "Du musst nur sicherstellen, dass dieser Token im Kommentar vorkommt. Du kannst vor oder nach dem Token trotzdem einen Kommentar hinterlassen, wenn du möchtest."
 
-#: includes/class-h3-mgmt-sponsors.php:927
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:931
 msgctxt "Sponsoring Form"
 msgid "If you want to become an <b>owner</b> of the team, make sure that the <b>checkbox “Show amount” is checked</b>. Otherwise we will not be able to verify whether your donation is sufficient."
 msgstr "Wenn du ein:e <b>Owner:in</b> des Teams werden willst, stelle sicher, dass das <b>Häkchen bei \"Betrag anzeigen\" gesetzt ist</b>. Sonst können wir nicht verifizieren, ob deine Spende ausreicht."
 
-#: includes/class-h3-mgmt-sponsors.php:937
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:943
 msgctxt "Sponsoring Form"
 msgid "Token copied to clipboard!"
 msgstr "Token in die Zwischenablage kopiert!"
 
-#: includes/class-h3-mgmt-sponsors.php:938
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:944
 msgctxt "Sponsoring Form"
 msgid "Donate on betterplace.org"
 msgstr "Spende auf betterplace.org"
 
-#: includes/class-h3-mgmt-sponsors.php:939
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:945
 msgctxt "Sponsoring Form"
 msgid "Done"
 msgstr "Fertig"
 
-#: includes/class-h3-mgmt-sponsors.php:1752
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1758
 msgctxt "Sponsoring Form"
 msgid "If you submit a link, your picture/logo will link to that site."
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:692
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:695
 msgctxt "Sponsoring Form"
 msgid "All shown Teams haven't a TeamOwner yet. Be there TeamOwner NOW!<br /><br /><b>Please Remember:</b> At the next Step you have to donate <b>at least 100€</b> to be a <b>TeamOwner</b> and to have the privileges to add a picture at their Team-Profile!"
 msgstr "Alle angezeigten Teams haben bisher noch keine/n Teamowner:in. Werde jetzt deren Owner:in!<br /><br /><b>Denk daran:</b> Im nächsten Schritt musst du <b>mindestens 100 €</b> spenden, um ein/e <b>Teamowner:in</b> zu werden und das Recht zu bekommen, ein Bild auf die Profilseite des Teams hinzuzufügen."
 
-#: includes/class-h3-mgmt-sponsors.php:1288
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:1294
 msgctxt "Progressive Form Steps"
 msgid "Navigate to step"
 msgstr ""
 
-#: includes/class-h3-mgmt-sponsors.php:933
-#@ h3-mgmt
+#: includes/class-h3-mgmt-sponsors.php:937
 msgctxt "Sponsoring Form"
 msgid "After you have completed the donation at betterplace.org, please <b>press the \"Done\" button</b> below to complete the donation here. You will not be automatically redirected back to our site."
 msgstr "Nachdem du die Spende bei betterplace.org abgeschlossen hast, <b>klicke bitte unten auf den \"Fertig\"-Button</b>, um die Spende hier abzuschließen. Du wirst nicht automatisch zu unserer Website zurückgeleitet."
 
+#. Plugin Name of the plugin
+#: h3-management.php
+msgid "HitchHikingHub Management"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: h3-management.php
+msgid "https://github.com/Club-of-Roam/cor-mgmt"
+msgstr ""
+
+#. Description of the plugin
+#: h3-management.php
+msgid "Core of the \"HitchHikingHub\", events/races, user profiles, team profiles"
+msgstr ""
+
+#. Author of the plugin
+#: h3-management.php
+msgid "Club of Roam – Autostop! e.V."
+msgstr ""
+
+#. Author URI of the plugin
+#: h3-management.php
+msgid "https://tramprennen.org/"
+msgstr ""
+
 #: admin/class-h3-mgmt-admin-emails.php:82
-#@ h3-mgmt
 msgctxt "Admin Email Interface"
-msgid "All participants of \"name\""
+msgid "All participants of \""
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:699
-#@ default
-msgctxt "h3-mgmt"
-msgid "More than 1 Phone Number separated by space bar!!!"
-msgstr ""
-
-#: admin/class-h3-mgmt-admin-teams.php:747
-#@ default
-msgctxt "h3-mgmt"
-msgid "Please watch out that you don't choose a participant twice!!!"
-msgstr ""
-
-#: admin/class-h3-mgmt-admin-teams.php:754
-#@ default
-msgctxt "h3-mgmt"
-msgid "Choose the language for the E-Mails of the participant."
-msgstr ""
-
-#: includes/class-h3-mgmt-ticker.php:1515
-#@ h3-mgmt
+#: includes/class-h3-mgmt-ticker.php:1567
 msgctxt "ticker"
-msgid "Send a <a title=\"Send a ticker message\" href=\"\">ticker message</a>!!!"
+msgid "Send a <a title=\"Send a ticker message\" href=\""
 msgstr ""
 
-#: templates/class-h3-mgmt-admin-form.php:111
-#: templates/class-h3-mgmt-admin-metaboxes.php:75
-#@ default
-msgid "Click to toggle"
+#: includes/class-h3-mgmt-xchange.php:165
+msgctxt "XChange"
+msgid "You must be <a title=\"Log in\" href=\""
 msgstr ""
 
+#: js/h3-mgmt-sponsoring.js:116
+msgctxt "Sponsoring form"
+msgid "Your donation cannot be found yet. Wait a little and try again."
+msgstr "Deine Spende kann bisher noch nicht gefunden werden. Warte ein bisschen und versuche es erneut."
+
+#: js/h3-mgmt-sponsoring.js:122
+msgctxt "Sponsoring form"
+msgid "It seems that the betterplace.org API is currently not reachable. Please try again later."
+msgstr "Die betterplace.org-API scheint derzeit nicht erreichbar zu sein. Versuche es später nochmal."

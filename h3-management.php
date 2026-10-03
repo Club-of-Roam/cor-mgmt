@@ -116,6 +116,9 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-loading', H3_MGMT_RELPATH . 'js/h3-mgmt-loading.js', [], '1.0' );
 	wp_register_script( 'h3-mgmt-redirect', H3_MGMT_RELPATH . 'js/h3-mgmt-redirect.js', [], '1.0' );
 
+	/* set script translations */
+	wp_set_script_translations( 'h3-mgmt-sponsoring', 'h3-mgmt', plugin_dir_path( __FILE__ ) . 'languages' );
+
 	/* register styles */
 	wp_register_style( 'h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', [], '1.2' );
 	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', [], '1.2' );

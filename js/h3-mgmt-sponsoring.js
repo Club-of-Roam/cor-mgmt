@@ -1,3 +1,5 @@
+const { _x } = wp.i18n;
+
 const showPopup = () => {
     'use strict';
 
@@ -111,13 +113,13 @@ const fetchAndFilterDonations = (fundraisingEventId, searchTerms, loaderParent) 
                 document.getElementById('donation-done-form').submit();
             } else {
                 // Deine Spende kann bisher noch nicht gefunden werden. Warte ein bisschen und versuche es erneut.
-                showErrorMessage(wp.i18n.__('Your donation cannot be found yet. Wait a little and try again.', 'Sponsoring form', 'h3-mgmt'));
+                showErrorMessage(_x('Your donation cannot be found yet. Wait a little and try again.', 'Sponsoring form', 'h3-mgmt'));
             }
             hideLoaderOfParent(loaderParent);
         },
         error: () => {
             // Die betterplace.org-API scheint derzeit nicht erreichbar zu sein. Versuche es später nochmal.
-            showErrorMessage(wp.i18n.__('It seems that the betterplace.org API is currently not reachable. Please try again later.', 'Sponsoring form', 'h3-mgmt'));
+            showErrorMessage(_x('It seems that the betterplace.org API is currently not reachable. Please try again later.', 'Sponsoring form', 'h3-mgmt'));
             hideLoaderOfParent(loaderParent);
         }
     });
