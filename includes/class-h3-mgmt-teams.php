@@ -901,7 +901,7 @@ class H3_MGMT_Teams {
 
 		foreach( $team_id_query as $tmp_id ) {
 			$data = $this->get_team_data( $tmp_id['team_id'] );
-			if ( intval( $race_id ) === intval( $data['race_id'] ) ) {
+			if ( $data && intval( $race_id ) === intval( $data['race_id'] ) ) {
 				$team_id = $tmp_id['team_id'];
 				break;
 			}

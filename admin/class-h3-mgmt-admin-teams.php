@@ -281,7 +281,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 					break;
 
 				case 'edit':
-					$this->teams_edit( $_GET['id'], $_POST['race_id'] );
+					$this->teams_edit( $_GET['id'], $_POST['race_id'] ?? null );
 					break;
 
 				default:
@@ -636,7 +636,10 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 		private function teams_edit( $team_id = null, $race_id = null ) {
 			global $h3_mgmt_races, $h3_mgmt_teams, $information_text;
 
-			$route_id = isset( $team['route_id'] ) ? $team['route_id'] : 0;
+			$route_id = $team['route_id'] ?? 0;
+
+			$status = '';
+
 			if ( $team_id == null && $race_id == null ) {
 					$race_id          = $h3_mgmt_races->get_active_race();
 					$information_text = $h3_mgmt_races->get_race_information_text( $race_id );
@@ -783,11 +786,13 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 						}
 					} elseif ( $h3_mgmt_teams->team_exists( $team_id ) ) {
 
-						$fields[ $i ]['fields'][ $j ]['value'] = stripslashes( $team[ $fields[ $i ]['fields'][ $j ]['id'] ] );
+						if (isset($team[ $fields[ $i ]['fields'][ $j ]['id'] ])) {
+							$fields[ $i ]['fields'][ $j ]['value'] = stripslashes( $team[ $fields[ $i ]['fields'][ $j ]['id'] ] );
+						}
 
 						for ( $x = 1; $x <= $num_teammember; $x++ ) {
 							if ( $fields[ $i ]['fields'][ $j ]['id'] == 'member' . $x ) {
-								$fields[ $i ]['fields'][ $j ]['value'] = $member_ids[ ( $x - 1 ) ];
+								$fields[ $i ]['fields'][ $j ]['value'] = $member_ids[ ( $x - 1 ) ] ?? 0;
 							} elseif ( $fields[ $i ]['fields'][ $j ]['id'] == 'member' . $x . '_language' ) {
 								$fields[ $i ]['fields'][ $j ]['value'] = empty( $member_ids[ ( $x - 1 ) ] ) ? 'en' : $h3_mgmt_teams->get_participant_language( $member_ids[0] );
 							}
