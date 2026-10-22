@@ -11,20 +11,27 @@ if( ! isset( $output ) ) {
 
 /* loop through fields */
 
-if ( isset ( $messages ) && ! empty( $messages ) ) {
+if ( ! empty( $messages ) ) {
 	foreach ( $messages as $message ) {
 
-		$stamp_diff = time() - intval( $message['time'] );
-		if( $stamp_diff < 3600 ) {
-			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $message['diff']['minute'], _x( '%time% minutes ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
-		} elseif( $stamp_diff < 86400 ) {
-			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $message['diff']['hour'], _x( '%time% hours ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
-		} elseif( $stamp_diff < 604800 ) {
-			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $message['diff']['day'], _x( '%time% days ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
-		} elseif( $stamp_diff < 2419200 ) {
-			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $message['diff']['week'], _x( 'weeks ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+		$diff_string = '';
+
+		$diff = $message['diff'];
+		if ($diff->y > 0) {
+			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->y, _nx( '%time% year ago', '%time% years ago', $diff->y, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+		} elseif ($diff->m > 0) {
+			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->m, _nx( '%time% month ago', '%time% months ago', $diff->m, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+		} elseif ($diff->d >= 7) {
+			$weeks = floor($diff->d / 7);
+			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $weeks, _nx( '%time% week ago', '%time% weeks ago', $weeks, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+		} elseif ($diff->d > 0) {
+			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->d, _nx( '%time% day ago', '%time% days ago', $diff->d, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+		} elseif ($diff->h > 0) {
+			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->h, _nx( '%time% hour ago', '%time% hours ago', $diff->h, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+		} elseif ($diff->i > 0) {
+			$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->i, _nx( '%time% minute ago', '%time% minutes ago', $diff->i, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
 		} else {
-			$diff_string = '';
+			$diff_string = '<br /><span class="ticker-message-ago">(' . _x( 'just now', 'Ticker', 'h3-mgmt' ) . ')</span>';
 		}
 
 		//if( ! empty( $message['message'] ) || ( file_exists( $message['img_path'] ) && filesize( $message['img_path'] ) > 1 ) ) {
@@ -143,17 +150,22 @@ if ( isset ( $messages ) && ! empty( $messages ) ) {
 					
 				foreach ( $message['comments'] as $comment ) {
 
-					$stamp_diff = time() - intval( $comment['time'] );
-					if( $stamp_diff < 3600 ) {
-						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['minute'], _x( '%time% minutes ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
-					} elseif( $stamp_diff < 86400 ) {
-						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['hour'], _x( '%time% hours ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
-					} elseif( $stamp_diff < 604800 ) {
-						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['day'], _x( '%time% days ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
-					} elseif( $stamp_diff < 2419200 ) {
-						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $comment['diff']['week'], _x( 'weeks ago', 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					$diff = $comment['diff'];
+					if ($diff->y > 0) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->y, _nx( '%time% year ago', '%time% years ago', $diff->y, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif ($diff->m > 0) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->m, _nx( '%time% month ago', '%time% months ago', $diff->m, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif ($diff->d >= 7) {
+						$weeks = floor($diff->d / 7);
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $weeks, _nx( '%time% week ago', '%time% weeks ago', $weeks, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif ($diff->d > 0) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->d, _nx( '%time% day ago', '%time% days ago', $diff->d, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif ($diff->h > 0) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->h, _nx( '%time% hour ago', '%time% hours ago', $diff->h, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
+					} elseif ($diff->i > 0) {
+						$diff_string = '<br /><span class="ticker-message-ago">(' . str_replace( '%time%', $diff->i, _nx( '%time% minute ago', '%time% minutes ago', $diff->i, 'Ticker', 'h3-mgmt' ) ) . ')</span>';
 					} else {
-						$diff_string = '';
+						$diff_string = '<br /><span class="ticker-message-ago">(' . _x( 'just now', 'Ticker', 'h3-mgmt' ) . ')</span>';
 					}
 
 					$time = $comment['date'] . $diff_string;

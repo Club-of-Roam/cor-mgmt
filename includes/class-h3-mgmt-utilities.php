@@ -70,6 +70,17 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 			return $diff;
 		}
 
+		public function date_diff2(int $timestamp1, int $timestamp2 = null): DateInterval {
+			$date1 = DateTimeImmutable::createFromFormat( 'U', $timestamp1 );
+			if ( $timestamp2 ) {
+				$date2 = DateTimeImmutable::createFromFormat( 'U', $timestamp2 );
+			} else {
+				$date2 = new DateTimeImmutable();
+			}
+
+			return $date1->diff( $date2 );
+		}
+
 		/**
 		 * Converts DB strings into translatable strings
 		 *
