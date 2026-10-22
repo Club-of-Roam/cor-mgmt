@@ -769,7 +769,7 @@ HTML;
 						$display_data[ 'message' ]		 = stripslashes( $message[ 'msg' ] );
 						$display_data[ 'date' ]			 = date( 'Y-m-d H:i \G\M\TO', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]			 = $message[ 'timestamp' ];
-						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
+						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff2( $message[ 'timestamp' ] );
 						$messages[]						 = $display_data;
 					}
 				}
@@ -869,7 +869,7 @@ HTML;
 						$display_data[ 'message' ]		 = stripslashes( $message[ 'msg' ] );
 						$display_data[ 'date' ]			 = date( 'Y-m-d H:i \G\M\TO', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]			 = $message[ 'timestamp' ];
-						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
+						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff2( $message[ 'timestamp' ] );
 						$messages[]						 = $display_data;
 					}
 				}
@@ -1041,7 +1041,7 @@ HTML;
 							$display_data[ 'type' ]		 = $message[ 'type' ];
 							$display_data[ 'date' ]		 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
 							$display_data[ 'time' ]		 = $message[ 'timestamp' ];
-							$display_data[ 'diff' ]		 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
+							$display_data[ 'diff' ]		 = $h3_mgmt_utilities->date_diff2( $message[ 'timestamp' ] );
 							$rgb						 = $h3_mgmt_utilities->hex2rgb( $display_data[ 'hex_color' ] );
 							$display_data[ 'color' ]	 = 'rgba(' . $rgb[ 0 ] . ', ' . $rgb[ 1 ] . ', ' . $rgb[ 2 ] . ', .85)';
 								
@@ -1104,7 +1104,7 @@ HTML;
 								$display_data[ 'type' ]		 = $message[ 'type' ];
 								$display_data[ 'date' ]		 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
 								$display_data[ 'time' ]		 = $message[ 'timestamp' ];
-								$display_data[ 'diff' ]		 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
+								$display_data[ 'diff' ]		 = $h3_mgmt_utilities->date_diff2( $message[ 'timestamp' ] );
 								$rgb						 = $h3_mgmt_utilities->hex2rgb( $display_data[ 'hex_color' ] );
 								$display_data[ 'color' ]	 = 'rgba(' . $rgb[ 0 ] . ', ' . $rgb[ 1 ] . ', ' . $rgb[ 2 ] . ', .85)';
 								$display_data[ 'id' ]		 = $message[ 'id' ];
@@ -1129,7 +1129,7 @@ HTML;
 										$display_data[ 'comments' ][$key][ 'name' ]			= $user->first_name . ' ' . $user->last_name;
 										$display_data[ 'comments' ][$key][ 'message' ]		= stripslashes( $comment['msg'] );
 										$display_data[ 'comments' ][$key][ 'time' ]			= $comment[ 'timestamp' ];
-										$display_data[ 'comments' ][$key][ 'diff' ]			= $h3_mgmt_utilities->date_diff( $comment[ 'timestamp' ], time() );
+										$display_data[ 'comments' ][$key][ 'diff' ]			= $h3_mgmt_utilities->date_diff2( $comment[ 'timestamp' ] );
 										$display_data[ 'comments' ][$key][ 'type' ]			= $comment[ 'type' ];
 										$display_data[ 'comments' ][$key][ 'date' ]			= date( 'l, F jS G:i', intval( $comment[ 'timestamp' ] ) );
 									}	
@@ -1308,7 +1308,7 @@ HTML;
 						$display_data[ 'type' ]		 = $message[ 'type' ];
 						$display_data[ 'date' ]		 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]		 = $message[ 'timestamp' ];
-						$display_data[ 'diff' ]		 = $h3_mgmt_utilities->date_diff( $message[ 'timestamp' ], time() );
+						$display_data[ 'diff' ]		 = $h3_mgmt_utilities->date_diff2( $message[ 'timestamp' ] );
 						$rgb						 = $h3_mgmt_utilities->hex2rgb( $display_data[ 'hex_color' ] );
 						$display_data[ 'color' ]	 = 'rgba(' . $rgb[ 0 ] . ', ' . $rgb[ 1 ] . ', ' . $rgb[ 2 ] . ', .85)';
 						$display_data[ 'id' ]		 = $message[ 'id' ];
@@ -1332,7 +1332,7 @@ HTML;
 								$display_data[ 'comments' ][$key][ 'name' ]			= $user->first_name . ' ' . $user->last_name;
 								$display_data[ 'comments' ][$key][ 'message' ]		= stripslashes( $comment['msg'] );
 								$display_data[ 'comments' ][$key][ 'time' ]			= $comment[ 'timestamp' ];
-								$display_data[ 'comments' ][$key][ 'diff' ]			= $h3_mgmt_utilities->date_diff( $comment[ 'timestamp' ], time() );
+								$display_data[ 'comments' ][$key][ 'diff' ]			= $h3_mgmt_utilities->date_diff2( $comment[ 'timestamp' ] );
 								$display_data[ 'comments' ][$key][ 'type' ]			= $comment[ 'type' ];
 								$display_data[ 'comments' ][$key][ 'id' ]			= $comment[ 'id' ];
 								$display_data[ 'comments' ][$key][ 'date' ]			= date( 'l, F jS G:i', intval( $comment[ 'timestamp' ] ) );
