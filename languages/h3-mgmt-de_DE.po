@@ -252,7 +252,7 @@ msgstr "Etappe erfolgreich aktualisiert!"
 #: admin/class-h3-mgmt-admin-races.php:2215
 #: admin/class-h3-mgmt-admin-teams.php:536
 #: includes/class-h3-mgmt-races.php:811
-#: includes/class-h3-mgmt-utilities.php:83
+#: includes/class-h3-mgmt-utilities.php:94
 msgid "Route"
 msgstr "Route"
 
@@ -375,14 +375,14 @@ msgstr "Teams"
 #: admin/class-h3-mgmt-admin-sponsors.php:487
 #: admin/class-h3-mgmt-admin-sponsors.php:558
 #: admin/class-h3-mgmt-admin-sponsors.php:623
-#: admin/class-h3-mgmt-admin-teams.php:888
+#: admin/class-h3-mgmt-admin-teams.php:893
 msgid "First Name"
 msgstr "Vorname"
 
 #: admin/class-h3-mgmt-admin-sponsors.php:493
 #: admin/class-h3-mgmt-admin-sponsors.php:564
 #: admin/class-h3-mgmt-admin-sponsors.php:629
-#: admin/class-h3-mgmt-admin-teams.php:893
+#: admin/class-h3-mgmt-admin-teams.php:898
 msgid "Last Name"
 msgstr "Nachname"
 
@@ -391,20 +391,20 @@ msgstr "Nachname"
 #: admin/class-h3-mgmt-admin-sponsors.php:642
 #: admin/class-h3-mgmt-admin-sponsors.php:695
 #: admin/class-h3-mgmt-admin-sponsors.php:996
-#: admin/class-h3-mgmt-admin-teams.php:913
+#: admin/class-h3-mgmt-admin-teams.php:918
 msgid "Team"
 msgstr "Team"
 
-#: admin/class-h3-mgmt-admin-teams.php:933
+#: admin/class-h3-mgmt-admin-teams.php:938
 msgid "Waiver received?"
 msgstr "Einverständniserklärung eingetroffen?"
 
-#: admin/class-h3-mgmt-admin-teams.php:942
+#: admin/class-h3-mgmt-admin-teams.php:947
 msgid "Package paid?"
 msgstr "Hitchpaket bezahlt?"
 
-#: admin/class-h3-mgmt-admin-teams.php:962
-#: admin/class-h3-mgmt-admin-teams.php:1020
+#: admin/class-h3-mgmt-admin-teams.php:967
+#: admin/class-h3-mgmt-admin-teams.php:1025
 #: admin/class-h3-mgmt-admin.php:81
 #: admin/class-h3-mgmt-admin.php:82
 msgid "Participants"
@@ -509,7 +509,7 @@ msgstr "Sortieren nach"
 
 #: includes/class-h3-mgmt-races.php:812
 #: includes/class-h3-mgmt-races.php:838
-#: includes/class-h3-mgmt-utilities.php:85
+#: includes/class-h3-mgmt-utilities.php:96
 msgid "Stage"
 msgstr "Etappe"
 
@@ -668,7 +668,7 @@ msgctxt "User Panel"
 msgid "Edit Team"
 msgstr "Team bearbeiten"
 
-#: includes/class-h3-mgmt-utilities.php:117
+#: includes/class-h3-mgmt-utilities.php:128
 msgid "Visit Site"
 msgstr "Seite besuchen"
 
@@ -1201,7 +1201,7 @@ msgctxt "XChange"
 msgid "Submit / Update own message"
 msgstr "Nachricht abschicken"
 
-#: admin/class-h3-mgmt-admin-teams.php:859
+#: admin/class-h3-mgmt-admin-teams.php:864
 msgid "Save Team"
 msgstr "Team Speichern"
 
@@ -1263,11 +1263,11 @@ msgctxt "Homework"
 msgid "Resend Mail."
 msgstr "Nochmal verschicken."
 
-#: admin/class-h3-mgmt-admin-teams.php:898
+#: admin/class-h3-mgmt-admin-teams.php:903
 msgid "Email"
 msgstr "Email"
 
-#: admin/class-h3-mgmt-admin-teams.php:903
+#: admin/class-h3-mgmt-admin-teams.php:908
 msgid "City"
 msgstr "Stadt"
 
@@ -1412,27 +1412,6 @@ msgstr "Auf gehts"
 msgid "To the team's profile"
 msgstr "zum TeamProfil"
 
-#: templates/frontend-ticker.php:19
-#: templates/frontend-ticker.php:148
-#, php-format
-msgctxt "Ticker"
-msgid "%time% minutes ago"
-msgstr "vor %time% Minuten"
-
-#: templates/frontend-ticker.php:21
-#: templates/frontend-ticker.php:150
-#, php-format
-msgctxt "Ticker"
-msgid "%time% hours ago"
-msgstr "vor %time% Stunden"
-
-#: templates/frontend-ticker.php:23
-#: templates/frontend-ticker.php:152
-#, php-format
-msgctxt "Ticker"
-msgid "%time% days ago"
-msgstr "vor %time% Tagen"
-
 #: includes/class-h3-mgmt-races.php:1248
 msgctxt "Ranking"
 msgid "Total Rank"
@@ -1511,9 +1490,9 @@ msgstr "Routen ID"
 #: admin/class-h3-mgmt-admin-sponsors.php:572
 #: admin/class-h3-mgmt-admin-sponsors.php:637
 #: admin/class-h3-mgmt-admin-sponsors.php:690
-#: admin/class-h3-mgmt-admin-teams.php:661
-#: admin/class-h3-mgmt-admin-teams.php:685
-#: includes/class-h3-mgmt-utilities.php:81
+#: admin/class-h3-mgmt-admin-teams.php:664
+#: admin/class-h3-mgmt-admin-teams.php:688
+#: includes/class-h3-mgmt-utilities.php:92
 msgid "Race"
 msgstr "Rennen"
 
@@ -1670,12 +1649,12 @@ msgstr "Die Sprache, in welcher der Spender E-Mails erhalten sollte. When vom Fr
 #: admin/class-h3-mgmt-admin-races.php:2115
 #: admin/class-h3-mgmt-admin-statistics.php:296
 #: admin/class-h3-mgmt-admin-teams.php:531
-#: admin/class-h3-mgmt-admin-teams.php:667
-#: admin/class-h3-mgmt-admin-teams.php:928
+#: admin/class-h3-mgmt-admin-teams.php:670
+#: admin/class-h3-mgmt-admin-teams.php:933
 msgid "Event / Race"
 msgstr "Event / Rennen"
 
-#: admin/class-h3-mgmt-admin-teams.php:908
+#: admin/class-h3-mgmt-admin-teams.php:913
 msgid "Phone"
 msgstr "Telefon"
 
@@ -1918,7 +1897,7 @@ msgctxt "User Panel"
 msgid "Register or join a team for %s"
 msgstr "Tritt einem Team bei oder melde ein neues Team für %s"
 
-#: includes/class-h3-mgmt-utilities.php:164
+#: includes/class-h3-mgmt-utilities.php:175
 msgid "not set"
 msgstr "nicht gewählt"
 
@@ -2292,7 +2271,7 @@ msgstr "TeamSponsor dieses Teams werden!"
 msgid "Code"
 msgstr "Code"
 
-#: admin/class-h3-mgmt-admin-teams.php:918
+#: admin/class-h3-mgmt-admin-teams.php:923
 msgid "Shirt"
 msgstr "Shirt"
 
@@ -2397,8 +2376,8 @@ msgstr ""
 msgid "The message"
 msgstr "Die Nachricht"
 
-#: templates/frontend-ticker.php:95
-#: templates/frontend-ticker.php:117
+#: templates/frontend-ticker.php:102
+#: templates/frontend-ticker.php:124
 msgid "Full-size Ticker Image"
 msgstr ""
 
@@ -2421,7 +2400,7 @@ msgstr "Aktuelle Platzierung im Rennen"
 msgid "Current Route Rank"
 msgstr "Aktuelle Platzierung auf Route"
 
-#: admin/class-h3-mgmt-admin-teams.php:923
+#: admin/class-h3-mgmt-admin-teams.php:928
 msgid "Inf. for Mobile"
 msgstr "Infos für unseren Mobilpartner"
 
@@ -2487,7 +2466,7 @@ msgctxt "Homework"
 msgid "You cannot yet chose a starting point..."
 msgstr "Ihr könnt noch keinen Startort auswählen..."
 
-#: admin/class-h3-mgmt-admin-teams.php:698
+#: admin/class-h3-mgmt-admin-teams.php:701
 msgid "Phones (for Ticker)"
 msgstr ""
 
@@ -2574,12 +2553,6 @@ msgstr "Information über den Standort."
 msgctxt "Ticker Form"
 msgid "Information about your coordinates like city, lake or area."
 msgstr "Informationen über Koordinaten wie die Stadt, einen See oder die Umgebung."
-
-#: templates/frontend-ticker.php:25
-#: templates/frontend-ticker.php:154
-msgctxt "Ticker"
-msgid "weeks ago"
-msgstr "Wochen vorher..."
 
 #: includes/class-h3-mgmt-sponsors.php:553
 #: includes/class-h3-mgmt-sponsors.php:1322
@@ -2850,7 +2823,7 @@ msgstr ""
 msgid "add team"
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:737
+#: admin/class-h3-mgmt-admin-teams.php:740
 msgid "Team Member"
 msgstr ""
 
@@ -3464,28 +3437,28 @@ msgstr ""
 msgid "Which Race?"
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:746
+#: admin/class-h3-mgmt-admin-teams.php:749
 msgid "Member "
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:753
+#: admin/class-h3-mgmt-admin-teams.php:756
 msgid "Language Member "
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:817
+#: admin/class-h3-mgmt-admin-teams.php:822
 msgid "Add New Team | Choose Race: "
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:819
+#: admin/class-h3-mgmt-admin-teams.php:824
 msgid "Add New Team for Race: "
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:821
+#: admin/class-h3-mgmt-admin-teams.php:826
 #, php-format
 msgid "Edit \"%s\" in Race: "
 msgstr ""
 
-#: admin/class-h3-mgmt-admin-teams.php:843
+#: admin/class-h3-mgmt-admin-teams.php:848
 msgid "Next"
 msgstr ""
 
@@ -3773,3 +3746,57 @@ msgstr "Deine Spende kann bisher noch nicht gefunden werden. Warte ein bisschen 
 msgctxt "Sponsoring form"
 msgid "It seems that the betterplace.org API is currently not reachable. Please try again later."
 msgstr "Die betterplace.org-API scheint derzeit nicht erreichbar zu sein. Versuche es später nochmal."
+
+#: templates/frontend-ticker.php:21
+#: templates/frontend-ticker.php:155
+msgctxt "Ticker"
+msgid "%time% year ago"
+msgid_plural "%time% years ago"
+msgstr[0] "vor %time% Jahr"
+msgstr[1] "vor %time% Jahren"
+
+#: templates/frontend-ticker.php:23
+#: templates/frontend-ticker.php:157
+msgctxt "Ticker"
+msgid "%time% month ago"
+msgid_plural "%time% months ago"
+msgstr[0] "vor %time% Monat"
+msgstr[1] "vor %time% Monaten"
+
+#: templates/frontend-ticker.php:26
+#: templates/frontend-ticker.php:160
+msgctxt "Ticker"
+msgid "%time% week ago"
+msgid_plural "%time% weeks ago"
+msgstr[0] "vor %time% Woche"
+msgstr[1] "vor %time% Wochen"
+
+#: templates/frontend-ticker.php:28
+#: templates/frontend-ticker.php:162
+msgctxt "Ticker"
+msgid "%time% day ago"
+msgid_plural "%time% days ago"
+msgstr[0] "vor %time% Tag"
+msgstr[1] "vor %time% Tagen"
+
+#: templates/frontend-ticker.php:30
+#: templates/frontend-ticker.php:164
+msgctxt "Ticker"
+msgid "%time% hour ago"
+msgid_plural "%time% hours ago"
+msgstr[0] "vor %time% Stunde"
+msgstr[1] "vor %time% Stunden"
+
+#: templates/frontend-ticker.php:32
+#: templates/frontend-ticker.php:166
+msgctxt "Ticker"
+msgid "%time% minute ago"
+msgid_plural "%time% minutes ago"
+msgstr[0] "vor %time% Minute"
+msgstr[1] "vor %time% Minuten"
+
+#: templates/frontend-ticker.php:34
+#: templates/frontend-ticker.php:168
+msgctxt "Ticker"
+msgid "just now"
+msgstr "gerade eben"
