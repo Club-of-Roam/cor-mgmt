@@ -4,3 +4,17 @@
 logs/
 /nbproject/private/
 /.idea/
+
+# Development dependencies, caches and private test artifacts
+/vendor/
+/node_modules/
+/.phpunit.cache/
+/.phpstan-cache/
+/.cache/
+/test-results/
+/playwright-report/
+/coverage/
+/.env
+/.env.*
+!/.env.example
+/phpunit.xml

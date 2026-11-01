@@ -1,0 +1,928 @@
+{
+  "format": 1,
+  "scope": "Static legacy PHP; no request execution",
+  "sources": {
+    "admin/class-h3-mgmt-admin-emails.php": "8d4cf13b936708adf40660c86716dc6f957c173f3d6b90561bf5b561f1bc4063",
+    "admin/class-h3-mgmt-admin-races.php": "547937eae448690e76d90ea757326e6ff13ff8aaeecf2c9ead1187c6e092b58e",
+    "admin/class-h3-mgmt-admin-sponsors.php": "10cbabdb5e0a3396feeebf01607f7d03104c8ce626681ba40f56ef578f658a76",
+    "admin/class-h3-mgmt-admin-statistics.php": "aa6f1ef5af5facabc146e8cfde66afeda635a1db990a04742866cf552608cc13",
+    "admin/class-h3-mgmt-admin-teams.php": "8336ef39a6b1b40b41c3565d05e7d9caf74358181dcc4e56eb92bae896a81a4e",
+    "admin/class-h3-mgmt-admin-xchange.php": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "admin/class-h3-mgmt-admin.php": "3f1cbeae3e1d28556b07ea2a2f2dc69873bc0bd1bb8c9ba3c606441ccef7f797",
+    "h3-management.php": "83976070ccf9e443dc4a7ff7ed987e93b19edb92ef0ff9be79d163387f144551",
+    "includes/class-h3-mgmt-mailer.php": "8e939dc7fe82b83cd8c70eadb8dfaa2114bdefbc9afcd6f3617f846f3c14130e",
+    "includes/class-h3-mgmt-profile.php": "118177be2cedb9f4fb6a7268c0a0affaeb418e6acd518c7e3f1bc7afa3de25a3",
+    "includes/class-h3-mgmt-races.php": "116396cf89e23222d4d6b352f7ba30c0ad6b0527ee32f3aab4c3721b2f1535e9",
+    "includes/class-h3-mgmt-sponsors.php": "6af2b4f73af5c3dd5512b580f4ee121c450aa066b28b7f72eabc1355d99750a9",
+    "includes/class-h3-mgmt-teams.php": "746947c0f6335f736eb105192670c75de4eab3e87f2602a272355ef5e5e5acad",
+    "includes/class-h3-mgmt-ticker.php": "6facf63941df9034bc9a882462641ea391a5e517bcd4d7fccdc0d997c8f73961",
+    "includes/class-h3-mgmt-utilities.php": "406035fa90875bdc3dbc24771aadbdfe89d63da58c97114b25588b367d9690cb",
+    "includes/class-h3-mgmt-xchange.php": "668ac9f15e503262dded52c58b061f6ecade0d4d5b101aaf0ce4e8180a5d7d35",
+    "includes/class-h3-mgmt.php": "08da53785bfd6b5838b7318b9a3b98e330f9469040bbccfcd1653d181fb08201",
+    "models/class-h3-mgmt-race.php": "31654bfb4034db208c2c94b08e87b34c404bb87892b3a0c01ffdcb6808bd14d8",
+    "templates/admin-custom-fields.php": "274ffcc1413d2d14bb40baa52cb1211008d2022993cfdc344b4c8b70c143d4d5",
+    "templates/admin-profile.php": "46c14eafd1b131259b8ad1847522394053e48240275a8e5af81645d5cda19659",
+    "templates/class-h3-mgmt-admin-form.php": "24d49de29e513a87f0948f7405160a3de83a0f9782daa52fddc563bc6e3c1a64",
+    "templates/class-h3-mgmt-admin-metaboxes.php": "2d7bf636614e04eeea02e1c836f8dfb395a347fb550c0a1598eae4eac575da2e",
+    "templates/class-h3-mgmt-admin-page.php": "a8d0419f07a908d98278c198a9e038b972a6122b3049151664a6726c44e48d1e",
+    "templates/class-h3-mgmt-admin-table.php": "bf16a7fed23056001631372ba663c56e3411b20ea064d49c11d174c3b4810683",
+    "templates/frontend-form.php": "9f0743a6005be6fe47784f5817273b6eba576b27f7d235932041afd48381944e",
+    "templates/frontend-profile.php": "bc8597ce13d1a417e14a67d5afa7fbeac977b81e578dd60e78f33ee50e2e31e6",
+    "templates/frontend-profile_int.php": "bc8597ce13d1a417e14a67d5afa7fbeac977b81e578dd60e78f33ee50e2e31e6",
+    "templates/frontend-ticker.php": "d00184146011e71f69c8952f3825cf0c25c9f9492b24d7de61eb2488de829a9b"
+  },
+  "shortcodes": [
+    {
+      "tag": "h3-donation-counter",
+      "handler": "donation_counter",
+      "file": "includes/class-h3-mgmt-races.php",
+      "line": 650,
+      "defaults_source": "'race' => 1, 'animation' => 0, 'offset' => 0,"
+    },
+    {
+      "tag": "h3-event-statistics",
+      "handler": "race_stats",
+      "file": "includes/class-h3-mgmt-races.php",
+      "line": 555,
+      "defaults_source": "'stat' => 'all', 'race' => 0, 'event' => 1, 'offset' => 0,"
+    },
+    {
+      "tag": "h3-handle-betterplace-redirect",
+      "handler": "handle_betterplace_redirect",
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "line": 2717,
+      "defaults_source": null
+    },
+    {
+      "tag": "h3-list-sponsors",
+      "handler": "sponsors_overview",
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "line": 2648,
+      "defaults_source": "'type' => 'sponsor', 'delimiter' => ', ', 'race' => 'all',"
+    },
+    {
+      "tag": "h3-liveticker",
+      "handler": "the_ticker",
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "line": 909,
+      "defaults_source": "'max' => 10, 'route' => 'all', 'race' => 0, 'team' => 0, 'show_warning' => 1, 'show_nav' => 0"
+    },
+    {
+      "tag": "h3-mate-xchange",
+      "handler": "xchange_control",
+      "file": "includes/class-h3-mgmt-xchange.php",
+      "line": 110,
+      "defaults_source": null
+    },
+    {
+      "tag": "h3-rand-team",
+      "handler": "random_team_info",
+      "file": "includes/class-h3-mgmt-teams.php",
+      "line": 2526,
+      "defaults_source": "'event' => 0, 'race' => 0"
+    },
+    {
+      "tag": "h3-ranking-table",
+      "handler": "ranking_table",
+      "file": "includes/class-h3-mgmt-races.php",
+      "line": 1174,
+      "defaults_source": "'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1,"
+    },
+    {
+      "tag": "h3-recent-sponsors",
+      "handler": "recent_sponsors",
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "line": 2579,
+      "defaults_source": "'number' => 3, 'race' => 'all',"
+    },
+    {
+      "tag": "h3-sponsoring-form",
+      "handler": "new_sponsoring_handler",
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "line": 758,
+      "defaults_source": "'race' => 0,"
+    },
+    {
+      "tag": "h3-stages",
+      "handler": "display_stages",
+      "file": "includes/class-h3-mgmt-races.php",
+      "line": 727,
+      "defaults_source": "'race' => 1, 'class' => '',"
+    },
+    {
+      "tag": "h3-stages-isotope",
+      "handler": "isotope_links",
+      "file": "includes/class-h3-mgmt-races.php",
+      "line": 777,
+      "defaults_source": "'race' => 1, 'class' => '',"
+    },
+    {
+      "tag": "h3-submit-rankings",
+      "handler": "ranking_submission_control",
+      "file": "includes/class-h3-mgmt-races.php",
+      "line": 858,
+      "defaults_source": null
+    },
+    {
+      "tag": "h3-team-dashboard",
+      "handler": "team_dashboard_control",
+      "file": "includes/class-h3-mgmt-teams.php",
+      "line": 1630,
+      "defaults_source": "'event' => 1, 'race' => 0"
+    },
+    {
+      "tag": "h3-team-dashboard-homework",
+      "handler": "team_dashboard_homework_control",
+      "file": "includes/class-h3-mgmt-teams.php",
+      "line": 1586,
+      "defaults_source": "'event' => 1, 'race' => 0"
+    },
+    {
+      "tag": "h3-team-homework",
+      "handler": "team_homework",
+      "file": "includes/class-h3-mgmt-teams.php",
+      "line": 1924,
+      "defaults_source": "'event' => 0, 'race' => 0"
+    },
+    {
+      "tag": "h3-teams",
+      "handler": "display_teams",
+      "file": "includes/class-h3-mgmt-teams.php",
+      "line": 2252,
+      "defaults_source": "'event' => 0, 'race' => 0, 'max' => 10"
+    },
+    {
+      "tag": "h3-ticker-datenbank-change",
+      "handler": "Ticker_Datenbank_Change",
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "line": 1582,
+      "defaults_source": null
+    },
+    {
+      "tag": "h3-ticker-incoming-interface",
+      "handler": "ticker_incoming_interface",
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "line": 1433,
+      "defaults_source": null
+    },
+    {
+      "tag": "h3-ticker-map",
+      "handler": "ticker_Page_map",
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "line": 659,
+      "defaults_source": "'route' => 'all', 'race' => 0, 'show_nav' => 1, 'show_warning' => 1, 'coord_center_lat' => 54.0237934, 'coord_center_lng' => 9.3754401"
+    },
+    {
+      "tag": "h3-ticker-message",
+      "handler": "ticker_Page_controll",
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "line": 182,
+      "defaults_source": "'race' => 0, 'comment' => false, 'comment_get' => false"
+    },
+    {
+      "tag": "h3-ticker-send-message-link",
+      "handler": "ticker_send_message_link",
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "line": 1545,
+      "defaults_source": "'url' => get_site_url() . '/send-ticker-message/', 'race' => 1"
+    },
+    {
+      "tag": "h3-user-panel-link",
+      "handler": "user_panel_link",
+      "file": "includes/class-h3-mgmt-teams.php",
+      "line": 2215,
+      "defaults_source": "'event' => 0, 'race' => 0"
+    }
+  ],
+  "actions": [
+    {
+      "file": "admin/class-h3-mgmt-admin-emails.php",
+      "method": "mail_form",
+      "line": 26,
+      "fields": [
+        "GET:email",
+        "GET:todo",
+        "POST:subject"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-emails.php",
+      "method": "mail_send",
+      "line": 177,
+      "fields": [
+        "POST:message",
+        "POST:receipient",
+        "POST:sender",
+        "POST:subject"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-emails.php",
+      "method": "autoresponses_edit",
+      "line": 241,
+      "fields": [
+        "GET:tab",
+        "GET:todo",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-races.php",
+      "method": "races_control",
+      "line": 24,
+      "fields": [
+        "GET:id",
+        "GET:todo",
+        "POST:active",
+        "POST:amount_extra_point",
+        "POST:betterplace_redirect_link",
+        "POST:dis_fee",
+        "POST:dis_mobile_inf",
+        "POST:dis_shirt_size",
+        "POST:dis_waiver",
+        "POST:donation",
+        "POST:donation_link_link",
+        "POST:end",
+        "POST:extra_point_amount",
+        "POST:kind_of_donation_tool",
+        "POST:liveticker",
+        "POST:liveticker_front",
+        "POST:logo_url",
+        "POST:name",
+        "POST:num_teammember",
+        "POST:num_teammember_min",
+        "POST:one_extra_point",
+        "POST:question_1_invisible",
+        "POST:question_2_invisible",
+        "POST:question_3_invisible",
+        "POST:question_4_invisible",
+        "POST:question_5_invisible",
+        "POST:race_id_inf",
+        "POST:show_donation_amount",
+        "POST:start",
+        "POST:start_route_id",
+        "POST:startingpoint",
+        "POST:status",
+        "POST:team_overview_link",
+        "POST:vary_extra_point_field"
+      ],
+      "case_labels": [
+        "active",
+        "delete",
+        "donation-set",
+        "donation-unset",
+        "edit",
+        "liveticker-front-set",
+        "liveticker-front-unset",
+        "liveticker-set",
+        "liveticker-unset",
+        "new",
+        "save"
+      ]
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-races.php",
+      "method": "routes_control",
+      "line": 407,
+      "fields": [
+        "GET:bulk",
+        "GET:id",
+        "GET:todo",
+        "POST:color_code",
+        "POST:logo_url",
+        "POST:max_teams",
+        "POST:name",
+        "POST:race_id",
+        "POST:route_account_email",
+        "POST:route_account_login_name",
+        "POST:route_account_pw1",
+        "POST:route_account_pw2"
+      ],
+      "case_labels": [
+        "bulk-delete",
+        "delete",
+        "edit",
+        "save"
+      ]
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-races.php",
+      "method": "stages_control",
+      "line": 615,
+      "fields": [
+        "GET:bulk",
+        "GET:id",
+        "GET:todo",
+        "POST:country",
+        "POST:country_3166_alpha_2",
+        "POST:destination",
+        "POST:meeting_point",
+        "POST:number",
+        "POST:route_id"
+      ],
+      "case_labels": [
+        "bulk-delete",
+        "delete",
+        "edit",
+        "new",
+        "save"
+      ]
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-races.php",
+      "method": "fields",
+      "line": 1138,
+      "fields": [
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-sponsors.php",
+      "method": "sponsors_control",
+      "line": 22,
+      "fields": [
+        "GET:bulk",
+        "GET:id",
+        "GET:method",
+        "GET:todo",
+        "POST:accound_id",
+        "POST:address_additional",
+        "POST:bank_id",
+        "POST:bank_name",
+        "POST:city",
+        "POST:country",
+        "POST:debit_confirmation",
+        "POST:display_name",
+        "POST:donation",
+        "POST:email",
+        "POST:first_name",
+        "POST:language",
+        "POST:last_name",
+        "POST:message",
+        "POST:method",
+        "POST:owner_link",
+        "POST:owner_pic",
+        "POST:paid",
+        "POST:race_id",
+        "POST:receipt",
+        "POST:street",
+        "POST:team_id",
+        "POST:type",
+        "POST:var_show",
+        "POST:zip_code"
+      ],
+      "case_labels": [
+        "bulk-delete",
+        "bulk-hide",
+        "bulk-paid",
+        "bulk-show",
+        "bulk-unpaid",
+        "delete",
+        "hide",
+        "paid",
+        "save",
+        "show",
+        "unpaid"
+      ]
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-sponsors.php",
+      "method": "sponsors_list",
+      "line": 476,
+      "fields": [
+        "GET:order",
+        "GET:orderby"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-sponsors.php",
+      "method": "add_values",
+      "line": 886,
+      "fields": [
+        "GET:id",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-sponsors.php",
+      "method": "sponsors_edit",
+      "line": 906,
+      "fields": [
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-statistics.php",
+      "method": "statistics",
+      "line": 16,
+      "fields": [
+        "POST:race_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-teams.php",
+      "method": "teams_control",
+      "line": 23,
+      "fields": [
+        "FILES:team_pic",
+        "GET:id",
+        "GET:todo",
+        "POST:description",
+        "POST:member1",
+        "POST:member2",
+        "POST:member3",
+        "POST:race_id",
+        "POST:route_id",
+        "POST:team_name",
+        "POST:team_phone",
+        "POST:team_pic-tmp"
+      ],
+      "case_labels": [
+        "delete",
+        "edit",
+        "save"
+      ]
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-teams.php",
+      "method": "participants_control",
+      "line": 299,
+      "fields": [
+        "GET:bulk",
+        "GET:id",
+        "GET:todo"
+      ],
+      "case_labels": [
+        "bulk-paid",
+        "bulk-unpaid",
+        "bulk-waiver-set",
+        "bulk-waiver-unset",
+        "paid",
+        "unpaid",
+        "waiver-set",
+        "waiver-unset"
+      ]
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-teams.php",
+      "method": "teams_list",
+      "line": 515,
+      "fields": [
+        "GET:order",
+        "GET:orderby"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-teams.php",
+      "method": "teams_edit",
+      "line": 636,
+      "fields": [
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "admin/class-h3-mgmt-admin-teams.php",
+      "method": "participants_list",
+      "line": 885,
+      "fields": [
+        "GET:order",
+        "GET:orderby"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-profile.php",
+      "method": "save_extra_profile_fields",
+      "line": 142,
+      "fields": [
+        "POST:deleteme"
+      ],
+      "case_labels": [
+        "date"
+      ]
+    },
+    {
+      "file": "includes/class-h3-mgmt-races.php",
+      "method": "ranking_submission_control",
+      "line": 858,
+      "fields": [
+        "GET:stage",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-races.php",
+      "method": "save_ranking",
+      "line": 1059,
+      "fields": [
+        "POST:route",
+        "POST:stage"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-races.php",
+      "method": "ranking_table",
+      "line": 1174,
+      "fields": [
+        "GET:ranking_route"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "new_sponsoring_handler",
+      "line": 758,
+      "fields": [
+        "COOKIE:client_token",
+        "FILES:owner_pic",
+        "GET:type",
+        "POST:display_name",
+        "POST:donation_token",
+        "POST:message",
+        "POST:new",
+        "POST:owner_link",
+        "POST:owner_pic-tmp",
+        "POST:submitted",
+        "POST:team_id",
+        "POST:type"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "sponsoring_form_handler",
+      "line": 1143,
+      "fields": [
+        "GET:donation_client_reference",
+        "GET:donation_token",
+        "GET:section",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "sponsoring_section_output",
+      "line": 1242,
+      "fields": [
+        "GET:type",
+        "POST:donation_client_reference"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "add_values",
+      "line": 1793,
+      "fields": [
+        "GET:id",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "donation_selector",
+      "line": 1940,
+      "fields": [
+        "POST:donation",
+        "POST:thumbs"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "make_form",
+      "line": 1992,
+      "fields": [
+        "GET:amount"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "validate_submit",
+      "line": 2158,
+      "fields": [
+        "GET:method",
+        "POST:address",
+        "POST:debit_confirmation",
+        "POST:email",
+        "POST:first_name",
+        "POST:last_name",
+        "POST:team_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "save_donation",
+      "line": 2216,
+      "fields": [
+        "FILES:owner_pic",
+        "GET:amount",
+        "GET:donation_client_reference",
+        "GET:donation_token",
+        "POST:display_name",
+        "POST:donation_client_reference",
+        "POST:email",
+        "POST:first_name",
+        "POST:last_name",
+        "POST:message",
+        "POST:owner_link",
+        "POST:owner_pic-tmp",
+        "POST:team_id",
+        "POST:type"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "handle_betterplace_redirect",
+      "line": 2717,
+      "fields": [
+        "GET:amount",
+        "GET:donation_client_reference",
+        "GET:donation_token",
+        "GET:status"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-sponsors.php",
+      "method": "__construct",
+      "line": 2812,
+      "fields": [
+        "COOKIE:client_token"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "is_invitation",
+      "line": 923,
+      "fields": [
+        "GET:invitation",
+        "POST:invitation"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "handle_invitation",
+      "line": 976,
+      "fields": [
+        "GET:invitation",
+        "POST:invitation"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "team_section",
+      "line": 1184,
+      "fields": [
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "primary_user_section",
+      "line": 1333,
+      "fields": [
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "invitations_section",
+      "line": 1436,
+      "fields": [
+        "POST:form_submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "route_section",
+      "line": 1547,
+      "fields": [
+        "POST:route_id",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "team_dashboard_control",
+      "line": 1630,
+      "fields": [
+        "GET:id",
+        "GET:todo",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "team_dashboard",
+      "line": 1718,
+      "fields": [
+        "GET:invitation",
+        "POST:invitation"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "team_homework",
+      "line": 1924,
+      "fields": [
+        "GET:id",
+        "GET:todo"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "display_teams",
+      "line": 2252,
+      "fields": [
+        "GET:id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "team_overview",
+      "line": 2618,
+      "fields": [
+        "GET:todo"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "validate_submit",
+      "line": 2744,
+      "fields": [
+        "POST:address",
+        "POST:first_name",
+        "POST:last_name",
+        "POST:team_name"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-teams.php",
+      "method": "save_dashboard",
+      "line": 2775,
+      "fields": [
+        "FILES:team_pic",
+        "GET:invitation",
+        "POST:description",
+        "POST:donation_goal",
+        "POST:first_name",
+        "POST:invitation",
+        "POST:invitations",
+        "POST:meta_1",
+        "POST:meta_2",
+        "POST:meta_3",
+        "POST:meta_4",
+        "POST:meta_5",
+        "POST:route_id",
+        "POST:team_name"
+      ],
+      "case_labels": [
+        "date"
+      ]
+    },
+    {
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "method": "ticker_Page_controll",
+      "line": 182,
+      "fields": [
+        "GET:todo",
+        "POST:180",
+        "POST:coordinates",
+        "POST:coordinates_informations",
+        "POST:image_name",
+        "POST:left",
+        "POST:message",
+        "POST:right",
+        "POST:ticker_id",
+        "POST:ticker_pic_msg",
+        "POST:ticker_pic_url",
+        "POST:video",
+        "POST:video_message"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "method": "ticker_Page_map",
+      "line": 659,
+      "fields": [
+        "GET:ticker_route"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "method": "the_ticker",
+      "line": 909,
+      "fields": [
+        "GET:min",
+        "GET:ticker_race",
+        "GET:ticker_route",
+        "GET:todo"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "method": "team_ticker",
+      "line": 1254,
+      "fields": [
+        "GET:id",
+        "GET:min"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-ticker.php",
+      "method": "ticker_incoming_interface",
+      "line": 1433,
+      "fields": [
+        "GET:msg",
+        "POST:message"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-utilities.php",
+      "method": "table_order",
+      "line": 187,
+      "fields": [
+        "GET:order",
+        "GET:orderby"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "includes/class-h3-mgmt-xchange.php",
+      "method": "xchange_control",
+      "line": 110,
+      "fields": [
+        "POST:message",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "templates/class-h3-mgmt-admin-table.php",
+      "method": "__construct",
+      "line": 73,
+      "fields": [
+        "GET:order",
+        "GET:orderby"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "templates/class-h3-mgmt-admin-table.php",
+      "method": "output",
+      "line": 122,
+      "fields": [
+        "GET:filter_name0",
+        "GET:order",
+        "GET:orderby",
+        "GET:page"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "templates/class-h3-mgmt-admin-table.php",
+      "method": "get_filtered_rows",
+      "line": 907,
+      "fields": [
+        "GET:filter_name0"
+      ],
+      "case_labels": []
+    }
+  ]
+}
