@@ -18,3 +18,4 @@ logs/
 /.env.*
 !/.env.example
 /phpunit.xml
+/phpunit.integration.xml

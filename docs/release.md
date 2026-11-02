@@ -6,6 +6,8 @@ Checkliste für Block 10; noch kein Release oder Deployment freigegeben.
 
 Alle erforderlichen Blöcke und Zahlungsentscheidung abgeschlossen. Erst dann Versionsheader 2.0.0/Requires PHP >= 8.2 setzen. Unterstützte WordPress-Version anhand Tests deklarieren. Reproduzierbares Paket ohne Dumps, private Daten, Tests und Entwicklungsabhängigkeiten; benötigte Runtime-Abhängigkeiten/Autoloader einschließen.
 
+Die jeweils neueste stabile PHP-Version ist das Releaseziel; PHP 8.2 bleibt mit allen Funktionen unterstützt. Freigabe nur mit erfolgreichen Prüfungen über die vollständige Zielmatrix aus masterplan.md und vollständiger Paketabnahme mindestens auf PHP 8.2 und der neuesten stabilen Version. Neue Laufzeitabhängigkeiten dürfen die Mindestversion nicht erhöhen. Zielversion vor jeder Veröffentlichung erneut prüfen; Beta-/RC-Versionen ersetzen keine stabile Abnahme.
+
 CI, Bestandsmigration, Referenzfälle, Theme-/cor-ticker-Verträge und Medien prüfen. Die gesamte aktive Website auf PHP >= 8.2 prüfen; Plugin-Kompatibilität allein genügt nicht zum Umschalten.
 
 Vor Release zusätzlich alle Fälle des [Installationsvertrags](installation.md) am fertigen ZIP bestehen: frisches WordPress mit Standardtheme ohne zusätzliche Fachplugins, keine Buildwerkzeuge am Ziel, Einrichtung und gesamter Plugin-Lebenszyklus.

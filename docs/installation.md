@@ -6,6 +6,8 @@ Status: verbindliche Zielanforderungen für Version 2.0.0, noch nicht implementi
 
 cor-mgmt ist ein eigenständig installierbares WordPress-Plugin. WordPress und die dokumentierten PHP-/Datenbankvoraussetzungen bleiben erforderlich. Es ist keine Anwendung außerhalb von WordPress.
 
+PHP-Vertrag: jeweils neueste stabile PHP-Version als Ziel; PHP 8.2 und alle stabilen Zwischenversionen bleiben mit vollständigem Funktionsumfang unterstützt. Installation, Upgrade und Migration sowie sämtliche verpflichtenden Laufzeitabhängigkeiten müssen diesen Bereich abdecken. Release-Abnahme mindestens unter PHP 8.2 und der neuesten stabilen Version; Zielmatrix gemäß [Masterplan](masterplan.md). Noch keine erreichte Kompatibilitätsfreigabe.
+
 Für seine fachlichen Funktionen benötigt das fertige Plugin weder cor-theme/Enfold noch cor-ticker, Members, Theme My Login, ein Avatar- oder Sprachplugin. Bestehende Integrationen bleiben optional kompatibel. Funktionen, die bisher nur durch Theme oder Nachbarplugin bereitgestellt werden, werden nach Inventarisierung innerhalb des Plugins oder mit WordPress-Bordmitteln zugänglich gemacht. Fremde Erweiterungen werden dadurch nicht pauschal ersetzt oder kopiert.
 
 - Eigene Templates, Styles und Formularverarbeitung funktionieren mit einem unveränderten WordPress-Standardtheme.

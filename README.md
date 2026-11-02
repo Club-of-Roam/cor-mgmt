@@ -2,10 +2,10 @@
 
 WordPress-Plugin für Veranstaltungen, Teams, Teilnahme, Ranglisten, Spenden und Liveticker.
 
-**Bestand:** Plugin 1.2.10, Schema 2.8. **Ziel:** 2.0.0, PHP >= 8.2.
+**Bestand:** Plugin 1.2.10, Schema 2.8. **Ziel:** 2.0.0 für die jeweils neueste stabile PHP-Version bei vollständiger Unterstützung ab PHP 8.2. Kompatibilitätsvertrag und Zielmatrix: [Masterplan](docs/masterplan.md).
 Ziel ist ein eigenständig installierbares WordPress-Plugin ohne verpflichtendes Spezialtheme oder weiteres Fachplugin; siehe [Installationsvertrag](docs/installation.md).
 
-Dokumentation und erste isolierte Referenztests sind angelegt. Die Modernisierung ist noch nicht abgeschlossen; der Bestand ist nicht als sicher oder PHP-8-kompatibel freigegeben.
+Block 0 mit Funktionsreferenz, Rollen-/Schnittstelleninventar sowie isolierten und WordPress-Integrationstests ist abgeschlossen. Die Modernisierung ist noch nicht abgeschlossen; der Bestand ist nicht als sicher oder PHP-8-kompatibel freigegeben.
 
 ## Einstieg
 
@@ -16,8 +16,14 @@ Dokumentation und erste isolierte Referenztests sind angelegt. Die Modernisierun
 
 | Dokument | Inhalt |
 |---|---|
+| [Referenzabschluss Block 0](docs/block-0-acceptance.md) | Umfang, Belege, Grenzen und Übergabe an Block 1 |
+| [Referenzkatalog](docs/reference-catalog.md) | Ausgangslagen, Aktionen und Abnahmefälle sämtlicher Funktionsbereiche |
+| [Rollen und Schnittstellen](docs/interfaces.md) | Hooks, Objektgrenzen und Nachbarintegrationen |
 | [Analyse](docs/analysis.md) | Befunde, Prioritäten und Belege |
 | [Funktionen](docs/features.md) | Abläufe und Referenzszenarien |
+| [Fachregeln](docs/business-rules.md) | Freigabe, Einladungen, Kapazitäten und Ist-Befunde |
+| [Phasenmatrix](docs/phases.md) | Verbindliche Zielregeln für fünf Phasen einschließlich eingefrorenem Archiv |
+| [Ergebnisreferenz](docs/ranking-reference.md) | Ausgeführte Referenzfälle und reproduzierte Punkte-/Ranglistenfehler |
 | [Shortcodes](docs/shortcodes.md) | Generierte Namen, Handler und Standardattribute |
 | [Aktionsinventar](docs/actions.md) | Request-Felder je Methode, kein Sicherheitsnachweis |
 | [Architektur](docs/architecture.md) | Zielstruktur und Kompatibilität |
@@ -28,13 +34,15 @@ Dokumentation und erste isolierte Referenztests sind angelegt. Die Modernisierun
 
 ## Entwicklung
 
-Voraussetzung: aktuelle Composer-2-Version und PHP 8.2/8.4 im PATH. Im Plugin-Repository:
+Voraussetzung: aktuelle Composer-2-Version und PHP 8.2 oder neuer im PATH; Prüfmatrix 8.2/8.3/8.4/8.5. Im Plugin-Repository:
 
 ```sh
 composer install
 composer check
 composer test
 ```
+
+WordPress-Referenzsuite: composer test:integration. Benötigte Testsoftware und Prüfgrenzen stehen in [Tests](docs/testing.md); die CI stellt ausschließlich synthetische Testressourcen bereit.
 
 Inventar regenerieren: `python tools/build-inventory.py` (Python >= 3.8), danach Diff prüfen.
 

@@ -38,9 +38,21 @@ Frische Installation und erkanntes Bestandsupgrade sind getrennte Pfade. Aktivie
 - Neue Beträge in Cent plus Währung. Alte Einheit nach Schreibpfad klassifizieren, Originalwert/Herkunft erhalten. Verlorene Nachkommastellen nicht rekonstruieren. Mehrdeutige Fälle nicht automatisch fachlich konvertieren.
 - Konten, Passwörter, IDs und Medien erhalten. Verwaiste Beziehungen behalten Original-ID; keine kaskadierende Bereinigung.
 - Neue sichere Einladungstokens mit Hash, Ablauf und Verbrauch. Offene numerische Codes über geschützten dokumentierten Übergangspfad erhalten.
+- Fachentscheidung 2026-11-02: Historische Ergebnisse nicht nachträglich korrigieren. Gespeicherte Summen und historische Rangfolge bei Migration/Anzeige erhalten, auch wenn die neue Berechnung abweicht; Abweichungen nur getrennt berichten. Historiengrenze beschlossen: Bestandsrennen mit Ausgangsstatus 3 bei der Migrations-Vorprüfung, siehe Archivvertrag unten. Kein stiller Neuberechnungslauf als Teil der Normalisierung.
 - Vorprüfung/Probelauf ohne Änderungen, Batches mit Lock und Journal, idempotente Wiederaufnahme. Keine Massendatenmigration bei Seitenaufrufen.
 - Neue Tabellen zunächst parallel; DDL nicht als vollständig transaktional rückrollbar behandeln. Bei Fehler keine automatische DROP-/Neuanlage.
 - Umschaltung pro Modul, keine konkurrierenden Writer. Rückweg mit neuen Schreibvorgängen vor Freigabe festlegen.
 - Vergleiche: Zeilenzahlen, IDs, Beziehungen, Status, Beträge, Zeichen, Vorlagen, Medien und Ranglisten. Berichte ohne private Inhalte in CI.
 
 Exakte DDL, Feldmapping und Klassifikation sind Liefergegenstände von Block 3 vor Bestandsänderungen. Standard-Uninstall erhält Daten; explizite Bereinigung ist ein eigener geschützter Vorgang.
+
+
+## Archivphase und Statusmigration (beschlossen 2026-11-02)
+
+- Neue Phase »Rennen beendet«, vorgeschlagener technischer Wert 4. Altstatus 0/1/2 bleibt erhalten; alle Bestandsrennen mit Ausgangsstatus 3 werden direkt archiviert. Die ID-/Statusmenge im verbindlichen Preflight festhalten, in Journal und Wiederaufnahme verwenden.
+- Daten vor Statusumstellung unverändert sichern/übertragen. Kein Aufruf der alten Freigabe- oder Punkteberechnung, kein Mailversand und keine stillen Korrekturen historischer Summen/Rangfolge.
+- Archivierung benötigt einen stabilen historischen Stand: Einstellungen, Teams/Mitgliedschaften, Routen-/Etappenzuordnungen, Ergebnisse und benötigte Darstellungswerte erhalten. Allgemeine Nutzerprofile bleiben eigenständig; spätere Änderungen dürfen den archivierten Rennstand nicht verändern. Snapshotumfang der verbundenen Medien/Ticker/Spenden mit den jeweiligen Modulen spezifizieren.
+- Alle fachlichen Writer einschließlich Admin, Jobs und externen Eingängen müssen die Archivphase beachten. Lesen und Anzeige historischer Ranglisten erfolgt aus dem eingefrorenen Stand; keine neue Punkteberechnung beim Anzeigen.
+- Schema-/Darstellungsmigration darf historische Werte verlustfrei in neue Strukturen übertragen; das ist keine Erlaubnis zu fachlicher Neuberechnung. Wiederholung/Unterbrechung erzeugt weder weitere Snapshots noch abweichende Werte.
+- Vor und nach Migration IDs, Zeilenzahlen, Ergebniswerte, historische Rangfolge und Statusmapping vergleichen. Datensätze mit anderem/unklarem Ausgangsstatus melden, nicht geraten zuordnen.
+- Neue Rennen werden nach ihrem Abschluss nach demselben Archivvertrag eingefroren. Ein gewöhnliches Wiederöffnen des Archivs ist nicht beschlossen; Rückwechselrechte der Phasen 0..3 sind davon getrennt.

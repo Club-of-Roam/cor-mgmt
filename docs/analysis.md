@@ -17,7 +17,7 @@ Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d
 | SEC-05 hoch | [app.js](../js/app.js#L35) verwendet uploads/ticker_images/process.php; ausgelagerter Endpunkt verschiebt Upload ohne WP-/Bildprüfung | Geschützter Medienhandler; 1/9 |
 | SEC-06 hoch | Unpassende Ausgabebehandlung bei Börsennachrichten; Datenänderung nur anhand ID: [XChange](../includes/class-h3-mgmt-xchange.php#L67) | Validierung, Escaping, Eigentumsbedingung; 1/8 |
 | PHP-01 mittel | Implizit nullable Parameter: [date_diff2](../includes/class-h3-mgmt-utilities.php#L73); deprecated Interpolation: [XChange](../includes/class-h3-mgmt-xchange.php#L31) | Explizite Typen und moderne Interpolation; 2 |
-| PHP-02 hoch | Feldname als String zu Punkten addiert: [save_ranking](../includes/class-h3-mgmt-races.php#L1059) | Reproduzierbarer Regressionstest und Fachkorrektur; 6 |
+| PHP-02 hoch | Feldname als String zu Punkten addiert: [save_ranking](../includes/class-h3-mgmt-races.php#L1059) | Am 2026-11-02 isoliert als TypeError reproduziert; Fachkorrektur und Solltests in 6, Belege in ranking-reference.md |
 | PHP-03 mittel | strftime/utf8_encode, ungeprüfte Array-/DB-Ergebnisse | Aktuelle APIs, definierte Nullfälle; 2/Module |
 | ARCH-01 hoch | Abfrage schreibt Status/Route und sendet ggf. Mail: [is_complete](../includes/class-h3-mgmt-teams.php#L420) | Abfragen/Änderungen trennen; 5 |
 | ARCH-02 mittel | Globals, große Klassen, HTML/SQL/Fachlogik vermischt, wiederholte Abfragen in Schleifen | Services, Repositories, Views, gebündelte Abfragen; 2/Module |
@@ -27,7 +27,29 @@ Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d
 | HTTP-01 mittel | get_headers/file_get_contents, historische HTTP-URL und sleep im Spendenablauf | WP HTTP API, Zeitlimits, Fehlerzustände, Adapter; 7 |
 | UI-01 mittel | Enfold-Markup, feste Domains/Pfade, ActiveX und seitenübergreifende Assets | Eigene Komponenten, WP-URLs, gezieltes Laden; Module |
 
+Zusatzprüfung 2026-11-02: [Ergebnisreferenz](ranking-reference.md) und ausführbare Tests ergänzen folgende Befunde:
+
+| ID / Priorität | Reproduzierter Befund | Maßnahme / Block |
+|---|---|---|
+| RANK-01 hoch | Variable Zusatzpunkte anderer Etappen: Wert 5 ausgelassen, Wert 1 erzeugt TypeError | Isolierte Berechnung mit validierten Eingaben und Solltests; 6 |
+| RANK-02 hoch | Fehler beim zweiten Team nach bereits ausgeführtem update-Aufruf für erstes Team | Kontrollierte Fehler-/Speicherstrategie und DB-Integration; 6 |
+| RANK-03 mittel | Top-Begrenzung nutzt Etappenzähler: Top 2 zeigt ein Team, Top 8 bei zehn Teams zeigt zehn | Normalisierte Grenze und Teamzähler; Archivvertrag beachten; 6 |
+| RANK-04 mittel | Initialwert previous=999 ergibt Rang 0 für erstes Team mit 999 Punkten | Rangbildung ohne festen Punkteschwellenwert; Archivvertrag beachten; 6 |
+
+Keine echten Datenbankzugriffe; die Schreibreihenfolge ist am Speicheradapter belegt, nicht als DB-Transaktionsprüfung. Keine Aussage, ob echte historische Datensätze betroffen sind.
+
 Dies sind Codebefunde. Externe Erreichbarkeit und vorgeschaltete Serverregeln wurden nicht untersucht. Keine Angriffsanfragen an die Produktion.
+
+## Zusätzliche Referenzbefunde 2026-11-02
+
+- SEC-06 in echtem WordPress/SQL reproduziert: angemeldeter anderer Subscriber kann eine fremde Börsennachricht über deren ID ersetzen. Das zeigt die Handlerlücke; eine browserseitige Exploitkette wurde nicht ausgeführt.
+- PROFILE-02: Autorisiertes save_extra_profile_fields liest id aus Abschnittszeilen ohne id; Warnung im WordPress-Test gezielt reproduziert. Fremder Subscriber wird dagegen durch edit_user abgewiesen.
+- MAIL-02: Admin-Selbstmail ruft WP_User::user_email() statt Eigenschaft auf, erhält false; der abgefangene wp_mail-Aufruf hat einen ungültigen Empfänger. Test nutzt echte WP_User-Implementierung, kein echter Versand.
+- STAT-02: Reale Legacy-Aggregationsmethode zählt ungezahlte debit-Zeilen in Summen, während exclude_unpaid die Liste filtert; counts liefert keinen race-Key, den race_stats('race-sponsors-count') liest. Isoliert gegen synthetische Adapterdaten belegt.
+- Freigabe: Echte SQL-Integration bestätigt Rückstufung/Route 0 trotz Altstatus 3. Das widerspricht dem v2-Phasenvertrag; Korrektur erst in der Umsetzung.
+- Alle 23 Shortcodes registriert; Administrator erhält die 18 Caps, Subscriber nicht. Das ist kein Nachweis korrekter Objekt-/CSRF-Prüfungen sämtlicher Aktionen.
+
+Referenzabschluss, übrige Modulabnahmen und Testgrenzen stehen in [block-0-acceptance.md](block-0-acceptance.md).
 
 ## Integrationen und ausstehende Nachweise
 

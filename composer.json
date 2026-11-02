@@ -17,6 +17,7 @@
   },
   "scripts": {
     "test": "@php vendor/phpunit/phpunit/phpunit",
+    "test:integration": "@php vendor/phpunit/phpunit/phpunit -c phpunit.integration.xml.dist",
     "check": [
       "@composer validate --strict",
       "@php tools/lint.php",

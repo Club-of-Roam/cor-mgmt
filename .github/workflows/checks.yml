@@ -11,13 +11,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.2', '8.4']
+        php: ['8.2', '8.3', '8.4', '8.5']
+    services:
+      mariadb:
+        image: mariadb:11.4.13
+        env:
+          MARIADB_ROOT_PASSWORD: synthetic-root-ci-only
+          MARIADB_DATABASE: cor_mgmt_test_ci
+          MARIADB_USER: cor_mgmt_runner
+          MARIADB_PASSWORD: synthetic-runner-ci-only
+        ports:
+          - 33379:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, dom, xml, xmlwriter
+          extensions: mbstring, dom, xml, xmlwriter, mysqli, openssl
           coverage: none
           tools: composer:v2
       - name: Install locked development dependencies
@@ -26,3 +39,18 @@ jobs:
         run: composer check
       - name: Run isolated characterization tests
         run: composer test
+      - name: Prepare pinned WordPress core fixture
+        run: |
+          curl --fail --location --retry 3 https://wordpress.org/wordpress-7.1.4.tar.gz --output "$RUNNER_TEMP/wordpress.tar.gz"
+          echo "881e53a4681ff2cd911651b11cccdede5ae477ddf0765af5d6a1a8b219a1d835  $RUNNER_TEMP/wordpress.tar.gz" | sha256sum --check
+          mkdir "$RUNNER_TEMP/wp-source"
+          tar -xzf "$RUNNER_TEMP/wordpress.tar.gz" -C "$RUNNER_TEMP/wp-source"
+          php tools/create-wordpress-fixture.php "$RUNNER_TEMP/wp-source/wordpress" "$RUNNER_TEMP/cor-wordpress"
+      - name: Run WordPress integration reference
+        env:
+          COR_TEST_WP_ROOT: ${{ runner.temp }}/cor-wordpress
+          COR_TEST_DB_NAME: cor_mgmt_test_ci
+          COR_TEST_DB_HOST: 127.0.0.1:33379
+          COR_TEST_DB_USER: cor_mgmt_runner
+          COR_TEST_DB_PASSWORD: synthetic-runner-ci-only
+        run: composer test:integration

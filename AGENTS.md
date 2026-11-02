@@ -4,7 +4,7 @@ Vor Änderungen README.md, docs/masterplan.md, docs/status.md und docs/decisions
 
 ## Verbindliche Entscheidungen
 
-- Ziel 2.0.0 für PHP >= 8.2; kein nur mit PHP 8.4 lauffähiger Anwendungscode.
+- Ziel 2.0.0 für die jeweils neueste stabile PHP-Version; PHP 8.2 bleibt vollständig unterstützt. Syntax, APIs und Laufzeitabhängigkeiten müssen PHP-8.2-kompatibel sein. Zielmatrix und Releasevertrag gemäß docs/masterplan.md.
 - Eigenständig installierbares WordPress-Plugin gemäß docs/installation.md: keine verpflichtenden Spezialthemes/Fachplugins, keine Server-Buildwerkzeuge oder manuell kopierten PHP-Endpunkte.
 - Fachliche Funktionen, IDs, historische Daten, Shortcodes und benötigte Integrationen erhalten.
 - Abläufe erhalten; Oberfläche schrittweise modernisieren.
@@ -21,7 +21,7 @@ Beschreibungen bleiben rechnerunabhängig. Keine lokale Testeinrichtung, Rechner
 2. Paket und Abnahmekriterien aus docs/status.md bearbeiten.
 3. Relevante Fach-, Fehler- und Berechtigungsfälle testen. Bugfixes erhalten Regressionstests.
 4. Kleine überprüfbare Änderungen, keine reine Formatierungswelle im Altbestand.
-5. composer check und composer test unter PHP 8.2/8.4 ausführen; betroffene Integrations-/Browserprüfungen ergänzen, sobald vorhanden.
+5. composer check und composer test für PHP 8.2 bis zur neuesten stabilen Version ausführen; Zielmatrix gemäß docs/masterplan.md. Fehlende Läufe ausdrücklich ausweisen. Betroffene Integrations-/Browserprüfungen ergänzen, sobald vorhanden.
 6. Nach Schnittstellenänderungen python tools/build-inventory.py ausführen und Diff prüfen.
 7. Status, Entscheidungen und Prüfbelege aktualisieren. Nicht ausgeführte Prüfungen ausdrücklich ausweisen.
 
