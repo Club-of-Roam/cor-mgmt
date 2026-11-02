@@ -144,6 +144,8 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 				$output .= '</form>';
 			}
 
+			$output = H3_MGMT_Security::add_nonces($output, H3_MGMT_Security::admin_nonce(H3_MGMT_Security::resource((string) ($_GET['page'] ?? ''))));
+            $output = H3_MGMT_Security::html($output);
 			if ( $echo ) {
 				echo $output;
 			}
@@ -168,7 +170,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 			}
 
 			if ( 'hidden' !== $field['type'] ) {
-				$output .= '<tr valign="top" id="row-' . $field['id'] . '"';
+				$output .= '<tr valign="top" id="row-' . esc_attr((string) $field['id']) . '"';
 				if ( ( isset( $field['row-class'] ) && isset( $field['js-only'] ) && true === $field['js-only'] ) || ( isset( $field['row-class'] ) && ! empty( $field['row-class'] ) ) ) {
 					$output .= 'class="';
 					if ( isset( $field['row-class'] ) && ! empty( $field['row-class'] ) ) {
@@ -208,14 +210,14 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
 					'" class="input' .
-					'" value="' . $field['value'] . '" />';
+					'" value="' . esc_attr((string) $field['value']) . '" />';
 					break;
 
 				case 'tel':
 					$output .= '<input type="tel" class="input input-tel"' .
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
-					'" value="' . $field['value'] . '" size="40"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="40"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -226,7 +228,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					$output .= '<input type="email" class="input input-email"' .
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
-					'" value="' . $field['value'] . '" size="40"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="40"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -240,7 +242,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
-					$output .= '>' . $field['value'] . '</textarea>';
+					$output .= '>' . esc_attr((string) $field['value']) . '</textarea>';
 					break;
 
 				case 'textarea_long':
@@ -250,12 +252,12 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
-					$output .= '>' . $field['value'] . '</textarea>';
+					$output .= '>' . esc_attr((string) $field['value']) . '</textarea>';
 					break;
 
 				case 'select':
 					$output .= '<select name="' . $field['name'] .
-					'" id="' . $field['id'] . '"';
+					'" id="' . esc_attr((string) $field['id']) . '"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -266,7 +268,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 						if ( ( $field['value'] == $option['value'] && $option['value'] != 0 ) || $field['value'] === $option['value'] ) {
 							$output .= ' selected="selected"';
 						}
-						$output .= ' value="' . $option['value'] . '">' . $option['label'] . '&nbsp;</option>';
+						$output .= ' value="' . esc_attr((string) $option['value']) . '">' . esc_html((string) $option['label']) . '&nbsp;</option>';
 					}
 					$output .= '</select>';
 					break;
@@ -274,14 +276,14 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 				case 'checkbox':
 					$output .= '<input type="checkbox"' .
 					'name="' . $field['name'] .
-					'" id="' . $field['id'] . '" ';
+					'" id="' . esc_attr((string) $field['id']) . '" ';
 					if ( isset( $field['value'] ) && ! empty( $field['value'] ) ) {
 						$output .= ' checked="checked"';
 					}
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
-					$output .= '/><label for="' . $field['id'] . '">' . $field['label'] . '</label>';
+					$output .= '/><label for="' . esc_attr((string) $field['id']) . '">' . $field['label'] . '</label>';
 					break;
 
 				case 'radio':
@@ -290,8 +292,8 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					foreach ( $field['options'] as $option ) {
 						$output .= '<input type="radio"' .
 						'name="' . $field['name'] .
-						'" id="' . $field['id'] . '_' . $option['value'] .
-						'" value="' . $option['value'] . '" ';
+						'" id="' . esc_attr((string) $field['id']) . '_' . $option['value'] .
+						'" value="' . esc_attr((string) $option['value']) . '" ';
 
 						if ( $field['value'] == $option['value'] ) {
 							$output .= ' checked="checked"';
@@ -299,7 +301,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 						if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 							$output .= ' disabled="disabled"';
 						}
-						$output .= ' /><label for="' . $field['id'] . '_' . $option['value'] . '">' . $option['label'] . '</label>';
+						$output .= ' /><label for="' . esc_attr((string) $field['id']) . '_' . esc_attr((string) $option['value']) . '">' . esc_html((string) $option['label']) . '</label>';
 						if ( $i < $end ) {
 							$output .= '<br />';
 						}
@@ -318,7 +320,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					if ( ! empty( $field['options'] ) ) {
 
 						if ( $cols !== 1 ) {
-							$output .= '<table class="table-inside-table table-mobile-collapse subtable subtable-' . $field['id'] . '"><tr><td>';
+							$output .= '<table class="table-inside-table table-mobile-collapse subtable subtable-' . esc_attr((string) $field['id']) . '"><tr><td>';
 							$i       = 1;
 							$end     = count( $field['options'] );
 						}
@@ -327,10 +329,10 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 						foreach ( $field['options'] as $option ) {
 
 							$output .= '<input type="checkbox"' .
-							'value="' . $option['value'] . '" ' .
-							'name="' . $field['name'] . '[]" ' .
-							'class="' . $field['id'] . '" ' .
-							'id="' . $field['id'] . '_' . $option['value'] . '"';
+							'value="' . esc_attr((string) $option['value']) . '" ' .
+							'name="' . esc_attr((string) $field['name']) . '[]" ' .
+							'class="' . esc_attr((string) $field['id']) . '" ' .
+							'id="' . esc_attr((string) $field['id']) . '_' . esc_attr((string) $option['value']) . '"';
 
 							if ( ( isset( $field['value'] ) && is_array( $field['value'] ) && in_array( $option['value'], $field['value'] ) )
 							|| ( isset( $option['checked'] ) && true === $option['checked'] ) ) {
@@ -340,7 +342,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 								$output .= ' disabled="disabled"';
 							}
 
-							$output .= ' /><label for="' . $field['id'] . '_' . $option['value'] . '">' .
+							$output .= ' /><label for="' . esc_attr((string) $field['id']) . '_' . esc_attr((string) $option['value']) . '">' .
 							$option['label'] .
 							'</label>';
 
@@ -400,7 +402,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
-					$output .= ' /><select class="day js-hide js-hide" id="' . $field['id'] . '_day" name="' . $field['id'] . '_day"';
+					$output .= ' /><select class="day js-hide js-hide" id="' . esc_attr((string) $field['id']) . '_day" name="' . esc_attr((string) $field['id']) . '_day"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -415,7 +417,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 							$string . '&nbsp;' .
 						'</option>';
 					}
-					$output .= '</select><select class="months js-hide js-hide" id="' . $field['id'] . '_month" name="' . $field['id'] . '_month"';
+					$output .= '</select><select class="months js-hide js-hide" id="' . esc_attr((string) $field['id']) . '_month" name="' . esc_attr((string) $field['id']) . '_month"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -430,7 +432,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 							$string . '&nbsp;' .
 						'</option>';
 					}
-					$output .= '</select><select class="year js-hide js-hide" id="' . $field['id'] . '_year" name="' . $field['id'] . '_year"';
+					$output .= '</select><select class="year js-hide js-hide" id="' . esc_attr((string) $field['id']) . '_year" name="' . esc_attr((string) $field['id']) . '_year"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -453,7 +455,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
 					'" class="input regular-text"' .
-					'" value="' . $field['value'] . '" size="40"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="40"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -465,7 +467,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
 					'" class="input regular-text"' .
-					'" value="' . $field['value'] . '" size="40"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="40"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -477,7 +479,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 					'name="' . $field['name'] .
 					'" id="' . $field['id'] .
 					'" class="input regular-text"' .
-					'" value="' . $field['value'] . '" size="40"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="40"';
 					if ( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 						$output .= ' disabled="disabled"';
 					}
@@ -487,9 +489,9 @@ if ( ! class_exists( 'H3_MGMT_Admin_Form' ) ) :
 				case 'single-pic-upload':
 					if ( isset( $field['value'] ) && ! empty( $field['value'] ) ) {
 						$output .= '<input type="hidden" ' .
-							'name="' . $field['id'] . '-tmp" ' .
-							'id="' . $field['id'] . '-tmp" ' .
-							'value="' . $field['value'] . '" />' .
+							'name="' . esc_attr((string) $field['id']) . '-tmp" ' .
+							'id="' . esc_attr((string) $field['id']) . '-tmp" ' .
+							'value="' . esc_attr((string) $field['value']) . '" />' .
 							'<img alt="Your Pic" src="' .
 								$field['value'] .
 							'" style="height:150px;"/><br>';

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Races class.
@@ -40,6 +41,8 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				'data'    => 'all',
 			);
 			extract( wp_parse_args( $args, $default_args ), EXTR_SKIP );
+            $orderby = in_array($orderby, ['id', 'name', 'start', 'end', 'active'], true) ? $orderby : 'start';
+            $order = $order === 'DESC' ? 'DESC' : 'ASC';
 
 			if ( is_numeric( $race ) ) {
 				$where = 'WHERE id = ' . $race . ' ';
@@ -124,8 +127,11 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				'order'   => 'ASC',
 			);
 			extract( wp_parse_args( $args, $default_args ), EXTR_SKIP );
+            $orderby = in_array($orderby, ['id', 'name', 'race_id', 'max_teams'], true) ? $orderby : 'name';
+            $order = $order === 'DESC' ? 'DESC' : 'ASC';
 
-			if ( $race != 0 ) {
+			$race = H3_MGMT_Security::id($race);
+            if ( $race != 0 ) {
 				$where = 'WHERE race_id = ' . $race . ' ';
 			} else {
 				$where = '';
@@ -164,6 +170,8 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				'order'       => 'ASC',
 			);
 			extract( wp_parse_args( $args, $default_args ), EXTR_SKIP );
+            $orderby = in_array($orderby, ['id', 'number', 'destination', 'race_id', 'route_id'], true) ? $orderby : 'destination';
+            $order = $order === 'DESC' ? 'DESC' : 'ASC';
 
 			if ( is_numeric( $parent ) && 'race' === $parent_type ) {
 				$where = 'WHERE race_id = ' . $parent . ' ';
@@ -199,12 +207,15 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_route_name( $id ) {
+            $id = H3_MGMT_Security::id($id);
 			return $this->get_name( $id, 'route' );
 		}
 		public function get_name( $id, $type = 'race' ) {
+            $id = H3_MGMT_Security::id($id);
 			global $wpdb, $h3_mgmt_utilities;
 
-			$key = 'stage' === $type ? 'destination' : 'name';
+			$type = in_array($type, ['race','route','stage'], true) ? $type : 'race';
+            $key = 'stage' === $type ? 'destination' : 'name';
 
 			$name_query = $wpdb->get_results(
 				'SELECT ' . $key . ' FROM ' .
@@ -233,6 +244,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_route_parent( $id ) {
+            $id = H3_MGMT_Security::id($id);
 			global $wpdb;
 
 			$race_query = $wpdb->get_results(
@@ -254,6 +266,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_race_setting( $id ) {
+            $id = H3_MGMT_Security::id($id);
 			global $wpdb;
 
 			$data = $wpdb->get_results(
@@ -275,6 +288,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_race_information_text( $id ) {
+            $id = H3_MGMT_Security::id($id);
 			global $wpdb, $h3_mgmt_utilities;
 
 			$data = $wpdb->get_results(
@@ -306,6 +320,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access private
 		 */
 		private function get_route_users( $race_id = 2 ) {
+            $race_id = H3_MGMT_Security::id($race_id);
 			global $wpdb;
 
 			$users_query = $wpdb->get_results(
@@ -331,6 +346,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access private
 		 */
 		public function get_route_account( $route_id = 2 ) {
+            $route_id = H3_MGMT_Security::id($route_id);
 			global $wpdb;
 			
 			if( is_null( $route_id ) ) {
@@ -353,6 +369,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access private
 		 */
 		private function get_route_by_user( $user_id ) {
+            $user_id = H3_MGMT_Security::id($user_id);
 			global $wpdb;
 
 			$route_query = $wpdb->get_results(
@@ -375,6 +392,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_free_slots( $id ) {
+            $id = H3_MGMT_Security::id($id);
 			global $wpdb;
 
 			$route_query = $wpdb->get_results(
@@ -404,6 +422,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_route_color( $id ) {
+            $id = H3_MGMT_Security::id($id);
 			global $wpdb;
 
 			$sql = $wpdb->prepare( "SELECT color_code FROM {$wpdb->prefix}h3_mgmt_routes WHERE id = %d LIMIT 1", $id);
@@ -911,7 +930,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				$output .= '<p class="message" style="max-width: 500px; margin-left: auto; margin-right: auto;">' . $message . '</p>';
 			}
 
-			$output .= '<form class="ranking-submissions" action="" method="post">' .
+			$output .= '<form class="ranking-submissions" action="" method="post">' . H3_MGMT_Security::nonce('cor-mgmt-ranking-' . (int) $route_id) .
 				'<input type="hidden" name="submitted" value="y"/>' .
 				'<input type="hidden" name="route" id="route" value="' . $route_id . '" />' .
 				'<input type="hidden" name="stage" id="stage" value="' . $stage_number . '" />';
@@ -1057,6 +1076,21 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function save_ranking() {
+            if (!H3_MGMT_Security::ranking_request()) { return H3_MGMT_Security::error(); }
+            global $wpdb;
+            $wpdb->query('START TRANSACTION');
+            try {
+                $output = $this->persist_ranking();
+                if ($wpdb->last_error !== '') { throw new RuntimeException('Ranking write failed'); }
+                $wpdb->query('COMMIT');
+                return $output;
+            } catch (Throwable $error) {
+                $wpdb->query('ROLLBACK');
+                return H3_MGMT_Security::error();
+            }
+        }
+
+        private function persist_ranking() {
 			global $wpdb, $h3_mgmt_teams;
 
 				$race_id       = $this->get_route_parent( $_POST['route'] );
@@ -1144,7 +1178,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 					$points = $points + $temp_pts;
 				}
 
-				$wpdb->update(
+				$written = $wpdb->update(
 					$wpdb->prefix . 'h3_mgmt_teams',
 					array(
 						$stage_rank_string   => $_POST[ $rank_value_string ],
@@ -1157,6 +1191,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 					array( '%d', '%d', '%d', '%d', '%d' ),
 					array( '%d' )
 				);
+                if ($written === false) { throw new RuntimeException('Ranking write failed'); }
 
 			}
 

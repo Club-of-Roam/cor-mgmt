@@ -13,7 +13,7 @@ require_once dirname(__DIR__) . '/Support/LegacyEnvironment.php';
 require_once dirname(__DIR__, 2) . '/includes/class-h3-mgmt-races.php';
 require_once dirname(__DIR__, 2) . '/includes/class-h3-mgmt-teams.php';
 
-/** Executes the unmodified writer with synthetic POST, repository and renderer doubles. */
+/** Retained private legacy calculation with synthetic POST, repository and renderer doubles. */
 final class RankingSubmissionTest extends TestCase
 {
     private array $saved = [];
@@ -72,7 +72,7 @@ final class RankingSubmissionTest extends TestCase
         int $stage, array $post, array $old, int $expectedTotal, int $one, int $amountFlag, int $vary
     ): void {
         $_POST = $post + ['route' => 7, 'stage' => $stage, 'rank-42' => 1];
-        $result = $this->races([self::team($old)])->save_ranking();
+        $result = (new \ReflectionMethod(\H3_MGMT_Races::class, 'persist_ranking'))->invoke($this->races([self::team($old)]));
         self::assertSame('synthetic form', $result);
         self::assertSame([[
             'table' => 'synthetic_h3_mgmt_teams',
@@ -114,7 +114,7 @@ final class RankingSubmissionTest extends TestCase
         $_POST = ['route' => 7, 'stage' => 1, 'rank-42' => 1];
         $races = $this->races([self::team(['vary_extra_stage_6' => 1])]);
         try {
-            $races->save_ranking();
+            (new \ReflectionMethod(\H3_MGMT_Races::class, 'persist_ranking'))->invoke($races);
             self::fail('Known legacy string addition must throw on PHP 8.');
         } catch (TypeError $error) {
             self::assertStringContainsString('Unsupported operand types', $error->getMessage());
@@ -127,7 +127,7 @@ final class RankingSubmissionTest extends TestCase
         $_POST = ['route' => 7, 'stage' => 1, 'rank-42' => 1, 'rank-43' => 2];
         $races = $this->races([self::team(), self::team(['vary_extra_stage_6' => 1], 43)]);
         try {
-            $races->save_ranking();
+            (new \ReflectionMethod(\H3_MGMT_Races::class, 'persist_ranking'))->invoke($races);
             self::fail('The second team must reproduce the legacy TypeError.');
         } catch (TypeError $error) {
             self::assertStringContainsString('Unsupported operand types', $error->getMessage());

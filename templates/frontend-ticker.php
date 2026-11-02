@@ -13,6 +13,13 @@ if( ! isset( $output ) ) {
 
 if ( ! empty( $messages ) ) {
 	foreach ( $messages as $message ) {
+        $message['message'] = esc_html(html_entity_decode((string) ($message['message'] ?? ''), ENT_QUOTES));
+        $message['team_name'] = wp_kses_post((string) ($message['team_name'] ?? ''));
+        $message['mates'] = esc_html(html_entity_decode((string) ($message['mates'] ?? ''), ENT_QUOTES));
+        $message['route_image'] = esc_attr((string) ($message['route_image'] ?? ''));
+        $message['img_path'] = esc_attr((string) ($message['img_path'] ?? ''));
+        $message['img_url'] = esc_url((string) ($message['img_url'] ?? ''));
+
 
 		$diff_string = '';
 
@@ -34,7 +41,7 @@ if ( ! empty( $messages ) ) {
 			$diff_string = '<br /><span class="ticker-message-ago">(' . _x( 'just now', 'Ticker', 'h3-mgmt' ) . ')</span>';
 		}
 
-		//if( ! empty( $message['message'] ) || ( file_exists( $message['img_path'] ) && filesize( $message['img_path'] ) > 1 ) ) {
+		//if( ! empty( $message['message'] ) || ( H3_MGMT_Media::local_path($message['img_path']) ) ) {
 			$time = $message['date'] . $diff_string;
 			if ( $message['mates'] == 'Tramprennen Orga-Team' ){
 				$div_backround = 'style="background: #A9C5DE;"';
@@ -94,7 +101,7 @@ if ( ! empty( $messages ) ) {
 						
 						$img_url = strstr($message['img_path'], 'wp-content');
                                                 
-						if( ! empty( $message['img_path'] ) && file_exists($img_url) && filesize($img_url) > 0 ) {
+						if( ! empty( $message['img_path'] ) && H3_MGMT_Media::local_path($img_url) ) {
 										
 							$output .= 
 								'<a class="ticker-message-pic" href="' .
@@ -117,7 +124,7 @@ if ( ! empty( $messages ) ) {
 						'<p class="ticker-message-mates">' . $message['mates'] . '</p>' .
 						'<p class="ticker-message-time">' . $time . '</p>';
 
-						if( file_exists( $message['img_path'] ) && filesize( $message['img_path'] ) > 1 ) {
+						if( H3_MGMT_Media::local_path($message['img_path']) ) {
 							$output .= '<table><tr><td style="text-align:center;">' .
 								'<a href="' .
 										$message['img_url'] .
@@ -149,6 +156,8 @@ if ( ! empty( $messages ) ) {
 					$output .= '<div class="ticker-show-comments show-comments_close" id="ticker-show-comments_' . $message['id'] . '" style="display: none;" > ';
 					
 				foreach ( $message['comments'] as $comment ) {
+                    $comment['name'] = esc_html((string) $comment['name']);
+                    $comment['message'] = esc_html(html_entity_decode((string) $comment['message'], ENT_QUOTES));
 
 					$diff = $comment['diff'];
 					if ($diff->y > 0) {
@@ -190,3 +199,5 @@ if ( ! empty( $messages ) ) {
 
 	} // foreach message
 } // if ! empty
+
+$output = H3_MGMT_Security::html($output);

@@ -5,7 +5,7 @@ WordPress-Plugin für Veranstaltungen, Teams, Teilnahme, Ranglisten, Spenden und
 **Bestand:** Plugin 1.2.10, Schema 2.8. **Ziel:** 2.0.0 für die jeweils neueste stabile PHP-Version bei vollständiger Unterstützung ab PHP 8.2. Kompatibilitätsvertrag und Zielmatrix: [Masterplan](docs/masterplan.md).
 Ziel ist ein eigenständig installierbares WordPress-Plugin ohne verpflichtendes Spezialtheme oder weiteres Fachplugin; siehe [Installationsvertrag](docs/installation.md).
 
-Block 0 mit Funktionsreferenz, Rollen-/Schnittstelleninventar sowie isolierten und WordPress-Integrationstests ist abgeschlossen. Die Modernisierung ist noch nicht abgeschlossen; der Bestand ist nicht als sicher oder PHP-8-kompatibel freigegeben.
+Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheitskorrekturen und geänderten Integrationsverträge stehen in [Block 1](docs/block-1-security.md). Die Gesamtmodernisierung und Releaseabnahme sind noch offen.
 
 ## Einstieg
 
@@ -16,6 +16,7 @@ Block 0 mit Funktionsreferenz, Rollen-/Schnittstelleninventar sowie isolierten u
 
 | Dokument | Inhalt |
 |---|---|
+| [Sicherheitsbasis Block 1](docs/block-1-security.md) | Rechte, POST/Nonces, Medien, Gateway und Auswirkungen beim Ausrollen |
 | [Referenzabschluss Block 0](docs/block-0-acceptance.md) | Umfang, Belege, Grenzen und Übergabe an Block 1 |
 | [Referenzkatalog](docs/reference-catalog.md) | Ausgangslagen, Aktionen und Abnahmefälle sämtlicher Funktionsbereiche |
 | [Rollen und Schnittstellen](docs/interfaces.md) | Hooks, Objektgrenzen und Nachbarintegrationen |
@@ -34,12 +35,13 @@ Block 0 mit Funktionsreferenz, Rollen-/Schnittstelleninventar sowie isolierten u
 
 ## Entwicklung
 
-Voraussetzung: aktuelle Composer-2-Version und PHP 8.2 oder neuer im PATH; Prüfmatrix 8.2/8.3/8.4/8.5. Im Plugin-Repository:
+Für JavaScript-Prüfungen wird Node.js 24 benötigt. Weitere Voraussetzung: aktuelle Composer-2-Version und PHP 8.2 oder neuer im PATH; Prüfmatrix 8.2/8.3/8.4/8.5. Im Plugin-Repository:
 
 ```sh
 composer install
 composer check
 composer test
+composer test:js
 ```
 
 WordPress-Referenzsuite: composer test:integration. Benötigte Testsoftware und Prüfgrenzen stehen in [Tests](docs/testing.md); die CI stellt ausschließlich synthetische Testressourcen bereit.

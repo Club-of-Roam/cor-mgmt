@@ -57,3 +57,7 @@ InnoDB/utf8mb4, geeignete Indizes, normalisierte Etappenergebnisse, sichere Einl
 Installationsvertrag einschließlich Eigenständigkeit bestanden, Fach- und Fehlerfälle bestehen, Migrationen geprüft, Prüfungen und CI für PHP 8.2 bis zur neuesten stabilen Version erfolgreich, Dokumentation/Arbeitsstatus aktuell. Bugfixes erhalten Regressionstests. Coverage-Zahl ersetzt keine fachliche Abdeckung. Offene Kriterien verhindern einen Abschlussstatus.
 
 Vor Release frische Produktionskopie vollständig prüfen, kontrolliertes Wartungsfenster und finale Sicherung vorsehen. Rückweg muss neue produktive Schreibvorgänge berücksichtigen. Details: [Tests](testing.md), [Release](release.md), [Status](status.md).
+
+## Abschluss Sicherheitsbasis
+
+Block 1 ist am 2026-11-02 mit negativen und positiven WordPress-Sicherheitstests sowie JavaScript-Regressionen abgeschlossen. Umfang und geänderte Integrationsverträge in [block-1-security.md](block-1-security.md); ausgeführte Matrix und Grenzen in [verification.md](verification.md). Keine Schemaumstellung oder Releasefreigabe. Fortsetzung mit Block 2.

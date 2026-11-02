@@ -9,6 +9,7 @@ TeamRulesTest führt die echten Legacy-Methoden mit partiellen Doubles für dere
 - composer install: gesperrte Entwicklungsabhängigkeiten installieren (CLI PHP >= 8.2).
 - composer test: isolierte Referenztests.
 - composer test:integration: separate echte WordPress-/wpdb-Referenzsuite; ausdrücklich bereitgestellte synthetische Testressourcen erforderlich, keine vorhandene Website verwenden.
+- composer test:js: vier Ereignis-/Uploadregressionen mit Node.js 24 und DOM-Doubles; keine Browserabnahme.
 - composer check: Composer-Metadaten, PHP-Syntax und Dokumentations-/Inventarkonsistenz.
 - python tools/build-inventory.py: Inventar regenerieren, danach Diff prüfen.
 
@@ -26,9 +27,9 @@ phpunit.integration.xml.dist lädt echte Core-APIs in einem getrennten Prozess o
 
 Der Bootstrap verlangt COR_TEST_WP_ROOT mit einer ausdrücklichen Fixturemarkierung, fehlende wp-config.php, leere Plugin-/Themeordner und einen eigenen eingeschränkten Datenbankbenutzer. Datenbanknamen müssen cor_mgmt_test_* entsprechen, der Host muss ein Loopback-Endpunkt mit eigenem Port sein; fehlende/unsichere Vorgaben brechen ab. Das Werkzeug tools/create-wordpress-fixture.php kopiert ausschließlich Coredateien in ein neues Ziel und übernimmt weder Sitekonfiguration noch Inhalte. Zugangswerte nur über die Prozessumgebung, keine Zugangsdaten im Repository.
 
-Die Suite installiert frisches WordPress und lädt den echten Plugin-Bootstrap; danach ruft sie dessen init einmal auf. Minimale synthetische Tabellen sind Referenzfixtures, keine Ziel-DDL oder bestandene Legacy-Neuinstallation. Pro Test Transaktion/Rollback und Cachebereinigung. Rollen, Benutzer, Metadaten, tatsächliche SQL-Abfragen/Schreibzugriffe, Shortcodes und wp_mail-Hook sind real. Mail wird vor Transport abgefangen; WP-HTTP blockiert. Direkte Provider-Dateizugriffe werden nicht ausgeführt.
+Die Suite installiert frisches WordPress und lädt den echten Plugin-Bootstrap; danach ruft sie dessen init einmal auf. Minimale synthetische Tabellen sind Referenzfixtures, keine Ziel-DDL oder bestandene Legacy-Neuinstallation. Pro Test Transaktion/Rollback und Cachebereinigung. Rollen, Benutzer, Metadaten, tatsächliche SQL-Abfragen/Schreibzugriffe, Shortcodes und wp_mail-Hook sind real. Mail wird vor Transport abgefangen; WP-HTTP blockiert. Providerzugriffe verwenden jetzt WordPress-HTTP und werden im Test vor dem Transport abgefangen.
 
-Bekannte Ladeveraltungen werden eng nach Dateiname und Meldungsmuster aus utilities (implizit nullable) und XChange (Interpolation) protokolliert. Andere Warnungen bleiben Fehler. Nach WordPress-Bootstrap wird E_ALL wiederhergestellt. Profilabschnittsfehler werden im betreffenden Known-defect-Test gezielt als ErrorException erwartet. Solche Referenzen sind keine Bestätigung korrekter oder sicherer Zielimplementierung.
+Bekannte Ladeveraltungen werden eng nach Dateiname und Meldungsmuster aus utilities (implizit nullable) und XChange (Interpolation) protokolliert. Andere Warnungen bleiben Fehler. Nach WordPress-Bootstrap wird E_ALL wiederhergestellt. Die Referenzen für Börseneigentum, Profilabschnitte, Selbstmail, schreibende GET-Aufrufe und Einladungskanonisierung wurden nach Block 1 zu Regressionen für das korrigierte Verhalten. Solche Referenzen sind keine Bestätigung korrekter oder sicherer Zielimplementierung.
 
 Primärquellen: [WordPress wp_install](https://developer.wordpress.org/reference/functions/wp_install/), [Core-Teststrategie](https://make.wordpress.org/core/handbook/testing/automated-testing/), [WordPress 7.1.4](https://wordpress.org/documentation/wordpress-version/version-7-1-4/). Die schlanke Integration verwendet PHPUnit direkt; sie behauptet nicht, auf WP_UnitTestCase zu basieren.
 
@@ -69,3 +70,11 @@ CI-Artefakte nur mit synthetischen Daten, Screenshots/Traces bei Browserfehlern 
 - [PHPStan](https://phpstan.org/user-guide/getting-started)
 - [WordPress Coding Standards](https://github.com/WordPress/WordPress-Coding-Standards)
 - [PHPCompatibilityWP](https://github.com/PHPCompatibility/PHPCompatibilityWP)
+
+## Sicherheitsregressionen ab Block 1
+
+SecurityBoundaryTest prüft echte WordPress-Nonces, globale/eigene Rechte, fremde IDs/Routen, Sammelaktionen, Archivschutz, Einladungs-SQL, Ranglistenannahme, Profilvalidierung, Ausgaben, Uploads, signierte Gateways und geschützte Wartung. Zulässige und unzulässige Vorgänge gehören zusammen. Ein synthetisches PNG prüft Registrierung, Eigentümer/Rennen und optionale GD-Komposition; keine Benutzerbilder. Die HTTP-Echtheit hochgeladener Temporärdateien wird im Negativfall geprüft, der positive multipart-HTTP-/Browserablauf bleibt Teil der Medien-Gesamtabnahme.
+
+RankingSubmissionTest ruft nach Einführung der Sicherheitsgrenze bewusst die private Legacy-Berechnung als Referenz auf. Dort erwartete Altfehler sind keine akzeptierten öffentlichen Requests; SecurityBoundaryTest prüft den geschützten Eingang. TeamRulesTest prüft nun insbesondere, dass reine Abfragen nicht schreiben oder mailen. Zulässige Speicherung/Mail nach Team-POST wird zusätzlich mit echtem WordPress geprüft.
+
+JavaScript-Tests verwenden den eingebauten node:test-Runner ohne npm-Abhängigkeiten. Sie prüfen Session/Nonce bei Upload, verweigerten Upload, serverseitige Bestätigung und abgebrochene Löschaktion mit DOM-Doubles. Playwright-Gesamtabnahme, Accessibility, statische Werkzeuge und Fachabdeckung stehen weiterhin bei ihren Arbeitspaketen. Prüfbelege: [verification.md](verification.md).

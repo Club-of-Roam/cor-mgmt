@@ -27,10 +27,7 @@ $(document).ready(function() {
 		$(this).remove();
 	});
 
-	window.vcaASM = { cligger : $('input.do-bulk-action').first().attr('onclick') };
-	$('input.do-bulk-action').each(function() {
-		$(this).removeAttr('onclick');
-	});
+
 });
 
 $('input.do-bulk-action').click(function(e) {
@@ -54,15 +51,6 @@ $('.simul-select').change(function() {
 	});
 });
 
-$('form.blk-action-form input').change( function(e) {
-	var actionVal = $(this).parents('form.blk-action-form').find('select.bulk-action').first().val();
-	var checkedCount = $(this).parents('form.blk-action-form').find('input:checked').length;
-	if( actionVal != -1 && actionVal != 'please-select' && checkedCount > 0 ) {
-		$(this).parents('form.blk-action-form').find('input.do-bulk-action').each(function(){
-			$(this).attr('onclick', window.vcaASM.cligger);
-		});
-	}
-});
 
 $('form input.bulk-deselect').click( function() {
 	var todo = $(this).attr( 'data' );
@@ -79,3 +67,7 @@ $('form input.bulk-deselect').click( function() {
 });
 
 })(jQuery); // closure
+document.addEventListener('click', function (event) {
+    var button = event.target.closest('[data-confirm]');
+    if (button && !window.confirm(button.dataset.confirm)) event.preventDefault();
+});

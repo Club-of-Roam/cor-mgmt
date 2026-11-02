@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_XChange class.
@@ -24,14 +25,14 @@ class H3_MGMT_XChange {
 		$current_year = date( 'Y-01-01' );
 
 		return $wpdb->get_results(
-			"SELECT xc.*
+			$wpdb->prepare("SELECT xc.*
 					FROM {$wpdb->prefix}h3_mgmt_xchange xc
 					    LEFT JOIN (SELECT tm.user_id
 					               FROM {$wpdb->prefix}h3_mgmt_teammates tm
 					                   JOIN {$wpdb->prefix}h3_mgmt_teams t ON tm.team_id = t.id
-					               WHERE t.race_id = ${activeRace}) j ON xc.user_id = j.user_id
-					WHERE time > '${current_year}' AND j.user_id IS NULL
-					ORDER BY time DESC", ARRAY_A
+					               WHERE t.race_id = %d) j ON xc.user_id = j.user_id
+					WHERE time > %s AND j.user_id IS NULL
+					ORDER BY time DESC", (int) $activeRace, $current_year), ARRAY_A
 		);
 	}
 
@@ -47,10 +48,10 @@ class H3_MGMT_XChange {
 			return null;
 		}
 
-		return $wpdb->get_row( "SELECT *
+		return $wpdb->get_row( $wpdb->prepare("SELECT *
 											FROM {$wpdb->prefix}h3_mgmt_xchange
-											WHERE user_id = {$current_user->ID}
-											ORDER BY time DESC", ARRAY_A );
+											WHERE user_id = %d
+											ORDER BY time DESC", get_current_user_id()), ARRAY_A );
 	}
 
 	/**
@@ -71,7 +72,10 @@ class H3_MGMT_XChange {
 			return null;
 		}
 
-		$table = "{$wpdb->prefix}h3_mgmt_xchange";
+		if (!H3_MGMT_Security::post('cor-mgmt-xchange') || !empty($_POST['address'])) { return false; }
+        $newMessage = sanitize_textarea_field($newMessage);
+        if (strlen($newMessage) > 10000 || ($id !== null && $id < 1)) { return false; }
+        $table = "{$wpdb->prefix}h3_mgmt_xchange";
 
 		if ( !empty( $newMessage ) && empty( $id ) ) {
 			return $wpdb->insert(
@@ -88,16 +92,17 @@ class H3_MGMT_XChange {
 			return $wpdb->update(
 				$table,
 				[ 'message' => $newMessage ],
-				[ 'id' => $id ],
+				[ 'id' => $id, 'user_id' => get_current_user_id() ],
 				[ '%s' ],
-				[ '%d' ],
+				[ '%d', '%d' ],
 			);
 		}
 
+		if (!$id) { return 0; }
 		return $wpdb->delete(
 			$table,
-			[ 'id' => $id ],
-			[ '%d' ],
+			[ 'id' => $id, 'user_id' => get_current_user_id() ],
+			[ '%d', '%d' ],
 		);
 	}
 
@@ -110,7 +115,7 @@ class H3_MGMT_XChange {
 	public function xchange_control(): string {
 		$ownMessage = $this->getOwnMessage();
 
-		$ownMessageText = trim( $_POST['message'] ?? '' );
+		$ownMessageText = is_string($_POST['message'] ?? null) ? trim(wp_unslash($_POST['message'])) : '';
 
 		if ( isset( $_POST['submitted'] ) ) {
 			$this->insertUpdateDeleteMessage( $ownMessageText, $ownMessage['id'] ?? null );
@@ -126,10 +131,10 @@ class H3_MGMT_XChange {
 			if ( !empty( trim( $message['message'] ) ) && $user !== false ) {
 				$output .= '<div class="xchange-message-wrap">' .
 				           '<p class="xchange-title">' .
-				           _x( 'Message by', 'XChange', 'h3-mgmt' ) . ': ' . $user->first_name . ' (' . $message['time'] . ')' .
+				           _x( 'Message by', 'XChange', 'h3-mgmt' ) . ': ' . esc_html($user->first_name) . ' (' . esc_html($message['time']) . ')' .
 				           '</p>' .
 				           '<p class="xchange-message no-margin-bottom">' .
-				           preg_replace( '#(<br */?>\s*){2,}#i', '<br /><br />', preg_replace( '/[\r|\n]/', '<br>', stripslashes( $message['message'] ) ) ) .
+				           nl2br(esc_html($message['message'])) .
 				           '</p>' .
 				           '</div>';
 			}
@@ -143,7 +148,7 @@ class H3_MGMT_XChange {
 			           '<p>' . _x( 'Please do not forget to include some sort of contact information in your message.', 'XChange', 'h3-mgmt' ) . '</p>';
 
 			$output .= '<form name="h3_mgmt_xchange_message" method="post" action="">' .
-			           '<input type="hidden" name="submitted" value="y"/>' .
+			           H3_MGMT_Security::nonce('cor-mgmt-xchange') . '<input type="hidden" name="submitted" value="y"/>' .
 			           '<div class="form-row trap-row"><label for="address">Please leave this blank...</label>' .
 			           '<input type="text" name="address" id="address" value=""></div>';
 

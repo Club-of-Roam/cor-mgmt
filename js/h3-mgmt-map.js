@@ -204,3 +204,7 @@ function initMap() {
 }
 
 window.addEventListener('load', initMap);
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { if (document.getElementById('map')) { initMap(); } });
+} else if (document.getElementById('map')) { initMap(); }

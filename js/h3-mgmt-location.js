@@ -38,3 +38,6 @@ function showError(error) {
             break;
     }
 }
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.cor-get-location').forEach(function (button) { button.addEventListener('click', getLocation); });
+});

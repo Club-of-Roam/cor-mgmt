@@ -24,6 +24,7 @@ final class LegacyWordPressTest extends TestCase
         $this->post = $_POST;
         $this->get = $_GET;
         $_POST = $_GET = [];
+        $_SERVER['REQUEST_METHOD'] = 'GET';
         $wpdb->query('START TRANSACTION');
         wp_cache_flush();
         wp_set_current_user(0);
@@ -123,6 +124,7 @@ final class LegacyWordPressTest extends TestCase
         global $wpdb;
         $id = $this->user();
         wp_set_current_user($id);
+        $this->postNonce('cor-mgmt-xchange');
         $exchange = new \H3_MGMT_XChange();
         self::assertSame(1, $exchange->insertUpdateDeleteMessage('First synthetic text', null));
         $messageId = (int) $wpdb->insert_id;
@@ -132,7 +134,7 @@ final class LegacyWordPressTest extends TestCase
         self::assertNull($wpdb->get_var("SELECT id FROM {$wpdb->prefix}h3_mgmt_xchange WHERE id=$messageId"));
     }
 
-    public function testExchangeWriterCanModifyForeignIdKnownDefect(): void
+    public function testExchangeWriterCannotModifyForeignId(): void
     {
         global $wpdb;
         $owner = $this->user('synthetic_owner');
@@ -140,9 +142,10 @@ final class LegacyWordPressTest extends TestCase
         $wpdb->insert($wpdb->prefix . 'h3_mgmt_xchange', ['user_id' => $owner, 'message' => 'Owner text']);
         $messageId = (int) $wpdb->insert_id;
         wp_set_current_user($other);
-        self::assertSame(1, (new \H3_MGMT_XChange())->insertUpdateDeleteMessage('Foreign replacement', $messageId));
+        $this->postNonce('cor-mgmt-xchange');
+        self::assertSame(0, (new \H3_MGMT_XChange())->insertUpdateDeleteMessage('Foreign replacement', $messageId));
         self::assertSame((string) $owner, $wpdb->get_var("SELECT user_id FROM {$wpdb->prefix}h3_mgmt_xchange WHERE id=$messageId"));
-        self::assertSame('Foreign replacement', $wpdb->get_var("SELECT message FROM {$wpdb->prefix}h3_mgmt_xchange WHERE id=$messageId"));
+        self::assertSame('Owner text', $wpdb->get_var("SELECT message FROM {$wpdb->prefix}h3_mgmt_xchange WHERE id=$messageId"));
     }
 
     public function testExchangeListExcludesOldYearAndParticipantsOfActiveRace(): void
@@ -227,30 +230,23 @@ final class LegacyWordPressTest extends TestCase
         self::assertSame('', get_user_meta($owner, 'city', true));
     }
 
-    public function testProfileSectionWithoutIdTriggersWarningForAuthorizedSaveKnownDefect(): void
+    public function testProfileAuthorizedSaveSkipsSectionWithoutId(): void
     {
         $id = $this->user();
         wp_set_current_user($id);
-        set_error_handler(static function ($severity, $message, $file, $line): never {
-            throw new ErrorException($message, 0, $severity, $file, $line);
-        });
-        try {
-            (new \H3_MGMT_Profile())->save_extra_profile_fields($id);
-            self::fail('The section row has no id but the legacy writer accesses it.');
-        } catch (ErrorException $error) {
-            self::assertStringContainsString('Undefined array key "id"', $error->getMessage());
-        } finally {
-            restore_error_handler();
-        }
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = ['_wpnonce' => wp_create_nonce('update-user_' . $id), 'city' => 'Synthetic city'];
+        self::assertTrue((new \H3_MGMT_Profile())->save_extra_profile_fields($id));
+        self::assertSame('Synthetic city', get_user_meta($id, 'city', true));
     }
 
-    public function testTickerEmptyGatewayRequestReturns400WithoutWriting(): void
+    public function testTickerEmptyGatewayRequestReturns403WithoutWriting(): void
     {
         global $wpdb;
         ob_start();
         try { $GLOBALS['h3_mgmt_ticker']->ticker_incoming_interface(); $output = ob_get_contents(); }
         finally { ob_end_clean(); }
-        self::assertSame('400', $output);
+        self::assertSame('403', $output);
         self::assertSame('0', $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sms_ticker"));
     }
 
@@ -310,11 +306,11 @@ final class LegacyWordPressTest extends TestCase
             ['https://www.betterplace.org/de/fundraising-events/12', null]];
     }
 
-    public function testLegacyDonationValidationOnlyChecksTrapAndPlaceholder(): void
+    public function testDonationValidationRejectsInvalidTeamTrapAndPlaceholder(): void
     {
         $method = new ReflectionMethod(\H3_MGMT_Sponsors::class, 'validate_submit');
         $_POST = ['team_id' => 'not-a-number', 'email' => 'invalid'];
-        self::assertSame([true, []], $method->invoke($GLOBALS['h3_mgmt_sponsors']));
+        self::assertFalse($method->invoke($GLOBALS['h3_mgmt_sponsors'])[0]);
         $_POST = ['team_id' => 'please_select', 'address' => 'bot'];
         [$valid, $errors] = $method->invoke($GLOBALS['h3_mgmt_sponsors']);
         self::assertFalse($valid);
@@ -326,20 +322,23 @@ final class LegacyWordPressTest extends TestCase
         require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin-emails.php';
         $id = $this->user();
         $this->team($id);
+        wp_set_current_user($this->user('synthetic_mail_admin', 'administrator'));
         $_POST = ['receipient' => 'race-9', 'subject' => 'Synthetic', 'message' => 'Body', 'sender' => 'nr'];
+        $this->postNonce('cor-mgmt-admin-emails');
         $method = new ReflectionMethod(\H3_MGMT_Admin_Emails::class, 'mail_send');
         self::assertTrue($method->invoke(new \H3_MGMT_Admin_Emails()));
         self::assertSame(['synthetic_member@example.invalid'], array_column($GLOBALS['cor_test_mail'], 'to'));
     }
 
-    public function testAdminSelfMailCallsEmailAsMethodAndGetsFalseKnownDefect(): void
+    public function testAdminSelfMailUsesCurrentAddress(): void
     {
         require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin-emails.php';
-        wp_set_current_user($this->user());
+        wp_set_current_user($this->user('synthetic_self_admin', 'administrator'));
         $_POST = ['receipient' => 'self', 'subject' => 'Synthetic', 'message' => 'Body', 'sender' => 'nr'];
+        $this->postNonce('cor-mgmt-admin-emails');
         (new ReflectionMethod(\H3_MGMT_Admin_Emails::class, 'mail_send'))->invoke(new \H3_MGMT_Admin_Emails());
         self::assertCount(1, $GLOBALS['cor_test_mail']);
-        self::assertFalse($GLOBALS['cor_test_mail'][0]['to']);
+        self::assertSame('synthetic_self_admin@example.invalid', $GLOBALS['cor_test_mail'][0]['to']);
     }
 
     #[DataProvider('tickerPosts')]
@@ -352,8 +351,10 @@ final class LegacyWordPressTest extends TestCase
         wp_set_current_user($id);
         $_GET = ['todo' => $action];
         $_POST = $post;
+        $this->postNonce('cor-mgmt-ticker-9');
+        if ($action === 'send_message_comment') { $wpdb->insert($wpdb->prefix . 'sms_ticker', ['id'=>123,'race_id'=>9,'type'=>1,'send_from'=>'U_'.$id,'msg'=>'Parent']); }
         $html = do_shortcode('[h3-ticker-message race="9"]');
-        $row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sms_ticker", ARRAY_A);
+        $row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sms_ticker ORDER BY id DESC LIMIT 1", ARRAY_A);
         self::assertIsArray($row);
         self::assertSame('U_' . $id, $row['send_from']);
         self::assertSame((string) $type, $row['type']);
@@ -384,7 +385,7 @@ final class LegacyWordPressTest extends TestCase
         self::assertSame(['4'], array_column($GLOBALS['h3_mgmt_ticker']->get_messages_by_ids(['U_12'], 9, 1), 'type'));
     }
 
-    public function testInvitationLookupPrefersGetAndDoesNotConsumeCode(): void
+    public function testInvitationLookupPrefersCanonicalPostAndDoesNotConsumeCode(): void
     {
         global $wpdb;
         foreach ([[42, 111], [43, 222]] as [$team, $code]) {
@@ -393,7 +394,7 @@ final class LegacyWordPressTest extends TestCase
         $_GET['invitation'] = '111';
         $_POST['invitation'] = '222';
         $method = new ReflectionMethod(\H3_MGMT_Teams::class, 'handle_invitation');
-        self::assertSame('42', $method->invoke($GLOBALS['h3_mgmt_teams']));
+        self::assertSame('43', $method->invoke($GLOBALS['h3_mgmt_teams']));
         $_GET = [];
         self::assertSame('43', $method->invoke($GLOBALS['h3_mgmt_teams']));
         $_POST['invitation'] = '999';
@@ -405,7 +406,10 @@ final class LegacyWordPressTest extends TestCase
     {
         global $wpdb;
         $this->race(9, ['startingpoint' => 0, 'start_route_id' => 7]);
-        $this->team($this->user(), 42, 0);
+        $id = $this->user();
+        $this->team($id, 42, 0);
+        wp_set_current_user($id);
+        $this->postNonce('cor-mgmt-team-9');
         $wpdb->insert($wpdb->prefix . 'h3_mgmt_auto_responses', [
             'action' => 'publishable', 'language' => 'en', 'switch' => 1,
             'subject' => 'Synthetic complete', 'message' => '%team_name%',
@@ -417,16 +421,22 @@ final class LegacyWordPressTest extends TestCase
         self::assertCount(1, $GLOBALS['cor_test_mail']);
     }
 
-    public function testTeamDowngradePersistsAndClearsRouteEvenInStartedLegacyRace(): void
+    public function testTeamReadingDoesNotPersistDowngradeInStartedRace(): void
     {
         global $wpdb;
         $this->race(9, ['status' => 3, 'dis_fee' => 0]);
         $this->team($this->user());
         $wpdb->update($wpdb->prefix . 'h3_mgmt_teammates', ['paid' => 0], ['team_id' => 42]);
-        self::assertSame(0, $GLOBALS['h3_mgmt_teams']->is_complete(42));
-        self::assertSame('0', $wpdb->get_var("SELECT complete FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=42"));
-        self::assertSame('0', $wpdb->get_var("SELECT route_id FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=42"));
+        self::assertSame(1, $GLOBALS['h3_mgmt_teams']->is_complete(42));
+        self::assertSame('1', $wpdb->get_var("SELECT complete FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=42"));
+        self::assertSame('7', $wpdb->get_var("SELECT route_id FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=42"));
         self::assertSame([], $GLOBALS['cor_test_mail']);
+    }
+
+    private function postNonce(string $action): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['cor_mgmt_nonce'] = wp_create_nonce($action);
     }
 
     private static function assertWPErrorCode(string $code, $value): void

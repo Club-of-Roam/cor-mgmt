@@ -35,19 +35,17 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 		}
 		if ( isset( $field['label'] ) ) { // && ! empty( $field['label'] )
 			$output .= '">' .
-				'<label for="' . $field['id'] . '">' .
+				'<label for="' . esc_attr((string) $field['id']) . '">' .
 					$field['label'];
 				if( isset ( $field['tooltip'] ) && ! empty( $field['tooltip'] ) ) {
-					$output .= '<span class="tip" onmouseover="tooltip(\'' .
-						str_replace( '"', '&quot;', str_replace( "'", '&apos;', $field['tooltip'] ) ) .
-						'\');" onmouseout="exit();"> (?)</span>';
+					$output .= '<span class="tip" title="' . esc_attr((string) $field['tooltip']) . '"> (?)</span>';
 				}
 			$output .= '</label><br>' ;
 		}
 
 		switch( $field['type'] ) {
 			case 'note':
-				$output .= '<p id="' . $field['id'] . '"><em>' . $field['note'] . '</em></p>';
+				$output .= '<p id="' . esc_attr((string) $field['id']) . '"><em>' . $field['note'] . '</em></p>';
 			break;
 
 			case 'textarea':
@@ -57,7 +55,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
-				$output .= '>' . $field['value'] . '</textarea>';
+				$output .= '>' . esc_attr((string) $field['value']) . '</textarea>';
 			break;
 
 			case 'hidden':
@@ -65,14 +63,14 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 					'name="' . $field['id'] .
 					'" id="' . $field['id'] .
 					'" class="input"' .
-					'" value="' . $field['value'] . '" />';
+					'" value="' . esc_attr((string) $field['value']) . '" />';
 			break;
 
 			case 'tel':
 				$output .= '<input type="tel" class="input input-tel"' .
 					'name="' . $field['id'] .
 					'" id="' . $field['id'] .
-					'" value="' . $field['value'] . '" size="30"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="30"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
@@ -83,7 +81,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 				$output .= '<input type="email" class="input input-email"' .
 					'name="' . $field['id'] .
 					'" id="' . $field['id'] .
-					'" value="' . $field['value'] . '" size="30"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="30"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
@@ -92,7 +90,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 
 			case 'select':
 				$output .= '<select name="' . $field['id'] .
-				'" id="' . $field['id'] . '"';
+				'" id="' . esc_attr((string) $field['id']) . '"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
@@ -103,15 +101,15 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 					if( $field['value'] == $option['value'] ) {
 						$output .= ' selected="selected"';
 					}
-					$output .= ' value="' . $option['value'] . '">' . $option['label'] . '&nbsp;</option>';
+					$output .= ' value="' . esc_attr((string) $option['value']) . '">' . esc_html((string) $option['label']) . '&nbsp;</option>';
 				}
 				$output .= '</select>';
 			break;
 
 			case 'checkbox':
 				$output .= '<span class="box-test"></span><input type="checkbox"' .
-					'name="' . $field['id'] . '" ' .
-					'id="' . $field['id'] . '" ' .
+					'name="' . esc_attr((string) $field['id']) . '" ' .
+					'id="' . esc_attr((string) $field['id']) . '" ' .
 					'value="1" ';
 				if( isset ( $field['value'] ) && $field['value'] == 1 ) {
 					$output .= ' checked="checked"';
@@ -119,7 +117,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
-				$output .= '/><label for="' . $field['id'] . '"><span class="box"></span>' . ( ! empty( $field['option'] ) ? $field['option'] : '' ) . '</label>';
+				$output .= '/><label for="' . esc_attr((string) $field['id']) . '"><span class="box"></span>' . ( ! empty( $field['option'] ) ? $field['option'] : '' ) . '</label>';
 			break;
 
 			case 'radio':
@@ -127,7 +125,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 					$output .= '<input type="radio"' .
 						'name="' . $field['id'] .
 						'" id="' . $option['value'] .
-						'" value="' . $option['value'] . '" ';
+						'" value="' . esc_attr((string) $option['value']) . '" ';
 
 					if( $field['value'] == $option['value'] ) {
 						$output .= ' checked="checked"';
@@ -136,7 +134,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 						$output .= ' disabled="disabled"';
 					}
 
-					$output .= ' /><label style="display:inline;" for="' . $field['id'] . '_' . $option['value'] . '">' . $option['label'] . '</label><br />';
+					$output .= ' /><label style="display:inline;" for="' . esc_attr((string) $field['id']) . '_' . esc_attr((string) $option['value']) . '">' . esc_html((string) $option['label']) . '</label><br />';
 				}
 			break;
 
@@ -144,9 +142,9 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 				foreach( $field['options'] as $option ) {
 					$output .= '<input type="checkbox"' .
 						'value="' . $option['value'] .
-						'" name="' . $field['id'] . '[]' .
+						'" name="' . esc_attr((string) $field['id']) . '[]' .
 						'" class="' . $field['id'] .
-						'" id="' . $field['id'] . '_' . $option['value'] . '"';
+						'" id="' . esc_attr((string) $field['id']) . '_' . esc_attr((string) $option['value']) . '"';
 
 					if( isset( $field['value'] ) && is_array( $field['value'] ) && in_array( $option['value'], $field['value'] ) ) {
 							$output .= ' checked="checked"';
@@ -155,7 +153,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 						$output .= ' disabled="disabled"';
 					}
 
-					$output .= ' /><label for="' . $field['id'] . '_' . $option['value'] . '">' .
+					$output .= ' /><label for="' . esc_attr((string) $field['id']) . '_' . esc_attr((string) $option['value']) . '">' .
 						$option['label'] .
 						'</label><br />';
 				}
@@ -163,8 +161,8 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 
 			case 'date':
 
-				$output .= '<select name="' . $field['id'] . '-year' .
-				'" id="' . $field['id'] . '-year' . '"';
+				$output .= '<select name="' . esc_attr((string) $field['id']) . '-year' .
+				'" id="' . esc_attr((string) $field['id']) . '-year' . '"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
@@ -178,8 +176,8 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 				}
 				$output .= '</select>';
 
-				$output .= '<select name="' . $field['id'] . '-month' .
-				'" id="' . $field['id'] . '-month' . '"';
+				$output .= '<select name="' . esc_attr((string) $field['id']) . '-month' .
+				'" id="' . esc_attr((string) $field['id']) . '-month' . '"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
@@ -199,8 +197,8 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 				}
 				$output .= '</select>';
 
-				$output .= '<select name="' . $field['id'] . '-day' .
-				'" id="' . $field['id'] . '-day' . '"';
+				$output .= '<select name="' . esc_attr((string) $field['id']) . '-day' .
+				'" id="' . esc_attr((string) $field['id']) . '-day' . '"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}
@@ -231,11 +229,11 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 				$output .= ' />';
 				if( isset( $field['value'] ) && ! empty( $field['value'] ) ) {
 						$output .= '<input type="hidden" ' .
-							'name="' . $field['id'] . '-tmp" ' .
-							'id="' . $field['id'] . '-tmp" ' .
-							'value="' . $field['value'] . '" />' .
+							'name="' . esc_attr((string) $field['id']) . '-tmp" ' .
+							'id="' . esc_attr((string) $field['id']) . '-tmp" ' .
+							'value="' . esc_attr((string) $field['value']) . '" />' .
 							'<img class="form-img no-bsl-adjust" alt="Your Pic" src="' .
-								$field['value'] .
+								esc_url((string) $field['value']) .
 							'" style="height:150px;"/>';
 				}
 			break;
@@ -243,9 +241,9 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 			case 'text-repeatable-no-js':
 				for( $i = 0; $i < $field['num']; $i++ ) {
 					$output .= '<input type="text" name="' .$field['id'] . '['.$i.']" ' .
-						'id="' . $field['id'] . '" value="';
+						'id="' . esc_attr((string) $field['id']) . '" value="';
 					if( is_array( $field['value'] ) && ! empty( $field['value'][$i] ) ) {
-						$output .= $field['value'][$i];
+						$output .= esc_attr((string) $field['value'][$i]);
 					}
 					$output .= '" size="30" />';
 
@@ -256,12 +254,10 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 						}
 						$output .= '">';
 						if( isset( $field['label'] ) && ! empty( $field['label'] ) ) {
-							$output .= '<label for="' . $field['id'] . '">' .
+							$output .= '<label for="' . esc_attr((string) $field['id']) . '">' .
 								$field['label'] . ' ' . ( $i + 2 );
 							if( isset ( $field['tooltip'] ) && ! empty( $field['tooltip'] ) ) {
-								$output .= '<span class="tip" onmouseover="tooltip(\'' .
-									str_replace( '"', '&quot;', str_replace( "'", '&apos;', $field['tooltip'] ) ) .
-									'\');" onmouseout="exit();"> (?)</span>';
+								$output .= '<span class="tip" title="' . esc_attr((string) $field['tooltip']) . '"> (?)</span>';
 							}
 							$output .= '</label>' ;
 						}
@@ -275,7 +271,7 @@ if( isset ( $fields ) &&  ! empty( $fields ) ) {
 					'name="' . $field['id'] .
 					'" id="' . $field['id'] .
 					'" class="input"' .
-					'" value="' . $field['value'] . '" size="30"';
+					'" value="' . esc_attr((string) $field['value']) . '" size="30"';
 				if( isset( $field['disabled'] ) && $field['disabled'] === true ) {
 					$output .= ' disabled="disabled"';
 				}

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Mailer class.
@@ -69,10 +70,9 @@ class H3_MGMT_Mailer {
 
 		/* grab action options from database */
 		$options_query = $wpdb->get_results(
-			"SELECT * FROM " . $wpdb->prefix . "h3_mgmt_auto_responses " .
-			"WHERE action = '" . $action . "' AND language = '" . $language . "' LIMIT 1", ARRAY_A
+			$wpdb->prepare("SELECT * FROM {$wpdb->prefix}h3_mgmt_auto_responses WHERE action=%s AND language=%s LIMIT 1", $action, $language), ARRAY_A
 		);
-		$options = $options_query[0];
+		$options = $options_query[0] ?? ['switch'=>0];
 
 		/* do nothing if notifications have been disabled for this action */
 		if( $options['switch'] == 0 ) {
@@ -165,7 +165,9 @@ class H3_MGMT_Mailer {
 	 * @access public
 	 */
 	public function send( $receipient, $subject, $message_pre, $from_name = NULL, $from_email = NULL, $content_type = NULL ) {
-		$message = wordwrap($message_pre, 70);
+		if (preg_match('/[\r\n]/', (string) $subject . (string) $from_name . (string) $from_email)) { return false; }
+        $subject = sanitize_text_field((string) $subject);
+        $message = wordwrap($message_pre, 70);
 
 		if( ! is_array( $receipient ) ) {
 			$receipient = array( $receipient );
@@ -194,6 +196,7 @@ class H3_MGMT_Mailer {
 		}
 
 		foreach( $receipient as $to ) {
+            if (!is_string($to) || !is_email($to)) { continue; }
 			wp_mail( $to, $subject, stripslashes( $message ), $headers );
 		}
 	}

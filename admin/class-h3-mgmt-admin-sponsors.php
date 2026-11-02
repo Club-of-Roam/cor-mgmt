@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . "/includes/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Admin_Sponsors class.
@@ -20,6 +21,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Sponsors' ) ) :
 		 * @access public
 		 */
 		public function sponsors_control( $method = '' ) {
+            if (!H3_MGMT_Security::admin_request('sponsors')) { echo H3_MGMT_Security::error(); return; }
 			global $wpdb, $h3_mgmt_teams;
 
 			$messages = array();

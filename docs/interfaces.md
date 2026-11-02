@@ -46,3 +46,7 @@ Gateway-Payload und Nachrichtentypen sind im [Referenzkatalog](reference-catalog
 ## Historie und Übergang
 
 IDs, Benutzerzuordnungen, Sprachdaten und unbekannte Metadaten erhalten. Bekannte verwaiste Beziehungen stehen in migration.md; keine automatische Bereinigung. Vorhandene Phase 3 wird bei Bestandsmigration ohne Neuberechnung archiviert. Shortcodes, Attributnamen und benötigte Integrationspfade bleiben bis zu einem dokumentierten Ersatz bestehen. Sicherheitsfehler und öffentliche Wartungsaktionen erhalten geschützte Nachfolger, keinen unverändert offenen Kompatibilitätseingang.
+
+## Sicherheitsverträge ab Block 1
+
+POST-/Nonce-/Objektprüfungen, authentifiziertes Medien-AJAX, HMAC-Gateway und Ersatz der Uploadskripte gemäß [Sicherheitsbasis](block-1-security.md). Die frühere unbekannte Verwendung von Profile_Layer_Pics ist jetzt auf das separate overlayer_maker-Plugin zurückgeführt: profile_layer erhält einen geschützten WordPress-Formularadapter. Die alte Upload-URL bleibt gesperrt. Theme und cor-ticker wurden nicht geändert. Diese Bestandsadapter ersetzen keine vollständige Gesamtabnahme der Nachbarplugins.

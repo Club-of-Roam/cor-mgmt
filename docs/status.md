@@ -9,14 +9,14 @@ PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8
 
 Installationsvertrag in installation.md festgehalten. Blöcke 2/3 liefern Voraussetzungenprüfung, Einrichtung und Lebenszyklus; Block 9 beseitigt die zwingende Ticker-Abhängigkeit; Block 10 prüft das fertige ZIP ohne Spezialtheme/Zusatzplugins. Diese Anforderungen sind dokumentiert, noch nicht implementiert oder abgenommen.
 
-## Startphase
+## Historischer Ausgangspunkt der Startphase
 
 Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, Test- und Releasekonzept im Repository dokumentiert. Statisches Schnittstelleninventar und erste isolierte Tests mit CI-Matrix vorbereitet. Anwendungscode, Versionsheader, DB unverändert.
 
 | Block | Status | Nächste Arbeit |
 |---|---|---|
 | 0 | abgeschlossen: Referenz und Testgrundlage | Übergabe gemäß block-0-acceptance.md; keine Modul-/Releasefreigabe |
-| 1 | offen | SEC-01..06 synthetisch absichern und korrigieren |
+| 1 | abgeschlossen: Sicherheitsbasis | Sicherheitsbasis und Integrationsverträge gemäß block-1-security.md |
 | 2 | begonnen: Testgrundlage | Werkzeuge ausbauen, Autoloading/Schichten einführen; keine Runtime-Umstellung erfolgt |
 | 3 | offen | Exakte DDL, Feldmapping und Migrationswerkzeug |
 | 4–6 | offen | Rennen/Routen, Teams/Profile, Ergebnisse |
@@ -30,7 +30,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Block 1 gemäß SEC-01..06 beginnen; zuerst reproduzierte Fremd-ID-Lücke der Börse absichern/korrigieren. Nur synthetische Testdaten verwenden.
+3. Nach Block 1 mit Block 2 fortfahren: Namespaces/Autoloading, Schichten, Werkzeugprüfungen und Plugin-Lebenszyklus einschließlich Installationsvoraussetzungen. Nur synthetische Testdaten verwenden.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -58,3 +58,11 @@ Dieser Abschnitt ersetzt die oben datierten Zwischenstände »begonnen/offen«. 
 Zusätzliche reproduzierte Befunde: Börsen-Update anhand fremder ID, Profilspeicherzugriff auf Abschnitt ohne id, Selbstmail an false statt Adresse, Spendenaggregation abweichend von gefilterter Liste/fehlender race-Zähler, Legacy-Freigaberückstufung trotz Status 3. Diese Fehler sind noch nicht korrigiert. Referenzfixtures sind keine bestandene Neuinstallation oder v2-Migration.
 
 Bewusst vertagte Antwortklassifikation/Datumsauswirkungen, konkrete Adminrechte und Archivsnapshot sind vorgemerkt. Umfang und zugeordnete Restarbeiten: [block-0-acceptance.md](block-0-acceptance.md). Anwendungscode unverändert; keine bestehenden Anwendungsdaten verändert, keine Git-Aktionen. Nächster Block: Sicherheitsbasis.
+
+## Block 1 – Sicherheitsbasis (2026-11-02)
+
+Anwendungscode erstmals geändert: zentrale Request-/Objektprüfungen, geschützte Formulare, Börseneigentum, sichere Bildannahme, signierter Gateway-Eingang, kontrollierte Wartung und korrigierte Profil-/Mailgrenzen. Die beiden ausgelagerten Uploadskripte wurden in der Arbeitskopie durch HTTP-410-Antworten ersetzt. Separate Kompatibilität mit overlayer_maker dokumentiert; Theme und cor-ticker unverändert. Keine Datenmigration, keine Bestandsneuberechnung, kein Versionssprung, keine Git-Aktionen.
+
+Umfang, geänderte Verträge und zugeordnete Restarbeit: [block-1-security.md](block-1-security.md). Vollständige Phasen-/Fachmodul-, Installations-, Browser- und Releaseabnahme bleiben in den Folgeblöcken. Alte Gateway-Absender müssen vor Ausrollen die Signatur liefern; ungesicherte Browser-Zahlungsbestätigung ist gesperrt. Abschlusszähler und Prüfgrenzen: [verification.md](verification.md).
+
+Abschlussprüfung Block 1 bestanden: 180 PHP-Tests / 965 Assertions pro PHP-Version 8.2/8.3/8.4/8.5 sowie 4 JavaScript-Tests. Composer-, Syntax- und Dokumentationsprüfungen erfolgreich. Nächster Arbeitsblock: 2. Ein geeigneter manueller Commit-Zeitpunkt ist erreicht; keine Git-Aktionen ausgeführt.

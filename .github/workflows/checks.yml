@@ -1,4 +1,4 @@
-name: Plugin reference checks
+name: Plugin reference and security checks
 on:
   push:
   pull_request:
@@ -30,9 +30,14 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, dom, xml, xmlwriter, mysqli, openssl
+          extensions: mbstring, dom, xml, xmlwriter, mysqli, openssl, gd
           coverage: none
           tools: composer:v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: JavaScript security regressions
+        run: composer test:js
       - name: Install locked development dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
       - name: Check metadata, syntax and documentation
@@ -46,7 +51,7 @@ jobs:
           mkdir "$RUNNER_TEMP/wp-source"
           tar -xzf "$RUNNER_TEMP/wordpress.tar.gz" -C "$RUNNER_TEMP/wp-source"
           php tools/create-wordpress-fixture.php "$RUNNER_TEMP/wp-source/wordpress" "$RUNNER_TEMP/cor-wordpress"
-      - name: Run WordPress integration reference
+      - name: Run WordPress reference and security integration
         env:
           COR_TEST_WP_ROOT: ${{ runner.temp }}/cor-wordpress
           COR_TEST_DB_NAME: cor_mgmt_test_ci

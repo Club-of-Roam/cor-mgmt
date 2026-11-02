@@ -62,16 +62,14 @@ final class TeamRulesTest extends TestCase
         return $teams;
     }
 
-    public function testPromotionWritesStatusAndRouteAndNotifiesOnlyOnce(): void
+    public function testReadingPromotionDoesNotPersistOrNotify(): void
     {
         $teams = $this->teams();
         self::assertSame(1, $teams->is_complete(42));
-        self::assertSame([['complete' => 1], ['route_id' => 7]], $GLOBALS['wpdb']->updates);
-        self::assertSame([[[101, 102], 'publishable', ['names' => 'Ada &amp; Ben',
-            'team_name' => 'Synthetic team'], 'id', 'en']], $GLOBALS['h3_mgmt_mailer']->calls);
+        self::assertSame([], $GLOBALS['wpdb']->updates);
+        self::assertSame([], $GLOBALS['h3_mgmt_mailer']->calls);
         self::assertSame(1, $teams->is_complete('42'));
-        self::assertCount(2, $GLOBALS['wpdb']->updates);
-        self::assertCount(1, $GLOBALS['h3_mgmt_mailer']->calls);
+
     }
 
     #[DataProvider('requirements')]
@@ -98,20 +96,20 @@ final class TeamRulesTest extends TestCase
         self::assertSame(1, $this->teams(['num_teammember_min' => 1], 1)->is_complete(42));
     }
 
-    public function testDowngradeClearsRouteWithoutNotification(): void
+    public function testReadingDowngradeDoesNotClearRouteOrNotify(): void
     {
         $GLOBALS['wpdb']->status = 1;
         $GLOBALS['wpdb']->members[0]['paid'] = 0;
         self::assertSame(0, $this->teams()->is_complete(42));
         // Redundant intermediate assignment is legacy behavior, not a v2 requirement.
-        self::assertSame([['complete' => 0], ['route_id' => 7], ['route_id' => 0]], $GLOBALS['wpdb']->updates);
+        self::assertSame([], $GLOBALS['wpdb']->updates);
         self::assertSame([], $GLOBALS['h3_mgmt_mailer']->calls);
     }
 
     public function testMultipleStartsDoNotAutomaticallyAssignRoute(): void
     {
         self::assertSame(1, $this->teams(['startingpoint' => 1])->is_complete(42));
-        self::assertSame([['complete' => 1]], $GLOBALS['wpdb']->updates);
+        self::assertSame([], $GLOBALS['wpdb']->updates);
     }
 
     #[DataProvider('invitationLimits')]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__);
 $paths = [$root . '/h3-management.php'];
-foreach (['includes', 'admin', 'templates', 'models', 'tests', 'tools'] as $folder) {
+foreach (['includes', 'admin', 'templates', 'models', 'legacy-endpoints', 'tests', 'tools'] as $folder) {
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/' . $folder, FilesystemIterator::SKIP_DOTS));
     foreach ($iterator as $file) {
         if ($file->isFile() && $file->getExtension() === 'php') {

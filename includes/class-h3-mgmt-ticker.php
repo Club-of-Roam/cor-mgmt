@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Ticker class.
@@ -57,6 +58,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 		 * @access public
 		 */
 		public function get_user_by_team( $team_id ) {
+            $team_id = H3_MGMT_Security::id($team_id);
 			global $wpdb;
 
 			$ids_querry	 = $wpdb->get_results(
@@ -82,28 +84,13 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 		 * @access public
 		 */
 		public function get_messages_by_ids( $ids, $race_id, $message_id = 0 ) {
-			global $wpdb;
-
-			$where = 'WHERE (';
-
-			foreach ( $ids as $id ) {
-				$where .= "send_from = '" . $id . "' OR ";
-			}
-			$where .= "send_from = 'dummy') AND race_id = '" . $race_id . "' ";
-
-			if ( $message_id != 0 ) {
-				$where .= "AND type = 4 ";
-			}
-
-			$messages_query = $wpdb->get_results(
-			"SELECT * FROM " .
-			$wpdb->prefix . "sms_ticker " .
-			$where .
-			" AND type < 100 ORDER BY id DESC", ARRAY_A
-			);
-
-			return $messages_query;
-		}
+            global $wpdb;
+            $ids = is_array($ids) ? array_values(array_filter($ids, static fn($id) => is_scalar($id) && preg_match('/^(?:[UT]_[0-9]+|[+0-9]+)$/D', (string) $id))) : [];
+            if (!$ids || count($ids) > 1000) { return []; }
+            $sql = "SELECT * FROM {$wpdb->prefix}sms_ticker WHERE send_from IN (" . implode(',', array_fill(0, count($ids), '%s')) . ") AND race_id=%d AND type<100";
+            if ($message_id) { $sql .= ' AND type=4'; }
+            return $wpdb->get_results($wpdb->prepare($sql . ' ORDER BY id DESC', array_merge($ids, [H3_MGMT_Security::id($race_id)])), ARRAY_A);
+        }
 
 		/**
 		 * Returns an array of team phone numbers
@@ -112,6 +99,9 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 		 * @access public
 		 */
 		public function get_phones( $team_id = 0, $route_id = 'all', $gimme = 'phones', $race_id = 0 ) {
+            $team_id = H3_MGMT_Security::id($team_id);
+            $route_id = $route_id === 'all' ? 'all' : H3_MGMT_Security::id($route_id);
+            $race_id = H3_MGMT_Security::id($race_id);
 			global $wpdb, $h3_mgmt_teams;
 
 			if ( $route_id === 'all' && $team_id === 0 ) {
@@ -192,12 +182,26 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				$race = $h3_mgmt_races->get_active_race();
 			}
 
-			$ticker_user				 = 'Tramprennen';
+			$race = H3_MGMT_Security::id($race);
+            if (isset($_GET['todo']) && (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' || isset($_POST['submit_form']))) {
+                if (!H3_MGMT_Security::post('cor-mgmt-ticker-' . $race) || (!is_user_logged_in() || H3_MGMT_Security::archived($race) || (($_GET['todo'] ?? '') !== 'send_message_comment' && !H3_MGMT_Media::may_post($race)))) { return H3_MGMT_Security::error(); }
+                foreach ($_POST as $value) { if (!is_scalar($value)) { return H3_MGMT_Security::error(); } }
+                if (isset($_POST['ticker_id'])) {
+                    $parent = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}sms_ticker WHERE id=%d", H3_MGMT_Security::id($_POST['ticker_id'])), ARRAY_A);
+                    if (!$parent || (int) $parent['race_id'] !== $race) { return H3_MGMT_Security::error(); }
+                }
+            } elseif (isset($_GET['todo'])) {
+                // GET is display-only; it must never execute an old command.
+                unset($_GET['todo']);
+            }
+            $ticker_user				 = 'Tramprennen';
 			$tramprennen_ticker_phone	 = 999999999;
 
 			$output = '';
 
-			$information_text = $h3_mgmt_races->get_race_information_text( $race );
+			$race = H3_MGMT_Security::id($race);
+            $route = isset($route) && $route !== 'all' ? H3_MGMT_Security::id($route) : 'all';
+            $information_text = $h3_mgmt_races->get_race_information_text( $race );
 			
 			$race_setting = $h3_mgmt_races->get_race_setting( $race );
 			//if registration still isn't open return error message
@@ -206,7 +210,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 				stripcslashes( $information_text[ 23 ] ) .
 				'</p>';
 				$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
-				return $output;
+				return H3_MGMT_Security::add_nonces($output, 'cor-mgmt-ticker-' . $race, ['cor_mgmt_race'=>$race]);
 			}
 			
 			if ( is_user_logged_in() ) {
@@ -271,139 +275,11 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 							$output .= '<p class="' . $update_message[ 'type' ] . '">' . $update_message[ 'message' ] . '</p>';
 							$output .= '<p align="center"> <a href="' . get_permalink() . '">Back</a> </p>';
 							//--------------rotate picture------------------------------------------------------------------------------------------
-						} elseif ( isset( $_GET[ 'todo' ] ) && $_GET[ 'todo' ] == 'rotate'  && $comment == false ) {
-
-							$rest = substr( $_POST[ 'ticker_pic_url' ], -4 );
-
-							if ( isset( $_POST[ 'left' ] ) ) {
-								$new_save_pic_url					 = mb_strcut( $_POST[ 'ticker_pic_url' ], 0, (mb_strlen( $_POST[ 'ticker_pic_url' ] ) - 4 ) ) . '-left' . $rest;
-								$pic_url							 = get_site_url() . '/' . $_POST[ 'ticker_pic_url' ];
-								$imagick							 = new Imagick();
-								$file_handle_for_viewing_image_file	 = fopen( $pic_url, 'rb' );
-								$imagick->readImageFile( $file_handle_for_viewing_image_file );
-								$imagick->rotateImage( new ImagickPixel( 'none' ), 270 );
-								fclose( $pic_url, 'rb' );
-								file_put_contents( $new_save_pic_url, $imagick );
-							}
-
-							if ( isset( $_POST[ 'right' ] ) ) {
-								$new_save_pic_url					 = mb_strcut( $_POST[ 'ticker_pic_url' ], 0, (mb_strlen( $_POST[ 'ticker_pic_url' ] ) - 4 ) ) . '-right' . $rest;
-								$pic_url							 = get_site_url() . '/' . $_POST[ 'ticker_pic_url' ];
-								$imagick							 = new Imagick();
-								$file_handle_for_viewing_image_file	 = fopen( $pic_url, 'rb' );
-								$imagick->readImageFile( $file_handle_for_viewing_image_file );
-								$imagick->rotateImage( new ImagickPixel( 'none' ), 90 );
-								fclose( $pic_url, 'rb' );
-								file_put_contents( $new_save_pic_url, $imagick );
-							}
-
-							if ( isset( $_POST[ '180' ] ) ) {
-								$new_save_pic_url					 = mb_strcut( $_POST[ 'ticker_pic_url' ], 0, (mb_strlen( $_POST[ 'ticker_pic_url' ] ) - 4 ) ) . '-180' . $rest;
-								$pic_url							 = get_site_url() . '/' . $_POST[ 'ticker_pic_url' ];
-								$imagick							 = new Imagick();
-								$file_handle_for_viewing_image_file	 = fopen( $pic_url, 'rb' );
-								$imagick->readImageFile( $file_handle_for_viewing_image_file );
-								$imagick->rotateImage( new ImagickPixel( 'none' ), 180 );
-								fclose( $pic_url, 'rb' );
-								file_put_contents( $new_save_pic_url, $imagick );
-							}
-
-							$update_message = array(
-								'type'		 => 'message',
-								'message'	 => _x( 'Picture has been rotated .', 'Ticker Form', 'h3-mgmt' )
-							);
-							$wpdb->update(
-							$wpdb->prefix . "sms_ticker", array(
-								'img_url' => $new_save_pic_url,
-							), array( 'img_url' => $_POST[ 'ticker_pic_url' ] ), array(
-								'%s'
-							), array( '%s' )
-							);
-
-							$output .= '<p class="' . $update_message[ 'type' ] . '">' . $update_message[ 'message' ] . '</p>';
-							$output .= '<img src="' . get_site_url() . '/' . $new_save_pic_url . '" alt="" >';
-							$output .= '
-										<form name="h3_mgmt_ticker_form" method="post" enctype="multipart/form-data" action="">
-										<input type="hidden" name="ticker_pic_url" value="' . $new_save_pic_url . '">
-										<p align="center">
-										<input type="submit" id="left" name="left" value="rotate 90° left"></br></br>
-										<input style="" type="submit" id="180" name="180" value="rotate 180°"></br></br>
-										<input type="submit" id="right" name="right" value="rotate 90° right"></br></br>
-										<a href="' . get_permalink() . '">Back</a>
-										</p>
-										</form>
-										';
-
-							//--------------get picture------------------------------------------------------------------------------------------	
-						} elseif ( isset( $_GET[ 'todo' ] ) && $_GET[ 'todo' ] == 'send_picture'  && $comment == false ) {
-
-							$file = $_POST[ 'image_name' ];
-
-							$message = htmlspecialchars( $_POST[ 'message' ] );
-
-							$str_ending = substr( $file, -3 );
-
-							if ( !strcmp( $str_ending, 'jpg' ) || !strcmp( $str_ending, 'gif' ) || !strcmp( $str_ending, 'png' ) ) {
-
-								//unsauber keine harten URL
-								//$ticker_pic_url = get_site_url().'/wp-content/uploads/ticker_images/images/'.$file;
-								$ticker_pic_url = 'wp-content/uploads/ticker_images/images/' . $file;
-
-								if ( filesize( $ticker_pic_url ) > 0 ) {
-
-									$wpdb->insert(
-									$wpdb->prefix . 'sms_ticker', array(
-										'send_from'	 => $phone_is,
-										'msg'		 => $message,
-										'img_url'	 => $ticker_pic_url,
-										'type'		 => 3,
-										'timestamp'	 => time(),
-										'race_id'	 => $race
-									), array( '%s', '%s', '%s', '%d', '%d' )
-									);
-
-									$update_message = array(
-										'type'		 => 'message',
-										'message'	 => _x( 'Picture has been sent.', 'Ticker Form', 'h3-mgmt' )
-									);
-									$output .= '<p class="' . $update_message[ 'type' ] . '">' . $update_message[ 'message' ] . '</p>';
-									$output .= '<img src="' . get_site_url() . '/' . $ticker_pic_url . '" alt="" >';
-									$output .= '
-												<form name="h3_mgmt_ticker_form" method="post" enctype="multipart/form-data" action="?todo=rotate">
-												<input type="hidden" name="ticker_pic_url" value="' . $ticker_pic_url . '">
-												<p align="center">
-												<input type="submit" id="left" name="left" value="rotate 90° left"></br></br>
-												<input style="" type="submit" id="180" name="180" value="rotate 180°"></br></br>
-												<input type="submit" id="right" name="right" value="rotate 90° right"></br></br>
-												<a href="' . get_permalink() . '">Back</a>
-												</p>
-												</form>
-												';
-								} else {
-									$update_message = array(
-										'type'		 => 'error',
-										'message'	 => _x( 'There went something wrong, sorry! Please try again...', 'Ticker Form', 'h3-mgmt' )
-									);
-									$output .= '<p class="' . $update_message[ 'type' ] . '">' . $update_message[ 'message' ] . '</p>';
-									$output .= '
-                                                                <form name="h3_mgmt_ticker_form" method="post" enctype="multipart/form-data" action="' . get_permalink() . '">
-                                                                <input type="hidden" name="ticker_pic_msg" value="' . $message . '">
-                                                                <p align="center">
-                                                                <input style="" type="submit" id="back" name="back" value="Back">
-                                                                </p>
-                                                                </form>
-                                                                ';
-
-									wp_mail( 'jonas@tramprennen.org', 'Image Error', get_site_url() . '/' . $ticker_pic_url . '   -----   ID:' . $phone_is );
-								}
-							} else {
-								$update_message = array(
-									'type'		 => 'error',
-									'message'	 => _x( 'Not the correct format.', 'Ticker Form', 'h3-mgmt' )
-								);
-							}
-							//--------------get coordinates------------------------------------------------------------------------------------------
-						} elseif ( isset( $_GET[ 'todo' ] ) && $_GET[ 'todo' ] == 'coordinates'  && $comment == false) {
+						} elseif ( isset($_GET['todo']) && $_GET['todo'] === 'rotate' ) {
+                            $output .= H3_MGMT_Media::picture($race, true);
+                        } elseif ( isset($_GET['todo']) && $_GET['todo'] === 'send_picture' ) {
+                            $output .= H3_MGMT_Media::picture($race);
+                        } elseif ( isset( $_GET[ 'todo' ] ) && $_GET[ 'todo' ] == 'coordinates'  && $comment == false) {
 
 							$coordinates				 = $_POST[ 'coordinates' ];
 							$coordinates_informations	 = htmlspecialchars( $_POST[ 'coordinates_informations' ] );
@@ -541,7 +417,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 								//--------------send location------------------------------------------------------------------------------------------
 								$output .= '<hr><h5>' . _x( 'Send your location', 'ticker', 'h3-mgmt' ) . '</h5>';
 								$output .= '
-										<button onclick="getLocation()">Get coordinates</button>
+										<button type="button" class="cor-get-location">Get coordinates</button>
 										<p>Click the button to get your coordinates.</p>
 										<p id="coordinates_loading" style="color:red;"></p>
 										<p id="coordinates_position" style="color:grey;"></p>
@@ -607,7 +483,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 
 			// $output .= '</div>';
 
-			return $output;
+			return H3_MGMT_Security::add_nonces($output, 'cor-mgmt-ticker-' . $race, ['cor_mgmt_race'=>$race]);
 		}
 
 		/**
@@ -621,7 +497,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 			$content = <<<HTML
 						<div id="embedded-map-container">
 							<div id="map" style="height: $height; margin: 0; padding: 0;"></div>
-							<script>initMap()</script>
+							
 						</div>
 HTML;
 
@@ -675,7 +551,9 @@ HTML;
 				$race = $h3_mgmt_races->get_active_race();
 			}
 
-			$information_text = $h3_mgmt_races->get_race_information_text( $race );
+			$race = H3_MGMT_Security::id($race);
+            $route = isset($route) && $route !== 'all' ? H3_MGMT_Security::id($route) : 'all';
+            $information_text = $h3_mgmt_races->get_race_information_text( $race );
 
 			$race_setting = $h3_mgmt_races->get_race_setting( $race );
 			// if registration still isn't open return error message
@@ -690,7 +568,7 @@ HTML;
 			}
 
 			if ( isset( $_GET[ 'ticker_route' ] ) ) {
-				$route = $_GET[ 'ticker_route' ];
+				$route = $_GET['ticker_route'] === 'all' ? 'all' : H3_MGMT_Security::id($_GET['ticker_route']);
 			}
 
 			$ids = array();
@@ -741,7 +619,7 @@ HTML;
 			date_default_timezone_set( 'Europe/Berlin' );
 
 			$anchorTitleText = __( "To the team's profile", 'h3-mgmt' );
-			$raceBaseUrl = get_site_url() . $race_setting[ 'team_overview_link' ];
+			$raceBaseUrl = esc_url(get_site_url() . $race_setting[ 'team_overview_link' ]);
 
 			foreach ( $messages_query as $message ) {
 				if ( ( $message[ 'race_id' ] == $race && !empty( $message[ 'img_url' ] ) ) ) {
@@ -754,19 +632,19 @@ HTML;
 					$route_id = $team[ 'route_id' ];
 					if ( $h3_mgmt_teams->is_complete( $team_id ) ) {
 						$display_data[ 'route_id' ]		 = $route_id;
-						$display_data[ 'route_name' ]	 = $race_routes[ $route_id ][ 'name' ];
-						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $route_id ][ 'logo_url' ];
-						$display_data[ 'hex_color' ]	 = $h3_mgmt_races->get_route_color( $route_id );
+						$display_data[ 'route_name' ]	 = esc_html($race_routes[ $route_id ][ 'name' ]);
+						$display_data[ 'route_image' ]	 = esc_url(get_site_url() . $race_routes[ $route_id ][ 'logo_url' ]);
+						$display_data[ 'hex_color' ]	 = sanitize_hex_color_no_hash($h3_mgmt_races->get_route_color( $route_id ));
 						$display_data[ 'team_id' ]		 = $team_id;
-						$display_data[ 'team_name' ]	 = $h3_mgmt_teams->get_team_name( $team_id );
+						$display_data[ 'team_name' ]	 = esc_html($h3_mgmt_teams->get_team_name( $team_id ));
 						$display_data[ 'team_name_anchor' ] =<<<HTML
 							<a style="border-color:#{$display_data[ 'hex_color' ]}" class="incognito-link ticker-message-team-name"
 								title="$anchorTitleText" href="$raceBaseUrl?id=$team_id">{$display_data[ 'team_name' ]}
 							</a>
 HTML;
-						$display_data[ 'mates' ]		 = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
+						$display_data[ 'mates' ]		 = esc_html($h3_mgmt_teams->mate_name_string( $team_id, ', ', false ));
 						$display_data[ 'coordinates' ]		 = $message[ 'img_url' ];
-						$display_data[ 'message' ]		 = stripslashes( $message[ 'msg' ] );
+						$display_data[ 'message' ]		 = esc_html(html_entity_decode(stripslashes( $message[ 'msg' ] ), ENT_QUOTES));
 						$display_data[ 'date' ]			 = date( 'Y-m-d H:i \G\M\TO', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]			 = $message[ 'timestamp' ];
 						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff2( $message[ 'timestamp' ] );
@@ -841,7 +719,7 @@ HTML;
 			$messages	 = [];
 
 			$anchorTitleText = __( "To the team's profile", 'h3-mgmt' );
-			$raceBaseUrl = get_site_url() . $race_setting[ 'team_overview_link' ];
+			$raceBaseUrl = esc_url(get_site_url() . $race_setting[ 'team_overview_link' ]);
 
 			foreach ( $messages_query as $message ) {
 				if ( ( $message[ 'race_id' ] == $race_id && !empty( $message[ 'img_url' ] ) ) ) {
@@ -854,19 +732,19 @@ HTML;
 					$route_id = $team[ 'route_id' ];
 					if ( $h3_mgmt_teams->is_complete( $team_id ) ) {
 						$display_data[ 'route_id' ]		 = $route_id;
-						$display_data[ 'route_name' ]	 = $race_routes[ $route_id ][ 'name' ];
-						$display_data[ 'route_image' ]	 = get_site_url() . $race_routes[ $route_id ][ 'logo_url' ];
-						$display_data[ 'hex_color' ]	 = $h3_mgmt_races->get_route_color( $route_id );
+						$display_data[ 'route_name' ]	 = esc_html($race_routes[ $route_id ][ 'name' ]);
+						$display_data[ 'route_image' ]	 = esc_url(get_site_url() . $race_routes[ $route_id ][ 'logo_url' ]);
+						$display_data[ 'hex_color' ]	 = sanitize_hex_color_no_hash($h3_mgmt_races->get_route_color( $route_id ));
 						$display_data[ 'team_id' ]		 = $team_id;
-						$display_data[ 'team_name' ]	 = $h3_mgmt_teams->get_team_name( $team_id );
+						$display_data[ 'team_name' ]	 = esc_html($h3_mgmt_teams->get_team_name( $team_id ));
 						$display_data[ 'team_name_anchor' ] =<<<HTML
 							<a style="border-color:#{$display_data[ 'hex_color' ]}" class="incognito-link ticker-message-team-name"
 								title="$anchorTitleText" href="$raceBaseUrl?id=$team_id">{$display_data[ 'team_name' ]}
 							</a>
 HTML;
-						$display_data[ 'mates' ]		 = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
+						$display_data[ 'mates' ]		 = esc_html($h3_mgmt_teams->mate_name_string( $team_id, ', ', false ));
 						$display_data[ 'coordinates' ]		 = $message[ 'img_url' ];
-						$display_data[ 'message' ]		 = stripslashes( $message[ 'msg' ] );
+						$display_data[ 'message' ]		 = esc_html(html_entity_decode(stripslashes( $message[ 'msg' ] ), ENT_QUOTES));
 						$display_data[ 'date' ]			 = date( 'Y-m-d H:i \G\M\TO', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]			 = $message[ 'timestamp' ];
 						$display_data[ 'diff' ]			 = $h3_mgmt_utilities->date_diff2( $message[ 'timestamp' ] );
@@ -952,11 +830,11 @@ HTML;
 			$min = 0;
 
 			if ( isset( $_GET[ 'min' ] ) ) {
-				$min = $_GET[ 'min' ];
+				$min = H3_MGMT_Security::id($_GET['min']);
 			}
 
 			if ( isset( $_GET[ 'ticker_route' ] ) ) {
-				$route = $_GET[ 'ticker_route' ];
+				$route = $_GET['ticker_route'] === 'all' ? 'all' : H3_MGMT_Security::id($_GET['ticker_route']);
 			}
 
 			$ids = array();
@@ -1037,7 +915,7 @@ HTML;
 								$display_data[ 'img_url' ]	 = get_site_url() . '/wp-content/uploads/mms/' . $message[ 'img_url' ];
 								$display_data[ 'img_path' ]	 = ABSPATH . 'wp-content/uploads/mms/' . $message[ 'img_url' ];
 							}
-							$display_data[ 'message' ]	 = stripslashes( $message[ 'msg' ] );
+							$display_data[ 'message' ]	 = esc_html(html_entity_decode(stripslashes( $message[ 'msg' ] ), ENT_QUOTES));
 							$display_data[ 'type' ]		 = $message[ 'type' ];
 							$display_data[ 'date' ]		 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
 							$display_data[ 'time' ]		 = $message[ 'timestamp' ];
@@ -1091,7 +969,7 @@ HTML;
 								$display_data[ 'team_name' ]	 = '<a style="border-color:#' . $display_data[ 'hex_color' ] . '" class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
 								'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
 								$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
-								$display_data[ 'mates' ]		 = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
+								$display_data[ 'mates' ]		 = esc_html($h3_mgmt_teams->mate_name_string( $team_id, ', ', false ));
 								if ( $message[ 'type' ] == 4 || $message[ 'type' ] == 5 ) {
 									$display_data[ 'img_path' ] = $message[ 'img_url' ];
 								} elseif ( $message[ 'type' ] == 3 ) {
@@ -1100,7 +978,7 @@ HTML;
 									$display_data[ 'img_url' ]	 = get_site_url() . '/wp-content/uploads/mms/' . $message[ 'img_url' ];
 									$display_data[ 'img_path' ]	 = ABSPATH . 'wp-content/uploads/mms/' . $message[ 'img_url' ];
 								}
-								$display_data[ 'message' ]	 = stripslashes( $message[ 'msg' ] );
+								$display_data[ 'message' ]	 = esc_html(html_entity_decode(stripslashes( $message[ 'msg' ] ), ENT_QUOTES));
 								$display_data[ 'type' ]		 = $message[ 'type' ];
 								$display_data[ 'date' ]		 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
 								$display_data[ 'time' ]		 = $message[ 'timestamp' ];
@@ -1172,7 +1050,7 @@ HTML;
 			$extra		 = '';
 
 			if ( isset( $_GET[ 'ticker_route' ] ) ) {
-				$route = $_GET[ 'ticker_route' ];
+				$route = $_GET['ticker_route'] === 'all' ? 'all' : H3_MGMT_Security::id($_GET['ticker_route']);
 				$extra .='&ticker_route=' . $route;
 			}
 			if ( isset( $_GET[ 'ticker_race' ] ) ) {
@@ -1257,7 +1135,7 @@ HTML;
 			$min = 0;
 
 			if ( isset( $_GET[ 'min' ] ) ) {
-				$min = $_GET[ 'min' ];
+				$min = H3_MGMT_Security::id($_GET['min']);
 			}
 
 			$race_id = $h3_mgmt_teams->get_team_race( $team_id );
@@ -1295,7 +1173,7 @@ HTML;
 						$display_data[ 'team_name' ]	 = '<a class="incognito-link ticker-message-team-name" title="' . __( "To the team's profile", 'h3-mgmt' ) .
 						'" href="' . get_site_url() . $race_setting[ 'team_overview_link' ] . __( '?id=', 'h3-mgmt' ) . $team_id . '">' .
 						$h3_mgmt_teams->get_team_name( $team_id ) . '</a>';
-						$display_data[ 'mates' ]		 = $h3_mgmt_teams->mate_name_string( $team_id, ', ', false );
+						$display_data[ 'mates' ]		 = esc_html($h3_mgmt_teams->mate_name_string( $team_id, ', ', false ));
 						if ( $message[ 'type' ] == 4 || $message[ 'type' ] == 5 ) {
 							$display_data[ 'img_path' ] = $message[ 'img_url' ];
 						} elseif ( $message[ 'type' ] == 3 ) {
@@ -1304,7 +1182,7 @@ HTML;
 							$display_data[ 'img_url' ]	 = get_site_url() . '/wp-content/uploads/mms/' . $message[ 'img_url' ];
 							$display_data[ 'img_path' ]	 = ABSPATH . 'wp-content/uploads/mms/' . $message[ 'img_url' ];
 						}
-						$display_data[ 'message' ]	 = stripslashes( $message[ 'msg' ] );
+						$display_data[ 'message' ]	 = esc_html(html_entity_decode(stripslashes( $message[ 'msg' ] ), ENT_QUOTES));
 						$display_data[ 'type' ]		 = $message[ 'type' ];
 						$display_data[ 'date' ]		 = date( 'l, F jS G:i', intval( $message[ 'timestamp' ] ) );
 						$display_data[ 'time' ]		 = $message[ 'timestamp' ];
@@ -1431,110 +1309,68 @@ HTML;
 		 * @access public
 		 */
 		public function ticker_incoming_interface() {
-			global $wpdb, $h3_mgmt_races, $h3_mgmt_teams;
-
-			// Nachricht
-			// message=%5B%7B%22img%22%3A%22%22%2C%22message%22%3A%22Hallo+Jonas.+Das+ist+ein+Test%22%2C%22with_img%22%3Afalse%2C%22time%22%3A1471466301735%2C%22number%22%3A%22004915788484508%22%7D%5D
-			if ( !empty( $_POST[ 'message' ] ) || !empty( $_GET[ 'msg' ] ) ) {
-
-				$race_id = $h3_mgmt_races->get_active_race();
-
-				if ( !empty( $_POST[ 'message' ] ) ) {
-					$message = stripcslashes( utf8_encode( $_POST[ 'message' ] ) );
-				} else {
-					$message = stripcslashes( utf8_encode( $_GET[ 'msg' ] ) );
-				}
-
-				$message = json_decode( $message, true );
-
-				if ( is_array( $message ) && is_array( $message[ 0 ] ) ) {
-					$message = $message[ 0 ];
-				}
-
-				//Get User Ids from User in actual race
-				$user_id_is	 = 0;
-				$user_ids	 = $h3_mgmt_teams->get_participant_ids( $race_id );
-				$norm_num	 = $this->normalize_phone_number( $message[ 'number' ] );
-				foreach ( $user_ids as $user_id ) {
-					if ( $norm_num == $this->normalize_phone_number( get_user_meta( $user_id, 'mobile', true ) ) ) {
-						$user_id_is = $user_id;
-						break;
-					}
-				}
-				$team_id = $h3_mgmt_teams->get_team_by_user_and_race( $user_id, $race_id );
-
-				//If no user found with  the incoming mobile number
-				//Infos about cases 
-//                    Nummer von Teammitglied im aktuellen Rennen und actives Team -> Gespeichert wird: Renn ID; User ID; wird angezeigt
-//                    Nummer von Teammitglied im aktuellen Rennen und nicht aktives Team -> Gespeichert wird: Renn ID = 0; User ID; wird nicht angezeigt
-//                    Nummer von Team im aktuellen Rennen -> Gespeichert wird: Renn ID; Team ID; wird angezeigt
-//                    Nummer von Mitglied aus keinem Team -> Gespeichert wird: Renn ID = 0; User ID; wird nicht angezeigt
-//                    Nummer von Unbekannt -> Gespeichert wird: Renn ID; richtige Nummer; wird nicht angezeigt
-
-				if ( $user_id_is == 0 ) {
-					//check if it is a team number from present race
-					$phones2team = $this->get_phones( 0, 'all', 'teams', $race_id );
-					$team_id	 = $phones2team[ $norm_num ];
-					If ( $team_id == 0 ) {
-						$user_ids	 = $wpdb->get_col(
-						"SELECT user_id FROM " . $wpdb->prefix . "usermeta Where meta_key = 'mobile' AND meta_value != 0"
-						);
-						$user_id_is	 = 0;
-						foreach ( $user_ids as $user_id ) {
-							if ( $norm_num == $this->normalize_phone_number( get_user_meta( $user_id, 'mobile', true ) ) ) {
-								$user_id_is = $user_id;
-								break;
-							}
-						}
-						if ( $user_id_is == 0 ) {
-							$from	 = $norm_num;
-							$race_id = 0;
-						} else {
-							$from	 = 'U_' . $user_id_is;
-							$race_id = 0;
-						}
-					} else {
-						$from = 'T_' . $team_id;
-					}
-					//is Team complete save actual race_id
-				} elseif ( $h3_mgmt_teams->is_complete( $team_id ) ) {
-					$from = 'U_' . $user_id_is;
-					//if Team not complete save race_id = 0 for overall ticker
-				} else {
-					$from	 = 'U_' . $user_id_is;
-					$race_id = 0;
-				}
-
-				$type		 = $message[ 'with_image' ] ? 2 : 1;
-				$msg		 = $message[ 'message' ];
-				$img_string	 = !empty( $message[ 'img' ] ) ? $message[ 'img' ] : '';
-				$img		 = !empty( $message[ 'img' ] ) ? base64_decode( $message[ 'img' ] ) : '';
-				$time		 = !empty( $message[ 'time' ] ) ? rtrim( $message[ 'time' ], '0' ) : time();
-
-				if ( 2 === $type && !empty( $img ) ) {
-					$filename = time() . $from;
-					file_put_contents( 'wp-content/uploads/ticker/' . $filename . '.jpg', $img );
-				}
-				$wpdb->insert(
-				$wpdb->prefix . 'sms_ticker', array(
-					'send_from'	 => $from,
-					'msg'		 => $msg,
-					'type'		 => $type,
-					'img_url'	 => $type === 2 ? $filename . '.jpg' : '',
-					'img'		 => $img_string,
-					'timestamp'	 => $time,
-					'race_id'	 => $race_id
-				), array( '%s', '%s', '%d', '%s', '%s', '%s' )
-				);
-				echo 'OK';
-				echo " Type: $type";
-				echo " From: $from";
-				echo " Message: $msg";
-				echo " Image: $img";
-			} else {
-				echo '400';
-			}
-		}
+            global $wpdb, $h3_mgmt_races, $h3_mgmt_teams;
+            $secret = defined('COR_MGMT_TICKER_SECRET') ? COR_MGMT_TICKER_SECRET : '';
+            $raw = $_POST['message'] ?? '';
+            $stamp = $_SERVER['HTTP_X_COR_TIMESTAMP'] ?? '';
+            $requestId = $_SERVER['HTTP_X_COR_REQUEST_ID'] ?? '';
+            $signature = $_SERVER['HTTP_X_COR_SIGNATURE'] ?? '';
+            if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !is_string($secret) || strlen($secret) < 32
+                || !is_string($raw) || strlen($raw) > 8 * 1024 * 1024 || !is_string($stamp)
+                || !ctype_digit($stamp) || abs(time() - (int) $stamp) > 300 || !is_string($requestId)
+                || !preg_match('/^[a-zA-Z0-9_-]{8,128}$/D', $requestId) || !is_string($signature)) {
+                status_header(403); echo '403'; return;
+            }
+            $raw = wp_unslash($raw);
+            if (!hash_equals(hash_hmac('sha256', $stamp . "\n" . $requestId . "\n" . $raw, $secret), $signature)) {
+                status_header(403); echo '403'; return;
+            }
+            $message = json_decode($raw, true);
+            if (is_array($message) && array_is_list($message)) { $message = count($message) === 1 ? $message[0] : null; }
+            if (!is_array($message) || !is_string($message['number'] ?? null) || strlen($message['number']) > 50
+                || !is_string($message['message'] ?? null) || strlen($message['message']) > 10000
+                || (isset($message['with_image']) && !is_bool($message['with_image']))
+                || (isset($message['img']) && !is_string($message['img']))) {
+                status_header(400); echo '400'; return;
+            }
+            $timestamp = $message['time'] ?? time();
+            if (!is_scalar($timestamp) || !is_numeric($timestamp) || (float) $timestamp < 0 || (float) $timestamp > 9999999999999) { status_header(400); echo '400'; return; }
+            $timestamp = (int) $timestamp;
+            if ($timestamp > 99999999999) { $timestamp = intdiv($timestamp, 1000); }
+            if (!preg_match('/^[+0-9 ()\/-]{3,50}$/D', $message['number'])) { status_header(400); echo '400'; return; }
+            $race = (int) $h3_mgmt_races->get_active_race();
+            if (!$race || H3_MGMT_Security::archived($race)) { status_header(409); echo '409'; return; }
+            $number = $this->normalize_phone_number($message['number']);
+            $user = 0;
+            foreach ($h3_mgmt_teams->get_participant_ids($race) as $candidate) {
+                if ($number === $this->normalize_phone_number(get_user_meta($candidate, 'mobile', true))) { $user = (int) $candidate; break; }
+            }
+            $team = $user ? (int) $h3_mgmt_teams->get_team_by_user_and_race($user, $race) : 0;
+            $from = $user ? 'U_' . $user : $number;
+            if (!$team) {
+                $phones = $this->get_phones(0, 'all', 'teams', $race);
+                $team = (int) ($phones[$number] ?? 0);
+                if ($team) { $from = 'T_' . $team; }
+            }
+            $targetRace = $team && $h3_mgmt_teams->is_complete($team) ? $race : 0;
+            $replay = 'cor_mgmt_gateway_' . hash('sha256', $requestId);
+            if (!add_option($replay, time(), '', false)) { status_header(409); echo '409'; return; }
+            $imageUrl = '';
+            if (!empty($message['with_image'])) {
+                $bytes = base64_decode($message['img'] ?? '', true);
+                $imageUrl = $bytes === false ? new WP_Error('invalid_image') : H3_MGMT_Media::gateway_image($bytes, $targetRace);
+                if (is_wp_error($imageUrl)) { delete_option($replay); status_header(400); echo '400'; return; }
+            }
+            $saved = $wpdb->insert($wpdb->prefix . 'sms_ticker', [
+                'send_from'=>$from, 'msg'=>esc_html(sanitize_textarea_field($message['message'])),
+                'type'=>$imageUrl ? 2 : 1, 'img_url'=>$imageUrl, 'img'=>'',
+                'timestamp'=>$timestamp, 'race_id'=>$targetRace,
+            ], ['%s','%s','%d','%s','%s','%d','%d']);
+            if (!$saved) { delete_option($replay); status_header(500); echo '500'; return; }
+            $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->options} WHERE option_name LIKE %s AND CAST(option_value AS UNSIGNED) < %d",
+                $wpdb->esc_like('cor_mgmt_gateway_') . '%', time() - DAY_IN_SECONDS));
+            echo 'OK';
+        }
 
 		/**
 		 * Shortcode Funktion to show google maps with all locations of teams
@@ -1579,151 +1415,7 @@ HTML;
 		 * @since 1.0
 		 * @access public
 		 */
-		public function Ticker_Datenbank_Change( $atts = '' ) {
-			global $wpdb, $h3_mgmt_teams;
-
-			$teams_query = $wpdb->get_results(
-			"SELECT * FROM " .
-			$wpdb->prefix . "h3_mgmt_teams", ARRAY_A
-			);
-
-			$teams_query_buf = array();
-			$phones			 = array();
-			$teams			 = array();
-
-			foreach ( $teams_query as $team ) {
-				$phonesbuf	 = array();
-				$team_phones = $team[ 'team_phone' ];
-				$pos		 = stripos( $team_phones, ' ', 0 );
-				while ( $pos !== false ) {
-					$phonesbuf[] = substr( $team_phones, 0, $pos );
-					$team_phones = strpbrk( $team_phones, ' ' );
-					$team_phones = ltrim( $team_phones );
-					$pos		 = stripos( $team_phones, ' ', 0 );
-				}
-				$phonesbuf[] = $team_phones;
-
-				foreach ( $phonesbuf as $phone ) {
-					$phones[]											 = $this->normalize_phone_number( $phone );
-					$teams[ $this->normalize_phone_number( $phone ) ]	 = $team[ 'id' ];
-				}
-			}
-
-			$wpdb->update(
-			$wpdb->prefix . "sms_ticker", array(
-				'send_from' => 'empty',
-			), array( 'send_from' => '' ), array(
-				'%s'
-			), array( '%s' )
-			);
-
-			foreach ( $phones as $phone ) {
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'T_' . $teams[ $phone ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-
-			$phones = array();
-
-			$user_ids = get_users( array( 'fields'	 => 'id',
-				'orderby'	 => 'ID' )
-			);
-			print_r( $user_ids );
-			for ( $i = 0; $i <= 500; $i++ ) {
-				$phone = $this->normalize_phone_number( get_user_meta( $user_ids[ $i ], 'mobile', true ) );
-
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'U_' . $user_ids[ $i ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-			echo 'DONE 1';
-
-			for ( $i = 501; $i <= 1000; $i++ ) {
-				$phone = $this->normalize_phone_number( get_user_meta( $user_ids[ $i ], 'mobile', true ) );
-
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'U_' . $user_ids[ $i ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-			echo '-- DONE 2';
-
-			for ( $i = 1001; $i <= 1500; $i++ ) {
-				$phone = $this->normalize_phone_number( get_user_meta( $user_ids[ $i ], 'mobile', true ) );
-
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'U_' . $user_ids[ $i ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-			echo '-- DONE 3';
-
-			for ( $i = 1501; $i <= 2000; $i++ ) {
-				$phone = $this->normalize_phone_number( get_user_meta( $user_ids[ $i ], 'mobile', true ) );
-
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'U_' . $user_ids[ $i ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-			echo '-- DONE 4';
-
-			for ( $i = 2001; $i <= 2500; $i++ ) {
-				$phone = $this->normalize_phone_number( get_user_meta( $user_ids[ $i ], 'mobile', true ) );
-
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'U_' . $user_ids[ $i ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-			echo '-- DONE 5';
-
-			for ( $i = 2501; $i <= 3000; $i++ ) {
-				$phone = $this->normalize_phone_number( get_user_meta( $user_ids[ $i ], 'mobile', true ) );
-
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'U_' . $user_ids[ $i ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-			echo '-- DONE 6';
-
-			for ( $i = 3001; $i <= 3500; $i++ ) {
-				$phone = $this->normalize_phone_number( get_user_meta( $user_ids[ $i ], 'mobile', true ) );
-
-				$wpdb->update(
-				$wpdb->prefix . "sms_ticker", array(
-					'send_from' => 'U_' . $user_ids[ $i ],
-				), array( 'send_from' => $phone ), array(
-					'%s'
-				), array( '%s' )
-				);
-			}
-			echo '-- DONE 7';
-		}
+		public function Ticker_Datenbank_Change( $atts = '' ) { return H3_MGMT_Security::error(); }
 
 		/**
 		 * PHP5 style constructor

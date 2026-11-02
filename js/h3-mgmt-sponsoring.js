@@ -130,7 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const donationToken = document.getElementById('donation-token');
     const copyIconButton = document.getElementById('copy-icon-button');
-    // const donationDoneButton = document.getElementById('donation-done-button');
+    const donationDoneButton = document.getElementById('donation-done-button');
+    if (donationDoneButton) donationDoneButton.addEventListener('click', () => {
+        const form = document.getElementById('donation-done-form');
+        if (form) form.requestSubmit();
+    });
 
     if (donationToken !== null) {
         donationToken.addEventListener('click', e => selectToken(e.currentTarget));

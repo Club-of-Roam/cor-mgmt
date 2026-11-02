@@ -22,7 +22,8 @@
       "@composer validate --strict",
       "@php tools/lint.php",
       "@php tools/check-docs.php"
-    ]
+    ],
+    "test:js": "node --test tests/security-js.test.cjs"
   },
   "license": "GPL-3.0-only"
 }

@@ -205,7 +205,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						} else {
 							$val_show = $this->convert_data( stripslashes( $_GET[ 'filter_value' . $filter_id ] ), $this->set_args['filter_conversion'][ $filter_id ], $row );
 						}
-						$output .= '	<option value="' . stripslashes( $_GET[ 'filter_value' . $filter_id ] ) . '" >' . $val_show . '</option>';
+						$output .= '	<option value="' . esc_attr( stripslashes( (string) $_GET[ 'filter_value' . $filter_id ] ) ) . '" >' . esc_html( (string) $val_show ) . '</option>';
 					} else {
 						$output .= '	<option value="all" >all</option>';
 					}
@@ -223,9 +223,9 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 
 						if ( ! isset($_GET[ 'filter_value' . $filter_id ] ) || stripslashes( $_GET[ 'filter_value' . $filter_id ] ) != $cat_is ) {
 							if ( $cat_is == $this->set_args['pre_filtered'][2] && ! isset( $_GET['filter_name0'] ) && $this->set_args['pre_filtered'][1] == $this->set_args['filter'][ $filter_id ] ) {
-								$output .= '<option selected value="' . $cat_is . '">' . $cat_is_show . '</option>';
+								$output .= '<option selected value="' . $cat_is . '">' . esc_html( (string) $cat_is_show ) . '</option>';
 							} else {
-								$output .= '<option value="' . $cat_is . '">' . $cat_is_show . '</option>';
+								$output .= '<option value="' . $cat_is . '">' . esc_html( (string) $cat_is_show ) . '</option>';
 							}
 						}
 					}
@@ -334,7 +334,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 				/* END: Table Header | BEGIN: Output */
 
 				if ( $this->args['with_bulk'] && is_array( $this->args['bulk_actions'] ) && ! empty( $this->args['bulk_actions'] ) ) {
-					$output .= '<form action="" class="blk-action-form" method="get">' .
+					$output .= '<form action="" class="blk-action-form" method="post">' .
 					'<input type="hidden" name="page" value="' . $this->args['page_slug'] . '" />';
 					if ( ! empty( $this->args['extra_bulk_html'] ) ) {
 						$output .= $this->args['extra_bulk_html'];
@@ -463,11 +463,11 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						if ( ! empty( $column['link'] ) && $capable ) {
 							$title   = empty( $column['link']['title_row_data'] ) ? $column['link']['title'] : sprintf( $column['link']['title'], $row[ $column['link']['title_row_data'] ] );
 							$url     = empty( $column['link']['url_row_data'] ) ? $column['link']['url'] : sprintf( $column['link']['url'], $row[ $column['link']['url_row_data'] ] );
-							$output .= '<a title="' . $title . '" href="' . $url . '">';
+							$output .= '<a title="' . esc_attr((string) $title) . '" href="' . esc_url($url) . '">';
 						}
 
 						if ( ! isset( $column['conversion'] ) ) {
-							$output .= $row[ $column['id'] ];
+							$output .= esc_html((string) $row[ $column['id'] ]);
 						} else {
 							$output .= $this->convert_data( $row[ $column['id'] ], $column['conversion'], $row );
 						}
@@ -521,7 +521,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 					$output .= '<input type="submit" name="" id="bulk-action-submit" class="button-secondary do-bulk-action" value="' .
 						$this->args['bulk_btn'] . '"';
 					if ( ! empty( $this->args['bulk_confirm'] ) ) {
-						$output .= ' onclick="if ( confirm(\'' . $this->args['bulk_confirm'] . '\') ) { return true; } return false;"';
+						$output .= ' data-confirm="' . esc_attr((string) $this->args['bulk_confirm']) . '"';
 					}
 					$output .= '/></div>';
 				}
@@ -554,6 +554,8 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 				$output .= '</div>';
 			}
 
+			$output = H3_MGMT_Security::add_nonces($output, H3_MGMT_Security::admin_nonce(H3_MGMT_Security::resource($this->args['page_slug'])));
+            $output = H3_MGMT_Security::admin_html($output, $this->args['page_slug']);
 			if ( ! $this->args['echo'] ) {
 				return $output;
 			} else {
@@ -587,6 +589,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 				$name = __( 'this event', 'h3-mgmt' );
 			}
 
+            $name = esc_attr((string) $name);
 			$action_count = count( $actions );
 			$flipper      = true;
 
@@ -632,7 +635,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 							$output .= '<span class="edit">' .
 							'<a title="' .
 								sprintf( __( 'Edit %s', 'h3-mgmt' ), $name ) .
-								'" href="' . $url . '&amp;todo=edit&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=edit&amp;id=' . $row['id'] . '">' .
 								__( 'Edit', 'h3-mgmt' ) .
 							'</a></span>';
 							break;
@@ -645,7 +648,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 							'" onclick="if ( confirm(\'' .
 									ucfirst( sprintf( __( 'Really delete &quot;%s&quot;?', 'h3-mgmt' ), $name ) ) .
 								'\') ) { return true; } return false;" ' .
-								'href="' . $url . '&amp;todo=delete&amp;id=' .
+								'href="' . esc_url($url) . '&amp;todo=delete&amp;id=' .
 								$row['id'] . '" class="submitdelete">' .
 								__( 'Delete', 'h3-mgmt' ) .
 							'</a></span>';
@@ -654,7 +657,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'waiver':
 							$output .= '<span class="edit"><a title="' .
 								__( "This participant's waiver form has been received", 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=waiver-set&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=waiver-set&amp;id=' . $row['id'] . '">' .
 								__( 'Waiver received!', 'h3-mgmt' ) .
 							'</a></span> | ' .
 							'<span class="delete">' .
@@ -663,7 +666,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 								'" onclick="if ( confirm(\'' .
 										__( 'Really reset the waiver status of this participant to &quot;not received&quot;??', 'h3-mgmt' ) .
 									'\') ) { return true; } return false;" ' .
-									'href="' . $url . '&amp;todo=waiver-unset&amp;id=' .
+									'href="' . esc_url($url) . '&amp;todo=waiver-unset&amp;id=' .
 									$row['id'] . '" class="submitdelete">' .
 									__( 'Not yet received...', 'h3-mgmt' ) .
 								'</a>' .
@@ -673,7 +676,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'liveticker':
 							$output .= '<span class="edit"><a title="' .
 								__( 'Enable the Liveticker function for the race!', 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=liveticker-set&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=liveticker-set&amp;id=' . $row['id'] . '">' .
 								__( 'Enable Liveticker!', 'h3-mgmt' ) .
 							'</a></span> | ' .
 							'<span class="delete">' .
@@ -682,7 +685,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 								'" onclick="if ( confirm(\'' .
 										__( 'Really disable the Liveticker function for the race??', 'h3-mgmt' ) .
 									'\') ) { return true; } return false;" ' .
-									'href="' . $url . '&amp;todo=liveticker-unset&amp;id=' .
+									'href="' . esc_url($url) . '&amp;todo=liveticker-unset&amp;id=' .
 									$row['id'] . '" class="submitdelete">' .
 									__( 'Disable Liveticker!', 'h3-mgmt' ) .
 								'</a>' .
@@ -692,7 +695,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'active':
 							$output .= '<span class="edit"><a title="' .
 								__( 'Set as active Race / Event!', 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=active&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=active&amp;id=' . $row['id'] . '">' .
 								__( 'Set as active!', 'h3-mgmt' ) .
 							'</a></span>';
 							break;
@@ -700,7 +703,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'liveticker_front':
 							$output .= '<span class="edit"><a title="' .
 								__( 'Show the Liveticker content at the Homepage', 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=liveticker-front-set&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=liveticker-front-set&amp;id=' . $row['id'] . '">' .
 								__( 'Show Liveticker!', 'h3-mgmt' ) .
 							'</a></span> | ' .
 							'<span class="delete">' .
@@ -709,7 +712,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 								'" onclick="if ( confirm(\'' .
 										__( 'Really hide the Liveticker content at the Homepage??', 'h3-mgmt' ) .
 									'\') ) { return true; } return false;" ' .
-									'href="' . $url . '&amp;todo=liveticker-front-unset&amp;id=' .
+									'href="' . esc_url($url) . '&amp;todo=liveticker-front-unset&amp;id=' .
 									$row['id'] . '" class="submitdelete">' .
 									__( 'Hide Liveticker!', 'h3-mgmt' ) .
 								'</a>' .
@@ -719,7 +722,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'donation':
 							$output .= '<span class="edit"><a title="' .
 								__( 'Enable the Donation Tool function for the race!', 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=donation-set&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=donation-set&amp;id=' . $row['id'] . '">' .
 								__( 'Enable Donation Tool!', 'h3-mgmt' ) .
 							'</a></span> | ' .
 							'<span class="delete">' .
@@ -728,7 +731,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 								'" onclick="if ( confirm(\'' .
 										__( 'Really disable the Donation Tool function for the race??', 'h3-mgmt' ) .
 									'\') ) { return true; } return false;" ' .
-									'href="' . $url . '&amp;todo=donation-unset&amp;id=' .
+									'href="' . esc_url($url) . '&amp;todo=donation-unset&amp;id=' .
 									$row['id'] . '" class="submitdelete">' .
 									__( 'Disable Donation Tool!', 'h3-mgmt' ) .
 								'</a>' .
@@ -738,7 +741,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'package':
 							$output .= '<span class="edit"><a title="' .
 								__( 'This participant has paid for his/her HitchPackage', 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=paid&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=paid&amp;id=' . $row['id'] . '">' .
 								__( 'HitchPackage paid!', 'h3-mgmt' ) .
 							'</a></span> | ' .
 							'<span class="delete">' .
@@ -747,7 +750,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 								'" onclick="if ( confirm(\'' .
 										__( 'Really reset the HitchPackage status of this participant to &quot;not paid&quot;?', 'h3-mgmt' ) .
 									'\') ) { return true; } return false;" ' .
-									'href="' . $url . '&amp;todo=unpaid&amp;id=' .
+									'href="' . esc_url($url) . '&amp;todo=unpaid&amp;id=' .
 									$row['id'] . '" class="submitdelete">' .
 									__( 'Not yet paid...', 'h3-mgmt' ) .
 								'</a>' .
@@ -757,7 +760,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'sponsor-payment':
 							$output .= '<span class="edit"><a title="' .
 								__( 'This sponsors payment has been received', 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=paid&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=paid&amp;id=' . $row['id'] . '">' .
 								__( 'Sponsor has paid!', 'h3-mgmt' ) .
 							'</a></span> | ' .
 							'<span class="delete">' .
@@ -766,7 +769,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 								'" onclick="if ( confirm(\'' .
 										__( 'Really reset the Sponsors payment status to &quot;not paid&quot;?', 'h3-mgmt' ) .
 									'\') ) { return true; } return false;" ' .
-									'href="' . $url . '&amp;todo=unpaid&amp;id=' .
+									'href="' . esc_url($url) . '&amp;todo=unpaid&amp;id=' .
 									$row['id'] . '" class="submitdelete">' .
 									__( 'Not yet paid...', 'h3-mgmt' ) .
 								'</a>' .
@@ -776,7 +779,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 						case 'sponsor-show':
 							$output .= '<span class="edit"><a title="' .
 								__( 'This sponsor should appear in the front end', 'h3-mgmt' ) .
-								'" href="' . $url . '&amp;todo=show&amp;id=' . $row['id'] . '">' .
+								'" href="' . esc_url($url) . '&amp;todo=show&amp;id=' . $row['id'] . '">' .
 								__( 'Show Sponsor!', 'h3-mgmt' ) .
 							'</a></span> | ' .
 							'<span class="delete">' .
@@ -785,7 +788,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 								'" onclick="if ( confirm(\'' .
 										__( 'Really hide the Sponsor from the front end', 'h3-mgmt' ) .
 									'\') ) { return true; } return false;" ' .
-									'href="' . $url . '&amp;todo=hide&amp;id=' .
+									'href="' . esc_url($url) . '&amp;todo=hide&amp;id=' .
 									$row['id'] . '" class="submitdelete">' .
 									__( 'Hide Sponsor...', 'h3-mgmt' ) .
 								'</a>' .
@@ -817,7 +820,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 		private function convert_data( $data, $conversion_type, $row ) {
 			global $h3_mgmt_races, $h3_mgmt_utilities;
 
-			$output = $data;
+			$output = is_scalar($data) ? esc_html((string) $data) : '';
 			switch ( $conversion_type ) {
 
 				case 'boolean':
@@ -887,7 +890,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Table' ) ) :
 
 					$last_key = key( array_slice( $data, -1, 1, true ) );
 					foreach ( $data as $user_id => $mate_arr ) {
-						$output .= $mate_arr['name'] . ' (' . $mate_arr['age'] . ', ' . $mate_arr['city'] . ')';
+						$output .= esc_html($mate_arr['name']) . ' (' . (int) $mate_arr['age'] . ', ' . esc_html($mate_arr['city']) . ')';
 						if ( $last_key != $user_id ) {
 							$output .= '<br />';
 						}

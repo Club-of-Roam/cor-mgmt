@@ -1,5 +1,8 @@
 # Vollständige Funktionsreferenz für Block 0
 
+Historische Bestandsreferenz aus Block 0. Die Sicherheitskorrekturen in [Block 1](block-1-security.md) ersetzen die dort beschriebenen unsicheren Ist-Verhaltensweisen; ursprüngliche Befunde bleiben zur Nachvollziehbarkeit sichtbar.
+
+
 Stand 2026-11-02. Dieser Katalog ergänzt [Funktionen](features.md), [Shortcodes samt Attributen](shortcodes.md), [Requestfelder je Handler](actions.md), [Fachregeln](business-rules.md), [Phasenmatrix](phases.md) und [Ergebnisreferenz](ranking-reference.md). Alle bekannten Funktionsbereiche besitzen damit konkrete Referenz- und Abnahmeszenarien. Beschreibung bedeutet keine erfolgreich ausgeführte Browser-/Sicherheitsabnahme.
 
 **Belegarten:** Q = Quellprüfung; U = isolierter PHPUnit-Fall; W = echter WordPress-/wpdb-Integrationstest. Ein Bereich mit W ist nicht automatisch vollständig getestet. Bekannte Fehler sind ausdrücklich Ist-Belege. Fehlerkorrektur und vollständige Modulabnahme erfolgen in den zugeordneten Blöcken.

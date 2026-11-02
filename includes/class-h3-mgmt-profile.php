@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Profile class.
@@ -124,7 +125,8 @@ class H3_MGMT_Profile {
 	 * @access public
 	 */
 	public function user_extra_profile_fields( $user ) {
-		$fields = $this->create_extra_profile_fields();
+		echo H3_MGMT_Security::nonce('cor-mgmt-delete-account-' . (int) $user->ID);
+        $fields = $this->create_extra_profile_fields();
 		require_once( H3_MGMT_ABSPATH . '/templates/frontend-profile.php' );
 	}
 
@@ -139,43 +141,40 @@ class H3_MGMT_Profile {
 		require_once( H3_MGMT_ABSPATH . '/templates/admin-profile.php' );
 	}
 
-	public function save_extra_profile_fields( $user_id ) {
-		global $h3_mgmt_regions, $h3_mgmt_mailer;
-
-		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			return false;
-		}
-
-		if ( isset( $_POST['deleteme'] ) && $_POST['deleteme'] == 'forever' ) {
-			wp_delete_user( $user_id );
-			wp_redirect( get_bloginfo('url'), 200 );
-			exit;
-			return false;
-		}
-
-		$fields = $this->create_extra_profile_fields();
-		if ( ! empty( $fields ) ) {
-			foreach ( $fields as $field ) {
-				switch( $field['type'] ) {
-					case 'date':
-						update_user_meta(
-							$user_id,
-							$field['id'],
-							mktime( 0, 0, 0,
-								$_POST[ $field['id'] . '-month' ],
-								$_POST[ $field['id'] . '-day' ],
-								$_POST[ $field['id'] . '-year' ]
-							)
-						);
-					break;
-
-					default:
-						update_user_meta( $user_id, $field['id'], $_POST[$field['id']] );
-					break;
-				}
-			}
-		}
-	}
+    public function save_extra_profile_fields( $user_id ) {
+        $user_id = H3_MGMT_Security::id($user_id);
+        $nonce = $_POST['_wpnonce'] ?? '';
+        if (!$user_id || !current_user_can('edit_user', $user_id) || ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST'
+            || !is_string($nonce) || !wp_verify_nonce(wp_unslash($nonce), 'update-user_' . $user_id)) { return false; }
+        if (isset($_POST['deleteme'])) {
+            // Account deletion is a distinct destructive operation, never an incidental profile update.
+            if ($_POST['deleteme'] !== 'forever' || get_current_user_id() !== $user_id
+                || !H3_MGMT_Security::post('cor-mgmt-delete-account-' . $user_id)) { return false; }
+            require_once ABSPATH . 'wp-admin/includes/user.php';
+            wp_delete_user($user_id);
+            return true;
+        }
+        $values = [];
+        foreach ($this->create_extra_profile_fields() as $field) {
+            if (!isset($field['id']) || $field['type'] === 'avatar') { continue; }
+            $key = $field['id'];
+            if ($field['type'] === 'date') {
+                if (!isset($_POST[$key . '-year'], $_POST[$key . '-month'], $_POST[$key . '-day'])) { continue; }
+                $year = H3_MGMT_Security::id($_POST[$key . '-year'] ?? 0);
+                $month = H3_MGMT_Security::id($_POST[$key . '-month'] ?? 0);
+                $day = H3_MGMT_Security::id($_POST[$key . '-day'] ?? 0);
+                if (!checkdate($month, $day, $year) || $year > (int) gmdate('Y')) { return false; }
+                $values[$key] = mktime(0, 0, 0, $month, $day, $year);
+            } elseif (isset($_POST[$key])) {
+                if (!is_string($_POST[$key])) { return false; }
+                $value = wp_unslash($_POST[$key]);
+                if (isset($field['options']) && !in_array($value, array_map('strval', array_column($field['options'], 'value')), true)) { return false; }
+                $values[$key] = $field['type'] === 'textarea' ? sanitize_textarea_field($value) : sanitize_text_field($value);
+            }
+        }
+        foreach ($values as $key => $value) { update_user_meta($user_id, $key, $value); }
+        return true;
+    }
 
 	/**
 	 * PHP5 style constructor
@@ -184,7 +183,8 @@ class H3_MGMT_Profile {
 	 * @access public
 	 */
 	public function __construct() {
-		add_action( 'show_user_profile', array( &$this, 'user_extra_profile_fields' ) );
+		add_action('profile_personal_options', static function ($user): void { echo H3_MGMT_Security::nonce('cor-mgmt-delete-account-' . (int) $user->ID); });
+        add_action( 'show_user_profile', array( &$this, 'user_extra_profile_fields' ) );
 		add_action( 'edit_user_profile', array( &$this, 'admin_extra_profile_fields' ) );
 		add_action( 'personal_options_update', array( &$this, 'save_extra_profile_fields' ) );
 		add_action( 'edit_user_profile_update', array( &$this, 'save_extra_profile_fields' ) );

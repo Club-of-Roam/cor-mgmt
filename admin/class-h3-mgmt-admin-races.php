@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . "/includes/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Admin_Races class.
@@ -22,6 +23,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 		 * @access public
 		 */
 		public function races_control() {
+            if (!H3_MGMT_Security::admin_request('races')) { echo H3_MGMT_Security::error(); return; }
 			global $wpdb, $h3_mgmt_races;
 
 			$messages = array();
@@ -405,6 +407,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 		 * @access public
 		 */
 		public function routes_control() {
+            if (!H3_MGMT_Security::admin_request('routes')) { echo H3_MGMT_Security::error(); return; }
 			global $wpdb;
 
 			$messages = array();
@@ -613,6 +616,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 		 * @access public
 		 */
 		public function stages_control() {
+            if (!H3_MGMT_Security::admin_request('stages')) { echo H3_MGMT_Security::error(); return; }
 			global $wpdb, $h3_mgmt_races;
 
 			$messages = array();

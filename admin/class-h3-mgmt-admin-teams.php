@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . "/includes/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Admin_Teams class.
@@ -21,6 +22,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 		 * @access public
 		 */
 		public function teams_control() {
+            if (!H3_MGMT_Security::admin_request('teams')) { echo H3_MGMT_Security::error(); return; }
 			global $wpdb, $h3_mgmt_teams, $h3_mgmt_races;
 			/** @var H3_MGMT_Teams $h3_mgmt_teams */
 
@@ -61,11 +63,8 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 									//update Teaminformations
 									/* Handle image upload */
 						if ( ! empty( $_FILES['team_pic']['name'] ) ) {
-								$team_pic_data           = wp_upload_bits(
-									$_FILES['team_pic']['name'],
-									null,
-									file_get_contents( $_FILES['team_pic']['tmp_name'] )
-								);
+								$team_pic_data = H3_MGMT_Security::upload('team_pic');
+ if (is_wp_error($team_pic_data)) { return H3_MGMT_Security::error(); }
 								$team_insert['team_pic'] = $team_pic_data['url'];
 								$team_data_types[]       = '%s';
 						} else {
@@ -172,11 +171,8 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 					} else {
 						/* Handle image upload */
 						if ( ! empty( $_FILES['team_pic']['name'] ) ) {
-								$team_pic_data           = wp_upload_bits(
-									$_FILES['team_pic']['name'],
-									null,
-									file_get_contents( $_FILES['team_pic']['tmp_name'] )
-								);
+								$team_pic_data = H3_MGMT_Security::upload('team_pic');
+ if (is_wp_error($team_pic_data)) { return H3_MGMT_Security::error(); }
 								$team_insert['team_pic'] = $team_pic_data['url'];
 								$team_data_types[]       = '%s';
 						} else {
@@ -297,6 +293,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Teams' ) ) :
 		 * @access public
 		 */
 		public function participants_control() {
+            if (!H3_MGMT_Security::admin_request('participants')) { echo H3_MGMT_Security::error(); return; }
 			global $wpdb, $h3_mgmt_mailer, $h3_mgmt_teams;
 
 			$messages = array();

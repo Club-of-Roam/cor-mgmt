@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . "/includes/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Admin_Emails class.
@@ -24,6 +25,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Emails' ) ) :
 		 * @access public
 		 */
 		public function mail_form() {
+            if (!H3_MGMT_Security::admin_request('emails')) { echo H3_MGMT_Security::error(); return; }
 
 			global $wpdb, $h3_mgmt_races;
 
@@ -175,13 +177,14 @@ if ( ! class_exists( 'H3_MGMT_Admin_Emails' ) ) :
 		 * @access private
 		 */
 		private function mail_send() {
+            if (!current_user_can('h3_mgmt_send_emails') || !H3_MGMT_Security::post(H3_MGMT_Security::admin_nonce('emails'))) { return false; }
 			global $wpdb, $h3_mgmt_mailer, $h3_mgmt_teams, $h3_mgmt_races;
 
 			if ( isset( $_POST['receipient'] ) ) {
 				if ( $_POST['receipient'] == 'self' ) {
 					global $current_user;
 					wp_get_current_user();
-					$to = $current_user->user_email();
+					$to = $current_user->user_email;
 				} elseif ( $_POST['receipient'] == 'all' ) {
 					$to                           = array();
 								$race_ids         = array();
@@ -239,6 +242,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Emails' ) ) :
 		 * @access public
 		 */
 		public function autoresponses_edit() {
+            if (!H3_MGMT_Security::admin_request('autoresponses')) { echo H3_MGMT_Security::error(); return; }
 			global $wpdb;
 
 			if ( isset( $_GET['tab'] ) && in_array( $_GET['tab'], array( 'en', 'de' ) ) ) {

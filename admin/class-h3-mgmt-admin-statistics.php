@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . "/includes/class-h3-mgmt-security.php";
 
 /**
  * H3_MGMT_Admin_Statistics class.
@@ -14,6 +15,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Statistics' ) ) :
 class H3_MGMT_Admin_Statistics {
 
     public function statistics() {
+            if (!H3_MGMT_Security::admin_request('statistics')) { echo H3_MGMT_Security::error(); return; }
 		global $h3_mgmt_teams, $h3_mgmt_races, $wpdb;
 
                 if( isset($_POST['race_id']) && $_POST['race_id'] != NULL ){

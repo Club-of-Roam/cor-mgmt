@@ -1,5 +1,28 @@
 # Prüfbelege
 
+## Block 1 abgeschlossen – 2026-11-02
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Composer validate --strict | bestanden | bestanden | bestanden | bestanden |
+| PHP-Syntax | 46 Dateien, 0 Fehler | 46 Dateien, 0 Fehler | 46 Dateien, 0 Fehler | 46 Dateien, 0 Fehler |
+| Dokumentation / Inventar | 22 Markdown-Dateien, 23 Shortcodes, 0 Fehler | bestanden | bestanden | bestanden |
+| Isolierte Referenz | 84 Tests / 307 Assertions | 84 / 307 | 84 / 307 | 84 / 307 |
+| WordPress-Referenz und Sicherheit | 96 Tests / 658 Assertions | 96 / 658 | 96 / 658 | 96 / 658 |
+
+Pro PHP-Version **180 Tests / 965 Assertions**, keine übersprungenen Tests oder PHPUnit-Warnungen. Gegenüber Block 0 erwarten die korrigierten Sicherheitsfälle jetzt geschütztes Verhalten; die veränderten Assertions sind deshalb kein unverändert gebliebener Altbefund. Private Berechnungsreferenzen bleiben für Block 6 erhalten.
+
+Testsoftware weiterhin PHPUnit 11.5.57, Composer 2.11.1, WordPress 7.1.4 und MariaDB 11.4.13. Zusätzlich Node.js 24.22.2: **4 JavaScript-Tests bestanden**; Syntaxprüfung aller fünf geänderten JavaScript-Dateien erfolgreich. Keine npm-Abhängigkeiten. Die integrierte Bildprüfung einschließlich GD-Komposition wurde mit synthetischem PNG unter allen vier PHP-Versionen ausgeführt.
+
+Ausgeführt: composer check, vollständige isolierte Suite und WordPress-Integration auf jeder PHP-Version; composer test:js / node --test tests/security-js.test.cjs und node --check für app, admin, sponsoring, location und map. Inventar nach letztem Anwendungscode regeneriert: 31 PHP-Quelldateien, 23 bestehende Shortcodes, 65 Methoden mit direkten Request-Referenzen. GitHub Actions enthält PHP-Matrix, GD, Node 24 und die Sicherheitssuiten; **kein Remote-GitHub-Lauf**.
+
+Zusätzlich: Hashgleichheit zwischen beiden versionierten Upload-Ersatzdateien und ihren eingesetzten Gegenstücken bestätigt. Direkte HTTP-Aufrufe der alten URLs werden bereits vom Webserver mit 403 abgewehrt; die Ersatzdateien liefern bei PHP-Ausführung wie vorgesehen 410. Keine erfolgreichen Uploads über die alten Eingänge.
+
+Prüfgrenzen: keine vollständige Browser-/multipart-HTTP-/UI-Abnahme, kein echter Gatewaylauf, keine produktive Zahlungsbestätigung, keine Migration oder Neuinstallations-/Releaseabnahme. JavaScript arbeitet mit DOM-Doubles, WordPress mit echten Core-/SQL-/Nonce-/Rechteprüfungen und synthetischen Daten. Vorhandene Anwendungsdaten wurden weder migriert noch neu berechnet. Kein echter Mailtransport oder Provider-HTTP; WordPress-HTTP und Mail sind in Tests abgefangen. Keine Git-Aktionen.
+
+Umsetzung, Integrationsverträge und zugeordnete Folgearbeiten: [block-1-security.md](block-1-security.md).
+
+
 ## Block 0 abgeschlossen – 2026-11-02
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

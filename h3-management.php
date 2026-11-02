@@ -46,6 +46,9 @@ if ( !defined( 'H3_MGMT_DIRNAME' ) ) {
  *
  * @since 1.0
  */
+require_once H3_MGMT_ABSPATH . "/includes/class-h3-mgmt-security.php";
+H3_MGMT_Security::register();
+require_once H3_MGMT_ABSPATH . "/includes/class-h3-mgmt-media.php";
 if ( is_admin() ) {
 	/* functional classes (usually insantiated only once) */
 	require_once( H3_MGMT_ABSPATH . '/admin/class-h3-mgmt-admin.php' );
@@ -101,10 +104,11 @@ function h3_mgmt_enqueue() {
 	wp_register_script( 'h3-mgmt-donation-selector', H3_MGMT_RELPATH . 'js/h3-mgmt-donation-selector.js', [ 'jquery-core' ], '1.2', true );
 	wp_register_script( 'h3-mgmt-donation-counter', H3_MGMT_RELPATH . 'js/h3-mgmt-counter.js', [ 'jquery-core' ], '1.1.3', true );
 	wp_register_script( 'h3-mgmt-resize', H3_MGMT_RELPATH . 'js/resize.js', [], '1.0' );
-	wp_register_script( 'h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js', [], '1.0' );
+	wp_register_script( 'h3-mgmt-app', H3_MGMT_RELPATH . 'js/app.js', [], '1.2' );
+wp_localize_script('h3-mgmt-app', 'corMgmtMedia', ['url'=>admin_url('admin-ajax.php')]);
 	wp_register_script( 'h3-mgmt-blob', H3_MGMT_RELPATH . 'js/vendor/canvas-to-blob.min.js', [], '1.0' );
-	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js', [], '1.0' );
-	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js', [ 'leaflet' ], '1.2', [
+	wp_register_script( 'h3-mgmt-location', H3_MGMT_RELPATH . 'js/h3-mgmt-location.js', [], '1.1' );
+	wp_register_script( 'h3-mgmt-map', H3_MGMT_RELPATH . 'js/h3-mgmt-map.js', [ 'leaflet' ], '1.3', [
 		'strategy'  => 'defer',
 		'in_footer' => true,
 	] );
@@ -180,7 +184,7 @@ function h3_mgmt_admin_enqueue() {
 	];
 
 	/* register scripts */
-	wp_register_script( 'h3-mgmt-admin', H3_MGMT_RELPATH . 'js/h3-mgmt-admin.js', [ 'jquery-core' ], '1.1', true );
+	wp_register_script( 'h3-mgmt-admin', H3_MGMT_RELPATH . 'js/h3-mgmt-admin.js', [ 'jquery-core' ], '1.2', true );
 	wp_register_script( 'h3-mgmt-ui', H3_MGMT_RELPATH . 'js/h3-mgmt-ui.js', [
 		'jquery-core',
 		'jquery-ui-slider',
@@ -233,6 +237,9 @@ require_once( H3_MGMT_ABSPATH . '/includes/class-h3-mgmt-xchange.php' );
  */
 $GLOBALS['h3_mgmt']           = new H3_MGMT();
 $GLOBALS['h3_mgmt_utilities'] = new H3_MGMT_utilities();
+H3_MGMT_Media::register();
+require_once H3_MGMT_ABSPATH . "/includes/class-h3-mgmt-maintenance.php";
+H3_MGMT_Maintenance::register();
 
 /**
  * Define globals

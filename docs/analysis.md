@@ -1,5 +1,8 @@
 # Bestandsanalyse
 
+Die nachfolgenden Ausgangsbefunde beschreiben die Bestandsanalyse vor Block 1. Sicherheitskorrekturen vom 2026-11-02 und aktuelle Nachweise stehen in [block-1-security.md](block-1-security.md); historische Befunde sind keine Aussage, dass die jeweilige Lücke weiterhin besteht.
+
+
 Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d76fa756b276e2. Maßgeblich ist der untersuchte Arbeitsbaum.
 
 ## Umfang und Grenzen
