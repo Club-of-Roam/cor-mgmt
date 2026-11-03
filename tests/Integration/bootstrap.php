@@ -61,36 +61,16 @@ if (!is_blog_installed()) {
 }
 wp_installing(false);
 
-// Fixtures deliberately use only columns needed by these reference paths, not v2 DDL.
+// Build the real fresh schema. A stale or partial legacy fixture is intentionally rejected.
 global $wpdb;
-foreach ([
-    'h3_mgmt_xchange' => 'id bigint unsigned AUTO_INCREMENT PRIMARY KEY, user_id bigint unsigned NOT NULL, message text NOT NULL, time timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-    'h3_mgmt_auto_responses' => 'id bigint unsigned AUTO_INCREMENT PRIMARY KEY, action varchar(80), language varchar(8), switch tinyint, subject text, message text',
-    'h3_mgmt_invitations' => 'id bigint unsigned AUTO_INCREMENT PRIMARY KEY, team_id bigint unsigned, email varchar(200), code bigint',
-    'h3_mgmt_races' => 'id bigint unsigned PRIMARY KEY, name varchar(100), setting longtext, information_text longtext, active tinyint',
-    'h3_mgmt_teams' => 'id bigint unsigned PRIMARY KEY, race_id bigint unsigned, route_id bigint unsigned, complete tinyint, team_name varchar(100), team_phone varchar(100)',
-    'h3_mgmt_teammates' => 'id bigint unsigned AUTO_INCREMENT PRIMARY KEY, team_id bigint unsigned, user_id bigint unsigned, paid tinyint, waiver tinyint',
-    'h3_mgmt_stages' => 'id bigint unsigned PRIMARY KEY, race_id bigint unsigned, route_id bigint unsigned, number int',
-    'h3_mgmt_routes' => 'id bigint unsigned PRIMARY KEY, race_id bigint unsigned, name varchar(100), max_teams int, user_id bigint unsigned DEFAULT 0',
-    'h3_mgmt_sponsors' => 'id bigint unsigned PRIMARY KEY, team_id bigint unsigned, donation int, paid tinyint, var_show tinyint',
-    'sms_ticker' => 'id bigint unsigned AUTO_INCREMENT PRIMARY KEY, send_from varchar(80), msg text, type int, img_url text, img longtext, timestamp varchar(40), race_id bigint unsigned',
-] as $suffix => $columns) {
-    if ($wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$suffix} ($columns) ENGINE=InnoDB") === false) {
-        throw new RuntimeException('Cannot create synthetic fixture table: ' . $suffix);
-    }
-}
-foreach (['h3_mgmt_routes'=>['user_id'=>'bigint unsigned DEFAULT 0'], 'h3_mgmt_teams'=>['team_phone'=>'varchar(100)'],
-    'h3_mgmt_sponsors'=>['race_id'=>'bigint unsigned DEFAULT 0','donation_token'=>'varchar(128)',
-        'donation_client_reference'=>'varchar(128)','type'=>'varchar(30)','display_name'=>'text','message'=>'text','owner_pic'=>'text','owner_link'=>'text']
-] as $suffix=>$columns) {
-    foreach ($columns as $column=>$definition) {
-        if (!$wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$wpdb->prefix}{$suffix} LIKE %s", $column))) {
-            $wpdb->query("ALTER TABLE {$wpdb->prefix}{$suffix} ADD $column $definition");
-        }
-    }
+(new \Cor\Mgmt\Infrastructure\WordPress\Schema\Installer(
+    new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb)
+))->fresh();
+// Shared ticker storage is still an optional integration pending block 9.
+if ($wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}sms_ticker (id bigint unsigned AUTO_INCREMENT PRIMARY KEY, send_from varchar(80), msg text, type int, img_url text, img longtext, timestamp varchar(40), race_id bigint unsigned) ENGINE=InnoDB") === false) {
+    throw new RuntimeException('Cannot create synthetic ticker fixture.');
 }
 
-update_option('h3_mgmt_db_version', '2.8');
 // Loading the real plugin is strict too; no deprecation baseline is suppressed.
 error_reporting(E_ALL);
 set_error_handler(static function ($severity, $message, $file, $line): bool {

@@ -33,3 +33,7 @@ Lesen verändert keine Daten. Änderungen prüfen Nonce und Objektberechtigung; 
 | WPML/Members/Avatar/Embed Privacy | Integrationen | WordPress-Fallbacks; Abwesenheit, Sprache und Version prüfen |
 
 Umgebungskonfiguration bleibt außerhalb der Fachlogik. Tests dürfen keine produktiven Verbindungen aktivieren.
+
+## Datenübergang ab Block 3
+
+[Schema und Migration](block-3-migration.md) trennen Erstinstallation, bytegenaue Quellkopie, geprüfte Zwischenprojektionen und spätere aktive Modulumschaltung. Die Laufzeit verwendet weiter den Bestandsadapter; ein verified-Lauf ist keine aktive Generation. Neue Fachrepositories dürfen nicht gleichzeitig mit Legacy-Writern dieselben fachlichen Daten führen. Vor der Umschaltung erneute Quellenprüfung, Archivsnapshot und Rückweg abnehmen.

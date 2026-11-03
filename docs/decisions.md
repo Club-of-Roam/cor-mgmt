@@ -31,6 +31,10 @@ Stand 2026-11-02.
 | D-23 | technisch umgesetzt 2026-11-03 | Schemaerkennung bleibt lesend. Keine automatische Versionsanhebung oder Reparatur bei Aufrufen/Aktivierung. Neuer Bestand bleibt bis Block 3 einrichtungsbedürftig; unvollständiges/neueres Schema wird gesperrt. Deinstallation erhält Daten und bestehende Rechte |
 | D-24 | technisch umgesetzt 2026-11-03 | Reproduzierbarer Paketbau mit separatem Composer-no-dev-Staging. Statische Prüfung streng für neue Klassen; Altbestand nicht durch pauschales Ignorieren als modernisiert ausweisen. Begrenzte PHPCompatibility-9-Abdeckung ausdrücklich dokumentieren |
 
+| D-25 | technisch umgesetzt 2026-11-03 | Storage-Schema 3.0.0 und Schritt legacy-shadow-v1 getrennt von Plugin-Header 1.2.10 und Legacy-Marker 2.8. Erstinstallation erzeugt geprüfte eigene Tabellen; Bestandsmigration lässt Source unverändert und erzeugt laufbezogene Zwischenkopien. Keine automatische Aktivierung |
+| D-26 | technisch umgesetzt 2026-11-03 | Private HEX-Payloads erhalten originale Zeichenbytes, NULL, unbekannte Spalten, IDs und Orphans. Keine geratene Cent-/Währungskonvertierung. Phasenmapping 3 nach 4 ist in der Kopie vorbereitet, vollständiger unveränderlicher Archivsnapshot mit Benutzer-/Medien-/Tickerbezug folgt mit den Fachmodulen |
+| D-27 | technisch umgesetzt 2026-11-03 | Administratorrecht, POST und Nonce für die Datenbankwerkzeuge; Backup und gestoppte Writer für Kopierläufe voraussetzen. Advisory-Lock schützt kooperierende Werkzeugaufrufe, Quellhashvergleich erkennt Abweichungen, beides ersetzt kein Wartungsfenster bei MyISAM |
+
 ## Offene Fachprüfung
 
 Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D-17/18 beantwortet. Spätere Detailarbeit: Zusatzantworten genauer klassifizieren (bis dahin alle erlaubt), Wirkungen von Datumskorrekturen, konkrete Rollen-/Einzelrechte für Teilnehmer-Adminaktionen, Snapshotumfang des Archivs und zulässige variable Punkte. Wechsel in ein anderes Rennen separat behandeln. Ein gewöhnlicher Rückwechsel aus dem eingefrorenen Archiv ist nicht beschlossen. Historische Datenfehler sind weiterhin nicht durch den Codebefund allein nachgewiesen.

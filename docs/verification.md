@@ -1,5 +1,28 @@
 # Prüfbelege
 
+## Block 3: Erstinstallation und kontrollierte Zwischenmigration – 2026-11-03
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Composer / Syntax / Schema-Referenz / Inventar | bestanden | bestanden | bestanden | bestanden |
+| PHPStan Level 8 / PSR- und WordPress-Regeln / Compatibility-Ergänzung | bestanden | bestanden | bestanden | bestanden |
+| Isolierte Referenz und Fundament | 125 Tests / 373 Assertions | 125 / 373 | 125 / 373 | 125 / 373 |
+| WordPress, Sicherheit, Installation und Migration | 142 Tests / 888 Assertions | 142 / 888 | 142 / 888 | 142 / 888 |
+
+Pro PHP-Version **267 Tests / 1.261 Assertions**, ohne übersprungene Tests oder PHPUnit-Warnungen. Die vollständigen Suiten wurden nach der abschließenden Sortierkorrektur erneut auf allen vier Versionen ausgeführt. 92 PHP-Dateien in der Syntaxprüfung; Inventar 64 PHP-Quellen, 23 bestehende Shortcodes und 66 Methoden mit direkten Request-Referenzen. 25 Markdown-Dateien und aktuelle generierte SQL-Referenz.
+
+WordPress 7.1.4 und MariaDB 11.4.13. Die WordPress-Suite erzeugt jetzt das reale Erstinstallationsschema mit neun Legacy-kompatiblen und sechs getrennten Migrationstabellen statt der früheren Minimalfixtures. Zusätzliche eigene Präfixe und Verbindungen prüfen Erstaktivierung, fehlende Administratorrolle, DDL-Unterbrechung, Eigentumskollision, Wiederholung mit Daten, reine Vorprüfung, Orphans, unbekannte Spalten, MyISAM-Quelle, latin1/utf32/Binärdaten, sichere Phasen-JSON-Decodierung und neue/inkompatible Speichergenerationen.
+
+Migrationsregressionen: atomarer Batch-Rollback mit unverändertem Cursor, Wiederaufnahme ohne Duplikate, verlorener Komfortzeiger, konkurrierende/verlorene Locks, veränderte Quellen, korrupte Payloads/Projektionen, unerwartete Zielzeilen, unbekannte Schrittfassungen, unveränderte historische Summen und Original-IDs, unbekannte Phasen und nicht geratene Geldbeträge. Unklare Etappenzuordnung bleibt explizit NULL; Originaldaten bleiben erhalten. Kein aktiver Generationseintrag oder Live-Phasenwechsel wird durch den Kopierlauf gesetzt.
+
+Ein zusätzlicher Grenztest entdeckte eine lexikografische Sortierung nach dem HEX-Ausgabealias statt nach der numerischen Quell-ID. Der Vergleich wies die unvollständige Kopie ab; es wurde kein fehlerhafter Lauf verifiziert. Die Sortierung verwendet nun die qualifizierte Quellspalte. Gemischte ID-Längen sowie benachbarte IDs am Maximum von BIGINT UNSIGNED werden in kleinen Batches einschließlich Ergebnisprojektionen geprüft. Numerische Schlüsselvergleiche verwenden ausdrückliche exakte Casts.
+
+SchemaToolsTest prüft echte WordPress-Administrationsrechte, POST, Nonces und JSON-Grenzen. Die Vorprüfung gibt nur aggregierte Daten aus. **7 Node-Tests** und ESLint bestanden; neue Fälle prüfen automatische Batchfortsetzung, Abbruch und Same-Origin-Schutz. `npm ci --ignore-scripts`, npm-Audit und Composer-Audit ohne bekannte Sicherheitswarnungen. Werkzeugversionen und begrenzte PHPCompatibility-9-Abdeckung wie in Block 2.
+
+Paketbau und Produktionsloader wurden geprüft. Das ZIP umfasst 214 Dateien einschließlich der explizit erlaubten generierten SQL-Strukturreferenz; beliebige SQL-Dumps, Logs und private Dateien bleiben ausgeschlossen. Reproduzierbarkeit wird mit zwei Builds desselben endgültigen Stands und Loaderprüfung unter PHP 8.2/8.5 kontrolliert. Dies ist keine vollständige Release-/Standardtheme-/Browserabnahme.
+
+Nicht ausgeführt: Migration vorhandener Anwendungsdaten, aktive Reader-/Writer-Umschaltung, vollständiger Benutzer-/Medien-/Ticker-Archivsnapshot, echte Provider-/Zahlungsaufrufe, tatsächliche MySQL-Matrix und vollständiger Wiederherstellungslauf des Releases. Kein neuer GitHub-Lauf und keine Git-Aktionen. Stand und Restarbeiten: [Block 3](block-3-migration.md).
+
 ## Block 2: technische Laufzeitbasis – 2026-11-03
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

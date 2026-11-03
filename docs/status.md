@@ -18,7 +18,7 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 0 | abgeschlossen: Referenz und Testgrundlage | Übergabe gemäß block-0-acceptance.md; keine Modul-/Releasefreigabe |
 | 1 | abgeschlossen: Sicherheitsbasis | Sicherheitsbasis und Integrationsverträge gemäß block-1-security.md |
 | 2 | technische Laufzeitbasis umgesetzt | Autoloading, Adapter, Lebenszyklus, Qualitätsprüfungen und Paketbau gemäß block-2-foundation.md; Releaseabnahme separat |
-| 3 | offen | Exakte DDL, Feldmapping und Migrationswerkzeug |
+| 3 | Installation und kontrollierte Zwischenmigration umgesetzt | Fachliche Umschaltung, kompletter Archivsnapshot und abschließende Modul-/Releaseabnahme noch offen; block-3-migration.md |
 | 4–6 | offen | Rennen/Routen, Teams/Profile, Ergebnisse |
 | 7 | offen | Fachliche Zahlungsprüfung zuerst |
 | 8–9 | offen | Kommunikation/Börse, Ticker/Medien |
@@ -30,7 +30,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Mit Block 3 fortfahren: exaktes Zielschema, sichere Neuinstallation und kontrollierte Migration mit Vorprüfung, Journal, Wiederaufnahme und Datenerhalt. Nur synthetische Testdaten verwenden.
+3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Nächster Modulumbau: Rennen/Routen aus Block 4; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -74,3 +74,11 @@ Umfang und zugeordnete Restarbeiten: [block-2-foundation.md](block-2-foundation.
 Der GitHub-Lauf 41537851183 wurde nur gelesen: frischer WordPress-Teststart ohne absolute Upload-URL war die Ursache. Bootstrap und Regressionstest sind korrigiert. Kein entfernter Wiederholungslauf und keine Git-Aktionen. Vollständige Installations-/Migrations- und Browserabnahme bleibt bei Block 3/10. Aktuelle Prüfbelege in verification.md ersetzen frühere Werkzeug-/Laufangaben.
 
 Abschlussbeleg für die technische Basis: 209 PHP-Tests / 1.071 Assertions je PHP-Version 8.2/8.3/8.4/8.5, 4 Node-Tests, eingeführte statische Prüfungen und Paketgrenzen erfolgreich geprüft. Keine vollständige Installations- oder Releasefreigabe; Details in verification.md. Der Stand ist für einen manuellen Commit geeignet. Nächster fachlicher Arbeitsblock: 3.
+
+## Block 3 – Installation und Zwischenmigration (2026-11-03)
+
+Die [Umsetzung](block-3-migration.md) liefert wiederholbare Erstinstallation, strukturelle Vorprüfung, schreibfreien Probelauf, geschützte Administrationsaktionen, begrenzte Migrationsbatches, Lock/Journal, Wiederaufnahme und Vergleiche. Neue Speicherstruktur 3.0.0 unabhängig von Plugin 1.2.10 und Legacy-Marker 2.8. Rohwerte, unbekannte Felder und Orphans bleiben erhalten; historische Punkte werden nicht berechnet. Phasenmapping 3 nach 4 nur in der getrennten Kopie vorbereitet. Geldbeträge bleiben ungeklärt statt geraten.
+
+Keine Anwendungskopie wurde migriert oder umgeschaltet. Vollständige neue Fachrepositories, Benutzer-/Medien-/Ticker-Archivsnapshot, Betragseinheiten und Releaseabnahme bleiben offen. Die teilweise offenen Fachentscheidungen haben die technische Basis nicht blockiert und wurden nicht eigenmächtig ersetzt. Prüfbelege in verification.md. Keine Git-Aktionen.
+
+Prüfabschluss Block-3-Paket: 267 PHP-Tests / 1.261 Assertions auf jeder Version 8.2/8.3/8.4/8.5 und 7 Node-Tests bestanden. Die zusätzliche ID-Sortierregression ist korrigiert und durch erneute Vollsuiten abgesichert. Neue Strukturen und kontrollierte Kopierwerkzeuge sind implementiert; aktive Fachmigration und gesamter Block 3 bleiben bis zur beschriebenen Modul-/Archivumschaltung offen. Keine vorhandenen Anwendungsdaten migriert.

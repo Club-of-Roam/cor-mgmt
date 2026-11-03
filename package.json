@@ -6,7 +6,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test tests/security-js.test.cjs",
+    "test": "node --test tests/security-js.test.cjs tests/schema-js.test.cjs",
     "lint": "eslint js/*.js --ignore-pattern js/isotope.pkgd.min.js"
   },
   "devDependencies": {

@@ -21,6 +21,7 @@ final class RequirementsTest extends TestCase {
             'old php'=>['8.1.99','6.3','11.4.13-MariaDB',['mbstring'],false,['php_version']],
             'old wp'=>['8.2','6.2.9','11.4.13-MariaDB',['mbstring'],false,['wordpress_version']],
             'old maria'=>['8.2','6.3','10.10.9-MariaDB',['mbstring'],false,['database_version']],
+            'mysql expression default floor'=>['8.2','6.3','8.0.12',['mbstring'],false,['database_version']],
             'old mysql'=>['8.2','6.3','5.7.44',['mbstring'],false,['database_version']],
             'unknown database'=>['8.2','6.3','unknown',['mbstring'],false,['database_version']],
             'missing extension'=>['8.2','6.3','11.4.13-MariaDB',[],false,['mbstring']],

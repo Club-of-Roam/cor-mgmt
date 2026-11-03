@@ -1,6 +1,6 @@
 # Eigenständigkeit, Installation und Plugin-Lebenszyklus
 
-Status: verbindliche Zielanforderungen für Version 2.0.0. Voraussetzungenprüfung, Schemaerkennung, datenerhaltender Lebenszyklus und ZIP-Build sind in [Block 2](block-2-foundation.md) umgesetzt. Erstinstallation und Migration folgen in Block 3; die vollständige Abnahme bleibt offen.
+Status: verbindliche Zielanforderungen für Version 2.0.0. Voraussetzungenprüfung, Schemaerkennung, datenerhaltender Lebenszyklus und ZIP-Build sind in [Block 2](block-2-foundation.md) umgesetzt. Erstinstallation und kontrollierte Zwischenmigration sind in [Block 3](block-3-migration.md) umgesetzt; die aktive Fachmigration und vollständige Abnahme bleiben offen.
 
 ## Eigenständigkeit
 

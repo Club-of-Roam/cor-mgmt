@@ -31,7 +31,7 @@ final class Requirements
         $database = preg_replace('/^5\.5\.5-/', '', $database) ?? '';
         if (
             !preg_match('/^(\d+\.\d+\.\d+)/', $database, $version)
-            || version_compare($version[1], $maria ? '10.11.0' : '8.0.0', '<')
+            || version_compare($version[1], $maria ? '10.11.0' : '8.0.13', '<')
         ) {
             $errors[] = 'database_version';
         }

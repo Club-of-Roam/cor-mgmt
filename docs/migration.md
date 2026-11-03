@@ -1,6 +1,6 @@
 # Datenmodell und Migration
 
-Stand: 2026-11-01, lesende SELECT/SHOW-Prüfung. Noch keine Migration implementiert oder ausgeführt.
+Ausgangsbefund: 2026-11-01, lesende SELECT/SHOW-Prüfung. Umsetzung Stand 2026-11-03: [Erstinstallation und kontrollierte Zwischenmigration](block-3-migration.md), [ausführbare Schema-Referenz](schema-3.0.0.sql). Keine vorhandenen Anwendungsdaten migriert; die fachliche Umschaltung und vollständige Archivabnahme bleiben offen.
 
 ## Ist-Modell
 
