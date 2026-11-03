@@ -1,6 +1,6 @@
 # Eigenständigkeit, Installation und Plugin-Lebenszyklus
 
-Status: verbindliche Zielanforderungen für Version 2.0.0, noch nicht implementiert oder abgenommen.
+Status: verbindliche Zielanforderungen für Version 2.0.0. Voraussetzungenprüfung, Schemaerkennung, datenerhaltender Lebenszyklus und ZIP-Build sind in [Block 2](block-2-foundation.md) umgesetzt. Erstinstallation und Migration folgen in Block 3; die vollständige Abnahme bleibt offen.
 
 ## Eigenständigkeit
 
@@ -60,4 +60,4 @@ Normale WordPress-Updates per vollständigem Plugin-Paket müssen funktionieren.
 | I-11 | Unterverzeichnis, anderes Präfix, andere Domain | Keine fest eingebauten Website-Pfade |
 | I-12 | Bestehende Shortcodes/Links und historische Inhalte nach Upgrade | Kompatibilität gemäß Funktionsreferenz |
 
-Diese Prüfungen werden als Integrations-, Paket- und Browserprüfungen umgesetzt. Sie sind heute noch nicht ausgeführt. Die unterstützten WordPress-/Datenbankversionen werden vor dem Release aus der tatsächlich bestandenen Matrix erklärt; Multisite-Unterstützung darf ohne entsprechende Prüfungen nicht behauptet werden.
+Diese Prüfungen werden als Integrations-, Paket- und Browserprüfungen umgesetzt. Einzelne Lebenszyklus- und Paketgrenzen werden bereits automatisiert geprüft; I-01 bis I-12 sind insgesamt noch nicht abgenommen. Die unterstützten WordPress-/Datenbankversionen werden vor dem Release aus der tatsächlich bestandenen Matrix erklärt; Multisite-Unterstützung darf ohne entsprechende Prüfungen nicht behauptet werden.

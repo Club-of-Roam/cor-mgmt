@@ -36,6 +36,9 @@ define('WP_HTTP_BLOCK_EXTERNAL', true);
 define('DISALLOW_FILE_MODS', true);
 define('WP_HOME', 'https://example.invalid');
 define('WP_SITEURL', 'https://example.invalid');
+// Core normally derives this from the installed siteurl. A fresh fixture has no
+// options yet while wp-settings.php initializes constants, so define it explicitly.
+define('WP_CONTENT_URL', 'https://example.invalid/wp-content');
 define('WP_DEBUG', false);
 define('WP_CACHE', false);
 define('WP_DEFAULT_THEME', 'cor-test-no-theme');
@@ -58,23 +61,6 @@ if (!is_blog_installed()) {
 }
 wp_installing(false);
 
-// Only known load-time deprecations are baselined; runtime warnings remain test failures.
-$GLOBALS['cor_test_load_deprecations'] = [];
-set_error_handler(static function ($severity, $message, $file, $line): bool {
-    $normalized = str_replace('\\', '/', $file);
-    $known = ($severity === E_DEPRECATED) && (
-        (str_ends_with($normalized, '/includes/class-h3-mgmt-utilities.php') && str_contains($message, 'Implicitly marking parameter'))
-        || (str_ends_with($normalized, '/includes/class-h3-mgmt-xchange.php') && str_contains($message, '${var}'))
-    );
-    if ($known) { $GLOBALS['cor_test_load_deprecations'][] = [$message, basename($file), $line]; }
-    return $known;
-});
-$_COOKIE['client_token'] = 'synthetic-cookie-no-provider';
-require dirname(__DIR__, 2) . '/h3-management.php';
-restore_error_handler();
-// Core init already ran while installing the empty fixture; initialize this plugin once.
-$GLOBALS['h3_mgmt']->init();
-
 // Fixtures deliberately use only columns needed by these reference paths, not v2 DDL.
 global $wpdb;
 foreach ([
@@ -84,6 +70,7 @@ foreach ([
     'h3_mgmt_races' => 'id bigint unsigned PRIMARY KEY, name varchar(100), setting longtext, information_text longtext, active tinyint',
     'h3_mgmt_teams' => 'id bigint unsigned PRIMARY KEY, race_id bigint unsigned, route_id bigint unsigned, complete tinyint, team_name varchar(100), team_phone varchar(100)',
     'h3_mgmt_teammates' => 'id bigint unsigned AUTO_INCREMENT PRIMARY KEY, team_id bigint unsigned, user_id bigint unsigned, paid tinyint, waiver tinyint',
+    'h3_mgmt_stages' => 'id bigint unsigned PRIMARY KEY, race_id bigint unsigned, route_id bigint unsigned, number int',
     'h3_mgmt_routes' => 'id bigint unsigned PRIMARY KEY, race_id bigint unsigned, name varchar(100), max_teams int, user_id bigint unsigned DEFAULT 0',
     'h3_mgmt_sponsors' => 'id bigint unsigned PRIMARY KEY, team_id bigint unsigned, donation int, paid tinyint, var_show tinyint',
     'sms_ticker' => 'id bigint unsigned AUTO_INCREMENT PRIMARY KEY, send_from varchar(80), msg text, type int, img_url text, img longtext, timestamp varchar(40), race_id bigint unsigned',
@@ -102,6 +89,22 @@ foreach (['h3_mgmt_routes'=>['user_id'=>'bigint unsigned DEFAULT 0'], 'h3_mgmt_t
         }
     }
 }
+
+update_option('h3_mgmt_db_version', '2.8');
+// Loading the real plugin is strict too; no deprecation baseline is suppressed.
+error_reporting(E_ALL);
+set_error_handler(static function ($severity, $message, $file, $line): bool {
+    if (error_reporting() & $severity) { throw new ErrorException($message, 0, $severity, $file, $line); }
+    return false;
+});
+$_COOKIE['client_token'] = 'synthetic-cookie-no-provider';
+require dirname(__DIR__, 2) . '/h3-management.php';
+restore_error_handler();
+$activation = \Cor\Mgmt\WordPress\Lifecycle::activate();
+if (is_wp_error($activation)) { throw new RuntimeException('Synthetic runtime activation failed.'); }
+// Core init already ran while installing the empty fixture; initialize this plugin once.
+$GLOBALS['h3_mgmt']->init();
+
 $GLOBALS['cor_test_mail'] = [];
 // WordPress changes error_reporting while loading; runtime reference tests stay strict.
 error_reporting(E_ALL);

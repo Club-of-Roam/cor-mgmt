@@ -1,6 +1,6 @@
 # Bestandsanalyse
 
-Die nachfolgenden Ausgangsbefunde beschreiben die Bestandsanalyse vor Block 1. Sicherheitskorrekturen vom 2026-11-02 und aktuelle Nachweise stehen in [block-1-security.md](block-1-security.md); historische Befunde sind keine Aussage, dass die jeweilige Lücke weiterhin besteht.
+Die nachfolgenden Ausgangsbefunde beschreiben die Bestandsanalyse vor Block 1. Sicherheitskorrekturen vom 2026-11-02 und aktuelle Nachweise stehen in [block-1-security.md](block-1-security.md); historische Befunde sind keine Aussage, dass die jeweilige Lücke weiterhin besteht. Block 2 ersetzt den alten Updater/Uninstaller durch lesende Schemaerkennung und Datenerhalt; Neuinstallation/Migration bleiben Block 3. PHP-01 sowie numerische strftime-Darstellung sind korrigiert, Details in [Block 2](block-2-foundation.md).
 
 
 Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d76fa756b276e2. Maßgeblich ist der untersuchte Arbeitsbaum.
@@ -24,7 +24,7 @@ Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d
 | PHP-03 mittel | strftime/utf8_encode, ungeprüfte Array-/DB-Ergebnisse | Aktuelle APIs, definierte Nullfälle; 2/Module |
 | ARCH-01 hoch | Abfrage schreibt Status/Route und sendet ggf. Mail: [is_complete](../includes/class-h3-mgmt-teams.php#L420) | Abfragen/Änderungen trennen; 5 |
 | ARCH-02 mittel | Globals, große Klassen, HTML/SQL/Fachlogik vermischt, wiederholte Abfragen in Schleifen | Services, Repositories, Views, gebündelte Abfragen; 2/Module |
-| DB-01 hoch | Tabellenanlage nur ohne installierte Version, Versionsoption trotzdem aktualisiert: [Installation](../h3-management.php#L279) | Geprüfte versionierte Migration; 3 |
+| DB-01 hoch | Tabellenanlage nur ohne installierte Version, Versionsoption trotzdem aktualisiert: [historische Installer-DDL](legacy-schema-reference.md) | Geprüfte versionierte Migration; 3 |
 | DB-02 hoch | Uninstall löscht neun Plugin-Tabellen: h3_mgmt_uninstall in [Bootstrap](../h3-management.php) | Standardmäßig Daten erhalten; 3 |
 | MONEY-01 hoch | Betterplace-Centbetrag /100, anschließend Integer-Speicherung: [Handler](../includes/class-h3-mgmt-sponsors.php#L1026) | Centmodell, Herkunft/Einheit prüfen; verlorene Stellen nicht erfinden; 7 |
 | HTTP-01 mittel | get_headers/file_get_contents, historische HTTP-URL und sleep im Spendenablauf | WP HTTP API, Zeitlimits, Fehlerzustände, Adapter; 7 |

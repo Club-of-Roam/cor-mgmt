@@ -1,0 +1,7 @@
+parameters:
+    level: 8
+    phpVersion: 80200
+    paths:
+        - src
+    scanFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php

@@ -5,6 +5,7 @@
          failOnWarning="true" failOnRisky="true" failOnDeprecation="true"
          failOnNotice="true" failOnPhpunitDeprecation="true">
     <testsuites>
+        <testsuite name="Foundation"><directory>tests/Foundation</directory></testsuite>
         <testsuite name="Legacy reference"><directory>tests/Characterization</directory></testsuite>
     </testsuites>
     <php><ini name="error_reporting" value="-1"/></php>

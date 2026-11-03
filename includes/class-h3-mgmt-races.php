@@ -1086,6 +1086,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
                 return $output;
             } catch (Throwable $error) {
                 $wpdb->query('ROLLBACK');
+                \Cor\Mgmt\WordPress\Services::get()->logger->error('ranking_write_failed', $error);
                 return H3_MGMT_Security::error();
             }
         }

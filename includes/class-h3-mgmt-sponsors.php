@@ -455,9 +455,14 @@ if ( !class_exists( 'H3_MGMT_Sponsors' ) ) :
 
             if (!is_scalar($fundraisingEventId) || !ctype_digit((string) $fundraisingEventId)
                 || !is_string($searchString) || !preg_match('/^[a-zA-Z0-9_-]{1,128}$/D', $searchString)) { return null; }
-            $result = wp_safe_remote_get($url . '?' . $queryString, ['timeout'=>10,'redirection'=>0,'limit_response_size'=>2*1024*1024]);
-            if (is_wp_error($result) || wp_remote_retrieve_response_code($result) !== 200) { return null; }
-            $response = wp_remote_retrieve_body($result);
+            try {
+                $result = \Cor\Mgmt\WordPress\Services::get()->http->get($url . '?' . $queryString);
+            } catch (\Cor\Mgmt\Application\TransportException $error) {
+                \Cor\Mgmt\WordPress\Services::get()->logger->error('provider_http_failed', $error);
+                return null;
+            }
+            if ($result->status !== 200) { return null; }
+            $response = $result->body;
 
 			// Decode the JSON response
 			$data = json_decode( $response, true );
@@ -789,7 +794,7 @@ html;
 						$heading = _x( 'Donation', 'Sponsoring Form', 'h3-mgmt' );
 
 						// Create a random donation token with 32 chars plus the team number as prefix
-						$donationToken = 't' . $_POST['team_id'] . '-' . bin2hex( openssl_random_pseudo_bytes( 16 ) );
+						$donationToken = 't' . $_POST['team_id'] . '-' . bin2hex( \Cor\Mgmt\WordPress\Services::get()->random->bytes(16) );
 						$tokenExists   = false;
 
 						// Check if there is already a donation of this client for this team
@@ -2736,7 +2741,7 @@ html;
 			// generate a unique token and set a cookie (expires after 3 days)
 			if ( empty( $_COOKIE['client_token'] ) ) {
 				// length: 64 chars
-				$token = bin2hex( openssl_random_pseudo_bytes( 32 ) );
+				$token = bin2hex( \Cor\Mgmt\WordPress\Services::get()->random->bytes(32) );
 				setcookie('client_token', $token, ['expires'=>time() + 3 * DAY_IN_SECONDS, 'path'=>'/', 'secure'=>is_ssl(), 'httponly'=>true, 'samesite'=>'Lax']);
                 $_COOKIE['client_token'] = $token;
 				// $_COOKIE['client_token'] = $token;

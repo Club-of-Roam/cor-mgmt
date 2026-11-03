@@ -197,7 +197,7 @@ class H3_MGMT_Mailer {
 
 		foreach( $receipient as $to ) {
             if (!is_string($to) || !is_email($to)) { continue; }
-			wp_mail( $to, $subject, stripslashes( $message ), $headers );
+			\Cor\Mgmt\WordPress\Services::get()->mail->send( $to, $subject, stripslashes( $message ), $headers );
 		}
 	}
 

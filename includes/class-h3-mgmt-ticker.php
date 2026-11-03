@@ -240,7 +240,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 								'send_from'	 => $phone_is,
 								'msg'		 => $message,
 								'type'		 => 1,
-								'timestamp'	 => time(),
+								'timestamp'	 => \Cor\Mgmt\WordPress\Services::get()->clock->now(),
 								'race_id'	 => $race
 							), array( '%s', '%s', '%d', '%d' )
 							);
@@ -261,7 +261,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 								'send_from'		 => $phone_is,
 								'msg'			=> $message,
 								'type'			=> 100,
-								'timestamp'		=> time(),
+								'timestamp'		=> \Cor\Mgmt\WordPress\Services::get()->clock->now(),
 								'race_id'		=> $race,
 								'img'			=> $_POST[ 'ticker_id' ]
 							), array( '%s', '%s', '%d', '%d', '%s' )
@@ -291,7 +291,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 									'msg'		 => $coordinates_informations,
 									'img_url'	 => $coordinates,
 									'type'		 => 4,
-									'timestamp'	 => time(),
+									'timestamp'	 => \Cor\Mgmt\WordPress\Services::get()->clock->now(),
 									'race_id'	 => $race
 								), array( '%s', '%s', '%s', '%d', '%d' )
 								);
@@ -324,7 +324,7 @@ if ( !class_exists( 'H3_MGMT_Ticker' ) ) :
 									'msg'		 => $video_message,
 									'img_url'	 => $video,
 									'type'		 => 5,
-									'timestamp'	 => time(),
+									'timestamp'	 => \Cor\Mgmt\WordPress\Services::get()->clock->now(),
 									'race_id'	 => $race
 								), array( '%s', '%s', '%s', '%d', '%d' )
 								);
@@ -1317,7 +1317,7 @@ HTML;
             $signature = $_SERVER['HTTP_X_COR_SIGNATURE'] ?? '';
             if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !is_string($secret) || strlen($secret) < 32
                 || !is_string($raw) || strlen($raw) > 8 * 1024 * 1024 || !is_string($stamp)
-                || !ctype_digit($stamp) || abs(time() - (int) $stamp) > 300 || !is_string($requestId)
+                || !ctype_digit($stamp) || abs(\Cor\Mgmt\WordPress\Services::get()->clock->now() - (int) $stamp) > 300 || !is_string($requestId)
                 || !preg_match('/^[a-zA-Z0-9_-]{8,128}$/D', $requestId) || !is_string($signature)) {
                 status_header(403); echo '403'; return;
             }
@@ -1333,7 +1333,7 @@ HTML;
                 || (isset($message['img']) && !is_string($message['img']))) {
                 status_header(400); echo '400'; return;
             }
-            $timestamp = $message['time'] ?? time();
+            $timestamp = $message['time'] ?? \Cor\Mgmt\WordPress\Services::get()->clock->now();
             if (!is_scalar($timestamp) || !is_numeric($timestamp) || (float) $timestamp < 0 || (float) $timestamp > 9999999999999) { status_header(400); echo '400'; return; }
             $timestamp = (int) $timestamp;
             if ($timestamp > 99999999999) { $timestamp = intdiv($timestamp, 1000); }
@@ -1354,7 +1354,7 @@ HTML;
             }
             $targetRace = $team && $h3_mgmt_teams->is_complete($team) ? $race : 0;
             $replay = 'cor_mgmt_gateway_' . hash('sha256', $requestId);
-            if (!add_option($replay, time(), '', false)) { status_header(409); echo '409'; return; }
+            if (!add_option($replay, \Cor\Mgmt\WordPress\Services::get()->clock->now(), '', false)) { status_header(409); echo '409'; return; }
             $imageUrl = '';
             if (!empty($message['with_image'])) {
                 $bytes = base64_decode($message['img'] ?? '', true);
@@ -1368,7 +1368,7 @@ HTML;
             ], ['%s','%s','%d','%s','%s','%d','%d']);
             if (!$saved) { delete_option($replay); status_header(500); echo '500'; return; }
             $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->options} WHERE option_name LIKE %s AND CAST(option_value AS UNSIGNED) < %d",
-                $wpdb->esc_like('cor_mgmt_gateway_') . '%', time() - DAY_IN_SECONDS));
+                $wpdb->esc_like('cor_mgmt_gateway_') . '%', \Cor\Mgmt\WordPress\Services::get()->clock->now() - DAY_IN_SECONDS));
             echo 'OK';
         }
 

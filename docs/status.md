@@ -1,13 +1,13 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-02. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-03. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
-PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. Kein Remote-GitHub-Lauf.
+PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. Der fehlgeschlagene GitHub-Lauf wurde analysiert; für die Korrektur gibt es noch keinen entfernten Wiederholungslauf.
 
 
 ## Verbindliche Ergänzung: Eigenständigkeit
 
-Installationsvertrag in installation.md festgehalten. Blöcke 2/3 liefern Voraussetzungenprüfung, Einrichtung und Lebenszyklus; Block 9 beseitigt die zwingende Ticker-Abhängigkeit; Block 10 prüft das fertige ZIP ohne Spezialtheme/Zusatzplugins. Diese Anforderungen sind dokumentiert, noch nicht implementiert oder abgenommen.
+Installationsvertrag in installation.md festgehalten. Blöcke 2/3 liefern Voraussetzungenprüfung, Einrichtung und Lebenszyklus; Block 9 beseitigt die zwingende Ticker-Abhängigkeit; Block 10 prüft das fertige ZIP ohne Spezialtheme/Zusatzplugins. Voraussetzungen, Schemaerkennung, datenerhaltender Lebenszyklus und ZIP-Bau sind in Block 2 umgesetzt; Einrichtung/Migration und vollständige Eigenständigkeit bleiben offen.
 
 ## Historischer Ausgangspunkt der Startphase
 
@@ -17,7 +17,7 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 |---|---|---|
 | 0 | abgeschlossen: Referenz und Testgrundlage | Übergabe gemäß block-0-acceptance.md; keine Modul-/Releasefreigabe |
 | 1 | abgeschlossen: Sicherheitsbasis | Sicherheitsbasis und Integrationsverträge gemäß block-1-security.md |
-| 2 | begonnen: Testgrundlage | Werkzeuge ausbauen, Autoloading/Schichten einführen; keine Runtime-Umstellung erfolgt |
+| 2 | technische Laufzeitbasis umgesetzt | Autoloading, Adapter, Lebenszyklus, Qualitätsprüfungen und Paketbau gemäß block-2-foundation.md; Releaseabnahme separat |
 | 3 | offen | Exakte DDL, Feldmapping und Migrationswerkzeug |
 | 4–6 | offen | Rennen/Routen, Teams/Profile, Ergebnisse |
 | 7 | offen | Fachliche Zahlungsprüfung zuerst |
@@ -30,7 +30,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Nach Block 1 mit Block 2 fortfahren: Namespaces/Autoloading, Schichten, Werkzeugprüfungen und Plugin-Lebenszyklus einschließlich Installationsvoraussetzungen. Nur synthetische Testdaten verwenden.
+3. Mit Block 3 fortfahren: exaktes Zielschema, sichere Neuinstallation und kontrollierte Migration mit Vorprüfung, Journal, Wiederaufnahme und Datenerhalt. Nur synthetische Testdaten verwenden.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -66,3 +66,11 @@ Anwendungscode erstmals geändert: zentrale Request-/Objektprüfungen, geschütz
 Umfang, geänderte Verträge und zugeordnete Restarbeit: [block-1-security.md](block-1-security.md). Vollständige Phasen-/Fachmodul-, Installations-, Browser- und Releaseabnahme bleiben in den Folgeblöcken. Alte Gateway-Absender müssen vor Ausrollen die Signatur liefern; ungesicherte Browser-Zahlungsbestätigung ist gesperrt. Abschlusszähler und Prüfgrenzen: [verification.md](verification.md).
 
 Abschlussprüfung Block 1 bestanden: 180 PHP-Tests / 965 Assertions pro PHP-Version 8.2/8.3/8.4/8.5 sowie 4 JavaScript-Tests. Composer-, Syntax- und Dokumentationsprüfungen erfolgreich. Nächster Arbeitsblock: 2. Ein geeigneter manueller Commit-Zeitpunkt ist erreicht; keine Git-Aktionen ausgeführt.
+
+## Block 2 – technische Laufzeitbasis (2026-11-03)
+
+Umfang und zugeordnete Restarbeiten: [block-2-foundation.md](block-2-foundation.md). Namespaces und Composer-Lader sind aktiv. Der Altbestand bleibt funktional hinter einem Adapter. Mail/HTTP/Uhrzeit/Zufall sind austauschbar; PHPStan, PSR-/WordPress-Regeln, PHPCompatibility-Ergänzung und ESLint sind gesperrt eingerichtet. Aktivierung liest das Schema und richtet die bestehenden Capabilities ein; sie migriert oder installiert noch keine Tabellen. Deinstallation löscht keine fachlichen Daten. ZIP enthält einen fertigen Produktionsloader ohne Entwicklungswerkzeuge.
+
+Der GitHub-Lauf 41537851183 wurde nur gelesen: frischer WordPress-Teststart ohne absolute Upload-URL war die Ursache. Bootstrap und Regressionstest sind korrigiert. Kein entfernter Wiederholungslauf und keine Git-Aktionen. Vollständige Installations-/Migrations- und Browserabnahme bleibt bei Block 3/10. Aktuelle Prüfbelege in verification.md ersetzen frühere Werkzeug-/Laufangaben.
+
+Abschlussbeleg für die technische Basis: 209 PHP-Tests / 1.071 Assertions je PHP-Version 8.2/8.3/8.4/8.5, 4 Node-Tests, eingeführte statische Prüfungen und Paketgrenzen erfolgreich geprüft. Keine vollständige Installations- oder Releasefreigabe; Details in verification.md. Der Stand ist für einen manuellen Commit geeignet. Nächster fachlicher Arbeitsblock: 3.

@@ -1,6 +1,6 @@
 # Zielarchitektur
 
-Status: Zielbild, noch keine Umstellung des laufenden Plugins.
+Status: Schichten und Adapter aus [Block 2](block-2-foundation.md) eingeführt; Fachmodule werden schrittweise umgestellt.
 
 ## Schichten
 
@@ -10,7 +10,7 @@ Status: Zielbild, noch keine Umstellung des laufenden Plugins.
 - WordPress: Hooks, Shortcodes, REST-Controller, Authentifizierung, Objektberechtigungen, Request-Validierung und Übersetzung.
 - Presentation: kontextgerecht ausgegebene Templates, modulare Assets und zugängliche Formulare. Zunächst serverseitiges HTML mit gezielten JavaScript-Modulen, keine vollständige SPA.
 
-Composer PSR-4 unter Cor\Mgmt folgt in Block 2. Entwicklungsabhängigkeiten nicht ins Produktionspaket. REST unter cor-mgmt/v2; konkrete Ressourcen mit den Fachmodulen definieren.
+Composer PSR-4 unter Cor\Mgmt ist aktiv. Der Bootstrap lädt neue Klassen, der Adapter runtime/legacy.php erhält bisherige Einstiegspunkte. Entwicklungsabhängigkeiten nicht ins Produktionspaket. REST unter cor-mgmt/v2; konkrete Ressourcen mit den Fachmodulen definieren.
 
 ## Eigenständiger Betrieb
 

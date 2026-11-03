@@ -19,3 +19,8 @@ logs/
 !/.env.example
 /phpunit.xml
 /phpunit.integration.xml
+
+# Server residue is never a source or release artifact
+.bash_history
+error_log
+*.log

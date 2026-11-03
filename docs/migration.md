@@ -56,3 +56,7 @@ Exakte DDL, Feldmapping und Klassifikation sind Liefergegenstände von Block 3 v
 - Schema-/Darstellungsmigration darf historische Werte verlustfrei in neue Strukturen übertragen; das ist keine Erlaubnis zu fachlicher Neuberechnung. Wiederholung/Unterbrechung erzeugt weder weitere Snapshots noch abweichende Werte.
 - Vor und nach Migration IDs, Zeilenzahlen, Ergebniswerte, historische Rangfolge und Statusmapping vergleichen. Datensätze mit anderem/unklarem Ausgangsstatus melden, nicht geraten zuordnen.
 - Neue Rennen werden nach ihrem Abschluss nach demselben Archivvertrag eingefroren. Ein gewöhnliches Wiederöffnen des Archivs ist nicht beschlossen; Rückwechselrechte der Phasen 0..3 sind davon getrennt.
+
+## Historische Installerreferenz
+
+Die [neun DDL-Anweisungen des Altinstallers](legacy-schema-reference.md) sind als Quellreferenz erhalten. Sie entsprechen nicht automatisch dem tatsächlichen Bestand und ersetzen weder Feldvergleich noch neue versionierte Migration. Der Laufzeitbootstrap verwendet sie nicht.

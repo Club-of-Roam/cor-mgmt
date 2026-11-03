@@ -6,8 +6,8 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 paths = [ROOT / 'h3-management.php']
-for folder in ('includes', 'admin', 'templates', 'models'):
-    paths.extend(sorted((ROOT / folder).glob('*.php')))
+for folder in ('includes', 'admin', 'templates', 'models', 'src', 'runtime'):
+    paths.extend(sorted((ROOT / folder).rglob('*.php')))
 result = {'format': 1, 'scope': 'Static legacy PHP; no request execution', 'sources': {}, 'shortcodes': [], 'actions': []}
 method_pattern = re.compile(r'(?m)^\s*(?:(?:public|private|protected|static)\s+)*function\s+([A-Za-z_][A-Za-z_0-9]*)\s*\(')
 for path in sorted(paths):

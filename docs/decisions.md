@@ -27,6 +27,10 @@ Stand 2026-11-02.
 | D-20 | technisch umgesetzt 2026-11-02 | Sicherheitsgrenzen ab Block 1 gemäß block-1-security.md: keine schreibenden GET-Aktionen; Nonce plus Objektberechtigung; Ticker-Gateway nur als signierter POST mit Replay-Schutz. Alte Uploadskripte separat sperren. Unverifizierte browsergesteuerte Zahlungsbestätigungen bleiben gesperrt; kein neuer Zahlungsweg ohne Fachprüfung |
 | D-21 | technisch umgesetzt 2026-11-02 | Historisches overlayer_maker-Formular über geschützten WordPress-Adapter erhalten, Anmeldung/Nonce und kontrollierte Bildverarbeitung verlangen. Alte freie Upload-URL HTTP 410; optionale Overlaygrafik/GD-Abhängigkeit bis Block 9 gesondert dokumentiert |
 
+| D-22 | technisch umgesetzt 2026-11-03 | PSR-4/typisierte Adapter aus Block 2; Legacy-Einstiegspunkte bleiben hinter Kompositionswurzel erhalten. Neue Anwendungsfälle erhalten ihre Abhängigkeiten direkt, kein neuer globaler Service-Locator für Fachlogik |
+| D-23 | technisch umgesetzt 2026-11-03 | Schemaerkennung bleibt lesend. Keine automatische Versionsanhebung oder Reparatur bei Aufrufen/Aktivierung. Neuer Bestand bleibt bis Block 3 einrichtungsbedürftig; unvollständiges/neueres Schema wird gesperrt. Deinstallation erhält Daten und bestehende Rechte |
+| D-24 | technisch umgesetzt 2026-11-03 | Reproduzierbarer Paketbau mit separatem Composer-no-dev-Staging. Statische Prüfung streng für neue Klassen; Altbestand nicht durch pauschales Ignorieren als modernisiert ausweisen. Begrenzte PHPCompatibility-9-Abdeckung ausdrücklich dokumentieren |
+
 ## Offene Fachprüfung
 
 Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D-17/18 beantwortet. Spätere Detailarbeit: Zusatzantworten genauer klassifizieren (bis dahin alle erlaubt), Wirkungen von Datumskorrekturen, konkrete Rollen-/Einzelrechte für Teilnehmer-Adminaktionen, Snapshotumfang des Archivs und zulässige variable Punkte. Wechsel in ein anderes Rennen separat behandeln. Ein gewöhnlicher Rückwechsel aus dem eingefrorenen Archiv ist nicht beschlossen. Historische Datenfehler sind weiterhin nicht durch den Codebefund allein nachgewiesen.

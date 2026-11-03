@@ -1,12 +1,16 @@
 {
   "name": "club-of-roam/cor-mgmt",
-  "description": "Development tooling for cor-mgmt modernization; runtime remains legacy until migrated.",
+  "description": "WordPress event management with modular adapters and development tooling.",
   "type": "wordpress-plugin",
   "require": {
     "php": ">=8.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^11.5"
+    "php-stubs/wordpress-stubs": "^6.0 || ^7.0",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^11.5",
+    "wp-coding-standards/wpcs": "^3.0"
   },
   "config": {
     "sort-packages": true,
@@ -21,9 +25,27 @@
     "check": [
       "@composer validate --strict",
       "@php tools/lint.php",
-      "@php tools/check-docs.php"
+      "@php tools/check-docs.php",
+      "@analyse",
+      "@lint:standards",
+      "@lint:compatibility"
     ],
-    "test:js": "node --test tests/security-js.test.cjs"
+    "test:js": "node --test tests/security-js.test.cjs",
+    "analyse": "@php vendor/phpstan/phpstan/phpstan analyse --no-progress --memory-limit=512M",
+    "lint:standards": "@php vendor/squizlabs/php_codesniffer/bin/phpcs -s",
+    "lint:compatibility": "@php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcs-compatibility.xml.dist",
+    "lint:js": "npm run lint",
+    "build": "@php tools/build-package.php"
   },
-  "license": "GPL-3.0-only"
+  "license": "GPL-3.0-only",
+  "autoload": {
+    "psr-4": {
+      "Cor\\Mgmt\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Cor\\Mgmt\\Tests\\": "tests/"
+    }
+  }
 }

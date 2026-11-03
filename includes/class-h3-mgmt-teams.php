@@ -1008,7 +1008,7 @@ class H3_MGMT_Teams {
 	private function generate_code() {
 		global $wpdb;
 
-		$code = random_int(1000000000000000, 9999999999999999);
+		$code = \Cor\Mgmt\WordPress\Services::get()->random->integer(1000000000000000, 9999999999999999);
 		$existing_codes_query = $wpdb->get_results(
 			"SELECT code FROM " . $wpdb->prefix . "h3_mgmt_invitations",
 			ARRAY_A
@@ -1018,7 +1018,7 @@ class H3_MGMT_Teams {
 			$existing_codes[] = $existing_code['code'];
 		}
 		while ( in_array( $code, $existing_codes ) ) {
-			$code = random_int(1000000000000000, 9999999999999999);
+			$code = \Cor\Mgmt\WordPress\Services::get()->random->integer(1000000000000000, 9999999999999999);
 		}
 		return $code;
 	}

@@ -15,9 +15,11 @@ foreach ($inventory['sources'] as $relative => $expected) {
     }
 }
 $actualSources = ['h3-management.php'];
-foreach (['includes', 'admin', 'templates', 'models'] as $folder) {
-    foreach (glob($root . '/' . $folder . '/*.php') as $path) {
-        $actualSources[] = $folder . '/' . basename($path);
+foreach (['includes', 'admin', 'templates', 'models', 'src', 'runtime'] as $folder) {
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/' . $folder, FilesystemIterator::SKIP_DOTS)) as $entry) {
+        if (!$entry->isFile() || $entry->getExtension() !== 'php') { continue; }
+        $path = $entry->getPathname();
+        $actualSources[] = str_replace(DIRECTORY_SEPARATOR, '/', substr($path, strlen($root) + 1));
     }
 }
 $recordedSources = array_keys($inventory['sources']);

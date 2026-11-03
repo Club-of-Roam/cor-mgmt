@@ -46,7 +46,7 @@ Primärquellen: [WordPress wp_install](https://developer.wordpress.org/reference
 | Standards | PHPCS + WPCS + PHPCompatibility | Neue/geänderte Module zuerst, Altlasten sichtbar halten |
 | Frontend | ESLint und Barrierefreiheitsprüfung | JS, Labels, Fokus, mobile Formulare; manuelle Tastaturtests ergänzen |
 
-WordPress-Referenzintegration ist eingerichtet; umfassende WP-Modul-/REST-/Aktivierungs-/Migrationstests bleiben offen. PHPStan, PHPCS, PHPCompatibility, Playwright und ESLint folgen im technischen Fundament. Keine leeren Tests als Abdeckung ausweisen. Werkzeugversionen bei Einführung auf Kompatibilität prüfen und mit Lockdateien festschreiben.
+WordPress-Referenzintegration ist eingerichtet; umfassende WP-Modul-/REST-/Aktivierungs-/Migrationstests bleiben offen. PHPStan, PHPCS, PHPCompatibility und ESLint sind mit dem in [Block 2](block-2-foundation.md) beschriebenen Umfang eingerichtet. Playwright und Accessibility werden mit den Fachabläufen ergänzt. Keine leeren Tests als Abdeckung ausweisen. Werkzeugversionen bei Einführung auf Kompatibilität prüfen und mit Lockdateien festschreiben.
 
 ## Allgemeine Testgrundsätze
 
@@ -77,4 +77,10 @@ SecurityBoundaryTest prüft echte WordPress-Nonces, globale/eigene Rechte, fremd
 
 RankingSubmissionTest ruft nach Einführung der Sicherheitsgrenze bewusst die private Legacy-Berechnung als Referenz auf. Dort erwartete Altfehler sind keine akzeptierten öffentlichen Requests; SecurityBoundaryTest prüft den geschützten Eingang. TeamRulesTest prüft nun insbesondere, dass reine Abfragen nicht schreiben oder mailen. Zulässige Speicherung/Mail nach Team-POST wird zusätzlich mit echtem WordPress geprüft.
 
-JavaScript-Tests verwenden den eingebauten node:test-Runner ohne npm-Abhängigkeiten. Sie prüfen Session/Nonce bei Upload, verweigerten Upload, serverseitige Bestätigung und abgebrochene Löschaktion mit DOM-Doubles. Playwright-Gesamtabnahme, Accessibility, statische Werkzeuge und Fachabdeckung stehen weiterhin bei ihren Arbeitspaketen. Prüfbelege: [verification.md](verification.md).
+JavaScript-Tests verwenden den eingebauten node:test-Runner ohne npm-Abhängigkeiten. Sie prüfen Session/Nonce bei Upload, verweigerten Upload, serverseitige Bestätigung und abgebrochene Löschaktion mit DOM-Doubles. Playwright-Gesamtabnahme, Accessibility und vollständige Fachabdeckung stehen weiterhin bei ihren Arbeitspaketen. Statische Prüfungen für das neue Fundament und eigene JavaScript-Dateien sind eingerichtet. Prüfbelege: [verification.md](verification.md).
+
+## Fundament und Paket ab Block 2
+
+RequirementsTest, RuntimeTest, LoggerTest und UtilitiesTest prüfen Versionsgrenzen, fehlende Extensions, austauschbare Uhrzeit, sichere Zufallsgrenzen und kompatible Datumsdarstellung ohne WordPress. FoundationTest ergänzt echte WordPress-/SQL-Prüfungen für Schemaerkennung, Aktivierung, Netzwerkablehnung, Cron-Eigentum, Datenerhalt bei beiden Uninstall-Einstiegspunkten, begrenzte HTTP-Aufrufe und weiterhin abgefangenen Mailversand. Die Test-Schemaerkennung verwendet eigene synthetische Tabellenpräfixe und eine separate Verbindung; Anwendungstabellen werden nicht dafür geändert.
+
+Zusätzliche Kommandos: `composer analyse`, `composer lint:standards`, `composer lint:compatibility`, `npm ci --ignore-scripts`, `npm run lint`, `composer build` und `php tools/check-package.php`. Der Paketbau benötigt die PHP-zip-Extension, alle Befehle verwenden gesperrte Entwicklungsabhängigkeiten. Die CI führt diese Prüfungen in der PHP-Matrix aus. Paket-Smoketest ist noch keine Abnahme der Erstinstallation oder vollständiger Bedienabläufe.

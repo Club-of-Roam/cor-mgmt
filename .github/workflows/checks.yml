@@ -36,8 +36,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: JavaScript security regressions
-        run: composer test:js
+      - name: Install locked JavaScript tools
+        run: npm ci --ignore-scripts
+      - name: JavaScript lint and security regressions
+        run: |
+          npm run lint
+          npm test
       - name: Install locked development dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
       - name: Check metadata, syntax and documentation
@@ -59,3 +63,7 @@ jobs:
           COR_TEST_DB_USER: cor_mgmt_runner
           COR_TEST_DB_PASSWORD: synthetic-runner-ci-only
         run: composer test:integration
+      - name: Build package without development dependencies
+        run: composer build
+      - name: Verify standalone package loader and contents
+        run: php tools/check-package.php

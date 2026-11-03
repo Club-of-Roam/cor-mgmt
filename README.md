@@ -5,7 +5,7 @@ WordPress-Plugin für Veranstaltungen, Teams, Teilnahme, Ranglisten, Spenden und
 **Bestand:** Plugin 1.2.10, Schema 2.8. **Ziel:** 2.0.0 für die jeweils neueste stabile PHP-Version bei vollständiger Unterstützung ab PHP 8.2. Kompatibilitätsvertrag und Zielmatrix: [Masterplan](docs/masterplan.md).
 Ziel ist ein eigenständig installierbares WordPress-Plugin ohne verpflichtendes Spezialtheme oder weiteres Fachplugin; siehe [Installationsvertrag](docs/installation.md).
 
-Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheitskorrekturen und geänderten Integrationsverträge stehen in [Block 1](docs/block-1-security.md). Die Gesamtmodernisierung und Releaseabnahme sind noch offen.
+Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheitskorrekturen und geänderten Integrationsverträge stehen in [Block 1](docs/block-1-security.md). Die technische Laufzeitbasis aus [Block 2](docs/block-2-foundation.md) ist eingeführt. Die Gesamtmodernisierung und Releaseabnahme sind noch offen.
 
 ## Einstieg
 
@@ -16,6 +16,7 @@ Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheit
 
 | Dokument | Inhalt |
 |---|---|
+| [Technisches Fundament Block 2](docs/block-2-foundation.md) | Autoloading, Adapter, Lebenszyklus, Prüfwerkzeuge und Paketbau |
 | [Sicherheitsbasis Block 1](docs/block-1-security.md) | Rechte, POST/Nonces, Medien, Gateway und Auswirkungen beim Ausrollen |
 | [Referenzabschluss Block 0](docs/block-0-acceptance.md) | Umfang, Belege, Grenzen und Übergabe an Block 1 |
 | [Referenzkatalog](docs/reference-catalog.md) | Ausgangslagen, Aktionen und Abnahmefälle sämtlicher Funktionsbereiche |
@@ -39,13 +40,17 @@ Für JavaScript-Prüfungen wird Node.js 24 benötigt. Weitere Voraussetzung: akt
 
 ```sh
 composer install
+npm ci --ignore-scripts
 composer check
 composer test
 composer test:js
+npm run lint
+composer build
+php tools/check-package.php
 ```
 
 WordPress-Referenzsuite: composer test:integration. Benötigte Testsoftware und Prüfgrenzen stehen in [Tests](docs/testing.md); die CI stellt ausschließlich synthetische Testressourcen bereit.
 
 Inventar regenerieren: `python tools/build-inventory.py` (Python >= 3.8), danach Diff prüfen.
 
-Composer installiert derzeit ausschließlich Entwicklungswerkzeuge; das laufende Plugin lädt vendor nicht. Diese Abhängigkeiten nicht mit dem Produktionspaket ausliefern. Für Tests keine echten Mails oder Zahlungsaufrufe verwenden. Zugangsdaten, Dumps, private Medien und Sitzungen gehören nicht ins Repository.
+Das laufende Plugin benötigt den Composer-Autoloader. Der ZIP-Build liefert ihn fertig mit und schließt Entwicklungsabhängigkeiten aus. Auf dem Zielserver sind keine Buildwerkzeuge erforderlich. Details und derzeit noch fehlende Erstinstallation: [Block 2](docs/block-2-foundation.md). Für Tests keine echten Mails oder Zahlungsaufrufe verwenden. Zugangsdaten, Dumps, private Medien und Sitzungen gehören nicht ins Repository.

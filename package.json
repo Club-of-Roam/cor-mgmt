@@ -1,0 +1,20 @@
+{
+  "name": "cor-mgmt-development",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test tests/security-js.test.cjs",
+    "lint": "eslint js/*.js --ignore-pattern js/isotope.pkgd.min.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.14.0",
+    "globals": "17.14.0"
+  },
+  "overrides": {
+    "minimatch": "11.0.4"
+  }
+}

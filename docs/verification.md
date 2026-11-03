@@ -1,5 +1,27 @@
 # Prüfbelege
 
+## Block 2: technische Laufzeitbasis – 2026-11-03
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Composer-Metadaten / Syntax / Inventar | bestanden | bestanden | bestanden | bestanden |
+| PHPStan Level 8 für src | bestanden | bestanden | bestanden | bestanden |
+| PSR-/WordPress-Regeln und PHPCompatibility-Ergänzung | bestanden | bestanden | bestanden | bestanden |
+| Isolierte Referenz und Fundament | 104 Tests / 345 Assertions | 104 / 345 | 104 / 345 | 104 / 345 |
+| WordPress-Referenz, Sicherheit und Lebenszyklus | 105 Tests / 726 Assertions | 105 / 726 | 105 / 726 | 105 / 726 |
+
+Pro PHP-Version **209 Tests / 1.071 Assertions**, ohne übersprungene Tests oder PHPUnit-Warnungen. 74 PHP-Dateien in der Syntaxprüfung; Inventar 51 PHP-Quellen, 23 bestehende Shortcodes und 65 Methoden mit direkten Request-Referenzen. Dokumentation: 24 Markdown-Dateien, keine Prüffehler. Die neuen Codegrenzen und Einschränkungen stehen in [Block 2](block-2-foundation.md); keine pauschale statische Freigabe des Altbestands.
+
+WordPress 7.1.4 und MariaDB 11.4.13 mit synthetischen Tabellen einschließlich frischer Datenbank-Erstläufe. Neue Regressionen: absolute Upload-URL beim ersten Core-Start, fehlende Voraussetzungen, neue/unvollständige/ältere/neuere Schemas ohne automatische Reparatur, Aktivierung/Netzwerkablehnung, datenerhaltende Deinstallation über beide Eingänge, ausschließlich eigene Cron-Aufgaben auch mit Argumenten, austauschbare Uhrzeit, Zufallsgrenzen, begrenztes HTTP, Mail-Interception und datensparsame Fehlerprotokolle einschließlich anonymer Ausnahmetypen. Die vier Integrationsvollsuiten bestanden; nach der abschließenden Logger-Härtung wurden die isolierten Suiten auf allen vier PHP-Versionen erneut ausgeführt. Kein Schema- oder Fachverhalten wurde danach geändert.
+
+Weitere Prüfungen bestanden: `npm ci --ignore-scripts`, ESLint für alle eigenen JavaScript-Dateien, **4 Node-Sicherheitstests**, `npm audit` ohne Befund und Composer-Audit ohne bekannte Sicherheitswarnung. Werkzeuge: Composer 2.11.1, PHPUnit 11.5.57, PHPStan 2.3.4, WordPress-Stubs 7.1.2, PHPCS 3.13.6, WPCS 3.4.1, PHPCompatibilityWP 2.1.8/PHPCompatibility 9.3.5, Node.js 24.22.2, ESLint 10.14.0. Alle aufgelösten Versionen sind gesperrt. Begrenzte moderne PHP-Abdeckung des alten Compatibility-Regelwerks ausdrücklich in Block 2 dokumentiert.
+
+Paketbau: 198 Dateien mit fertigem Produktionsloader und Dokumentation. Keine Entwicklungsabhängigkeiten, privaten Konfigurationen, Shell-Historien oder Fehlerprotokolle. Zwei aufeinanderfolgende Builds identischer Quellen ergaben dieselbe SHA256-Prüfsumme. Gesonderter Paketprozess lädt alle neuen Klassen, Interfaces und Enums sowie den Zufallsadapter unter PHP 8.2 und 8.5 ohne Entwicklungs-vendor. Der Build wurde mit PHP 8.2 sowie 8.5 ausgeführt. Paketprüfung ist keine vollständige WordPress-Erstinstallation oder UI-Abnahme.
+
+Der [GitHub-Lauf 41537851183](https://github.com/Club-of-Roam/cor-mgmt/actions/runs/41537851183) wurde lesend analysiert: fehlende absolute WP_CONTENT_URL im frischen Core-Bootstrap verursachte die Medientestfehler aller PHP-Jobs. Bootstrap und Regressionstest sind korrigiert. Kein entfernter Wiederholungslauf für diesen neuen Stand; die aktualisierte CI-Konfiguration ist keine Bestätigung eines erfolgreichen GitHub-Laufs.
+
+Offen bleiben die Neuinstallation und Migration aus Block 3, die späteren Fachmodule sowie Browser-/Accessibility-/Standardtheme-/vollständige Releaseabnahme und weitere WordPress-/DB-Kombinationen. Keine produktiven Aufrufe, keine Migration oder Neuberechnung vorhandener Anwendungsdaten, keine Git-Aktionen. Laufender Versionsheader 1.2.10, Schema-Marker 2.8.
+
 ## Block 1 abgeschlossen – 2026-11-02
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

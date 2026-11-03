@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="Compatibility supplement">
+    <config name="installed_paths" value="vendor/phpcompatibility/php-compatibility,vendor/phpcompatibility/phpcompatibility-wp,vendor/phpcompatibility/phpcompatibility-paragonie"/>
+    <config name="testVersion" value="8.2-"/>
+    <arg name="extensions" value="php"/>
+    <file>src</file><file>runtime</file><file>h3-management.php</file><file>uninstall.php</file>
+    <rule ref="PHPCompatibilityWP"/>
+</ruleset>

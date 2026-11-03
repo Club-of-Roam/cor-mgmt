@@ -70,7 +70,7 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 			return $diff;
 		}
 
-		public function date_diff2(int $timestamp1, int $timestamp2 = null): DateInterval {
+		public function date_diff2(int $timestamp1, ?int $timestamp2 = null): DateInterval {
 			$date1 = DateTimeImmutable::createFromFormat( 'U', $timestamp1 );
 			if ( $timestamp2 ) {
 				$date2 = DateTimeImmutable::createFromFormat( 'U', $timestamp2 );
@@ -107,9 +107,9 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 		 */
 		public function h3_strftime( $time ) {
 			if ( isset( $_SERVER['REQUEST_URI'] ) && substr( $_SERVER['REQUEST_URI'], 0, 4 ) === '/de/' ) {
-				$string = strftime( '%d. %m. %Y', $time );
+				$string = date( 'd. m. Y', $time );
 			} else {
-				$string = strftime( '%Y-%m-%d', $time );
+				$string = date( 'Y-m-d', $time );
 			}
 
 			return $string;
