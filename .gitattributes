@@ -1,0 +1,4 @@
+
+# Keep the PSR-12 source files consistent across checkouts.
+src/**/*.php text eol=lf
+uninstall.php text eol=lf

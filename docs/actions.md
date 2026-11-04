@@ -7,10 +7,9 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [mail_form](../admin/class-h3-mgmt-admin-emails.php#L27) | `GET:email`, `GET:todo`, `POST:subject` |  |
 | [mail_send](../admin/class-h3-mgmt-admin-emails.php#L179) | `POST:message`, `POST:receipient`, `POST:sender`, `POST:subject` |  |
 | [autoresponses_edit](../admin/class-h3-mgmt-admin-emails.php#L244) | `GET:tab`, `GET:todo`, `POST:submitted` |  |
-| [races_control](../admin/class-h3-mgmt-admin-races.php#L25) | `GET:id`, `GET:todo`, `POST:active`, `POST:amount_extra_point`, `POST:betterplace_redirect_link`, `POST:dis_fee`, `POST:dis_mobile_inf`, `POST:dis_shirt_size`, `POST:dis_waiver`, `POST:donation`, `POST:donation_link_link`, `POST:end`, `POST:extra_point_amount`, `POST:kind_of_donation_tool`, `POST:liveticker`, `POST:liveticker_front`, `POST:logo_url`, `POST:name`, `POST:num_teammember`, `POST:num_teammember_min`, `POST:one_extra_point`, `POST:question_1_invisible`, `POST:question_2_invisible`, `POST:question_3_invisible`, `POST:question_4_invisible`, `POST:question_5_invisible`, `POST:race_id_inf`, `POST:show_donation_amount`, `POST:start`, `POST:start_route_id`, `POST:startingpoint`, `POST:status`, `POST:team_overview_link`, `POST:vary_extra_point_field` | `active`, `delete`, `donation-set`, `donation-unset`, `edit`, `liveticker-front-set`, `liveticker-front-unset`, `liveticker-set`, `liveticker-unset`, `new`, `save` |
-| [routes_control](../admin/class-h3-mgmt-admin-races.php#L409) | `GET:bulk`, `GET:id`, `GET:todo`, `POST:color_code`, `POST:logo_url`, `POST:max_teams`, `POST:name`, `POST:race_id`, `POST:route_account_email`, `POST:route_account_login_name`, `POST:route_account_pw1`, `POST:route_account_pw2` | `bulk-delete`, `delete`, `edit`, `save` |
-| [stages_control](../admin/class-h3-mgmt-admin-races.php#L618) | `GET:bulk`, `GET:id`, `GET:todo`, `POST:country`, `POST:country_3166_alpha_2`, `POST:destination`, `POST:meeting_point`, `POST:number`, `POST:route_id` | `bulk-delete`, `delete`, `edit`, `new`, `save` |
-| [fields](../admin/class-h3-mgmt-admin-races.php#L1142) | `POST:submitted` |  |
+| [control](../admin/class-h3-mgmt-admin-races.php#L30) | `GET:id`, `GET:todo`, `POST:submitted` |  |
+| [edit](../admin/class-h3-mgmt-admin-races.php#L80) | `POST:cor_event_revision`, `POST:submitted` |  |
+| [fields](../admin/class-h3-mgmt-admin-races.php#L106) | `POST:submitted` |  |
 | [sponsors_control](../admin/class-h3-mgmt-admin-sponsors.php#L23) | `GET:bulk`, `GET:id`, `GET:method`, `GET:todo`, `POST:accound_id`, `POST:address_additional`, `POST:bank_id`, `POST:bank_name`, `POST:city`, `POST:country`, `POST:debit_confirmation`, `POST:display_name`, `POST:donation`, `POST:email`, `POST:first_name`, `POST:language`, `POST:last_name`, `POST:message`, `POST:method`, `POST:owner_link`, `POST:owner_pic`, `POST:paid`, `POST:race_id`, `POST:receipt`, `POST:street`, `POST:team_id`, `POST:type`, `POST:var_show`, `POST:zip_code` | `bulk-delete`, `bulk-hide`, `bulk-paid`, `bulk-show`, `bulk-unpaid`, `delete`, `hide`, `paid`, `save`, `show`, `unpaid` |
 | [sponsors_list](../admin/class-h3-mgmt-admin-sponsors.php#L478) | `GET:order`, `GET:orderby` |  |
 | [add_values](../admin/class-h3-mgmt-admin-sponsors.php#L888) | `GET:id`, `POST:submitted` |  |
@@ -25,9 +24,9 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [ajax_upload](../includes/class-h3-mgmt-media.php#L61) | `POST:race` |  |
 | [picture](../includes/class-h3-mgmt-media.php#L127) | `POST:left`, `POST:right`, `POST:ticker_pic_msg` |  |
 | [save_extra_profile_fields](../includes/class-h3-mgmt-profile.php#L144) | `POST:_wpnonce`, `POST:deleteme` |  |
-| [ranking_submission_control](../includes/class-h3-mgmt-races.php#L877) | `GET:stage`, `POST:submitted` |  |
-| [persist_ranking](../includes/class-h3-mgmt-races.php#L1094) | `POST:route`, `POST:stage` |  |
-| [ranking_table](../includes/class-h3-mgmt-races.php#L1210) | `GET:ranking_route` |  |
+| [ranking_submission_control](../includes/class-h3-mgmt-races.php#L886) | `GET:stage`, `POST:submitted` |  |
+| [persist_ranking](../includes/class-h3-mgmt-races.php#L1103) | `POST:route`, `POST:stage` |  |
+| [ranking_table](../includes/class-h3-mgmt-races.php#L1219) | `GET:ranking_route` |  |
 | [post](../includes/class-h3-mgmt-security.php#L26) | `POST:cor_mgmt_nonce` |  |
 | [donation_nonce](../includes/class-h3-mgmt-security.php#L36) | `COOKIE:client_token` |  |
 | [donation_request](../includes/class-h3-mgmt-security.php#L41) | `COOKIE:client_token`, `GET:donation_client_reference` |  |
@@ -65,6 +64,8 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [table_order](../includes/class-h3-mgmt-utilities.php#L187) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L68) | `POST:address` |  |
 | [xchange_control](../includes/class-h3-mgmt-xchange.php#L115) | `POST:message`, `POST:submitted` |  |
+| [mutate](../src/WordPress/EventAdmin.php#L23) | `GET:bulk` |  |
+| [render](../src/WordPress/EventList.php#L30) | `GET:country_filter`, `GET:event_page`, `GET:number_filter`, `GET:order`, `GET:orderby`, `GET:race_filter`, `GET:route_filter` |  |
 | [request](../src/WordPress/SchemaTools.php#L27) | `POST:backup`, `POST:fingerprint`, `POST:nonce`, `POST:operation`, `POST:quiesced`, `POST:run_id` |  |
 | [output](../templates/class-h3-mgmt-admin-form.php#L69) | `GET:page` |  |
 | [__construct](../templates/class-h3-mgmt-admin-table.php#L73) | `GET:order`, `GET:orderby` |  |

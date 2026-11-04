@@ -1,6 +1,6 @@
 # Verbindliche Phasenmatrix für Version 2
 
-Fachliche Zielvorgabe des Benutzers vom 2026-11-02. Diese Matrix mit fünf Phasen ersetzt die früheren Vorschläge; die Fachentscheidungen zu Rückwechseln, Verwaltung und Archivierung sind ergänzt. Noch keine Implementierung oder Abnahme des Anwendungscodes. Ist-Befunde stehen getrennt in [business-rules.md](business-rules.md).
+Fachliche Zielvorgabe des Benutzers vom 2026-11-02. Diese Matrix mit fünf Phasen ersetzt die früheren Vorschläge; die Fachentscheidungen zu Rückwechseln, Verwaltung und Archivierung sind ergänzt. Die Rennen-/Routenverwaltung setzt die zugeordneten Feldregeln inzwischen um; Teilnehmer-/Ergebnis-/Archiv-Gesamtabnahme steht noch aus. Siehe [Block 4](block-4-events.md). Ist-Befunde stehen getrennt in [business-rules.md](business-rules.md).
 
 Ja erlaubt die Aktion nur bei vorhandener Berechtigung und erfüllten Objekt-, Daten- und Kapazitätsprüfungen. Verwaltungseinstellungen betreffen berechtigte Organisatoren, Teilnehmeraktionen das eigene Team/Profil. Kapazitätskonflikte müssen vor dem Speichern sichtbar gewarnt werden; erlaubte Änderungen bleiben möglich und dürfen keine Teams still löschen oder umverteilen. »Keine Teilnahme« betrifft das jeweilige Rennen, nicht historische Mitgliedschaften anderer Rennen.
 
@@ -87,3 +87,7 @@ Keine Berechnung vor dem Einfrieren auslösen: bestehende Ergebnisse/Summen/Rang
 Positive/negative Tests je Matrixzeile und für manipulierte Requests sowie Phasenwechsel zwischen Anzeige und Speichern. Rückwechsel 3→1 muss erlaubte Aktionen wieder freigeben; neue und noch offene, unbenutzte Einladungen unter Mitgliedskapazitätsprüfung behandeln, verbrauchte Tokens nicht reaktivieren. Admin-Ausnahmen für Teilnehmer von gesperrten Eventeinstellungen trennen. Kapazitätswarnung samt erlaubter Reduzierung unter Bestand ohne automatische Löschung testen. Alle Zusatzantworten in Phase 2/3 und Admin-Datumskorrekturen prüfen.
 
 Archivtests weisen sämtliche Schreib-/Neuberechnungswege auch für Administratoren ab. Änderungen gemeinsamer Nutzerprofile dürfen historische Ausgaben nicht verändern. Migration 3→Archiv prüft IDs, Statusmapping, Ergebniswerte, Rangfolge und wiederholte/unterbrochene Ausführung ohne Datenänderung. Archivierung nach Abschluss neuer Rennen ebenso testen. Noch keine Implementierung oder automatisierte Abnahme dieser Zielregeln; vorhandene Charakterisierungstests beschreiben den Altbestand.
+
+## Umsetzungsstand ab Block 4
+
+Die Feldgruppen für Rennen/Routen/Etappen und Verwaltungswriter sind gemäß [Block 4](block-4-events.md) implementiert. Die Aussagen »noch keine Implementierung« in früheren Abschnitten beschreiben die damalige Gesamtplanung. Aktiver Archivabschluss bleibt bis zum vollständigen Snapshot gesperrt; Teilnehmer-, Ergebnis- und Integrationsregeln sind damit noch nicht insgesamt umgesetzt.

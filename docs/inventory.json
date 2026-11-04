@@ -3,7 +3,7 @@
   "scope": "Static legacy PHP; no request execution",
   "sources": {
     "admin/class-h3-mgmt-admin-emails.php": "5659e0657098eebda1deb3fdc75b9facb51ca85d688cc8258841eed1a1c75c8f",
-    "admin/class-h3-mgmt-admin-races.php": "7fd8878ddea1e09f565fa3b0ae959049a5077204daae6bc9b53b320660e9d826",
+    "admin/class-h3-mgmt-admin-races.php": "65f074b69ef38b2a8591970fb1625f4be36470dedc477aa1edc04dc29d7f9deb",
     "admin/class-h3-mgmt-admin-sponsors.php": "a682d96ff8e92e8c4b6c590298da734a9d92b702bf1ad7e9b184a9fe1cdf57e7",
     "admin/class-h3-mgmt-admin-statistics.php": "d39dde134a8ca710160bd18b937d9e8a42f5d8c99eac3e973b34e62fa0239960",
     "admin/class-h3-mgmt-admin-teams.php": "211dd0b5ac40323c4484a764bf76327de5f2bfdbec31afec9b3e8e39e15e2875",
@@ -14,7 +14,7 @@
     "includes/class-h3-mgmt-maintenance.php": "052285d837a5cbc2f31255f84442d31b073e2e18a87872028b6f9fef807b078e",
     "includes/class-h3-mgmt-media.php": "22d11d7a97412baf0de420fcc5bcc10368b1bed18d76d005312cc1db76fc525b",
     "includes/class-h3-mgmt-profile.php": "d2f70614aa77b12d29553c8cd14665152084d239fb04b022822e2e6478b1905c",
-    "includes/class-h3-mgmt-races.php": "e7b2239e634640e3929931ac935f269bb04b90d22374d9ab4ebe3401abb542cd",
+    "includes/class-h3-mgmt-races.php": "df2b9ff49ecbc809d5df1d2cc6f240a5be817dc1d024a7b5b4834a143d0269c8",
     "includes/class-h3-mgmt-security.php": "b200628253788a53ac81e2aede35de6837bf53c833f21d052bb0e9c47fca28c5",
     "includes/class-h3-mgmt-sponsors.php": "31f15599ea90c314d6f62d1e14770e5dbf213fee18fb05e799bbe3e7e996afaa",
     "includes/class-h3-mgmt-teams.php": "fb2636603af51e9e0e9825407db7f22997cdd435e595078fa0437501fb27ce6f",
@@ -29,6 +29,9 @@
     "src/Application/Contracts/Logger.php": "d469a3171dd7cc51188208d1988d758b51e5eba7e5ab1695158adb2218eccc1c",
     "src/Application/Contracts/MailTransport.php": "68daf53110dc4fe4a263ff9fc3d071d9418205ff15284ce4a7d241f6a3b90cfe",
     "src/Application/Contracts/RandomSource.php": "bd6f5df141057e0e96ffb5dac833ac6e9b0b591e04b403f1a0a1aef8571ad110",
+    "src/Application/Events/EventEditor.php": "99aa6ef943a63f83e72f5e532dddf4350cf53ca11b7b416fa4caadceafc755c4",
+    "src/Application/Events/EventException.php": "09f8595009cdc82b4cb6e0ee857bdcebd86d90138dfc99995ca2183067131594",
+    "src/Application/Events/EventStore.php": "1e6fe2f17003268527a7fd26abe1b1819bceb7dd8796616b8a355a2d7970ede7",
     "src/Application/HttpResponse.php": "65385b58c5fe9acfb37f8bef65679abf29dcd75625cfc9016e8c7dd6eedcf6d7",
     "src/Application/Migration/Manifest.php": "538539279cc5ca8fd89f72bf5249b1a491f68594940026c331a8a0f5a424d572",
     "src/Application/Migration/MigrationException.php": "10191dc865609c56c46e0b381aed5b39ac49e8867901c83398faa3a4ebbc6058",
@@ -37,9 +40,12 @@
     "src/Application/Requirements.php": "5ef8a63e831a82a67f717cd277312908df538c9aa604188574bbd561ade06325",
     "src/Application/Runtime.php": "0f795993484b79f49c198078476cb9bd5a6230a7f7f7f77752b644e277156cf3",
     "src/Application/TransportException.php": "cae0577e846a60a3497362143db67f3cf8eb1c6c80b05b8c53564c101d7aa9e3",
+    "src/Domain/EventPolicy.php": "8c7657aa3376967ae7cd7a6ca776bc411274cf3ed8cbad34e476da2b3a86afa3",
     "src/Domain/InstallationStatus.php": "2b8e855e840f443e10a09ead7e85c19be32653e9f7e8ce7040a64dc039c80d60",
+    "src/Domain/RacePhase.php": "34f39e0ea16dc989a54dc301d33adab208e3e9185405ac9336ab6130f79a9406",
     "src/Infrastructure/SecureRandom.php": "e57a39674e2a9e5c1a6fe29997762d87030c020599a840c8d82d5cb9ad94320c",
     "src/Infrastructure/SystemClock.php": "61e7a294c202cc19d541d5af8378ab9d36422927b0ef5860841455e8c391b81a",
+    "src/Infrastructure/WordPress/LegacyEventStore.php": "d015d788dd6d2c072e51d399568f908dc476cb5c0a4901b562fa7d35bf4865e2",
     "src/Infrastructure/WordPress/Schema/Catalogue.php": "061201ee1fbbe9b47c98f739c87c968a14cf820a8d3d4a2c93cda11501d1dd33",
     "src/Infrastructure/WordPress/Schema/Database.php": "40cfe471a525624073c2f444992bbad0e4eefaab67e6dd01237947513cd5651c",
     "src/Infrastructure/WordPress/Schema/Inspector.php": "11f1947ecbaa76bbfb727874ef4d2b8c702ab599064c5c47bfe91e50c0a686d1",
@@ -53,6 +59,9 @@
     "src/Infrastructure/WordPress/WordPressLogger.php": "812910c3a7c305d041c90e694f4707922b00c4789a93a6a2f92041731e03378f",
     "src/Infrastructure/WordPress/WordPressMailTransport.php": "70d29f5071bc9a498540111399bc53f426b400c219e0695da5dd08765c608377",
     "src/WordPress/Capabilities.php": "10cc96a8dd72f6fa6a4dcd46013023b6c0a5ac71157c8e96db936269b9663658",
+    "src/WordPress/EventAdmin.php": "5e5dfc6bd619d266c34862cf2cc40055834ec831218e0d251a872345c4fc6c15",
+    "src/WordPress/EventForm.php": "d2b30b3ef03e0f0d1aa10143d117968e291411c413229d77f808acd7c27e2220",
+    "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
     "src/WordPress/Lifecycle.php": "b857f11a6455b7dacf3545e126430e989f6e626d0f1549ebda22f52e39d35c35",
     "src/WordPress/SchemaTools.php": "f50075c22c387e511ab74d91ceb57560726c2f261afc35aa1489b06d222f4e67",
     "src/WordPress/Services.php": "8e37ba4167038976f4b9cc62150f193dde32a03f3f11505da2d663be9ed2b9ea",
@@ -72,14 +81,14 @@
       "tag": "h3-donation-counter",
       "handler": "donation_counter",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 669,
+      "line": 678,
       "defaults_source": "'race' => 1, 'animation' => 0, 'offset' => 0,"
     },
     {
       "tag": "h3-event-statistics",
       "handler": "race_stats",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 574,
+      "line": 583,
       "defaults_source": "'stat' => 'all', 'race' => 0, 'event' => 1, 'offset' => 0,"
     },
     {
@@ -121,7 +130,7 @@
       "tag": "h3-ranking-table",
       "handler": "ranking_table",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 1210,
+      "line": 1219,
       "defaults_source": "'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1,"
     },
     {
@@ -142,21 +151,21 @@
       "tag": "h3-stages",
       "handler": "display_stages",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 746,
+      "line": 755,
       "defaults_source": "'race' => 1, 'class' => '',"
     },
     {
       "tag": "h3-stages-isotope",
       "handler": "isotope_links",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 796,
+      "line": 805,
       "defaults_source": "'race' => 1, 'class' => '',"
     },
     {
       "tag": "h3-submit-rankings",
       "handler": "ranking_submission_control",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 877,
+      "line": 886,
       "defaults_source": null
     },
     {
@@ -267,110 +276,29 @@
     },
     {
       "file": "admin/class-h3-mgmt-admin-races.php",
-      "method": "races_control",
-      "line": 25,
+      "method": "control",
+      "line": 30,
       "fields": [
         "GET:id",
         "GET:todo",
-        "POST:active",
-        "POST:amount_extra_point",
-        "POST:betterplace_redirect_link",
-        "POST:dis_fee",
-        "POST:dis_mobile_inf",
-        "POST:dis_shirt_size",
-        "POST:dis_waiver",
-        "POST:donation",
-        "POST:donation_link_link",
-        "POST:end",
-        "POST:extra_point_amount",
-        "POST:kind_of_donation_tool",
-        "POST:liveticker",
-        "POST:liveticker_front",
-        "POST:logo_url",
-        "POST:name",
-        "POST:num_teammember",
-        "POST:num_teammember_min",
-        "POST:one_extra_point",
-        "POST:question_1_invisible",
-        "POST:question_2_invisible",
-        "POST:question_3_invisible",
-        "POST:question_4_invisible",
-        "POST:question_5_invisible",
-        "POST:race_id_inf",
-        "POST:show_donation_amount",
-        "POST:start",
-        "POST:start_route_id",
-        "POST:startingpoint",
-        "POST:status",
-        "POST:team_overview_link",
-        "POST:vary_extra_point_field"
+        "POST:submitted"
       ],
-      "case_labels": [
-        "active",
-        "delete",
-        "donation-set",
-        "donation-unset",
-        "edit",
-        "liveticker-front-set",
-        "liveticker-front-unset",
-        "liveticker-set",
-        "liveticker-unset",
-        "new",
-        "save"
-      ]
+      "case_labels": []
     },
     {
       "file": "admin/class-h3-mgmt-admin-races.php",
-      "method": "routes_control",
-      "line": 409,
+      "method": "edit",
+      "line": 80,
       "fields": [
-        "GET:bulk",
-        "GET:id",
-        "GET:todo",
-        "POST:color_code",
-        "POST:logo_url",
-        "POST:max_teams",
-        "POST:name",
-        "POST:race_id",
-        "POST:route_account_email",
-        "POST:route_account_login_name",
-        "POST:route_account_pw1",
-        "POST:route_account_pw2"
+        "POST:cor_event_revision",
+        "POST:submitted"
       ],
-      "case_labels": [
-        "bulk-delete",
-        "delete",
-        "edit",
-        "save"
-      ]
-    },
-    {
-      "file": "admin/class-h3-mgmt-admin-races.php",
-      "method": "stages_control",
-      "line": 618,
-      "fields": [
-        "GET:bulk",
-        "GET:id",
-        "GET:todo",
-        "POST:country",
-        "POST:country_3166_alpha_2",
-        "POST:destination",
-        "POST:meeting_point",
-        "POST:number",
-        "POST:route_id"
-      ],
-      "case_labels": [
-        "bulk-delete",
-        "delete",
-        "edit",
-        "new",
-        "save"
-      ]
+      "case_labels": []
     },
     {
       "file": "admin/class-h3-mgmt-admin-races.php",
       "method": "fields",
-      "line": 1142,
+      "line": 106,
       "fields": [
         "POST:submitted"
       ],
@@ -579,7 +507,7 @@
     {
       "file": "includes/class-h3-mgmt-races.php",
       "method": "ranking_submission_control",
-      "line": 877,
+      "line": 886,
       "fields": [
         "GET:stage",
         "POST:submitted"
@@ -589,7 +517,7 @@
     {
       "file": "includes/class-h3-mgmt-races.php",
       "method": "persist_ranking",
-      "line": 1094,
+      "line": 1103,
       "fields": [
         "POST:route",
         "POST:stage"
@@ -599,7 +527,7 @@
     {
       "file": "includes/class-h3-mgmt-races.php",
       "method": "ranking_table",
-      "line": 1210,
+      "line": 1219,
       "fields": [
         "GET:ranking_route"
       ],
@@ -1035,6 +963,30 @@
       "fields": [
         "POST:message",
         "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/EventAdmin.php",
+      "method": "mutate",
+      "line": 23,
+      "fields": [
+        "GET:bulk"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/EventList.php",
+      "method": "render",
+      "line": 30,
+      "fields": [
+        "GET:country_filter",
+        "GET:event_page",
+        "GET:number_filter",
+        "GET:order",
+        "GET:orderby",
+        "GET:race_filter",
+        "GET:route_filter"
       ],
       "case_labels": []
     },

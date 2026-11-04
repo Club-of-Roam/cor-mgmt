@@ -37,3 +37,7 @@ Umgebungskonfiguration bleibt außerhalb der Fachlogik. Tests dürfen keine prod
 ## Datenübergang ab Block 3
 
 [Schema und Migration](block-3-migration.md) trennen Erstinstallation, bytegenaue Quellkopie, geprüfte Zwischenprojektionen und spätere aktive Modulumschaltung. Die Laufzeit verwendet weiter den Bestandsadapter; ein verified-Lauf ist keine aktive Generation. Neue Fachrepositories dürfen nicht gleichzeitig mit Legacy-Writern dieselben fachlichen Daten führen. Vor der Umschaltung erneute Quellenprüfung, Archivsnapshot und Rückweg abnehmen.
+
+## Rennenverwaltung ab Block 4
+
+[Block 4](block-4-events.md) trennt EventPolicy/RacePhase, EventEditor, EventStore/LegacyEventStore und WordPress-Darstellung. Legacy-Menüs delegieren ihre Schreibaktionen an genau diesen Anwendungsfall; das Kompatibilitätsrepository schreibt weiterhin die bisherigen Tabellen. Dies ist keine Aktivierung der Zwischenprojektionen. Vollständige Modulumschaltung erst mit Archiv-/Leser-/Writervertrag. Neue Formular-/Tabellendarstellung verwendet WordPress und natives HTML ohne zusätzliche Runtime-Bibliothek.

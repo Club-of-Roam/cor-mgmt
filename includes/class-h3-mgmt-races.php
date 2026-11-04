@@ -359,7 +359,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				'WHERE id = ' . $route_id, ARRAY_A
 			);
 
-			return $users_query[0]['user_id'];
+			return $users_query[0]['user_id'] ?? 0;
 		}
 
 		/**
@@ -400,18 +400,18 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				$wpdb->prefix . 'h3_mgmt_routes ' .
 				'WHERE id = ' . $id, ARRAY_A
 			);
-			$max_teams   = $route_query[0]['max_teams'];
+			$max_teams = (int) ($route_query[0]['max_teams'] ?? 0);
 
 			$registered_teams = $wpdb->get_var(
 				$wpdb->prepare(
 					'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'h3_mgmt_teams ' .
-					'WHERE route_id = %d', $id
+					'WHERE route_id = %d AND complete = 1', $id
 				)
 			);
 
 			$free_slots = $max_teams - $registered_teams;
 
-			return $free_slots;
+			return max(0, $free_slots);
 		}
 
 		/**
@@ -526,8 +526,17 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 								'fields'  => array( $value, $label ),
 							)
 						);
-						$raw         = array();
-				foreach ( $route_users as $route_user ) {
+                // New standalone accounts use explicit capabilities; retain historic role accounts too.
+                global $wpdb;
+                $assigned_ids = $wpdb->get_col($wpdb->prepare('SELECT DISTINCT user_id FROM %i WHERE user_id>0', $wpdb->prefix . 'h3_mgmt_routes'));
+                if ($assigned_ids) {
+                    $route_users = array_merge($route_users, get_users(['include' => array_map('intval', $assigned_ids), 'orderby' => $orderby, 'order' => $order, 'fields' => [$value, $label]]));
+                }
+                $seen = [];
+                $raw = [];
+                foreach ($route_users as $route_user) {
+                    if (isset($seen[$route_user->$value])) { continue; }
+                    $seen[$route_user->$value] = true;
 					$raw[] = array(
 						$value => $route_user->$value,
 						$label => $route_user->$label,

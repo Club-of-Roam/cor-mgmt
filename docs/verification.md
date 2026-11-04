@@ -1,5 +1,20 @@
 # Prüfbelege
 
+
+## Block 4: Rennen-/Routenverwaltung – 2026-11-04
+
+Die vollständigen Suiten auf PHP 8.2.35, 8.3.36, 8.4.27 und 8.5.12 bestanden jeweils mit **187 isolierten Tests / 437 Assertions** und **183 WordPress-Integrationstests / 1.055 Assertions**: **370 Tests / 1.492 Assertions je PHP-Version**, ohne Warnungen oder ausgelassene Tests.
+
+Nach Ergänzung der erhaltenen Etappenfilter bestand die betroffene EventManagementTest-Suite nochmals auf allen vier PHP-Versionen mit **42 Tests / 172 Assertions**. Anschließend bestand die zusätzliche Routenkonto-Kompatibilitätsregression ebenfalls auf allen vier Versionen (1 Test / 9 Assertions): neu zugewiesene Konten erscheinen neben historischen Rollenkonten in den bestehenden Auswahladaptern. Unveränderte Fach-/Migrationssuiten wurden für diese begrenzten Darstellungs-/Auswahlanpassungen nicht erneut vollständig ausgeführt.
+
+Neue Prüfungen: Feldgruppen über fünf Phasen, Phase-0-Anpassung der Teilnahmevoraussetzungen, expliziter Phasenrückwechsel, Archiv-/Abschlusssperre, Bearbeitung von Datum und Treffpunkt nach Start, echte WordPress-Nonce-/Rollenprüfung, veraltete Datensatz-/Elternrevision, Kapazitäts- und Startpunktwarnung mit Bestätigung, unveränderte Zuordnungen/JSON-Zusatzdaten/Zeitstempel, abhängige Struktur, gemischte Sammellöschung, Kontoerstellung erst nach Validierung, schreibfreies Rendering, keine Passworthashes in Formularen, zweiter DB-Client am Lock, erzwungener Rollback der aktiven Auswahl und echte MyISAM-Tabellen. Synthetische Daten, kein realer Versand.
+
+Syntaxumfang: 103 PHP-Dateien; Inventar: 73 Quellen, 23 Shortcodes, 67 Methoden mit direkter Request-Referenz; 26 Markdown-Dateien. ESLint und die bestehenden **7 Node-Tests** bestanden. Der erste Standardlauf fand vorhandene CRLF-Zeilenenden in den PSR-Dateien. Diese wurden ohne Inhaltsänderung vereinheitlicht und der LF-Vertrag in .gitattributes festgehalten. **composer check bestand anschließend auf allen vier PHP-Versionen**, einschließlich PHPStan Level 8, PSR-/WordPress-Regeln und Compatibility-Ergänzung. Zwei parallel kollidierende PHPStan-Cache-Läufe wurden mit getrennten temporären Caches erfolgreich wiederholt; kein Regelwerk oder Befund wurde unterdrückt.
+
+Paket: **224 Dateien**, fertiger Produktionsloader ohne Entwicklungsabhängigkeiten; Typen-/Paketprüfung auf PHP 8.2 und 8.5 bestanden. Zwei Builds unveränderter Quellen ergeben die identische SHA256-Prüfsumme. Der Paketprozess ist keine Browser- oder vollständige Releaseabnahme.
+
+Keine Anwendungskopie migriert, keine Generation aktiviert, keine historischen Punkte berechnet. Neue Archivabschlüsse bleiben bis zu vollständigen Snapshots und Writer-Sperren gesperrt. Keine vollständige Browser-/Tastatur-/MySQL-/Theme-/Releaseabnahme und kein entfernter GitHub-Lauf. Teilnehmerseitige Nebenläufigkeit folgt in Block 5. Details und Quellen in [Block 4](block-4-events.md).
+
 ## Block 3: Erstinstallation und kontrollierte Zwischenmigration – 2026-11-03
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

@@ -1,6 +1,6 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-03. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-04. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
 PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. Der fehlgeschlagene GitHub-Lauf wurde analysiert; für die Korrektur gibt es noch keinen entfernten Wiederholungslauf.
 
@@ -19,7 +19,8 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 1 | abgeschlossen: Sicherheitsbasis | Sicherheitsbasis und Integrationsverträge gemäß block-1-security.md |
 | 2 | technische Laufzeitbasis umgesetzt | Autoloading, Adapter, Lebenszyklus, Qualitätsprüfungen und Paketbau gemäß block-2-foundation.md; Releaseabnahme separat |
 | 3 | Installation und kontrollierte Zwischenmigration umgesetzt | Fachliche Umschaltung, kompletter Archivsnapshot und abschließende Modul-/Releaseabnahme noch offen; block-3-migration.md |
-| 4–6 | offen | Rennen/Routen, Teams/Profile, Ergebnisse |
+| 4 | Verwaltungsumbau im Kompatibilitätsbetrieb umgesetzt | block-4-events.md; Teilnehmer-Kapazitätsvertrag, aktive Migration und vollständiges Archiv mit Folgeblöcken abnehmen |
+| 5–6 | offen | Teams/Profile, Ergebnisse |
 | 7 | offen | Fachliche Zahlungsprüfung zuerst |
 | 8–9 | offen | Kommunikation/Börse, Ticker/Medien |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
@@ -30,7 +31,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Nächster Modulumbau: Rennen/Routen aus Block 4; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
+3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Nächster Fachumbau: Teams/Profile aus Block 5; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -82,3 +83,11 @@ Die [Umsetzung](block-3-migration.md) liefert wiederholbare Erstinstallation, st
 Keine Anwendungskopie wurde migriert oder umgeschaltet. Vollständige neue Fachrepositories, Benutzer-/Medien-/Ticker-Archivsnapshot, Betragseinheiten und Releaseabnahme bleiben offen. Die teilweise offenen Fachentscheidungen haben die technische Basis nicht blockiert und wurden nicht eigenmächtig ersetzt. Prüfbelege in verification.md. Keine Git-Aktionen.
 
 Prüfabschluss Block-3-Paket: 267 PHP-Tests / 1.261 Assertions auf jeder Version 8.2/8.3/8.4/8.5 und 7 Node-Tests bestanden. Die zusätzliche ID-Sortierregression ist korrigiert und durch erneute Vollsuiten abgesichert. Neue Strukturen und kontrollierte Kopierwerkzeuge sind implementiert; aktive Fachmigration und gesamter Block 3 bleiben bis zur beschriebenen Modul-/Archivumschaltung offen. Keine vorhandenen Anwendungsdaten migriert.
+
+## Block 4 – Rennen- und Routenverwaltung (2026-11-04)
+
+[Umsetzung und Grenzen](block-4-events.md): neue Domainregeln, Anwendungsfälle und Kompatibilitätsrepository ersetzen die bisherigen Verwaltungswriter. Fünf Phasen, gruppierte Feldsperren, Phase-0-Bearbeitung der Teilnahmevoraussetzungen, Revisionen, Kapazitäts-/Startpunktwarnungen, Eltern-/Löschschutz und atomare aktive Rennwahl implementiert. Neue Tabellenansichten und native Formulare; historische Zusatzfelder und exakte unveränderte Zeitstempel bleiben erhalten. Platzanzeige zählt nur vollständige Teams.
+
+Keine Anwendungsmigration und keine aktive Generation ausgewählt. Rennen abschließen bleibt bis zum vollständigen Archivsnapshot gesperrt. Teilnehmerwriter/Routenfreigabe und ihre gemeinsame Nebenläufigkeit gehören zu Block 5; komplette Historie zu Block 3/6/7/9. MyISAM-Mehrfachaktionen benötigen zuerst kontrollierte Engine-Prüfung. Browser-/Releaseabnahme bleibt offen. Ausgeführte Prüfungen in verification.md. Keine Git-Aktionen.
+
+Prüfabschluss des Verwaltungspakets: Vollsuiten mit 370 Tests / 1.492 Assertions je PHP-Version 8.2/8.3/8.4/8.5 bestanden; betroffene Suite nach Etappenfilter-Ergänzung mit 42 Tests / 172 Assertions auf allen vier Versionen wiederholt, zusätzliche Kontoauswahlregression ebenfalls bestanden. Composer-Prüfungen, 7 Node-Tests und ESLint erfolgreich. Paketbau und Produktionsloader ohne Entwicklungsabhängigkeiten geprüft. Nachweise und Grenzen in verification.md. Geeigneter manueller Commit-Zeitpunkt; keine automatischen Commits oder Pushes.

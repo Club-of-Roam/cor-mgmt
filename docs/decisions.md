@@ -35,6 +35,12 @@ Stand 2026-11-02.
 | D-26 | technisch umgesetzt 2026-11-03 | Private HEX-Payloads erhalten originale Zeichenbytes, NULL, unbekannte Spalten, IDs und Orphans. Keine geratene Cent-/Währungskonvertierung. Phasenmapping 3 nach 4 ist in der Kopie vorbereitet, vollständiger unveränderlicher Archivsnapshot mit Benutzer-/Medien-/Tickerbezug folgt mit den Fachmodulen |
 | D-27 | technisch umgesetzt 2026-11-03 | Administratorrecht, POST und Nonce für die Datenbankwerkzeuge; Backup und gestoppte Writer für Kopierläufe voraussetzen. Advisory-Lock schützt kooperierende Werkzeugaufrufe, Quellhashvergleich erkennt Abweichungen, beides ersetzt kein Wartungsfenster bei MyISAM |
 
+## Umsetzung Block 4 (2026-11-04)
+
+- D-28: Beschlossene Phasenregeln für Verwaltungsfelder umgesetzt, keine zusätzliche Fachfreigabe. Routenname als Darstellung, Etappenziel/Land als Struktur, Treffpunkt als Organisation; gemischte Informationstexte ab Start sperren. Quellen/Zuordnung in block-4-events.md.
+- D-29: Vor der vollständigen Archivierung bleibt Phase-4-Abschluss gesperrt. Bestehende Archivzeilen sind unveränderlich; kein unvollständiges Archiv durch bloßen Statuswechsel anbieten.
+- D-30: Kompatibilitätsrepository bleibt vorerst maßgeblich. Warnbestätigung, Revisionen und Sperre schützen neue Verwaltungswriter; transaktional erforderliche Operationen auf MyISAM bis zur kontrollierten Schemaumstellung sperren. Kein stilles ALTER während Verwaltung oder Aktivierung.
+
 ## Offene Fachprüfung
 
 Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D-17/18 beantwortet. Spätere Detailarbeit: Zusatzantworten genauer klassifizieren (bis dahin alle erlaubt), Wirkungen von Datumskorrekturen, konkrete Rollen-/Einzelrechte für Teilnehmer-Adminaktionen, Snapshotumfang des Archivs und zulässige variable Punkte. Wechsel in ein anderes Rennen separat behandeln. Ein gewöhnlicher Rückwechsel aus dem eingefrorenen Archiv ist nicht beschlossen. Historische Datenfehler sind weiterhin nicht durch den Codebefund allein nachgewiesen.

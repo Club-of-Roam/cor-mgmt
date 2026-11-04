@@ -22,707 +22,46 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 		 * @since 1.1
 		 * @access public
 		 */
-		public function races_control() {
-            if (!H3_MGMT_Security::admin_request('races')) { echo H3_MGMT_Security::error(); return; }
-			global $wpdb, $h3_mgmt_races;
-
-			$messages = array();
-
-			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : 'list';
-
-			switch ( $todo ) {
-
-				case 'delete':
-					if ( $_GET['id'] ) {
-						$wpdb->query(
-							'DELETE FROM ' .
-							$wpdb->prefix . 'h3_mgmt_races ' .
-							"WHERE id='" . $_GET['id'] . "' LIMIT 1"
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The selected event or race has been successfully deleted.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'liveticker-set':
-					if ( $_GET['id'] ) {
-						$setting               = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-						$setting['liveticker'] = 1;
-						$setting               = json_encode( $setting );
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'setting' => $setting,
-							),
-							array( 'id' => $_GET['id'] ),
-							array( '%s' ),
-							array( '%d' )
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The Liveticker function for the selected event or race has been successfully enabled.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'liveticker-unset':
-					if ( $_GET['id'] ) {
-						$setting               = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-						$setting['liveticker'] = 0;
-						$setting               = json_encode( $setting );
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'setting' => $setting,
-							),
-							array( 'id' => $_GET['id'] ),
-							array( '%s' ),
-							array( '%d' )
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The Liveticker function for the selected event or race has been successfully disabled.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'liveticker-front-set':
-					if ( $_GET['id'] ) {
-						$setting                     = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-						$setting['liveticker_front'] = 1;
-						$setting                     = json_encode( $setting );
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'setting' => $setting,
-							),
-							array( 'id' => $_GET['id'] ),
-							array( '%s' ),
-							array( '%d' )
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The Liveticker content for the selected event or race will be successfully visible.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'liveticker-front-unset':
-					if ( $_GET['id'] ) {
-						$setting                     = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-						$setting['liveticker_front'] = 0;
-						$setting                     = json_encode( $setting );
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'setting' => $setting,
-							),
-							array( 'id' => $_GET['id'] ),
-							array( '%s' ),
-							array( '%d' )
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The Liveticker content for the selected event or race will be successfully unvisible.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'active':
-					if ( $_GET['id'] ) {
-						$active_id = $wpdb->get_results(
-							'SELECT id FROM ' . $wpdb->prefix . 'h3_mgmt_races ' .
-													'WHERE active = 1', ARRAY_A
-						);
-
-						$active_id = $active_id[0]['id'];
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'active' => 0,
-							),
-							array( 'id' => $active_id ),
-							array( '%d' ),
-							array( '%d' )
-						);
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'active' => 1,
-							),
-							array( 'id' => $_GET['id'] ),
-							array( '%s' ),
-							array( '%d' )
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The selected event or race will be active.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'donation-set':
-					if ( $_GET['id'] ) {
-						$setting             = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-						$setting['donation'] = 1;
-						$setting             = json_encode( $setting );
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'setting' => $setting,
-							),
-							array( 'id' => $_GET['id'] ),
-							array( '%s' ),
-							array( '%d' )
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The Donation Tool function for the selected event or race has been successfully enabled.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'donation-unset':
-					if ( $_GET['id'] ) {
-						$setting             = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-						$setting['donation'] = 0;
-						$setting             = json_encode( $setting );
-
-						$wpdb->update(
-							$wpdb->prefix . 'h3_mgmt_races',
-							array(
-								'setting' => $setting,
-							),
-							array( 'id' => $_GET['id'] ),
-							array( '%s' ),
-							array( '%d' )
-						);
-						$messages[] = array(
-							'type'    => 'message',
-							'message' => __( 'The Donation Tool function for the selected event or race has been successfully disabled.', 'h3-mgmt' ),
-						);
-					}
-					unset( $_GET['todo'], $_GET['id'] );
-					$this->races_list( $messages );
-					break;
-
-				case 'save':
-					if ( $_GET['id'] != null ) {
-						$setting_datbase = $h3_mgmt_races->get_race_setting( $_GET['id'] );
-						$setting         = array(
-							'status'                    => $_POST['status'],
-							'startingpoint'             => $_POST['startingpoint'],
-							'liveticker'                => $_POST['liveticker'],
-							'donation'                  => $_POST['donation'],
-							'liveticker_front'          => $_POST['liveticker_front'],
-							'kind_of_donation_tool'     => $_POST['kind_of_donation_tool'],
-							'dis_shirt_size'            => $setting_datbase['dis_shirt_size'],
-							'dis_mobile_inf'            => $setting_datbase['dis_mobile_inf'],
-							'dis_waiver'                => $setting_datbase['dis_waiver'],
-							'dis_fee'                   => $setting_datbase['dis_fee'],
-							'start_route_id'            => $_POST['start_route_id'],
-							'num_teammember'            => $setting_datbase['num_teammember'],
-							'num_teammember_min'        => $setting_datbase['num_teammember_min'],
-							'betterplace_redirect_link' => $_POST['betterplace_redirect_link'],
-							'show_donation_amount'      => $_POST['show_donation_amount'],
-							'one_extra_point'           => $_POST['one_extra_point'],
-							'amount_extra_point'        => $_POST['amount_extra_point'],
-							'extra_point_amount'        => $_POST['extra_point_amount'],
-							'vary_extra_point_field'    => $_POST['vary_extra_point_field'],
-							'donation_link_link'        => $_POST['donation_link_link'],
-							'question_1_invisible'      => $_POST['question_1_invisible'],
-							'question_2_invisible'      => $_POST['question_2_invisible'],
-							'question_3_invisible'      => $_POST['question_3_invisible'],
-							'question_4_invisible'      => $_POST['question_4_invisible'],
-							'question_5_invisible'      => $_POST['question_5_invisible'],
-							'team_overview_link'        => $_POST['team_overview_link'],
-						);
-					} else {
-						if ( intval( $_POST['num_teammember'] ) < 1 ) {
-							$num_teammember = 1;
-						} elseif ( intval( $_POST['num_teammember'] ) > 100 ) {
-							$num_teammember = 100;
-						} else {
-							$num_teammember = $_POST['num_teammember'];
-						}
-
-						if ( intval( $_POST['num_teammember_min'] ) < 1 ) {
-							$num_teammember_min = 1;
-						} elseif ( intval( $_POST['num_teammember_min'] ) > 100 ) {
-							$num_teammember_min = 100;
-						} else {
-							$num_teammember_min = $_POST['num_teammember_min'];
-						}
-
-						$setting = array(
-							'status'                    => $_POST['status'],
-							'startingpoint'             => $_POST['startingpoint'],
-							'liveticker'                => $_POST['liveticker'],
-							'donation'                  => $_POST['donation'],
-							'liveticker_front'          => $_POST['liveticker_front'],
-							'kind_of_donation_tool'     => $_POST['kind_of_donation_tool'],
-							'dis_shirt_size'            => $_POST['dis_shirt_size'],
-							'dis_mobile_inf'            => $_POST['dis_mobile_inf'],
-							'dis_waiver'                => $_POST['dis_waiver'],
-							'dis_fee'                   => $_POST['dis_fee'],
-							'start_route_id'            => $_POST['start_route_id'],
-							'num_teammember'            => $num_teammember,
-							'num_teammember_min'        => $num_teammember_min,
-							'betterplace_redirect_link' => $_POST['betterplace_redirect_link'],
-							'show_donation_amount'      => $_POST['show_donation_amount'],
-							'one_extra_point'           => $_POST['one_extra_point'],
-							'amount_extra_point'        => $_POST['amount_extra_point'],
-							'extra_point_amount'        => $_POST['extra_point_amount'],
-							'vary_extra_point_field'    => $_POST['vary_extra_point_field'],
-							'donation_link_link'        => $_POST['donation_link_link'],
-							'question_1_invisible'      => $_POST['question_1_invisible'],
-							'question_2_invisible'      => $_POST['question_2_invisible'],
-							'question_3_invisible'      => $_POST['question_3_invisible'],
-							'question_4_invisible'      => $_POST['question_4_invisible'],
-							'question_5_invisible'      => $_POST['question_5_invisible'],
-							'team_overview_link'        => $_POST['team_overview_link'],
-						);
-					}
-					$setting = json_encode( $setting );
-
-					if ( $_POST['race_id_inf'] != 0 ) {
-										$information_text = $wpdb->get_results(
-											'SELECT information_text FROM ' . $wpdb->prefix . 'h3_mgmt_races ' .
-											'WHERE id = ' . $_POST['race_id_inf'], ARRAY_A
-										);
-										$information_text = $information_text[0]['information_text'];
-
-					} else {
-										$i = 1;
-						while ( isset( $_POST[ $i . 'en' ] ) ) {
-							$information_text[ $i . 'en' ] = $_POST[ $i . 'en' ];
-							$information_text[ $i . 'de' ] = $_POST[ $i . 'de' ];
-							$i++;
-						}
-										$information_text = json_encode( $information_text );
-					}
-
-					if ( $_POST['active'] == 1 ) {
-										$active_id = $wpdb->get_results(
-											'SELECT id FROM ' . $wpdb->prefix . 'h3_mgmt_races ' .
-											'WHERE active = 1', ARRAY_A
-										);
-
-										$active_id = $active_id[0]['id'];
-
-										$wpdb->update(
-											$wpdb->prefix . 'h3_mgmt_races',
-											array(
-												'active' => 0,
-											),
-											array( 'id' => $active_id ),
-											array( '%d' ),
-											array( '%d' )
-										);
-
-					}
-
-					if ( isset( $_GET['id'] ) && $_GET['id'] != null ) {
-										$wpdb->update(
-											$wpdb->prefix . 'h3_mgmt_races',
-											array(
-												'name'     => $_POST['name'],
-												'start'    => strtotime( $_POST['start'] ),
-												'end'      => strtotime( $_POST['end'] ),
-												'logo_url' => $_POST['logo_url'],
-												'setting'  => $setting,
-												'information_text' => $information_text,
-												'active'   => $_POST['active'],
-											),
-											array( 'id' => $_GET['id'] ),
-											array( '%s', '%d', '%d', '%s', '%s', '%s', '%d' ),
-											array( '%d' )
-										);
-										$messages[] = array(
-											'type'    => 'message',
-											'message' => __( 'Event successfully updated!', 'h3-mgmt' ),
-										);
-					} else {
-										$wpdb->insert(
-											$wpdb->prefix . 'h3_mgmt_races',
-											array(
-												'name'     => $_POST['name'],
-												'start'    => strtotime( $_POST['start'] ),
-												'end'      => strtotime( $_POST['end'] ),
-												'logo_url' => $_POST['logo_url'],
-												'setting'  => $setting,
-												'information_text' => $information_text,
-												'active'   => $_POST['active'],
-											),
-											array( '%s', '%d', '%d', '%s', '%s', '%d' )
-										);
-										$messages[] = array(
-											'type'    => 'message',
-											'message' => __( 'Event successfully added!', 'h3-mgmt' ),
-										);
-					}
-					$this->races_list( $messages );
-					break;
-
-				case 'edit':
-					$this->edit( 'race', $_GET['id'] );
-					break;
-
-				case 'new':
-					$this->edit( 'race' );
-					break;
-
-				default:
-					$this->races_list();
-			}
-		}
-
-		/**
-		 * Routes administration menu
-		 *
-		 * @since 1.0
-		 * @access public
-		 */
-		public function routes_control() {
-            if (!H3_MGMT_Security::admin_request('routes')) { echo H3_MGMT_Security::error(); return; }
-			global $wpdb;
-
-			$messages = array();
-
-			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : 'list';
-
-			if ( $todo == 'new' ) {
-				$this->edit( 'route' );
-			} elseif ( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {
-				switch ( $todo ) {
-					case 'delete':
-						if ( $_GET['id'] ) {
-									$wpdb->query(
-										'DELETE FROM ' .
-											$wpdb->prefix . 'h3_mgmt_routes ' .
-											"WHERE id='" . $_GET['id'] . "' LIMIT 1"
-									);
-									$messages[] = array(
-										'type'    => 'message',
-										'message' => __( 'The selected route has been successfully deleted.', 'h3-mgmt' ),
-									);
-						}
-							unset( $_GET['todo'], $_GET['id'] );
-							$this->routes_list( $messages );
-						break;
-
-					case 'save':
-						if ( ! $_POST['route_account_login_name'] == null || ! $_POST['route_account_login_name'] == '' ) {
-							if ( $_POST['route_account_pw1'] == $_POST['route_account_pw2'] && ( ! $_POST['route_account_pw1'] == null || ! $_POST['route_account_pw1'] == '' ) ) {
-								$user_id = username_exists( $_POST['route_account_login_name'] );
-								if ( ! $user_id and email_exists( $_POST['route_account_email'] ) == false ) {
-
-									$user_id = wp_create_user( $_POST['route_account_login_name'], $_POST['route_account_pw1'], $_POST['route_account_email'] );
-									wp_insert_user(
-										array(
-											'ID'         => $user_id,
-											'user_login' => $_POST['route_account_login_name'],
-											'role'       => 'route',
-											'user_email' => $_POST['route_account_email'],
-										)
-									);
-
-									$wpdb->update(
-										$wpdb->prefix . 'h3_mgmt_routes',
-										array(
-											'race_id'    => $_POST['race_id'],
-											'name'       => $_POST['name'],
-											'color_code' => $_POST['color_code'],
-											'logo_url'   => $_POST['logo_url'],
-											'max_teams'  => $_POST['max_teams'],
-											'user_id'    => $user_id,
-										),
-										array( 'id' => $_GET['id'] ),
-										array( '%d', '%s', '%s', '%s', '%d', '%d' ),
-										array( '%d' )
-									);
-
-									$messages[] = array(
-										'type'    => 'message',
-										'message' => __( 'Route successfully created!', 'h3-mgmt' ),
-									);
-								} else {
-									$messages[] = array(
-										'type'    => 'error',
-										'message' => __( 'Route account name or E-Mail already exist!', 'h3-mgmt' ),
-									);
-								}
-							} else {
-								$messages[] = array(
-									'type'    => 'error',
-									'message' => __( 'The entered passwords are different or empty', 'h3-mgmt' ),
-								);
-							}
-						} else {
-
-							$wpdb->update(
-								$wpdb->prefix . 'h3_mgmt_routes',
-								array(
-									'race_id'    => $_POST['race_id'],
-									'name'       => $_POST['name'],
-									'color_code' => $_POST['color_code'],
-									'logo_url'   => $_POST['logo_url'],
-									'max_teams'  => $_POST['max_teams'],
-								),
-								array( 'id' => $_GET['id'] ),
-								array( '%d', '%s', '%s', '%s', '%d' ),
-								array( '%d' )
-							);
-
-							$messages[] = array(
-								'type'    => 'message',
-								'message' => __( 'Route successfully created!', 'h3-mgmt' ),
-							);
-						}
-
-						$this->routes_list( $messages );
-						break;
-
-					case 'edit':
-							$this->edit( 'route', $_GET['id'] );
-						break;
-
-					default:
-						$this->routes_list( $messages );
-				}
-			} elseif ( $todo == 'save' ) {
-				if ( ! $_POST['route_account_login_name'] == null || ! $_POST['route_account_login_name'] == '' ) {
-					if ( $_POST['route_account_pw1'] == $_POST['route_account_pw2'] && ( ! $_POST['route_account_pw1'] == null || ! $_POST['route_account_pw1'] == '' ) ) {
-						$user_id = username_exists( $_POST['route_account_login_name'] );
-						if ( ! $user_id and email_exists( $_POST['route_account_email'] ) == false ) {
-
-							$user_id = wp_create_user( $_POST['route_account_login_name'], $_POST['route_account_pw1'], $_POST['route_account_email'] );
-							wp_insert_user(
-								array(
-									'ID'         => $user_id,
-									'user_login' => $_POST['route_account_login_name'],
-									'role'       => 'route',
-									'user_email' => $_POST['route_account_email'],
-								)
-							);
-
-							$wpdb->insert(
-								$wpdb->prefix . 'h3_mgmt_routes',
-								array(
-									'race_id'    => $_POST['race_id'],
-									'name'       => $_POST['name'],
-									'color_code' => $_POST['color_code'],
-									'logo_url'   => $_POST['logo_url'],
-									'max_teams'  => $_POST['max_teams'],
-									'user_id'    => $user_id,
-								),
-								array( '%d', '%s', '%s', '%s', '%d', '%d' )
-							);
-
-							$messages[] = array(
-								'type'    => 'message',
-								'message' => __( 'Route successfully created!', 'h3-mgmt' ),
-							);
-						} else {
-							$messages[] = array(
-								'type'    => 'error',
-								'message' => __( 'Route account name or E-Mail already exist!', 'h3-mgmt' ),
-							);
-						}
-					} else {
-						$messages[] = array(
-							'type'    => 'error',
-							'message' => __( 'The entered passwords are different or empty', 'h3-mgmt' ),
-						);
-					}
-				} else {
-
-					$wpdb->insert(
-						$wpdb->prefix . 'h3_mgmt_routes',
-						array(
-							'race_id'    => $_POST['race_id'],
-							'name'       => $_POST['name'],
-							'color_code' => $_POST['color_code'],
-							'logo_url'   => $_POST['logo_url'],
-							'max_teams'  => $_POST['max_teams'],
-						),
-						array( '%d', '%s', '%s', '%s', '%d' )
-					);
-
-							$messages[] = array(
-								'type'    => 'message',
-								'message' => __( 'Route successfully created!', 'h3-mgmt' ),
-							);
-				}
-
-						$this->routes_list( $messages );
-
-			} elseif ( isset( $_GET['bulk'] ) && is_array( $_GET['bulk'] ) ) {
-				$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : $this->participants_list( $messages );
-
-				foreach ( $_GET['bulk'] as $id ) {
-					switch ( $todo ) {
-
-						case 'bulk-delete':
-							$wpdb->query(
-								'DELETE FROM ' .
-								$wpdb->prefix . 'h3_mgmt_routes ' .
-								"WHERE id='" . $id . "' LIMIT 1"
-							);
-							break;
-
-						default:
-							$this->routes_list( $messages );
-					}
-				}
-				$messages[] = array(
-					'type'    => 'message',
-					'message' => __( 'The selected routes have been successfully deleted.', 'h3-mgmt' ),
-				);
-				unset( $_GET['todo'], $_GET['bulk'] );
-				$this->routes_list( $messages );
-			} else {
-				$this->routes_list( $messages );
-			}
-		}
-
-		/**
-		 * Stages administration menu
-		 *
-		 * @since 1.0
-		 * @access public
-		 */
-		public function stages_control() {
-            if (!H3_MGMT_Security::admin_request('stages')) { echo H3_MGMT_Security::error(); return; }
-			global $wpdb, $h3_mgmt_races;
-
-			$messages = array();
-
-			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : 'list';
-			if ( isset( $_GET['id'] ) || 'new' == $todo ) {
-				switch ( $todo ) {
-
-					case 'delete':
-						if ( $_GET['id'] ) {
-							$wpdb->query(
-								'DELETE FROM ' .
-								$wpdb->prefix . 'h3_mgmt_stages ' .
-								"WHERE id='" . $_GET['id'] . "' LIMIT 1"
-							);
-							echo '<div class="updated"><p><strong>' .
-							__( 'The selected stage has been successfully deleted.', 'h3-mgmt' ) .
-							'</strong></p></div>';
-						}
-						unset( $_GET['todo'], $_GET['id'] );
-						$this->stages_list( $messages );
-						break;
-
-					case 'save':
-						if ( isset( $_GET['id'] ) && $_GET['id'] != null ) {
-							$wpdb->update(
-								$wpdb->prefix . 'h3_mgmt_stages',
-								array(
-									'race_id'              => $h3_mgmt_races->get_route_parent( $_POST['route_id'] ),
-									'route_id'             => $_POST['route_id'],
-									'number'               => $_POST['number'],
-									'destination'          => $_POST['destination'],
-									'country'              => $_POST['country'],
-									'country_3166_alpha-2' => $_POST['country_3166_alpha_2'],
-									'meeting_point'        => $_POST['meeting_point'],
-								),
-								array( 'id' => $_GET['id'] ),
-								array( '%d', '%d', '%d', '%s', '%s', '%s', '%s' ),
-								array( '%d' )
-							);
-							$messages[] = array(
-								'type'    => 'message',
-								'message' => __( 'Stage successfully updated!', 'h3-mgmt' ),
-							);
-						} else {
-							$wpdb->insert(
-								$wpdb->prefix . 'h3_mgmt_stages',
-								array(
-									'race_id'              => $h3_mgmt_races->get_route_parent( $_POST['route_id'] ),
-									'route_id'             => $_POST['route_id'],
-									'number'               => $_POST['number'],
-									'destination'          => $_POST['destination'],
-									'country'              => $_POST['country'],
-									'country_3166_alpha-2' => $_POST['country_3166_alpha_2'],
-									'meeting_point'        => $_POST['meeting_point'],
-								),
-								array( '%d', '%d', '%d', '%s', '%s', '%s', '%s' )
-							);
-							$messages[] = array(
-								'type'    => 'message',
-								'message' => __( 'Stage successfully created!', 'h3-mgmt' ),
-							);
-						}
-						$this->stages_list( $messages );
-						break;
-
-					case 'edit':
-						$this->edit( 'stage', $_GET['id'] );
-						break;
-
-					case 'new':
-						$this->edit( 'stage' );
-						break;
-
-					default:
-						$this->stages_list( $messages );
-				}
-			} elseif ( isset( $_GET['bulk'] ) && is_array( $_GET['bulk'] ) ) {
-				$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : $this->participants_list( $messages );
-
-				foreach ( $_GET['bulk'] as $id ) {
-					switch ( $todo ) {
-						case 'bulk-delete':
-							$wpdb->query(
-								'DELETE FROM ' .
-								$wpdb->prefix . 'h3_mgmt_stages ' .
-								"WHERE id='" . $id . "' LIMIT 1"
-							);
-							break;
-
-						default:
-							$this->stages_list( $messages );
-					}
-				}
-				unset( $_GET['todo'], $_GET['bulk'] );
-				$messages[] = array(
-					'type'    => 'message',
-					'message' => __( 'The selected stages have been successfully deleted.', 'h3-mgmt' ),
-				);
-				$this->stages_list( $messages );
-			} else {
-				$this->stages_list( $messages );
-			}
-		}
-
-		/* DATA LISTS */
+		public function races_control() { $this->control('race'); }
+		public function routes_control() { $this->control('route'); }
+		public function stages_control() { $this->control('stage'); }
+
+        /** Stable legacy menu callbacks, one application writer per resource. */
+        private function control(string $type): void {
+            if (!H3_MGMT_Security::admin_request($type . 's')) { echo H3_MGMT_Security::error(); return; }
+            $todo = (string) ($_GET['todo'] ?? '');
+            $id = H3_MGMT_Security::id($_GET['id'] ?? 0);
+            if (in_array($todo, ['new', 'edit'], true)) {
+                try { $this->edit($type, $id ?: null); }
+                catch (\Throwable $error) { echo '<p class="notice notice-error">' . esc_html(\Cor\Mgmt\WordPress\EventAdmin::message('missing_record')) . '</p>'; }
+                return;
+            }
+            $messages = [];
+            if ($todo !== '') {
+                try {
+                    $result = \Cor\Mgmt\WordPress\EventAdmin::mutate($type, $id, $todo);
+                    foreach ($result['warnings'] ?? [] as $warning) {
+                        echo '<div class="notice notice-warning"><p>' . esc_html(\Cor\Mgmt\WordPress\EventAdmin::message($warning)) . '</p></div>';
+                    }
+                    if (!empty($result['confirmation_required'])) {
+                        $this->confirm_event = true;
+                        $this->edit($type, $id ?: null);
+                        return;
+                    }
+                    $messages[] = ['type' => 'message', 'message' => __('Changes saved.', 'h3-mgmt')];
+                    unset($_POST['submitted']);
+                } catch (\Throwable $error) {
+                    $reason = $error instanceof \Cor\Mgmt\Application\Events\EventException ? $error->reason : 'database_error';
+                    echo '<div class="notice notice-error"><p>' . esc_html(\Cor\Mgmt\WordPress\EventAdmin::message($reason)) . '</p></div>';
+                    if ($todo === 'save' && $reason !== 'stale_record') {
+                        try { $this->edit($type, $id ?: null); } catch (\Throwable $ignored) { /* The record may have disappeared. */ }
+                        return;
+                    }
+                }
+            }
+            \Cor\Mgmt\WordPress\EventList::render($type, $messages);
+        }
+        private bool $confirm_event = false;
 
 		/**
 		 * List all races
@@ -730,359 +69,6 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 		 * @since 1.1
 		 * @access private
 		 */
-		private function races_list( $messages = array() ) {
-			global $current_user, $h3_mgmt_races, $h3_mgmt_utilities;
-
-			$url = 'admin.php?page=h3-mgmt-races';
-
-			$adminpage = new H3_MGMT_Admin_Page(
-				array(
-					'icon'     => 'icon-races',
-					'title'    => __( 'Events / Races', 'h3-mgmt' ),
-					'messages' => $messages,
-					'url'      => $url,
-				)
-			);
-
-			$button = '';
-			if (
-				$current_user->has_cap( 'h3_mgmt_edit_own_races' ) ||
-				$current_user->has_cap( 'h3_mgmt_edit_races' )
-			) {
-				$button = '<form method="post" action="' . $url . '&todo=new">' .
-					'<input type="submit" class="button-secondary" value="+ ' . __( 'add event / race', 'h3-mgmt' ) . '" />' .
-				'</form>';
-			}
-
-			extract( $h3_mgmt_utilities->table_order() );
-			$rows = $h3_mgmt_races->get_races(
-				array(
-					'orderby' => $orderby,
-					'order'   => $order,
-				)
-			);
-
-			$columns = array(
-				array(
-					'id'       => 'name',
-					'title'    => __( 'Event', 'h3-mgmt' ),
-					'sortable' => true,
-					'strong'   => true,
-					'actions'  => array( 'edit', 'delete' ),
-					'cap'      => 'race',
-				),
-				array(
-					'id'         => 'active',
-					'title'      => __( 'Active?', 'h3-mgmt' ),
-					'sortable'   => true,
-					'actions'    => array( 'active' ),
-					'conversion' => 'boolean',
-				),
-				array(
-					'id'         => 'status',
-					'title'      => __( 'Status', 'h3-mgmt' ),
-					'sortable'   => true,
-					'conversion' => 'status',
-				),
-				array(
-					'id'         => 'startingpoint',
-					'title'      => __( 'More then 1 Start point?', 'h3-mgmt' ),
-					'sortable'   => true,
-					'conversion' => 'boolean',
-				),
-				array(
-					'id'         => 'liveticker',
-					'title'      => __( 'Liveticker Send-Function enabled', 'h3-mgmt' ),
-					'sortable'   => true,
-					'actions'    => array( 'liveticker' ),
-					'conversion' => 'boolean',
-				),
-				array(
-					'id'         => 'liveticker_front',
-					'title'      => __( 'Show Liveticker Content', 'h3-mgmt' ),
-					'sortable'   => true,
-					'actions'    => array( 'liveticker_front' ),
-					'conversion' => 'boolean',
-				),
-				array(
-					'id'         => 'donation',
-					'title'      => __( 'Donation Tool enabled', 'h3-mgmt' ),
-					'sortable'   => true,
-					'actions'    => array( 'donation' ),
-					'conversion' => 'boolean',
-				),
-				array(
-					'id'       => 'id',
-					'title'    => __( 'Event ID', 'h3-mgmt' ),
-					'sortable' => true,
-				),
-				array(
-					'id'         => 'start',
-					'title'      => __( 'Start', 'h3-mgmt' ),
-					'sortable'   => true,
-					'conversion' => 'date',
-				),
-				array(
-					'id'         => 'end',
-					'title'      => __( 'End', 'h3-mgmt' ),
-					'sortable'   => true,
-					'conversion' => 'date',
-				),
-			);
-
-			$args      = array(
-				'base_url' => $url,
-				'sort_url' => $url,
-				'echo'     => false,
-			);
-			$the_table = new H3_MGMT_Admin_Table( $args, $columns, $rows );
-
-			$output = $adminpage->top() .
-				'<br />' . $button . '<br />' .
-				$the_table->output() .
-				'<br />' . $button .
-				$adminpage->bottom();
-
-			echo $output;
-		}
-
-		/**
-		 * List all routes
-		 *
-		 * @since 1.0
-		 * @access private
-		 */
-		private function routes_list( $messages = array() ) {
-			global $wpdb, $current_user, $h3_mgmt_races, $h3_mgmt_utilities;
-
-			$url = 'admin.php?page=h3-mgmt-routes';
-
-			$adminpage = new H3_MGMT_Admin_Page(
-				array(
-					'icon'     => 'icon-routes',
-					'title'    => __( 'Routes', 'h3-mgmt' ),
-					'messages' => $messages,
-					'url'      => $url,
-				)
-			);
-
-			$button = '';
-			if (
-				$current_user->has_cap( 'h3_mgmt_edit_own_races' ) ||
-				$current_user->has_cap( 'h3_mgmt_edit_races' )
-			) {
-				$button = '<form method="post" action="' . $url . '&amp;todo=new">' .
-					'<input type="submit" class="button-secondary" value="+ ' . __( 'add route', 'h3-mgmt' ) . '" />' .
-				'</form>';
-			}
-
-			extract( $h3_mgmt_utilities->table_order() );
-			$rows = $h3_mgmt_races->get_routes(
-				array(
-					'race'  => 'all',
-					'order' => $orderby,
-					'order' => $order,
-				)
-			);
-
-			$columns = array(
-				array(
-					'id'       => 'name',
-					'title'    => __( 'Route', 'h3-mgmt' ),
-					'sortable' => true,
-					'strong'   => true,
-					'actions'  => array( 'edit', 'delete' ),
-					'cap'      => 'race',
-				),
-				array(
-					'id'       => 'id',
-					'title'    => __( 'Route ID', 'h3-mgmt' ),
-					'sortable' => true,
-				),
-				array(
-					'id'         => 'race_id',
-					'title'      => __( 'Event / Race', 'h3-mgmt' ),
-					'sortable'   => true,
-					'conversion' => 'race-name',
-				),
-				array(
-					'id'       => 'max_teams',
-					'title'    => __( 'Max. Teams', 'h3-mgmt' ),
-					'sortable' => true,
-				),
-			);
-
-			$filter            = array( 'race_id' );
-			$filter_dis_name   = array( 'Event/Race' );
-			$filter_conversion = array( 'race-name' );
-
-					$active_race = $h3_mgmt_races->get_active_race();
-
-			$pre_filtered = array( true, 'race_id', $active_race );
-
-			$bulk_actions = array(
-				array(
-					'value' => 'bulk-delete',
-					'label' => 'Delete',
-				),
-			);
-
-			$args      = array(
-				'page_slug'         => 'h3-mgmt-routes',
-				'base_url'          => $url,
-				'sort_url'          => $url,
-				'echo'              => false,
-				'dspl_cnt'          => true,
-				'count'             => count( $rows ),
-				'cnt_txt'           => '%d ' . __( 'Routes', 'h3-mgmt' ),
-				'with_bulk'         => true,
-				'bulk_btn'          => 'Delete',
-				'bulk_confirm'      => '',
-				'bulk_name'         => 'bulk',
-				'bulk_param'        => 'todo',
-				'bulk_desc'         => '',
-				'extra_bulk_html'   => '',
-				'bulk_actions'      => $bulk_actions,
-				'filter'            => $filter,
-				'filter_dis_name'   => $filter_dis_name,
-				'filter_conversion' => $filter_conversion,
-				'pre_filtered'      => $pre_filtered,
-			);
-			$the_table = new H3_MGMT_Admin_Table( $args, $columns, $rows );
-
-			$output = $adminpage->top() .
-				'<br />' . $button . '<br />' .
-				$the_table->output() .
-				'<br />' . $button .
-				$adminpage->bottom();
-
-			echo $output;
-		}
-
-		/**
-		 * List all stages
-		 *
-		 * @since 1.0
-		 * @access private
-		 */
-		private function stages_list( $messages = array() ) {
-			global $wpdb, $current_user, $h3_mgmt_races, $h3_mgmt_utilities;
-
-			$url = 'admin.php?page=h3-mgmt-stages';
-
-			$adminpage = new H3_MGMT_Admin_Page(
-				array(
-					'icon'     => 'icon-stages',
-					'title'    => __( 'Stages', 'h3-mgmt' ),
-					'messages' => $messages,
-					'url'      => $url,
-				)
-			);
-
-			$button = '';
-			if (
-				$current_user->has_cap( 'h3_mgmt_edit_own_races' ) ||
-				$current_user->has_cap( 'h3_mgmt_edit_races' )
-			) {
-				$button = '<form method="post" action="' . $url . '&amp;todo=new">' .
-					'<input type="submit" class="button-secondary" value="+ ' . __( 'add stage', 'h3-mgmt' ) . '" />' .
-				'</form>';
-			}
-
-			extract( $h3_mgmt_utilities->table_order( 'destination' ) );
-			$rows = $h3_mgmt_races->get_stages(
-				array(
-					'parent_type' => 'all',
-					'orderby'     => $orderby,
-					'order'       => $order,
-				)
-			);
-
-			$columns = array(
-				array(
-					'id'       => 'destination',
-					'title'    => __( 'Stage Destination', 'h3-mgmt' ),
-					'sortable' => true,
-					'strong'   => true,
-					'actions'  => array( 'edit', 'delete' ),
-					'cap'      => 'race',
-				),
-				array(
-					'id'         => 'route_id',
-					'title'      => __( 'Route', 'h3-mgmt' ),
-					'sortable'   => true,
-					'conversion' => 'route-name',
-				),
-				array(
-					'id'         => 'race_id',
-					'title'      => __( 'Event / Race', 'h3-mgmt' ),
-					'sortable'   => true,
-					'conversion' => 'race-name',
-				),
-				array(
-					'id'       => 'number',
-					'title'    => __( 'Running Number', 'h3-mgmt' ),
-					'sortable' => true,
-				),
-				array(
-					'id'       => 'country',
-					'title'    => __( 'Country', 'h3-mgmt' ),
-					'sortable' => true,
-				),
-				array(
-					'id'       => 'meeting_point',
-					'title'    => __( 'Meeting Point', 'h3-mgmt' ),
-					'sortable' => true,
-				),
-			);
-
-			$filter            = array( 'route_id', 'race_id', 'number', 'country' );
-			$filter_dis_name   = array( 'Route', 'Event/Race', 'Running Number', 'Country' );
-			$filter_conversion = array( 'route-name', 'race-name', '', '' );
-
-					$active_race = $h3_mgmt_races->get_active_race();
-
-			$pre_filtered = array( true, 'race_id', $active_race );
-
-			$bulk_actions = array(
-				array(
-					'value' => 'bulk-delete',
-					'label' => 'Delete',
-				),
-			);
-
-			$args      = array(
-				'page_slug'         => 'h3-mgmt-stages',
-				'base_url'          => $url,
-				'sort_url'          => $url,
-				'echo'              => false,
-				'dspl_cnt'          => true,
-				'count'             => count( $rows ),
-				'cnt_txt'           => '%d ' . __( 'Stages', 'h3-mgmt' ),
-				'with_bulk'         => true,
-				'bulk_btn'          => 'Delete',
-				'bulk_confirm'      => '',
-				'bulk_name'         => 'bulk',
-				'bulk_param'        => 'todo',
-				'bulk_desc'         => '',
-				'extra_bulk_html'   => '',
-				'bulk_actions'      => $bulk_actions,
-				'filter'            => $filter,
-				'filter_dis_name'   => $filter_dis_name,
-				'filter_conversion' => $filter_conversion,
-				'pre_filtered'      => $pre_filtered,
-			);
-			$the_table = new H3_MGMT_Admin_Table( $args, $columns, $rows );
-
-			$output = $adminpage->top() .
-				'<br />' . $button . '<br />' .
-				$the_table->output() .
-				'<br />' . $button .
-				$adminpage->bottom();
-
-			echo $output;
-		}
-
 		/* INTERFACES TO EDIT A SINGLE DATA SET */
 
 		/**
@@ -1106,31 +92,9 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 				$title  = sprintf( __( 'Edit &quot;%s&quot;', 'h3-mgmt' ), $name );
 			}
 
-			$adminpage = new H3_MGMT_Admin_Page(
-				array(
-					'icon'  => 'icon-races',
-					'title' => $title,
-					'url'   => $url,
-				)
-			);
+            $revision = isset($_POST['submitted']) ? (string) ($_POST['cor_event_revision'] ?? '') : \Cor\Mgmt\WordPress\EventAdmin::editor()->revision($type, (int) $id);
+            \Cor\Mgmt\WordPress\EventForm::render($type, (int) $id, $fields, $title, $revision, $this->confirm_event);
 
-			$args = array(
-				'echo'      => false,
-				'form'      => true,
-				'metaboxes' => true,
-				'action'    => $form_action,
-				'id'        => $id,
-				'back'      => true,
-				'back_url'  => $url,
-				'fields'    => $fields,
-			);
-			$form = new H3_MGMT_Admin_Form( $args );
-
-			$output = $adminpage->top() .
-						$form->output() .
-						$adminpage->bottom();
-
-			echo $output;
 		}
 
 		/**
@@ -1150,13 +114,9 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 			);
 			$options_race_first_empty = array_merge( $options_race_first_empty, $h3_mgmt_races->options_array( array( 'data' => 'race' ) ) );
 
-			if ( $id === null ) {
-				$disabled = false;
-			} else {
-				$disabled = true;
-			}
+			$disabled = $id !== null && H3_MGMT_Security::phase((int) $id) !== 0;
 
-					$startiing_points_array = $h3_mgmt_teams->route_field( $id );
+					$startiing_points_array = [['options' => array_merge([['value' => 0, 'label' => '---']], $h3_mgmt_races->options_array(['data' => 'route', 'race' => $type === 'race' ? $id : 0]))]];
 
 			$race_fields = array(
 				array(
@@ -1353,7 +313,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 					),
 				),
 				array(
-					'title'  => __( 'Settings Race functions (After creating you can\'t change  it anymore)', 'h3-mgmt' ),
+					'title'  => __( 'Participation requirements (editable before registration)', 'h3-mgmt' ),
 					'fields' => array(
 						array(
 							'type'     => 'text',
@@ -2085,7 +1045,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 				),
 			);
 
-					$route_account = $h3_mgmt_races->get_route_account( $id );
+					$route_account = $type === 'route' && $id ? $h3_mgmt_races->get_route_account($id) : 0;
 
 			if ( $route_account == null || $route_account == 0 ) {
 				$disabled2 = false;
@@ -2143,6 +1103,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 				array(
 					'title'  => __( 'Route Account (After creating a account you can\'t change it anymore)', 'h3-mgmt' ),
 					'fields' => array(
+                        array('type' => 'text', 'label' => __('Existing route account user ID (0 for none)', 'h3-mgmt'), 'id' => 'user_id', 'value' => '0', 'desc' => __('Assign an existing WordPress user. Creating an account below takes precedence.', 'h3-mgmt')),
 						array(
 							'type'     => 'text',
 							'label'    => __( 'Login Name', 'h3-mgmt' ),
@@ -2233,71 +1194,42 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 				$fields = $race_fields;
 			}
 
-			if ( ! is_numeric( $id ) ) {
 
-				return $fields;
-
-			} else {
-
-				$data = $wpdb->get_results(
-					'SELECT * FROM ' .
-					$wpdb->prefix . 'h3_mgmt_' . $type . 's ' .
-					'WHERE id = ' . $id . ' LIMIT 1', ARRAY_A
-				);
-				$data = $data[0];
-
-				$json_array = json_decode( $data['setting'], true );
-				if ( ! empty( $json_array ) ) {
-					$json_array_keys = array_keys( $json_array );
-					$json_id         = 0;
-					foreach ( $json_array as $json ) {
-						$data[ $json_array_keys[ $json_id ] ] = $json;
-						$json_id                              = $json_id + 1;
-					}
-				}
-
-				$json_array = json_decode( $data['information_text'], true );
-				if ( ! empty( $json_array ) ) {
-					$json_array_keys = array_keys( $json_array );
-					$json_id         = 0;
-					foreach ( $json_array as $json ) {
-						$data[ $json_array_keys[ $json_id ] ] = $json;
-						$json_id                              = $json_id + 1;
-					}
-				}
-
-				$user_info = get_userdata( $h3_mgmt_races->get_route_account( $id ) );
-
-				$mcount = count( $fields );
-				for ( $i = 0; $i < $mcount; $i++ ) {
-					$fcount = count( $fields[ $i ]['fields'] );
-					for ( $j = 0; $j < $fcount; $j++ ) {
-						if ( empty( $_POST['submitted'] ) ) {
-							if ( $fields[ $i ]['fields'][ $j ]['id'] == 'route_account_login_name' ) {
-								$fields[ $i ]['fields'][ $j ]['value'] = $user_info->user_login;
-							} elseif ( $fields[ $i ]['fields'][ $j ]['id'] == 'route_account_id' ) {
-								$fields[ $i ]['fields'][ $j ]['value'] = $user_info->ID;
-							} elseif ( $fields[ $i ]['fields'][ $j ]['id'] == 'route_account_email' ) {
-								$fields[ $i ]['fields'][ $j ]['value'] = $user_info->user_email;
-							} elseif ( $fields[ $i ]['fields'][ $j ]['id'] == 'route_account_pw1' ) {
-								$fields[ $i ]['fields'][ $j ]['value'] = $user_info->user_pass;
-							} elseif ( $fields[ $i ]['fields'][ $j ]['id'] == 'route_account_pw2' ) {
-								$fields[ $i ]['fields'][ $j ]['value'] = $user_info->user_pass;
-							} elseif ( $fields[ $i ]['fields'][ $j ]['type'] !== 'date' ) {
-								$fields[ $i ]['fields'][ $j ]['value'] = stripslashes( $data[ $fields[ $i ]['fields'][ $j ]['id'] ] );
-							} else {
-								$fields[ $i ]['fields'][ $j ]['value'] = $h3_mgmt_utilities->h3_strftime( stripslashes( $data[ $fields[ $i ]['fields'][ $j ]['id'] ] ) );
-							}
-						} else {
-							$fields[ $i ]['fields'][ $j ]['value'] = stripslashes( $_POST[ $fields[ $i ]['fields'][ $j ]['id'] ] );
-						}
-					}
-				}
-			}
-
-			return $fields;
-		}
-
-	} // class
-
-endif; // class exists
+            $data = [];
+            if (is_numeric($id)) {
+                $repository = new \Cor\Mgmt\Infrastructure\WordPress\LegacyEventStore(new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb));
+                $row = $repository->find($type, (int) $id);
+                if (!$row) { throw new \Cor\Mgmt\Application\Events\EventException('missing_record'); }
+                $data = \Cor\Mgmt\Application\Events\EventEditor::flatten($row);
+                $information = json_decode((string) ($row['information_text'] ?? '{}'), true);
+                if (is_array($information)) { $data += $information; }
+                $data['country_3166_alpha_2'] = $data['country_3166_alpha-2'] ?? $data['country_3166_alpha_2'] ?? '';
+            }
+            $race = $type === 'race' ? (int) ($id ?? 0) : (int) ($data['race_id'] ?? 0);
+            $account = $type === 'route' && !empty($data['user_id']) ? get_userdata((int) $data['user_id']) : false;
+            foreach ($fields as &$section) {
+                foreach ($section['fields'] as &$field) {
+                    $key = $field['id'];
+                    $allowed = \Cor\Mgmt\WordPress\EventAdmin::fieldAllowed($type, $key, $race);
+                    $field['disabled'] = !$allowed || !H3_MGMT_Security::can_object($type . 's', 'edit', (int) $id) || (str_starts_with($key, 'route_account_') && (bool) $account);
+                    if (($key === 'user_id' || str_starts_with($key, 'route_account_')) && !current_user_can('h3_mgmt_edit_races')) { $field['disabled'] = true; }
+                    if (str_starts_with($key, 'route_account_')) {
+                        $field['value'] = match ($key) {
+                            'route_account_login_name' => $account ? $account->user_login : '',
+                            'route_account_email' => $account ? $account->user_email : '',
+                            default => '',
+                        };
+                    } elseif (isset($_POST['submitted']) && array_key_exists($key, $_POST) && $allowed && is_scalar($_POST[$key])) {
+                        $field['value'] = wp_unslash((string) $_POST[$key]);
+                    } elseif (array_key_exists($key, $data)) {
+                        $field['value'] = $field['type'] === 'date' ? ((int) $data[$key] ? wp_date('Y-m-d', (int) $data[$key]) : '') : (string) $data[$key];
+                    }
+                    if (!$allowed) { $field['desc'] = ($field['desc'] ?? '') . ' ' . __('Locked in the current race phase.', 'h3-mgmt'); }
+                }
+                unset($field);
+            }
+            unset($section);
+            return $fields;
+        }
+    }
+endif;

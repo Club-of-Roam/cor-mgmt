@@ -4,7 +4,7 @@ Quellprüfung: 2026-11-01; Fachentscheidungen ergänzt 2026-11-02. Grundlage der
 
 ## Anmeldung und Rennphasen
 
-Phasen aus [Verwaltung](../admin/class-h3-mgmt-admin-races.php#L1200), Anzeigeverhalten aus [Dashboard](../includes/class-h3-mgmt-teams.php#L1630) und [Formularaufbau](../includes/class-h3-mgmt-teams.php#L1718).
+Phasen aus [Verwaltung](../admin/class-h3-mgmt-admin-races.php), Anzeigeverhalten aus [Dashboard](../includes/class-h3-mgmt-teams.php#L1630) und [Formularaufbau](../includes/class-h3-mgmt-teams.php#L1718).
 
 | Phase | Neues Team ohne Einladung: Ist | Bestehendes Team: Ist | Routenauswahl bei mehreren Startpunkten: Ist |
 |---|---|---|---|
@@ -23,7 +23,7 @@ Die Zielmatrix trennt Grundstruktur/Kapazitäten, Teilnahmevoraussetzungen, Dars
 
 Nachträge beschlossen: Rückwechsel zwischen Phase 0 bis 3 stellen alle Rechte der Zielphase wieder her; Teilnehmerangelegenheiten im Adminbereich mit Ausnahmen bearbeiten, keine pauschalen Event-Overrides; Kapazitäts-/Startpunktkonflikte warnen, Änderung ermöglichen; Zusatzantworten vorläufig alle bearbeitbar; Beginn/Ende im Adminbereich auch nach Start ändern, Wirkungen später prüfen. Neue Phase Rennen beendet friert alles rennbezogen ein. Noch keine automatisierte Abnahme der Zielmatrix.
 
-**Ist-Abgrenzung:** Im [Rennformular](../admin/class-h3-mgmt-admin-races.php#L1138) ist disabled an eine vorhandene ID gebunden; [Teamgröße und Teilnahmevoraussetzungen](../admin/class-h3-mgmt-admin-races.php#L1356) sind dort nach Erstellung deaktiviert. Das belegt zunächst die Formularbehandlung, keine vollständige serverseitige Unveränderlichkeit. [Routenkapazität](../admin/class-h3-mgmt-admin-races.php#L2104) besitzt diese Deaktivierung im Formular nicht. [Routenfarbe und Logo](../admin/class-h3-mgmt-admin-races.php#L2127) gehören ausdrücklich zur Darstellung. Mit Icon ist hier die fachliche Bezeichnung gemeint; das vorhandene Formular führt Logo-URLs.
+**Ist-Abgrenzung:** Im [Rennformular](../admin/class-h3-mgmt-admin-races.php) ist disabled an eine vorhandene ID gebunden; [Teamgröße und Teilnahmevoraussetzungen](../admin/class-h3-mgmt-admin-races.php) sind dort nach Erstellung deaktiviert. Das belegt zunächst die Formularbehandlung, keine vollständige serverseitige Unveränderlichkeit. [Routenkapazität](../admin/class-h3-mgmt-admin-races.php) besitzt diese Deaktivierung im Formular nicht. [Routenfarbe und Logo](../admin/class-h3-mgmt-admin-races.php) gehören ausdrücklich zur Darstellung. Mit Icon ist hier die fachliche Bezeichnung gemeint; das vorhandene Formular führt Logo-URLs.
 
 ## Teamfreigabe
 
@@ -93,3 +93,7 @@ Der Speicherpfad übernimmt eine übermittelte Route ohne entsprechende Kapazit�
 ## Noch offene Abnahme
 
 Die isolierten Tests, unter anderem [TeamRulesTest](../tests/Characterization/TeamRulesTest.php), ersetzen äußere Abhängigkeiten durch Speicherobjekte. Ergänzend führt [LegacyWordPressTest](../tests/Integration/LegacyWordPressTest.php) reale Hooks, Benutzerrechte, Shortcodes, Mailabfang und SQL aus. Nebenläufigkeit und vollständige Modul-/Browserabläufe sind noch nicht abgenommen. Alle Funktionsbereiche besitzen nun Referenzszenarien im [Referenzkatalog](reference-catalog.md); Block 0 als Referenzphase ist abgeschlossen. Belege und den Folgeblöcken zugeordnete Restarbeiten stehen in [block-0-acceptance.md](block-0-acceptance.md).
+
+## Ablösung der Verwaltungsbefunde ab Block 4
+
+Die obigen Ist-Befunde beschreiben den analysierten Ausgangscode. Die großen Renn-/Routen-/Etappen-Schreibcontroller sind durch [Block 4](block-4-events.md) ersetzt. Teilnahmevoraussetzungen sind in Phase 0 erneut bearbeitbar, weitere Felder folgen der verbindlichen Matrix. Die Platzabfrage zählt inzwischen ausschließlich gespeicherte vollständige Teams. Historische Quellcodeverweise auf den entfernten Controller wurden auf dessen erhaltene Adapterdatei verkürzt; aktuelle Regeln und Quellen sind in Block 4 verlinkt. Andere Teilnehmer-/Ergebnisbefunde bleiben bis zur jeweiligen Modulkorrektur bestehen.

@@ -212,13 +212,13 @@ final class LegacyWordPressTest extends TestCase
         self::assertSame([], $GLOBALS['h3_mgmt_sponsors']->get_sponsor(999));
     }
 
-    public function testRouteCountIncludesIncompleteTeamsKnownDifferenceToTarget(): void
+    public function testRouteCapacityCountsOnlyCompleteTeams(): void
     {
         global $wpdb;
         $wpdb->insert($wpdb->prefix . 'h3_mgmt_routes', ['id' => 7, 'race_id' => 9, 'name' => 'Synthetic', 'max_teams' => 2]);
         $this->team($this->user('synthetic_a'), 42, 1);
         $this->team($this->user('synthetic_b'), 43, 0);
-        self::assertSame(0, $GLOBALS['h3_mgmt_races']->get_free_slots(7));
+        self::assertSame(1, $GLOBALS['h3_mgmt_races']->get_free_slots(7));
     }
 
     public function testProfileCannotWriteOtherSubscriberMetadata(): void

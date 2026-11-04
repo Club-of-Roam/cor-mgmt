@@ -5,7 +5,7 @@ WordPress-Plugin für Veranstaltungen, Teams, Teilnahme, Ranglisten, Spenden und
 **Bestand:** Plugin 1.2.10, Schema 2.8. **Ziel:** 2.0.0 für die jeweils neueste stabile PHP-Version bei vollständiger Unterstützung ab PHP 8.2. Kompatibilitätsvertrag und Zielmatrix: [Masterplan](docs/masterplan.md).
 Ziel ist ein eigenständig installierbares WordPress-Plugin ohne verpflichtendes Spezialtheme oder weiteres Fachplugin; siehe [Installationsvertrag](docs/installation.md).
 
-Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheitskorrekturen und geänderten Integrationsverträge stehen in [Block 1](docs/block-1-security.md). Die technische Laufzeitbasis aus [Block 2](docs/block-2-foundation.md) ist eingeführt. Erstinstallation und kontrollierte Zwischenmigration aus [Block 3](docs/block-3-migration.md) sind umgesetzt. Die fachliche Umschaltung, Gesamtmodernisierung und Releaseabnahme sind noch offen.
+Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheitskorrekturen und geänderten Integrationsverträge stehen in [Block 1](docs/block-1-security.md). Die technische Laufzeitbasis aus [Block 2](docs/block-2-foundation.md) ist eingeführt. Erstinstallation und kontrollierte Zwischenmigration aus [Block 3](docs/block-3-migration.md) sind umgesetzt. Die Rennen-/Routenverwaltung aus [Block 4](docs/block-4-events.md) verwendet neue Fachregeln, Writer und Verwaltungsoberflächen. Die fachliche Umschaltung, Gesamtmodernisierung und Releaseabnahme sind noch offen.
 
 ## Einstieg
 
@@ -16,6 +16,7 @@ Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheit
 
 | Dokument | Inhalt |
 |---|---|
+| [Rennen und Routen Block 4](docs/block-4-events.md) | Phasenregeln, sichere Verwaltungswriter, Formulare, Kapazitätswarnungen und Grenzen |
 | [Installation und Migration Block 3](docs/block-3-migration.md) | Schema, Vorprüfung, Journal, Wiederaufnahme und Grenzen der Zwischenkopie |
 | [Technisches Fundament Block 2](docs/block-2-foundation.md) | Autoloading, Adapter, Lebenszyklus, Prüfwerkzeuge und Paketbau |
 | [Sicherheitsbasis Block 1](docs/block-1-security.md) | Rechte, POST/Nonces, Medien, Gateway und Auswirkungen beim Ausrollen |
