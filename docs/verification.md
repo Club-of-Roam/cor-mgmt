@@ -1,5 +1,26 @@
 # Prüfbelege
 
+## Block 5: Teams und Profile – 2026-11-04
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Suite | 234 Tests / 499 Assertions | 234 / 499 | 234 / 499 | 234 / 499 |
+| WordPress-Integration | 232 Tests / 1.464 Assertions | 232 / 1.464 | 232 / 1.464 | 232 / 1.464 |
+| composer check | bestanden | bestanden | bestanden | bestanden |
+
+Die Suiten prüfen Anmeldung und Inhalte über alle fünf Phasen, freie Mitglieds-/Routenplätze, Hash-Codes, verbrauchte/widerrufene und alte Codes einschließlich führender Nullen, Wiederöffnung, Profil-/Avataradapter, einzelne und gesammelte Bestätigungen, Objektberechtigungen, Kontaktumfang für Routenverantwortliche, veraltete Formulare, duplicate Legacy-Beziehungen und schreibfreie Reader. Erzwungene Fehler rollen Team, Mitgliedschaft, Token und Profil gemeinsam zurück, auch bei gemeinsamem äußerem Lock/Savepoint und gefangenem Teilfehler.
+
+TeamConcurrencyTest startet echte parallele PHP-Prozesse: genau ein Zugriff erhält den letzten Mitglieds- bzw. Routenplatz; ein späterer Wiederholungsversuch scheitert an ausgeschöpfter Kapazität. Die originale Einladungstabelle bleibt dabei auch als MyISAM-Quelle unverändert. ParticipationInstallationTest prüft echte additive DDL, Wiederholung, Wiederaufnahme, Eigentumskollision, eindeutigen Tokenindex, abweichende Pläne und fehlende abgeschlossene Tabellen. SchemaToolsTest prüft die neue Einrichtung über echte WordPress-POST-/Nonce-/Rechtegrenzen. Sämtliche Daten sind synthetisch, Mail und HTTP sind abgefangen.
+
+Die Vollsuiten bestanden damit je PHP-Version mit 466 Tests / 1.963 Assertions. Nach den Vollsuiten bestand der ergänzte Formularfall für mehrzeilige Zusatzantworten und Einladungsweiterleitung nach Anmeldung auf allen vier Versionen erneut mit 1 Test / 12 Assertions. Unbekannte serialisierte historische Profilwerte sind in der isolierten Suite als unvollständig und unverändert lesbar abgesichert. Keine Warnungen oder pauschalen Unterdrückungen als Erfolg werten.
+
+composer check umfasst Metadaten, **118 PHP-Dateien**, **27 Markdown-Dateien**, **83 Inventarquellen / 23 Shortcodes / 69 Methoden mit direkter Request-Referenz**, beide Schemareferenzen, PHPStan Level 8, PSR-/WordPress-Regeln und Compatibility-Ergänzung. **7 Node-Tests und ESLint** bestanden. Kein neuer verpflichtender Laufzeitdienst oder Frontend-Build.
+
+Paketgrenzen und vollständiger Produktionsloader mit **236 Dateien** auf PHP 8.2 und 8.5 geprüft. Zwei Builds unveränderter Quellen ergeben dieselbe SHA256-Prüfsumme. Das ist keine Browser- oder Releasefreigabe.
+
+Keine bestehende Anwendungskopie migriert, keine aktive Generation ausgewählt und keine historischen Punkte berechnet. Vollständiger Archivsnapshot, normale Archivabschlüsse, Browser-/Tastatur-/Accessibility-Abnahme, positiver multipart-Bildtransport, echte MySQL-Abnahme und releaseweite Theme-/Integrationsabnahme bleiben offen. Dauerhafte Zustellqueue gehört zu Block 8. Kein entfernter GitHub-Lauf und keine Git-Aktionen. [Umfang und Quellen](block-5-teams.md).
+
+
 
 ## Block 4: Rennen-/Routenverwaltung – 2026-11-04
 

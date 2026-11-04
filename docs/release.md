@@ -26,3 +26,7 @@ Vor Release zusätzlich alle Fälle des [Installationsvertrags](installation.md)
 PHP-/Apache-Fehler, Migration, Zahlungen, Versandfehler und Gateway-Wiederholungen beobachten. Keine Tokens, Kontodaten oder vollständigen privaten Payloads loggen.
 
 Vor neuen Schreibvorgängen definieren und testen: Rückweg nur während Wartung oder geprüfte Übernahme neuer Daten? Keine alte Sicherung über neue produktive Änderungen spielen. Verantwortliche, Trigger, Zeitgrenze und Sicherungsort vor tatsächlichem Wechsel konkret eintragen.
+
+## Teilnahmejournal im Rückweg
+
+Seit Block 5 gehören Tokenverbrauch/-widerruf und Mitgliedschaftshistorie zur Sicherung und zum Wiederherstellungsvergleich. Eine Rückkehr zu früheren Plugin-Writern darf diese Informationen nicht ignorieren und dadurch verbrauchte Einladungen erneut nutzbar machen. Neue Anmeldungen, Profiländerungen und Historieneinträge nach der Sicherung müssen im kontrollierten Rückweg berücksichtigt werden. Keine parallele Ausführung alter und neuer Writer. Der vollständige Rückweg bleibt Bestandteil der Releaseabnahme.

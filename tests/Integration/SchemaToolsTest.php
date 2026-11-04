@@ -39,6 +39,7 @@ final class SchemaToolsTest extends TestCase {
     }
     public static function invalidRequests(): array {
         return [
+            ['GET',true,'valid','participation-setup','post_required'],['POST',false,'valid','participation-setup','forbidden'],['POST',true,'wrong','participation-setup','invalid_nonce'],
             ['GET',true,'valid','preflight','post_required'],['POST',false,'valid','preflight','forbidden'],
             ['POST',true,'wrong','preflight','invalid_nonce'],['POST',true,[],'preflight','invalid_nonce'],
             ['POST',true,'valid',[],'invalid_operation'],['POST',true,'valid','drop','invalid_operation'],
@@ -78,6 +79,14 @@ final class SchemaToolsTest extends TestCase {
             $db->setOption('cor_mgmt_storage_version',\Cor\Mgmt\Infrastructure\WordPress\Schema\Catalogue::STORAGE_VERSION);
             $db->execute($db->prepare('DELETE FROM %i WHERE option_name=%s',$wpdb->options,'cor_mgmt_active_generation')); wp_cache_flush();
         }
+    }
+
+    public function testParticipationSetupIsExplicitAndIdempotentOverAjax(): void {
+        global $wpdb;
+        $before=$wpdb->get_results("SELECT * FROM {$wpdb->prefix}h3_mgmt_invitations ORDER BY id",ARRAY_A);
+        $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'participation-setup'];
+        $result=$this->request();self::assertTrue($result['success']);self::assertTrue($result['data']['reload']);
+        self::assertSame($before,$wpdb->get_results("SELECT * FROM {$wpdb->prefix}h3_mgmt_invitations ORDER BY id",ARRAY_A));
     }
 
 }

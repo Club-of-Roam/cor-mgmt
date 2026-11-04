@@ -47,7 +47,7 @@ final class TeamRulesTest extends TestCase
 
     private function teams(array $settings = [], int $members = 2): \H3_MGMT_Teams
     {
-        $settings += ['num_teammember' => 3, 'dis_fee' => 0, 'dis_waiver' => 0,
+        $settings += ['status' => 1, 'num_teammember' => 3, 'dis_fee' => 0, 'dis_waiver' => 0,
             'dis_shirt_size' => 0, 'dis_mobile_inf' => 0, 'startingpoint' => 0, 'start_route_id' => 7];
         $races = $this->getMockBuilder(\H3_MGMT_Races::class)->disableOriginalConstructor()
             ->onlyMethods(['get_race_setting'])->getMock();
@@ -76,7 +76,11 @@ final class TeamRulesTest extends TestCase
     public function testEachRequirementCanBlockAndBeDisabled(string $field, string $setting): void
     {
         if ($field === 'paid' || $field === 'waiver') { $GLOBALS['wpdb']->members[1][$field] = 0; }
-        else { $GLOBALS['cor_test_user_meta'][102][$field] = ''; }
+        else {
+            $GLOBALS['cor_test_user_meta'][102][$field] = ['unknown-historical-metadata'];
+            self::assertSame(0, $this->teams()->is_complete(42));
+            $GLOBALS['cor_test_user_meta'][102][$field] = '';
+        }
         self::assertSame(0, $this->teams()->is_complete(42));
         self::assertSame([], $GLOBALS['wpdb']->updates);
         self::assertSame([], $GLOBALS['h3_mgmt_mailer']->calls);
@@ -121,7 +125,7 @@ final class TeamRulesTest extends TestCase
 
     public static function invitationLimits(): array
     {
-        return [[0, 3, 2], [1, 3, 2], [2, 3, 1], [3, 3, false], [4, 3, false], [0, 1, 0], [1, 1, false]];
+        return [[0, 3, 1], [1, 3, 1], [2, 3, 1], [3, 3, 1], [4, 3, 1], [0, 1, 1], [1, 1, 1]];
     }
 
     #[DataProvider('routeSelections')]
@@ -163,7 +167,7 @@ final class TeamMemoryDatabase
 {
     public string $prefix = 'synthetic_';
     public int $status = 0;
-    public array $members = [['paid' => 1, 'waiver' => 1], ['paid' => 1, 'waiver' => 1]];
+    public array $members = [['user_id' => 101, 'paid' => 1, 'waiver' => 1], ['user_id' => 102, 'paid' => 1, 'waiver' => 1]];
     public array $updates = [];
     public function prepare(string $sql, $id): string { return sprintf($sql, (int) $id); }
     public function get_results(string $sql, $mode): array

@@ -211,22 +211,8 @@ if ( isset ( $fields ) && ! empty( $fields ) ) {
 			break;
 
 			case 'avatar':
-				echo '<table style="font-size:1em !important;margin-bottom:0"><td style="min-width:100px;padding-right:21px">' . get_avatar( $user->ID );
-				wp_nonce_field( 'simple_local_avatar_nonce', '_simple_local_avatar_nonce', false );
-				echo '</td>';
-				do_action( 'simple_local_avatar_notices' );
-				echo '<td style="vertical-align:top"><input type="file" style="margin-bottom:7px" name="simple-local-avatar" id="simple-local-avatar" />';
-				if ( empty( $user->simple_local_avatar ) ) {
-					echo '<p class="description">' . __( 'No local avatar is set. Falling back to a gravatar, if exists.', 'h3-mgmt' ) . '</p>';
-				} else {
-					echo '<span class="box-test"></span><input type="checkbox" name="simple-local-avatar-erase" id="simple-local-avatar-erase" value="1" /><label for="simple-local-avatar-erase"><span class="box"></span>' . __( 'Delete avatar', 'h3-mgmt' ) . '</label><p class="description">' . __( 'Replace the local avatar by uploading a new avatar, or erase the local avatar (falling back to a gravatar) by checking the delete option.', 'h3-mgmt' ) . '</p>';
-				}
-				echo '</td></table><script type="text/javascript">' .
-						'var form = document.getElementById("your-profile");' .
-						'form.encoding = "multipart/form-data";' .
-						'form.setAttribute("enctype", "multipart/form-data");' .
-					'</script>';
-			break;
+                \Cor\Mgmt\WordPress\ProfileAvatar::field((int) $user->ID);
+                break;
 
 			case 'text':
 			default:

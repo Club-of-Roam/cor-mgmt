@@ -15,11 +15,6 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [add_values](../admin/class-h3-mgmt-admin-sponsors.php#L888) | `GET:id`, `POST:submitted` |  |
 | [sponsors_edit](../admin/class-h3-mgmt-admin-sponsors.php#L908) | `POST:submitted` |  |
 | [statistics](../admin/class-h3-mgmt-admin-statistics.php#L17) | `POST:race_id` |  |
-| [teams_control](../admin/class-h3-mgmt-admin-teams.php#L24) | `FILES:team_pic`, `GET:id`, `GET:todo`, `POST:description`, `POST:member1`, `POST:member2`, `POST:member3`, `POST:race_id`, `POST:route_id`, `POST:team_name`, `POST:team_phone`, `POST:team_pic-tmp` | `delete`, `edit`, `save` |
-| [participants_control](../admin/class-h3-mgmt-admin-teams.php#L295) | `GET:bulk`, `GET:id`, `GET:todo` | `bulk-paid`, `bulk-unpaid`, `bulk-waiver-set`, `bulk-waiver-unset`, `paid`, `unpaid`, `waiver-set`, `waiver-unset` |
-| [teams_list](../admin/class-h3-mgmt-admin-teams.php#L512) | `GET:order`, `GET:orderby` |  |
-| [teams_edit](../admin/class-h3-mgmt-admin-teams.php#L633) | `POST:submitted` |  |
-| [participants_list](../admin/class-h3-mgmt-admin-teams.php#L882) | `GET:order`, `GET:orderby` |  |
 | [page](../includes/class-h3-mgmt-maintenance.php#L42) | `POST:apply`, `POST:race` |  |
 | [ajax_upload](../includes/class-h3-mgmt-media.php#L61) | `POST:race` |  |
 | [picture](../includes/class-h3-mgmt-media.php#L127) | `POST:left`, `POST:right`, `POST:ticker_pic_msg` |  |
@@ -31,7 +26,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [donation_nonce](../includes/class-h3-mgmt-security.php#L36) | `COOKIE:client_token` |  |
 | [donation_request](../includes/class-h3-mgmt-security.php#L41) | `COOKIE:client_token`, `GET:donation_client_reference` |  |
 | [admin_request](../includes/class-h3-mgmt-security.php#L111) | `GET:bulk`, `GET:id`, `GET:todo`, `POST:bulk`, `POST:id`, `POST:race_id`, `POST:route_id`, `POST:submitted`, `POST:team_id`, `POST:todo` |  |
-| [ranking_request](../includes/class-h3-mgmt-security.php#L229) | `POST:route`, `POST:stage` |  |
+| [ranking_request](../includes/class-h3-mgmt-security.php#L231) | `POST:route`, `POST:stage` |  |
 | [new_sponsoring_handler](../includes/class-h3-mgmt-sponsors.php#L728) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:type`, `POST:display_name`, `POST:donation_token`, `POST:message`, `POST:new`, `POST:owner_link`, `POST:owner_pic-tmp`, `POST:submitted`, `POST:team_id`, `POST:type` |  |
 | [sponsoring_form_handler](../includes/class-h3-mgmt-sponsors.php#L1115) | `GET:section`, `POST:submitted` |  |
 | [sponsoring_section_output](../includes/class-h3-mgmt-sponsors.php#L1191) | `GET:type`, `POST:donation_client_reference` |  |
@@ -42,20 +37,17 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [save_donation](../includes/class-h3-mgmt-sponsors.php#L2170) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:amount`, `GET:donation_client_reference`, `GET:donation_token`, `POST:display_name`, `POST:donation_client_reference`, `POST:email`, `POST:first_name`, `POST:last_name`, `POST:message`, `POST:owner_link`, `POST:owner_pic-tmp`, `POST:team_id`, `POST:type` |  |
 | [handle_betterplace_redirect](../includes/class-h3-mgmt-sponsors.php#L2641) | `GET:amount`, `GET:donation_client_reference`, `GET:donation_token`, `GET:status` |  |
 | [__construct](../includes/class-h3-mgmt-sponsors.php#L2740) | `COOKIE:client_token` |  |
-| [is_invitation](../includes/class-h3-mgmt-teams.php#L940) | `GET:invitation`, `POST:invitation` |  |
-| [handle_invitation](../includes/class-h3-mgmt-teams.php#L993) | `GET:invitation`, `POST:invitation` |  |
-| [team_section](../includes/class-h3-mgmt-teams.php#L1184) | `POST:submitted` |  |
-| [primary_user_section](../includes/class-h3-mgmt-teams.php#L1335) | `POST:submitted` |  |
-| [invitations_section](../includes/class-h3-mgmt-teams.php#L1438) | `POST:form_submitted` |  |
-| [route_section](../includes/class-h3-mgmt-teams.php#L1550) | `POST:route_id`, `POST:submitted` |  |
-| [team_dashboard_control](../includes/class-h3-mgmt-teams.php#L1634) | `GET:todo`, `POST:submitted`, `POST:todo` |  |
-| [team_dashboard](../includes/class-h3-mgmt-teams.php#L1723) | `GET:invitation`, `POST:invitation` |  |
-| [team_homework](../includes/class-h3-mgmt-teams.php#L1927) | `GET:id`, `GET:todo`, `POST:id`, `POST:todo` |  |
-| [display_teams](../includes/class-h3-mgmt-teams.php#L2260) | `GET:id` |  |
-| [team_overview](../includes/class-h3-mgmt-teams.php#L2629) | `GET:todo` |  |
-| [validate_submit](../includes/class-h3-mgmt-teams.php#L2756) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
-| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2787) | `POST:birthday-day`, `POST:birthday-month`, `POST:birthday-year`, `POST:description`, `POST:donation_goal`, `POST:invitation`, `POST:invitations`, `POST:meta_4`, `POST:route_id`, `POST:team_name` |  |
-| [persist_dashboard](../includes/class-h3-mgmt-teams.php#L2841) | `FILES:team_pic`, `GET:invitation`, `POST:description`, `POST:donation_goal`, `POST:first_name`, `POST:invitation`, `POST:invitations`, `POST:meta_1`, `POST:meta_2`, `POST:meta_3`, `POST:meta_4`, `POST:meta_5`, `POST:route_id`, `POST:team_name` | `date` |
+| [is_invitation](../includes/class-h3-mgmt-teams.php#L871) | `GET:invitation`, `POST:invitation` |  |
+| [handle_invitation](../includes/class-h3-mgmt-teams.php#L901) | `GET:invitation`, `POST:invitation` |  |
+| [team_section](../includes/class-h3-mgmt-teams.php#L1089) | `POST:submitted` |  |
+| [primary_user_section](../includes/class-h3-mgmt-teams.php#L1240) | `POST:submitted` |  |
+| [invitations_section](../includes/class-h3-mgmt-teams.php#L1343) | `POST:form_submitted` |  |
+| [route_section](../includes/class-h3-mgmt-teams.php#L1455) | `POST:route_id`, `POST:submitted` |  |
+| [team_homework](../includes/class-h3-mgmt-teams.php#L1562) | `GET:id`, `GET:todo`, `POST:id`, `POST:todo` |  |
+| [display_teams](../includes/class-h3-mgmt-teams.php#L1895) | `GET:id` |  |
+| [team_overview](../includes/class-h3-mgmt-teams.php#L2251) | `GET:todo` |  |
+| [validate_submit](../includes/class-h3-mgmt-teams.php#L2378) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
+| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2409) | `POST:submitted` |  |
 | [ticker_Page_controll](../includes/class-h3-mgmt-ticker.php#L172) | `GET:todo`, `POST:coordinates`, `POST:coordinates_informations`, `POST:message`, `POST:submit_form`, `POST:ticker_id`, `POST:ticker_pic_msg`, `POST:video`, `POST:video_message` |  |
 | [ticker_Page_map](../includes/class-h3-mgmt-ticker.php#L535) | `GET:ticker_route` |  |
 | [the_ticker](../includes/class-h3-mgmt-ticker.php#L787) | `GET:min`, `GET:ticker_race`, `GET:ticker_route`, `GET:todo` |  |
@@ -64,9 +56,19 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [table_order](../includes/class-h3-mgmt-utilities.php#L187) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L68) | `POST:address` |  |
 | [xchange_control](../includes/class-h3-mgmt-xchange.php#L115) | `POST:message`, `POST:submitted` |  |
-| [mutate](../src/WordPress/EventAdmin.php#L23) | `GET:bulk` |  |
+| [mutate](../src/WordPress/EventAdmin.php#L30) | `GET:bulk` |  |
 | [render](../src/WordPress/EventList.php#L30) | `GET:country_filter`, `GET:event_page`, `GET:number_filter`, `GET:order`, `GET:orderby`, `GET:race_filter`, `GET:route_filter` |  |
+| [prepare](../src/WordPress/ProfileAvatar.php#L60) | `FILES:cor_profile_avatar` |  |
 | [request](../src/WordPress/SchemaTools.php#L27) | `POST:backup`, `POST:fingerprint`, `POST:nonce`, `POST:operation`, `POST:quiesced`, `POST:run_id` |  |
+| [control](../src/WordPress/TeamAdmin.php#L13) | `GET:bulk`, `GET:id`, `GET:todo` |  |
+| [save](../src/WordPress/TeamAdmin.php#L51) | `FILES:team_pic`, `POST:route_id` |  |
+| [form](../src/WordPress/TeamAdmin.php#L97) | `GET:race_id`, `POST:race_id` |  |
+| [listing](../src/WordPress/TeamAdmin.php#L147) | `GET:complete_filter`, `GET:direction`, `GET:race_filter`, `GET:route_filter`, `GET:sort`, `GET:team_page` |  |
+| [profileInput](../src/WordPress/TeamBoundary.php#L55) | `POST:birthday`, `POST:birthday-day`, `POST:birthday-month`, `POST:birthday-year` |  |
+| [emails](../src/WordPress/TeamBoundary.php#L109) | `POST:invitations` |  |
+| [save](../src/WordPress/TeamBoundary.php#L134) | `FILES:team_pic`, `POST:route_id` |  |
+| [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
+| [render](../src/WordPress/TeamFrontend.php#L80) | `GET:invitation`, `POST:invitation` |  |
 | [output](../templates/class-h3-mgmt-admin-form.php#L69) | `GET:page` |  |
 | [__construct](../templates/class-h3-mgmt-admin-table.php#L73) | `GET:order`, `GET:orderby` |  |
 | [output](../templates/class-h3-mgmt-admin-table.php#L122) | `GET:filter_name0`, `GET:order`, `GET:orderby`, `GET:page` |  |

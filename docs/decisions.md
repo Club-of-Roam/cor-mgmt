@@ -41,6 +41,13 @@ Stand 2026-11-02.
 - D-29: Vor der vollständigen Archivierung bleibt Phase-4-Abschluss gesperrt. Bestehende Archivzeilen sind unveränderlich; kein unvollständiges Archiv durch bloßen Statuswechsel anbieten.
 - D-30: Kompatibilitätsrepository bleibt vorerst maßgeblich. Warnbestätigung, Revisionen und Sperre schützen neue Verwaltungswriter; transaktional erforderliche Operationen auf MyISAM bis zur kontrollierten Schemaumstellung sperren. Kein stilles ALTER während Verwaltung oder Aktivierung.
 
+## Umsetzung Block 5 (2026-11-04)
+
+- D-31: Neue Codes erhalten einen Hash-/Verbrauchs-/Widerrufsspeicher. Alte Codes bleiben unverändert und werden kanonisch journalisiert; ihre Tabelle wird nur gelesen. Phasen schließen/öffnen die Annahme; kein erfundenes Kalenderablaufdatum.
+- D-32: Team-/Profilwriter und Rennvorgaben verwenden dieselbe Sperre und Transaktion. Freigabe ist eine explizite Schreibaktion; is_complete ist lesend. Unvollständige Teams reservieren auch durch vorläufige Zuweisung keinen Platz.
+- D-33: Teilnahme-Modulversion 1.0.0 mit eigenem Installationsmanifest; Storage-3.0.0-Pläne und bisherige Marker bleiben stabil. Einrichtung ausdrücklich oder bei Aktivierung, ohne DDL während gewöhnlicher Seitenaufrufe.
+- D-34: Leere Teams und entfernte Beziehungen bleiben historisch erhalten. Unklare Mehrfachmitgliedschaften und Rennwechsel werden gesperrt statt geraten. Eigener Avataradapter mit optionalem Legacy-Leseadapter; kompletter Archivsnapshot und Versandqueue bleiben den Folgeblöcken zugeordnet.
+
 ## Offene Fachprüfung
 
 Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D-17/18 beantwortet. Spätere Detailarbeit: Zusatzantworten genauer klassifizieren (bis dahin alle erlaubt), Wirkungen von Datumskorrekturen, konkrete Rollen-/Einzelrechte für Teilnehmer-Adminaktionen, Snapshotumfang des Archivs und zulässige variable Punkte. Wechsel in ein anderes Rennen separat behandeln. Ein gewöhnlicher Rückwechsel aus dem eingefrorenen Archiv ist nicht beschlossen. Historische Datenfehler sind weiterhin nicht durch den Codebefund allein nachgewiesen.

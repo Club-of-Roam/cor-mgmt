@@ -29,7 +29,7 @@ Beschreibungen bleiben rechnerunabhängig. Keine lokale Testeinrichtung, Rechner
 
 Keine produktiven DB-Verbindungen, Mails, Zahlungen oder externen Ticker-Schreibzugriffe aus Entwicklung/CI. Synthetische Testdaten verwenden; bestehende Anwendungsdaten und Zugangsdaten nicht für automatisierte Tests übernehmen.
 
-WordPress-Rendering kann im Altbestand über is_complete() schreiben und senden. Nicht für vermeintlich lesende Massentests bootstrappen. Alte Tabellen/Orphans nicht automatisch löschen; keine Massendatenmigration bei Seitenaufrufen.
+Seit Block 5 ist is_complete() ausschließlich lesend. Statusänderungen und Benachrichtigungsereignisse laufen über TeamManager; keine Schreibnebenwirkungen in Reader zurückbringen. Übrige Legacy-Module weiterhin nur mit passenden Isolationen prüfen. Alte Tabellen/Orphans nicht automatisch löschen; keine Massendatenmigration bei Seitenaufrufen.
 
 Theme-, cor-ticker- und ausgelagerte Endpoint-Änderungen getrennt dokumentieren. Keine Geheimnisse, Dumps oder privaten Medien einchecken.
 

@@ -14,8 +14,9 @@ final class EventEditor
     /**
      * @param Closure(string,string,int):bool $authorize
      * @param null|Closure():int $provisionAccount
+     * @param null|Closure(int):array<string,mixed> $reconcileParticipation
      */
-    public function __construct(private readonly EventStore $store, private readonly Closure $authorize, private readonly ?Closure $provisionAccount = null)
+    public function __construct(private readonly EventStore $store, private readonly Closure $authorize, private readonly ?Closure $provisionAccount = null, private readonly ?Closure $reconcileParticipation = null)
     {
     }
     /**
@@ -202,8 +203,15 @@ final class EventEditor
                 }
             }
             $saved = $this->store->write($type, $old, $write);
-            return ['id' => $saved, 'warnings' => $warnings, 'confirmation_required' => false];
-        }, ($type === 'race' && (($input['active'] ?? '') === '1' || isset($input['startingpoint']) || isset($input['start_route_id'])))
+            $participation = [];
+            if (
+                $type === 'race' && $id && $this->reconcileParticipation !== null
+                && array_intersect_key($changed, array_flip(['status','num_teammember','num_teammember_min','dis_fee','dis_waiver','dis_shirt_size','dis_mobile_inf'])) !== []
+            ) {
+                $participation = ($this->reconcileParticipation)($saved);
+            }
+            return ['id' => $saved, 'warnings' => $warnings, 'confirmation_required' => false] + $participation;
+        }, ($type === 'race' && (($input['active'] ?? '') === '1' || isset($input['startingpoint']) || isset($input['start_route_id']) || ($this->reconcileParticipation !== null && array_intersect_key($input, array_flip(['status','num_teammember','num_teammember_min','dis_fee','dis_waiver','dis_shirt_size','dis_mobile_inf'])) !== [])))
             || ($type === 'route' && (isset($input['max_teams']) || $this->provisionAccount !== null)));
     }
     /**

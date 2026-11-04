@@ -18,7 +18,7 @@ final class EventForm
         $editable = \H3_MGMT_Security::can_object($type . 's', 'edit', $id) && (!$id || !\H3_MGMT_Security::archived(\H3_MGMT_Security::object_race($type . 's', $id)));
         echo '<div class="wrap"><h1>' . esc_html(html_entity_decode(wp_strip_all_tags($title), ENT_QUOTES, 'UTF-8')) . '</h1><p><a href="' . esc_url($base) . '">' . esc_html__('Back to overview', 'h3-mgmt') . '</a></p>';
         echo '<p>' . esc_html__('Disabled fields are locked by the race phase or your permissions. Save a phase change separately before editing newly available settings.', 'h3-mgmt') . '</p>';
-        echo '<form method="post" action="' . esc_url(add_query_arg(['todo' => 'save', 'id' => $id ?: ''], $base)) . '">';
+        echo '<form method="post" enctype="multipart/form-data" action="' . esc_url(add_query_arg(['todo' => 'save', 'id' => $id ?: ''], $base)) . '">';
         wp_nonce_field(\H3_MGMT_Security::admin_nonce($type . 's'), 'cor_mgmt_nonce', false);
         foreach (['submitted' => 'y', 'cor_event_revision' => $revision, 'cor_event_confirm' => $confirm ? '1' : '0'] as $key => $value) {
             echo '<input type="hidden" name="' . esc_attr($key) . '" value="' . esc_attr($value) . '">';
@@ -48,6 +48,10 @@ final class EventForm
         $value = self::text($field['value'] ?? '');
         $type = self::text($field['type'] ?? 'text');
         $disabled = !empty($field['disabled']) || !$editable;
+        if ($type === 'hidden') {
+            echo '<input type="hidden" name="' . esc_attr($key) . '" value="' . esc_attr($value) . '">';
+            return;
+        }
         $description = wp_strip_all_tags(self::text($field['desc'] ?? ''));
         $control = 'cor-event-' . $key;
         echo '<tr><th scope="row"><label for="' . esc_attr($control) . '">' . esc_html(wp_strip_all_tags($label)) . '</label></th><td>';
@@ -76,9 +80,9 @@ final class EventForm
             echo '>' . esc_textarea($value) . '</textarea>';
         } else {
             $inputType = match ($type) {
-                'date' => 'date', 'password' => 'password', default => 'text'
+                'date' => 'date', 'password' => 'password', 'file' => 'file', default => 'text'
             };
-            if ($inputType === 'password') {
+            if (in_array($inputType, ['password', 'file'], true)) {
                 $value = '';
             }
             echo '<input class="regular-text" type="' . esc_attr($inputType) . '"';

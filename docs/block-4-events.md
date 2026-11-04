@@ -50,7 +50,7 @@ Mit InnoDB werden aktuelle Datensätze unter Transaktion und Zeilensperren geles
 
 Mehrfachänderungen, Kapazitäts-/Startpunktprüfungen und Kontoerstellung setzen transaktionale Rennen-, Routen-, Etappen- und Teamtabellen voraus. MyISAM wird nicht automatisch umgestellt. Andernfalls bleibt die Aktion mit Hinweis auf kontrollierte Datenbankprüfung gesperrt; einfache vergleichende Einzelupdates bleiben möglich. Dies ist ein bewusster Übergangsschutz und keine abgeschlossene Engine-Migration.
 
-Direkte Fremdwriter und die noch nicht umgestellten Teilnehmerabläufe sind nicht vollständig durch diese Verwaltungssperre koordiniert. Normale Routenzuweisung/Freigabe und ihr gemeinsamer Kapazitätsvertrag werden in Block 5 umgestellt und unter parallelen Teilnehmerzugriffen geprüft. Die bestehenden Sicherheitsprüfungen bleiben aktiv; keine vollständige Nebenläufigkeitsfreigabe aller Module ableiten.
+Nachtrag Block 5: Teilnehmerwriter, Routenzuweisung und Freigabe verwenden inzwischen dieselbe Sperre und Transaktion; letzte Plätze werden mit parallelen Prozessen geprüft. Änderungen an Teilnahmevoraussetzungen und Phasenrückwechsel gleichen Teamstatus innerhalb des Rennenschreibvorgangs ab. Direkte Fremdwriter und weitere Legacy-Module sind dadurch nicht automatisch abgesichert. Umfang und Grenzen: [Block 5](block-5-teams.md).
 
 ## Routenkonten und Oberfläche
 

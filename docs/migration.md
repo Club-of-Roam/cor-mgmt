@@ -60,3 +60,7 @@ Exakte DDL, Feldmapping und Klassifikation sind Liefergegenstände von Block 3 v
 ## Historische Installerreferenz
 
 Die [neun DDL-Anweisungen des Altinstallers](legacy-schema-reference.md) sind als Quellreferenz erhalten. Sie entsprechen nicht automatisch dem tatsächlichen Bestand und ersetzen weder Feldvergleich noch neue versionierte Migration. Der Laufzeitbootstrap verwendet sie nicht.
+
+## Additives Teilnahme-Modul (Block 5)
+
+[Modulreferenz 1.0.0](schema-participation-1.0.0.sql) und eigenes Manifest ergänzen Hash-Codes sowie Rohdatenhistorie, ohne den eingefrorenen Storage-/Shadow-Plan zu verändern. Bestandscode-Verbrauch bleibt ohne ALTER/DELETE in der Quelltabelle nachvollziehbar. Team-/Benutzer-IDs bleiben maßgeblich; keine aktive Generation oder Archivsnapshots durch dieses Paket. Installation, Engine-Schutz und Übergangsgrenzen in [Block 5](block-5-teams.md).

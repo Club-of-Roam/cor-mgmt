@@ -14,8 +14,8 @@ Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d
 | ID / Priorität | Befund und Quelle | Maßnahme / Block |
 |---|---|---|
 | SEC-01 hoch | GET/POST-Einladungscode direkt im SQL: [handle_invitation](../includes/class-h3-mgmt-teams.php#L976) | Vorbereitete Abfragen, sichere Tokens; 1/5 |
-| SEC-02 hoch | Nonces erzeugt, keine Verifikation im untersuchten Plugin erkennbar: [Form](../templates/class-h3-mgmt-admin-form.php#L93), [Teamverwaltung](../admin/class-h3-mgmt-admin-teams.php#L23) | Nonce plus aktions-/objektbezogene Rechte; 1 |
-| SEC-03 hoch | GET löst Löschung/Austritt aus: [Admin](../admin/class-h3-mgmt-admin-teams.php#L35), [Dashboard](../includes/class-h3-mgmt-teams.php#L1649) | POST mit CSRF-Schutz; 1 |
+| SEC-02 hoch | Nonces erzeugt, keine Verifikation im untersuchten Plugin erkennbar: [Form](../templates/class-h3-mgmt-admin-form.php#L93), [Teamverwaltung](../admin/class-h3-mgmt-admin-teams.php) | Nonce plus aktions-/objektbezogene Rechte; 1 |
+| SEC-03 hoch | GET löst Löschung/Austritt aus: [Admin](../admin/class-h3-mgmt-admin-teams.php), [Dashboard](../includes/class-h3-mgmt-teams.php#L1649) | POST mit CSRF-Schutz; 1 |
 | SEC-04 hoch | Eingang ohne erkennbare Authentifizierung im Handler: [Ticker](../includes/class-h3-mgmt-ticker.php#L1433) | Authentifizierung, Größen-/Typprüfung, Duplikatschutz; 9, vorher isoliert halten |
 | SEC-05 hoch | [app.js](../js/app.js#L35) verwendet uploads/ticker_images/process.php; ausgelagerter Endpunkt verschiebt Upload ohne WP-/Bildprüfung | Geschützter Medienhandler; 1/9 |
 | SEC-06 hoch | Unpassende Ausgabebehandlung bei Börsennachrichten; Datenänderung nur anhand ID: [XChange](../includes/class-h3-mgmt-xchange.php#L67) | Validierung, Escaping, Eigentumsbedingung; 1/8 |
@@ -70,3 +70,7 @@ Referenzabschluss, übrige Modulabnahmen und Testgrenzen stehen in [block-0-acce
 - [WordPress Nonces](https://developer.wordpress.org/apis/security/nonces/)
 - [WordPress Plugin-Tabellen](https://developer.wordpress.org/plugins/creating-tables-with-plugins/)
 - [WordPress REST-Endpunkte](https://developer.wordpress.org/rest-api/extending-the-rest-api/adding-custom-endpoints/)
+
+## Nachtrag Block 5 (2026-11-04)
+
+Die ursprünglichen Befunde zu Team-Dashboard, Teilnehmerverwaltung, Freigabeschreibzugriffen und Einladungsgenerator sind durch neue Adapter/Fachservices ersetzt. is_complete ist nun lesend, Status-/Profil-/Mitgliedschaftsänderungen sind transaktional koordiniert. Neue Hash-Codes und Verbrauchs-/Widerrufsjournal erhalten vorhandene Einladungstabellen und unbekannte Rohwerte. Details und weiterhin offene Modul-/Archiv-/Browsergrenzen: [Block 5](block-5-teams.md). Die oben datierten Befunde beschreiben den jeweiligen Ausgangsstand.

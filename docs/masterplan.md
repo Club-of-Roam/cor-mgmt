@@ -61,3 +61,7 @@ Vor Release frische Produktionskopie vollständig prüfen, kontrolliertes Wartun
 ## Abschluss Sicherheitsbasis
 
 Block 1 ist am 2026-11-02 mit negativen und positiven WordPress-Sicherheitstests sowie JavaScript-Regressionen abgeschlossen. Umfang und geänderte Integrationsverträge in [block-1-security.md](block-1-security.md); ausgeführte Matrix und Grenzen in [verification.md](verification.md). Keine Schemaumstellung oder Releasefreigabe. Fortsetzung mit Block 2.
+
+## Umsetzung Teams/Profile
+
+Das Fachpaket aus Block 5 ist im Kompatibilitätsbetrieb implementiert: gemeinsame transaktionale Teilnahme-/Profil-/Adminwriter, phasenabhängige Rechte, sichere Codes mit Legacy-Übergang und eigener Avataradapter. Additive Einrichtung und ausdrücklich verbleibende Abnahmen stehen in [Block 5](block-5-teams.md). Versionsmarker und aktive Datenhaltung werden nicht vorzeitig umgeschaltet. Nächster fachlicher Umbau: Ergebnisse aus Block 6.

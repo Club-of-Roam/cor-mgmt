@@ -388,21 +388,24 @@ final class LegacyWordPressTest extends TestCase
     public function testInvitationLookupPrefersCanonicalPostAndDoesNotConsumeCode(): void
     {
         global $wpdb;
+        $this->race();
+        $this->team($this->user('lookup_one'),42);
+        $this->team($this->user('lookup_two'),43);
         foreach ([[42, 111], [43, 222]] as [$team, $code]) {
             $wpdb->insert($wpdb->prefix . 'h3_mgmt_invitations', ['team_id' => $team, 'email' => 'invitee@example.invalid', 'code' => $code]);
         }
         $_GET['invitation'] = '111';
         $_POST['invitation'] = '222';
         $method = new ReflectionMethod(\H3_MGMT_Teams::class, 'handle_invitation');
-        self::assertSame('43', $method->invoke($GLOBALS['h3_mgmt_teams']));
+        self::assertSame(43, $method->invoke($GLOBALS['h3_mgmt_teams']));
         $_GET = [];
-        self::assertSame('43', $method->invoke($GLOBALS['h3_mgmt_teams']));
+        self::assertSame(43, $method->invoke($GLOBALS['h3_mgmt_teams']));
         $_POST['invitation'] = '999';
         self::assertFalse($method->invoke($GLOBALS['h3_mgmt_teams']));
         self::assertSame('2', $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}h3_mgmt_invitations"));
     }
 
-    public function testTeamPromotionPersistsAndNotifiesOnceWithRealSql(): void
+    public function testReadingEligibilityNeverPersistsOrNotifiesEvenDuringAnAuthorizedPost(): void
     {
         global $wpdb;
         $this->race(9, ['startingpoint' => 0, 'start_route_id' => 7]);
@@ -415,10 +418,10 @@ final class LegacyWordPressTest extends TestCase
             'subject' => 'Synthetic complete', 'message' => '%team_name%',
         ]);
         self::assertSame(1, $GLOBALS['h3_mgmt_teams']->is_complete(42));
-        self::assertSame('1', $wpdb->get_var("SELECT complete FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=42"));
+        self::assertSame('0', $wpdb->get_var("SELECT complete FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=42"));
         self::assertSame('7', $wpdb->get_var("SELECT route_id FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=42"));
         self::assertSame(1, $GLOBALS['h3_mgmt_teams']->is_complete(42));
-        self::assertCount(1, $GLOBALS['cor_test_mail']);
+        self::assertSame([], $GLOBALS['cor_test_mail']);
     }
 
     public function testTeamReadingDoesNotPersistDowngradeInStartedRace(): void

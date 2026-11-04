@@ -192,9 +192,11 @@ final class H3_MGMT_Security {
         }, $html);
         $allowed = wp_kses_allowed_html('post');
         $allowed['iframe'] = ['src'=>true,'width'=>true,'height'=>true,'frameborder'=>true,'allowfullscreen'=>true,'title'=>true,'loading'=>true,'style'=>true];
+        $allowed['fieldset'] = ['class'=>true,'disabled'=>true];
+        $allowed['legend'] = ['class'=>true];
         $allowed['form'] = ['id'=>true,'name'=>true,'method'=>true,'action'=>true,'enctype'=>true,'class'=>true,'accept-charset'=>true];
         foreach (['input','button','select','option','textarea','label'] as $tag) {
-            $allowed[$tag] = array_fill_keys(['type','id','name','value','class','for','form','checked','selected','disabled','readonly','multiple','required','min','max','step','maxlength','size','rows','cols','title','accept','data-confirm'], true);
+            $allowed[$tag] = array_fill_keys(['type','id','name','value','class','for','form','checked','selected','disabled','readonly','multiple','required','min','max','step','maxlength','size','rows','cols','title','accept','data-confirm','aria-describedby','aria-label'], true);
         }
         return wp_kses($html, $allowed);
     }

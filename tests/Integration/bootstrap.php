@@ -63,9 +63,11 @@ wp_installing(false);
 
 // Build the real fresh schema. A stale or partial legacy fixture is intentionally rejected.
 global $wpdb;
+if (!defined('COR_TEST_PARTICIPATION_WORKER')) {
 (new \Cor\Mgmt\Infrastructure\WordPress\Schema\Installer(
     new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb)
 ))->fresh();
+}
 // Shared ticker storage is still an optional integration pending block 9.
 if ($wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}sms_ticker (id bigint unsigned AUTO_INCREMENT PRIMARY KEY, send_from varchar(80), msg text, type int, img_url text, img longtext, timestamp varchar(40), race_id bigint unsigned) ENGINE=InnoDB") === false) {
     throw new RuntimeException('Cannot create synthetic ticker fixture.');
@@ -80,7 +82,7 @@ set_error_handler(static function ($severity, $message, $file, $line): bool {
 $_COOKIE['client_token'] = 'synthetic-cookie-no-provider';
 require dirname(__DIR__, 2) . '/h3-management.php';
 restore_error_handler();
-$activation = \Cor\Mgmt\WordPress\Lifecycle::activate();
+$activation = defined('COR_TEST_PARTICIPATION_WORKER') ? \Cor\Mgmt\WordPress\Lifecycle::ready() : \Cor\Mgmt\WordPress\Lifecycle::activate();
 if (is_wp_error($activation)) { throw new RuntimeException('Synthetic runtime activation failed.'); }
 // Core init already ran while installing the empty fixture; initialize this plugin once.
 $GLOBALS['h3_mgmt']->init();

@@ -86,7 +86,7 @@ final class Inspector
         $indexes = [];
         foreach ($metadata['indexes'] as $index) {
             $key = $index['Key_name'] ?? '';
-            if (($index['Non_unique'] ?? '') !== ($key === 'PRIMARY' ? '0' : '1')) {
+            if (($index['Non_unique'] ?? '') !== (($key === 'PRIMARY' || str_starts_with($key, 'UNIQUE_')) ? '0' : '1')) {
                 throw new MigrationException('target_schema_mismatch');
             }
             $indexes[$key][] = $index['Column_name'] ?? '';

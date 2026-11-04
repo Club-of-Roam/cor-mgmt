@@ -40,7 +40,7 @@ final class SchemaTools
             wp_send_json_error(['code' => 'requirements'], 400);
         }
         $operation = $_POST['operation'] ?? null;
-        if (!is_string($operation) || !in_array($operation, ['install','preflight','start','step','abandon'], true)) {
+        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','preflight','start','step','abandon'], true)) {
             wp_send_json_error(['code' => 'invalid_operation'], 400);
         }
         if (in_array($operation, ['start','step'], true) && (($_POST['backup'] ?? '') !== '1' || ($_POST['quiesced'] ?? '') !== '1')) {
@@ -54,6 +54,9 @@ final class SchemaTools
             $runner = new Runner($db, $runtime->clock, $runtime->random);
             if ($operation === 'install') {
                 (new Installer($db))->fresh();
+                $data = ['reload' => true];
+            } elseif ($operation === 'participation-setup') {
+                (new Installer($db))->participation();
                 $data = ['reload' => true];
             } elseif ($operation === 'preflight') {
                 $report = (new Preflight($db))->run();
@@ -106,6 +109,9 @@ final class SchemaTools
         /* Unrecognized target storage is reported by explicit preflight. */
         }
         echo '<section id="cor-mgmt-schema" data-url="' . esc_url(admin_url('admin-ajax.php')) . '" data-nonce="' . esc_attr(wp_create_nonce('cor-mgmt-schema')) . '">';
+        if ($status === InstallationStatus::Ready && !\Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready($db)) {
+            echo '<p><button type="button" class="button button-primary" data-operation="participation-setup">' . esc_html__('Set up team and invitation storage', 'h3-mgmt') . '</button></p>';
+        }
         echo '<h2>' . esc_html__('Database setup and migration', 'h3-mgmt') . '</h2>';
         echo '<p>' . esc_html__('Migration prepares a separate verified copy. Current data is retained. Switching to that copy and publishing frozen archives are not available yet.', 'h3-mgmt') . '</p>';
         if ($status === InstallationStatus::Fresh || (new Installer($db))->pendingFresh()) {

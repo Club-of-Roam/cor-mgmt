@@ -419,7 +419,7 @@ class H3_MGMT_Teams {
 	}
 
 	/**
-	 * Checks whether a team is complete and writes status, if necessary
+	 * Read-only eligibility check; explicit commands own persisted status and notifications
 	 *
 	 * @since 1.0
 	 * @access public
@@ -451,90 +451,21 @@ class H3_MGMT_Teams {
 		$current_status = $current_status_query[0]['complete'] ?? 0;
         if ((int) ($race_setting['status'] ?? 0) >= 3) { return (int) $current_status; }
 
-		$user_ids = $this->get_teammates( $team_id );
-
-		$complete = 1;
-
-        if( ! isset($race_setting['num_teammember_min']) ) {
-            $race_setting['num_teammember_min'] = 2;
-        }
-
-		if( count( $hitchmates_query ) < $race_setting['num_teammember_min'] ) {
-			$complete = 0;
-		} else {
-			foreach( $hitchmates_query as $mate ) {
-                            if( !$race_setting['dis_fee'] == 1 ){
-				if( 1 != $mate['paid'] ) {
-					$complete = 0;
-				}
-                            }
-                            if( !$race_setting['dis_waiver'] == 1 ){
-				if( 1 != $mate['waiver'] ) {
-					$complete = 0;
-				}
-                            }
-			}
-			foreach( $user_ids as $user_id ) {
-				$mob_inf = get_user_meta( $user_id, 'public_mobile_inf', true );
-				$shirt = get_user_meta( $user_id, 'shirt_size', true );
-                                
-                                if( !$race_setting['dis_shirt_size'] == 1 ){
-                                    if( empty($shirt) ) {
-                                            $complete = 0;
-                                    }
-                                }
-                                if( !$race_setting['dis_mobile_inf'] == 1 ){
-                                    if( empty($mob_inf) ) {
-                                            $complete = 0;
-                                    }
-                                }
-			}
-		}
-
-		if( $complete != $current_status && H3_MGMT_Security::can_recalculate((int) $team_id) ) {
-			$wpdb->update(
-				$wpdb->prefix.'h3_mgmt_teams',
-				array(
-					'complete' => $complete
-				),
-				array( 'id' => $team_id ),
-				array( '%d' ),
-				array( '%d' )
-			);
-
-            if( !$race_setting['startingpoint'] == 1 ) {
-                $wpdb->update(
-                        $wpdb->prefix.'h3_mgmt_teams',
-                        array(
-                                'route_id' => $race_setting['start_route_id']
-                        ),
-                        array( 'id' => $team_id ),
-                        array( '%d' ),
-                        array( '%d' )
-                );
+        $profiles = [];
+        foreach ($hitchmates_query as $member) {
+            $user = (int) ($member['user_id'] ?? 0);
+            if ($user) {
+                $shirt = get_user_meta($user, 'shirt_size', true);
+                $partner = get_user_meta($user, 'public_mobile_inf', true);
+                $profiles[$user] = [
+                    'shirt_size' => is_scalar($shirt) ? (string) $shirt : '',
+                    'public_mobile_inf' => is_scalar($partner) ? (string) $partner : '',
+                ];
             }
-			if( $complete === 1 ) {
-				$user_ids = $this->get_teammates( $team_id );
-				$response_args = array(
-					'names' => $this->mate_name_string( $team_id, ' &amp; ', false ),
-					'team_name' => $this->get_team_name( $team_id )
-				);
-				$h3_mgmt_mailer->auto_response( $user_ids, 'publishable', $response_args, 'id', $h3_mgmt_utilities->user_language() );
-			}
-			if( $complete != 1 && $current_status == 1 ) {
-				$wpdb->update(
-					$wpdb->prefix.'h3_mgmt_teams',
-					array(
-						'route_id' => 0
-					),
-					array( 'id' => $team_id ),
-					array( '%d' ),
-					array( '%d' )
-				);
-			}
-		}
-
-		return $complete;
+        }
+        $settings = array_map(static fn($value) => is_scalar($value) ? (string) $value : null, $race_setting);
+        $members = array_map(static fn($row) => array_map(static fn($value) => $value === null ? null : (string) $value, $row), $hitchmates_query);
+        return \Cor\Mgmt\Domain\TeamPolicy::eligible($settings, $members, $profiles) ? 1 : 0;
 	}
 
 	/**
@@ -955,34 +886,11 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function allow_invitations( $team_id ) {
-		global $wpdb, $h3_mgmt_races;
-
-		$mates = $this->get_teammates( $team_id );
-		$race_id = $this->get_team_race( $team_id );
-		
-		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
-		$num_teammember = intval( $race_setting['num_teammember'] );
-		
-		if( $num_teammember === NULL || !isset($race_setting['num_teammember'])){
-			$num_teammember = 3;
-		}
-                
-		if( count( $mates ) > ( $num_teammember - 1) ) {
-			return false;
-		}
-                
-		$allowed = $num_teammember - count( $mates );
-                
-		if( $allowed > $num_teammember ) {
-			$allowed = 2;
-		}
-		else if( $allowed == $num_teammember ) {
-			// if allowd as much as max teammember, there is no one in team, so the team will be created, invite just max teammember - yourself, so 1
-			$allowed = $allowed - 1;
-		}
-		return $allowed;
-	}
+    private function allow_invitations($team_id) {
+        global $h3_mgmt_races;
+        $settings = $h3_mgmt_races->get_race_setting($this->get_team_race($team_id));
+        return (int) ($settings['status'] ?? -1) === 1 ? 1 : false;
+    }
 
 	/**
 	 * Handles an invitation
@@ -990,12 +898,9 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function handle_invitation() {
-        global $wpdb;
+    private function handle_invitation() {
         $code = $_POST['invitation'] ?? $_GET['invitation'] ?? '';
-        if (!is_string($code) || !preg_match('/^[0-9]{1,19}$/D', $code)) { return false; }
-        $team = $wpdb->get_var($wpdb->prepare("SELECT team_id FROM {$wpdb->prefix}h3_mgmt_invitations WHERE code = %s LIMIT 1", $code));
-        return $team ?: false;
+        return is_string($code) ? (\Cor\Mgmt\WordPress\TeamFrontend::invitedTeam($code) ?: false) : false;
     }
 
 	/**
@@ -1631,88 +1536,12 @@ class H3_MGMT_Teams {
 	 * @access public
 	 * @see constructor
 	 */
-	public function team_dashboard_control( $atts = '' ) {
-		global $current_user, $h3_mgmt_races, $wpdb, $information_text;
-
-		extract( shortcode_atts( array(
-			'event' => 1,
-			'race' => 0
-		), $atts ) );
-
-		$race_id = $race;
-		
-		if( $race == 'active'){
-			$race_id = $h3_mgmt_races->get_active_race();
-		}
-		
-		$information_text = $h3_mgmt_races->get_race_information_text( $race_id );
-		
-		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
-		
-		if ( is_user_logged_in() ) {
-			if( (($_POST['todo'] ?? $_GET['todo'] ?? '') === 'leave') ) {
-                if (!in_array((int) ($race_setting['status'] ?? -1), [1,2], true) || !H3_MGMT_Security::post('cor-mgmt-team-' . (int) $race_id)) { return H3_MGMT_Security::error(); }
-				$team_id = $this->user_has_team( $race_id );
-				if( empty( $team_id ) ) {
-					if( $race_setting['status'] == 2 ){
-						$output .= '<p class="error">' .			
-							__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join next year!', 'h3-mgmt' ) .	
-						'</p>';						
-						return $output;								
-					}elseif( $race_setting['status'] == 3 ){
-						$output .= '<p class="error">' .			
-							__( 'Sorry, the race already started! We would be lucky if you will join next year!', 'h3-mgmt' ) .	
-						'</p>';	
-						$output .= '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';						
-						return $output;								
-					}else{
-						return $this->team_dashboard( array( 'race_id' => $race_id ) );	
-					}
-				} else {
-					wp_get_current_user();
-					$mates = $this->get_teammates( $team_id, false );
-					
-					if( in_array( $current_user->ID, $mates ) ) {
-						$wpdb->query(
-							"DELETE FROM " . $wpdb->prefix . "h3_mgmt_teammates " .
-							"WHERE user_id = " . $current_user->ID . " AND team_id = " . $team_id . " LIMIT 1"
-						);
-						
-						$mates = $this->get_teammates( $team_id );
-						
-						if ( empty( $mates ) ) {
-							$wpdb->query(
-								"DELETE FROM " . $wpdb->prefix . "h3_mgmt_teams " .
-								"WHERE id = " . $team_id . " LIMIT 1"
-							);
-						}
-						$success = array(
-							array(
-								'type' => 'message',
-								'message' => _x( 'You have successfully left the team...', 'Team Dashboard', 'h3-mgmt' )
-							)
-						);
-						return $this->team_dashboard( array( 'messages' => $success, 'race_id' => $race_id ) );
-					} else {
-						return $this->team_dashboard( array( 'race_id' => $race_id ) );
-					}
-				}
-			} else {
-				if ( ! isset( $_POST['submitted'] ) ) {
-						return $this->team_dashboard( array( 'race_id' => $race_id ) );
-				} else {
-					[ $valid, $errors ] = $this->validate_submit();
-					if ( $valid !== true ) {
-						return $this->team_dashboard( array( 'messages' => $errors, 'race_id' => $race_id ) );
-					} else {
-						return $this->save_dashboard( $race_id );
-					}
-				}
-			}
-		} else {
-			return do_shortcode( '[theme-my-login show_title=0]' );
-		}
-	}
+    public function team_dashboard_control($atts = '') {
+        global $h3_mgmt_races;
+        $args = shortcode_atts(['event' => 1, 'race' => 0], $atts);
+        $race = $args['race'] === 'active' ? $h3_mgmt_races->get_active_race() : ($args['race'] ?: $args['event']);
+        return \Cor\Mgmt\WordPress\TeamFrontend::dashboard(H3_MGMT_Security::id($race));
+    }
 
 	/**
 	 *  Outputs the team dashboard
@@ -1720,203 +1549,9 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function team_dashboard( $args = array() ) {
-
-		$default_args = array(
-			'messages' => array(),
-			'race_id' => 1
-		);
-		extract( wp_parse_args( $args, $default_args ), EXTR_SKIP );
-
-		$is_invitation = false;
-
-		$output = '';
-		
-		$team_id = $this->user_has_team( $race_id );
-
-		global $wpdb, $h3_mgmt_races, $information_text;
-		
-		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
-
-		if ( $team_id === false ) {
-			if ( $this->is_invitation() ) {
-				$team_id = $this->handle_invitation();
-				if ( ! empty( $team_id ) ) {
-					$is_invitation = true;
-					$team_section = $this->team_section( true, $team_id, $race_id );
-					$messages[] = array(
-						'type' => 'error',
-						'message' => _x( 'Do you want to join this team? You still have to accept the invitation...', 'Team Dashboard', 'h3-mgmt' )
-					);
-				} else {
-					//if registration is closed just show error message and don't allow to create a new Team
-					if( $race_setting['status'] >= 2 ){
-						$output .= '<p class="error">' .
-							__( 'Sorry, the invitation code you are trying to use is outdated or false. The registration is already closed, so the participant can\'t invite you again and you can\'t create your own team...', 'h3-mgmt' ) .
-						'</p>';
-						return H3_MGMT_Security::add_nonces($output, 'cor-mgmt-team-' . (int) $race_id);										
-					}else{
-						$output .= '<p class="error">' .
-							__( 'Sorry, the invitation code you are trying to use is outdated or false. Either contact the participant that invited you and request a new invitation or create your own team.', 'h3-mgmt' ) .
-						'</p>';
-						$team_id = 0;									
-						$team_section = $this->team_section( false, $team_id, $race_id );	
-					}
-				}
-			} else {
-				//if registration is closed just show error message and don't allow to create a new Team
-				if( $race_setting['status'] == 2 ){
-					$output .= '<p class="error">' .						
-						__( 'Sorry, the registration is already closed! If you already got a invitation code you could enter it on the right side otherwise we would be lucky if you will join next time!', 'h3-mgmt' ) .	//für registration closed einkommentieren
-					'</p>';						
-					return H3_MGMT_Security::add_nonces($output, 'cor-mgmt-team-' . (int) $race_id);											
-				}elseif( $race_setting['status'] == 3 ){
-					$output .= '<p class="error">' .			
-						__( 'Sorry, the race already started! We would be lucky if you will join next time!', 'h3-mgmt' ) .	
-					'</p>';	
-					$output .= '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>';						
-					return H3_MGMT_Security::add_nonces($output, 'cor-mgmt-team-' . (int) $race_id);	
-				}else{
-					$team_section = $this->team_section( false, $team_id, $race_id );		
-				}
-			}
-		} else {
-			$team_section = $this->team_section( true, $team_id, $race_id );
-			$team_query = $wpdb->get_results(
-				"SELECT team_name FROM " . $wpdb->prefix . "h3_mgmt_teams WHERE id = " . $team_id . " LIMIT 1",
-				ARRAY_A
-			);
-			$team_name = $team_query[0]['team_name'];
-		}
-
-		if( ! empty( $messages ) ) {
-			foreach( $messages as $message ) {
-				$output .= '<p class="' . $message['type'] . '">' . $message['message'] . '</p>';
-			}
-		}
-		
-		//registration closed information messages
-		if( $race_setting['status'] >= 2 ){
-			$output .= '<p class="error">' .
-					_x( 'Attention, the Registration is closed!', 'Team Dashboard', 'h3-mgmt' ) .
-				'</p>';
-			$output .= 	_x( '	<li> You can\'t invite other hitchmates any more! </li>
-                                                <li> You could still change all your settings in your Profile!</li>
-                                                <li> Also we will set your Team as complete if we will get your payment and the liability waiver form in the next days!</li>
-                                                ', 'Team Dashboard', 'h3-mgmt' );
-                        if( $race_setting['startingpoint'] == 1 && $this->is_complete( $team_id )){
-                            $output .= 	_x( '   <li> If you have chosen your starting point, you can\'t change it any more!</li>', 'Team Dashboard', 'h3-mgmt' );
-                        }
-                        $output .= '<br>';
-		}
-
-		$output .= '<form name="h3_mgmt_team_dashboard_form" method="post" enctype="multipart/form-data" action="?">' .
-			'<input type="hidden" name="submitted" value="y"/>' .
-			'<input type="hidden" name="edit_val" value="' . $team_id . '"/>' .
-			'<div class="form-row trap-row"><label for="address">Please leave this blank...</label>' .
-			'<input type="text" name="address" id="address" value=""></div>';
-
-		$output .= '<h3>' . _x( 'Your Team', 'Team Dashboard', 'h3-mgmt' );
-
-		if ( ! empty( $team_name ) ) {
-			$output .= ':<br />&quot;' . $team_name . '&quot';
-		}
-
-		$output .= '</h3><p>* ' . _x( 'Required fields', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
-
-		$fields = $team_section;
-		//if registration closed they can't change the Teamname
-		if( $race_setting['status'] >= 2 ){
-			$fields[0]['readonly'] = true;
-		}
-		require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-
-		$team_data = $this->get_team_data( $team_id );
-		
-		//is just ne startingpoint for this race they can't chose a starting point
-		if( $race_setting['startingpoint'] == 1 ){
-			if( $this->is_complete( $team_id ) ) {
-				if( ( $team_data['route_id'] == 0 || $race_setting['status'] == 1 ) && $race_setting['status'] != 3) {	
-					$output .= '<h3 class="top-space-more">' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
-						stripcslashes( $information_text[11] ) ; //_x( 'Choose one of the city\'s. The number in the brackets shows the amount of free team slots left at the city. You can change your starting point selection until the 8th of August. After that it won\'t be possible for logistical reasons.', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
-					$fields = $this->route_section( $team_id );
-					require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-				}elseif( $team_data['route_id'] == 0 && $race_setting['status'] == 3 ){
-					$output .= '<h3 class="top-space-more">' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
-						'<p>' . _x( 'You can\'t choose your starting point because the race is already started!', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
-				}else{
-					$output .= '<h3 class="top-space-more">' . _x( 'Select starting point', 'Team Dashboard', 'h3-mgmt' ) . '</h3>' .
-						'<p>' . _x( 'You can\'t change your starting point anymore because the registration process is already closed!', 'Team Dashboard', 'h3-mgmt' ) . '</p>';
-				}						
-			}
-		}
-		
-		$output .= '<h3 class="top-space-more">' . _x( 'About You', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
-
-		$fields = $this->primary_user_section($race_setting['dis_shirt_size'], $race_setting['dis_mobile_inf']);
-		require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-
-		if( isset( $is_invitation ) && true === $is_invitation && ( isset( $_POST['invitation'] ) || isset( $_GET['invitation'] ) ) ) {
-			$code = isset( $_POST['invitation'] ) ? $_POST['invitation'] : $_GET['invitation'];
-			$output .= '<input type="hidden" name="invitation" id="invitation" value="' .
-					esc_attr((string) $code) .
-				'" />';
-		} else {
-			//is registration closed no invitation of members
-			if( $race_setting['status'] < 2 ){
-				$invitations = $this->allow_invitations( $team_id );  
-                                
-				if( $invitations ) {
-                                    
-					$num_teammember = intval( $race_setting['num_teammember'] );
-					
-					if( $num_teammember == NULL || !isset($race_setting['num_teammember']) ){
-						$num_teammember = 3;
-					}
-                                        
-					$output .= '<h3 class="top-space-more">' . _x( 'Invite teammate(s)', 'Team Dashboard', 'h3-mgmt' ) . '</h3>';
-					if( $invitations === $num_teammember - 1 ) {
-						$output .= '<p>' . stripcslashes( $information_text[30] ) . '</p>';
-					} else {
-						$output .= '<p>' . stripcslashes( $information_text[31] ) . '</p>';
-					}
-					$fields = $this->invitations_section( $team_id, $invitations );
-					require( H3_MGMT_ABSPATH . '/templates/frontend-form.php' );
-				}
-			}
-		}
-
-		$output .= $this->mate_section( $team_id );
-		
-		$output .= '<div class="form-row">' .
-			'<input type="submit" id="submit_form" name="submit_form" value="';
-
-
-		if( $this->is_invitation() && ! $this->user_has_team( $race_id ) ) {
-			$output .= _x( 'Accept Invitation!', 'Team Dashboard', 'h3-mgmt' );
-		} else {
-			$output .= _x( 'Save &amp; Send', 'Team Dashboard', 'h3-mgmt' );
-		}
-
-		$output .= '" /></div></form>';
-
-		// $url = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?todo=leave&id=' . $team_id;
-		
-		$post     = get_post();
-		$post_url = get_page_link( $post->ID );
-		$url = $post_url . '?todo=leave&id=' . $team_id;
-		
-        $link = '<form method="post" action="' . esc_url($post_url) . '">' .
-            H3_MGMT_Security::nonce('cor-mgmt-team-' . (int) $race_id) .
-            '<input type="hidden" name="todo" value="leave"><input type="hidden" name="id" value="' . (int) $team_id . '">' .
-            '<button type="submit">' . esc_html__('Leave team', 'h3-mgmt') . '</button></form>';
-
-		if( ! $this->is_invitation() && ( ! empty( $team_id ) || false !== $team_id ) ) {
-			$output .= '<p>' . sprintf( _x( 'To leave your team for good, %s', 'Team Dashboard', 'h3-mgmt' ), $link ) . '.</p>';
-		}
-
-		return H3_MGMT_Security::add_nonces($output, 'cor-mgmt-team-' . (int) $race_id);
-	}
+    private function team_dashboard($args = array()) {
+        return \Cor\Mgmt\WordPress\TeamFrontend::dashboard((int) ($args['race_id'] ?? 1));
+    }
 
 	/**
 	 *  Outputs the "homework" section
@@ -2191,9 +1826,9 @@ class H3_MGMT_Teams {
                         if( $race_setting['show_donation_amount'] == 1 ){
                             $amount = $h3_mgmt_sponsors->get_donation_amount( array('type'=>'team', 'id' => $team_id) );
                             if( $amount > 0 ) {
-                                    $output .= '<li><span class="to-do-positive">' . sprintf( _x( 'Your team donations counter: %d€ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
+                                    $output .= '<li><span class="to-do-positive">' . sprintf( _x( 'Your team donations counter: %dâ‚¬ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
                             } else {
-                                    $output .= '<li><span class="to-do-can">' . sprintf( _x( 'Your team donations counter: %d€ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
+                                    $output .= '<li><span class="to-do-can">' . sprintf( _x( 'Your team donations counter: %dâ‚¬ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
                             }
                         }
                         
@@ -2506,25 +2141,11 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function random_team( $race_id = 1 ) {
-        $race_id = H3_MGMT_Security::id($race_id);
-		global $wpdb;
-
-		$teams_query = $wpdb->get_results(
-			"SELECT id FROM " .
-			$wpdb->prefix."h3_mgmt_teams " .
-			"WHERE race_id = " . $race_id,
-			ARRAY_A
-		);
-
-		$team_id = 0;
-		while( ! $this->is_complete( $team_id ) ) {
-			$key = array_rand( $teams_query );
-			$team_id = $teams_query[$key]['id'];
-		}
-
-		return $team_id;
-	}
+    private function random_team($race_id = 1) {
+        global $wpdb;
+        $ids = $wpdb->get_col($wpdb->prepare("SELECT id FROM {$wpdb->prefix}h3_mgmt_teams WHERE race_id=%d AND complete=1", H3_MGMT_Security::id($race_id)));
+        return $ids ? (int) $ids[\Cor\Mgmt\WordPress\Services::get()->random->integer(0, count($ids) - 1)] : 0;
+    }
 
 	/**
 	 * Returns the quick_info
@@ -2534,6 +2155,7 @@ class H3_MGMT_Teams {
 	 * @access public
 	 */
 	public function random_team_info( $atts = '' ) {
+        global $h3_mgmt_races;
 
 		extract( shortcode_atts( array(
 			'event' => 0,
@@ -2548,7 +2170,7 @@ class H3_MGMT_Teams {
 
 		$team_id = $this->random_team( $race_id );
 
-		return $this->team_quick_info( $team_id );
+		return $team_id ? $this->team_quick_info($team_id) : '';
 	}
 
 	/**
@@ -2784,296 +2406,15 @@ class H3_MGMT_Teams {
 	 * @since 1.0
 	 * @access private
 	 */
-	private function save_dashboard( $race_id = 1 ) {
-        global $wpdb, $h3_mgmt_races;
-        $race_id = H3_MGMT_Security::id($race_id);
-        if (!is_user_logged_in() || !H3_MGMT_Security::post('cor-mgmt-team-' . $race_id) || H3_MGMT_Security::archived($race_id)) { return H3_MGMT_Security::error(); }
-        foreach ($_POST as $key => $value) {
-            if (is_array($value) && !in_array($key, ['invitations'], true)) { return H3_MGMT_Security::error(); }
-        }
-        if (isset($_POST['invitations']) && !is_array($_POST['invitations'])) { return H3_MGMT_Security::error(); }
-        foreach (($_POST['invitations'] ?? []) as $email) {
-            if (!is_string($email) || ($email !== '' && !is_email($email))) { return H3_MGMT_Security::error(); }
-        }
-        $year = H3_MGMT_Security::id($_POST['birthday-year'] ?? 0);
-        $month = H3_MGMT_Security::id($_POST['birthday-month'] ?? 0);
-        $day = H3_MGMT_Security::id($_POST['birthday-day'] ?? 0);
-        if (!checkdate($month, $day, $year) || $year > (int) gmdate('Y')) { return H3_MGMT_Security::error(); }
-        $wpdb->query('START TRANSACTION');
+    private function save_dashboard($race_id = 1) {
         try {
-            $wpdb->get_var($wpdb->prepare("SELECT ID FROM {$wpdb->users} WHERE ID=%d FOR UPDATE", get_current_user_id()));
-            $own = (int) $this->user_has_team($race_id);
-            $target = $own ?: (int) $this->handle_invitation();
-            if ($own && !empty($_POST['invitation'])) { $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error(); }
-            if (!$own && !empty($_POST['invitation']) && !$target) { $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error(); }
-            if ($target) {
-                $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}h3_mgmt_teams WHERE id=%d FOR UPDATE", $target), ARRAY_A);
-                if (!$row || (int) $row['race_id'] !== $race_id) { $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error(); }
-                if (!$own && (int) $this->handle_invitation() !== $target) { $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error(); }
-            }
-            $settings = $h3_mgmt_races->get_race_setting($race_id);
-            if (!$own) {
-                if ((int) ($settings['status'] ?? -1) !== 1) { $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error(); }
-                if ($target && count($this->get_teammates($target)) >= (int) ($settings['num_teammember'] ?? 3)) { $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error(); }
-            }
-            $route = H3_MGMT_Security::id($_POST['route_id'] ?? 0);
-            if ($route && $own && $route !== (int) $row['route_id']) {
-                $routeRow = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}h3_mgmt_routes WHERE id=%d FOR UPDATE", $route), ARRAY_A);
-                $count = (int) $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}h3_mgmt_teams WHERE route_id=%d AND complete=1", $route));
-                if (!$routeRow || (int) $routeRow['race_id'] !== $race_id || $count >= (int) $routeRow['max_teams'] || !$this->is_complete($own)
-                    || (int) $settings['status'] >= 3 || ((int) $settings['status'] === 2 && (int) $row['route_id'] !== 0)) {
-                    $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error();
-                }
-            } elseif ($route && !$own) { $wpdb->query('ROLLBACK'); return H3_MGMT_Security::error(); }
-            foreach (['team_name','first_name','last_name','meta_1','meta_2','meta_3','meta_5'] as $key) {
-                $_POST[$key] = sanitize_text_field(wp_unslash((string) ($_POST[$key] ?? '')));
-            }
-            $_POST['description'] = wp_kses_post(wp_unslash((string) ($_POST['description'] ?? '')));
-            $_POST['donation_goal'] = H3_MGMT_Security::id($_POST['donation_goal'] ?? 0);
-            $_POST['meta_4'] = H3_MGMT_Security::id($_POST['meta_4'] ?? 0);
-            if ($own && (int) ($settings['status'] ?? 0) >= 2) { $_POST['team_name'] = $row['team_name']; }
-            $output = $this->persist_dashboard($race_id);
-            $wpdb->query('COMMIT');
-            return $output;
-        } catch (Throwable $error) { $wpdb->query('ROLLBACK'); throw $error; }
+            \Cor\Mgmt\WordPress\TeamBoundary::save((int) $race_id);
+            unset($_POST['submitted']);
+            return \Cor\Mgmt\WordPress\TeamFrontend::dashboard((int) $race_id);
+        } catch (\Throwable $error) {
+            return H3_MGMT_Security::error();
+        }
     }
-
-    private function persist_dashboard( $race_id = 1 ) {
-		global $current_user, $wpdb, $h3_mgmt_mailer, $h3_mgmt_utilities, $h3_mgmt_races;
-		wp_get_current_user();
-
-		$language = $h3_mgmt_utilities->user_language();
-		$success = array();
-                $race_setting = $h3_mgmt_races->get_race_setting( $race_id );
-
-		$team_insert = array(
-			'race_id' => $race_id,
-			'team_name' => $_POST['team_name'],
-			'description' => $_POST['description'],
-			'donation_goal' => $_POST['donation_goal'],
-			'meta_1' => $_POST['meta_1'],
-			'meta_2' => $_POST['meta_2'],
-			'meta_3' => $_POST['meta_3'],
-			'meta_4' => $_POST['meta_4'] === null ? 0 : $_POST['meta_4'],
-			'meta_5' => $_POST['meta_5']
-		);
-		$team_data_types = array(
-			'%d',
-			'%s',
-			'%s',
-			'%d',
-			'%s',
-			'%s',
-			'%s',
-			'%d',
-			'%s'
-		);
-
-		$team_id = $this->user_has_team( $race_id );
-        $joining = !$team_id && $this->is_invitation();
-		if( ! $team_id && $this->is_invitation() ) {
-			$team_id = $this->handle_invitation();
-		}
-
-		/* Handle image upload */
-		if( !$joining && ! empty( $_FILES['team_pic']['name'] ) ) {
-			$team_pic_data = H3_MGMT_Security::upload('team_pic');
-            if (is_wp_error($team_pic_data)) { return H3_MGMT_Security::error(); }
-			$team_insert['team_pic'] = $team_pic_data['url'];
-			$team_data_types[] = '%s';
-		}
-
-		/* Add route to saveable values */
-		if ( isset( $_POST['route_id'] ) && ! empty( $_POST['route_id'] ) ) {
-                    $team_insert['route_id'] = $_POST['route_id'];
-                    $team_data_types[] = '%d';
-		}elseif( $race_setting['startingpoint'] == 0){
-                    $team_insert['route_id'] = $race_setting['start_route_id'];
-                    $team_data_types[] = '%d';
-                }
-
-		if ( ! $team_id ) {
-
-			$wpdb->insert(
-				$wpdb->prefix . 'h3_mgmt_teams',
-				$team_insert,
-				$team_data_types
-			);
-			$team_id = $wpdb->insert_id;
-			
-			$wpdb->insert(
-				$wpdb->prefix . 'h3_mgmt_teammates',
-				array(
-					'team_id' => $team_id,
-					'user_id' => $current_user->ID,
-					'language' => $language
-				),
-				array( '%d', '%d', '%s', '%d' )
-			);
-			$success[] = array(
-				'type' => 'message',
-				'message' => _x( 'The team has been successfully registered.', 'Team Dashboard', 'h3-mgmt' )
-			);
-			$response_args = array(
-				'name' => $_POST['first_name'],
-				'team_name' => $_POST['team_name']
-			);
-			$new_team = true;
-			$h3_mgmt_mailer->auto_response( $current_user->ID, 'team-creation', $response_args, 'id', $language );
-
-		} else {
-
-			if ( $this->is_invitation() ) {
-
-				$dupes = $this->get_teammates( $team_id );
-
-				if( ! in_array( $current_user->ID, $dupes ) ) {
-					$wpdb->insert(
-						$wpdb->prefix . 'h3_mgmt_teammates',
-						array(
-							'team_id' => $team_id,
-							'user_id' => $current_user->ID,
-							'language' => $h3_mgmt_utilities->user_language()
-						),
-						array( '%d', '%d', '%s' )
-					);
-
-					$code = ! empty( $_POST['invitation'] ) ? $_POST['invitation'] : $_GET['invitation'];
-					$wpdb->query(
-						"DELETE FROM " . $wpdb->prefix . "h3_mgmt_invitations " .
-						"WHERE code = " . H3_MGMT_Security::id($code) . " LIMIT 1"
-					);
-
-					$inviter = $this->mate_name_string( $team_id );
-					$post     = get_post();
-					$link = get_page_link( $post->ID );
-
-					// $link = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] );
-					$response_args = array(
-						'invitee' => $_POST['first_name'],
-						'inviter' => $inviter,
-						'link' => $link,
-						'name' => $_POST['first_name'],
-						'team_name' => $_POST['team_name']
-					);
-					$h3_mgmt_mailer->auto_response( $current_user->ID, 'invitation-accepted-invitee', $response_args, 'id', $language );
-					$mates = $this->get_mate_names( $team_id );
-					foreach( $mates as $mid => $mname ) {
-						$response_args['name'] = $mname;
-						$h3_mgmt_mailer->auto_response( $mid, 'invitation-accepted-inviter', $response_args, 'id', $language );
-					}
-				}
-				$success[] = array(
-					'type' => 'message',
-					'message' => _x( 'You have successfully joined the team', 'Team Dashboard', 'h3-mgmt' )
-				);
-			} else {
-				$wpdb->update(
-					$wpdb->prefix . 'h3_mgmt_teammates',
-					array( 'language' => $h3_mgmt_utilities->user_language() ),
-					array( 'team_id' => $team_id, 'user_id' => $current_user->ID ),
-					array( '%s' ),
-					array( '%d', '%d' )
-				);
-
-				$success[] = array(
-					'type' => 'message',
-					'message' => _x( 'The team has been updated.', 'Team Dashboard', 'h3-mgmt' )
-				);
-			}
-
-            if (!$joining) {
-			$wpdb->update(
-				$wpdb->prefix . 'h3_mgmt_teams',
-				$team_insert,
-				array( 'id' => $team_id ),
-				$team_data_types,
-				array( '%d' )
-			);
-
-            }
-			$new_team = false;
-		}
-		
-		//save update user_meta
-		$user_fields = $this->user_fields();
-		if ( ! empty( $user_fields ) ) {
-			foreach ( $user_fields as $field ) {
-                if (!isset($field['id'])) { continue; }
-				switch( $field['type'] ) {
-					case 'date':
-						update_user_meta(
-							$current_user->ID,
-							$field['id'],
-							mktime( 0, 0, 0,
-								$_POST[ $field['id'] . '-month' ],
-								$_POST[ $field['id'] . '-day' ],
-								$_POST[ $field['id'] . '-year' ]
-							)
-						);
-					break;
-
-					default:
-						if (isset($_POST[$field['id']])) { update_user_meta( $current_user->ID, $field['id'], sanitize_text_field((string) $_POST[$field['id']]) ); }
-					break;
-				}
-			}
-		}
-
-		$invitations_query = $wpdb->get_results(
-			"SELECT email, code FROM " . $wpdb->prefix . "h3_mgmt_invitations " .
-			"WHERE team_id = " . $team_id . " ORDER BY id ASC", ARRAY_A
-		);
-		$existing_emails = array();
-		foreach( $invitations_query as $invite ) {
-			$existing_emails[] = $invite['email'];
-		}
-		$existing_inv_count = count( $existing_emails );
-		$allowed = $this->allow_invitations( $team_id );
-
-		if( isset( $_POST['invitations'] ) && is_array( $_POST['invitations'] ) ) {
-			$new_inv = 0;
-			foreach( $_POST['invitations'] as $invitation ) {
-				if( ! in_array( $invitation, $existing_emails ) && ! empty( $invitation ) ) {
-					$code = $this->generate_code();
-					$wpdb->insert(
-						$wpdb->prefix . 'h3_mgmt_invitations',
-						array(
-							'team_id' => $team_id,
-							'email' => $invitation,
-							'code' => $code
-						),
-						array( '%d', '%s', '%d' )
-					);
-					$new_inv++;
-
-					$inviter = $_POST['first_name'];
-					$post     = get_post();
-					$link = get_page_link( $post->ID ) . '?invitation=' . $code;
-					// $link = get_option( 'siteurl' ) . preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI'] ) . '?invitation=' . $code;
-					$response_args = array(
-						'inviter' => $inviter,
-						'link' => $link,
-						'name' => $_POST['first_name'],
-						'team_name' => $_POST['team_name'],
-						'code' => $code
-					);
-					$h3_mgmt_mailer->auto_response( $invitation, 'invitation', $response_args, 'email', $language );
-				}
-			}
-			if( $new_inv > 0 && $allowed && $allowed < ( $new_inv + $existing_inv_count ) ) {
-				$overhang = $new_inv + $existing_inv_count - $allowed;
-				for( $i = 0; $i < $overhang; $i++ ) {
-					$wpdb->query(
-						"DELETE FROM " . $wpdb->prefix . "h3_mgmt_invitations " .
-						"WHERE code = " . H3_MGMT_Security::id($invitations_query[$i]['code'])
-					);
-				}
-			}
-		}
-
-		return $this->team_dashboard( array( 'messages' => $success, 'race_id' => $race_id ) );
-	}
 
 	/*************** CONSTRUCTORS ***************/
 

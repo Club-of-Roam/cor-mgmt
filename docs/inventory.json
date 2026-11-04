@@ -6,18 +6,18 @@
     "admin/class-h3-mgmt-admin-races.php": "65f074b69ef38b2a8591970fb1625f4be36470dedc477aa1edc04dc29d7f9deb",
     "admin/class-h3-mgmt-admin-sponsors.php": "a682d96ff8e92e8c4b6c590298da734a9d92b702bf1ad7e9b184a9fe1cdf57e7",
     "admin/class-h3-mgmt-admin-statistics.php": "d39dde134a8ca710160bd18b937d9e8a42f5d8c99eac3e973b34e62fa0239960",
-    "admin/class-h3-mgmt-admin-teams.php": "211dd0b5ac40323c4484a764bf76327de5f2bfdbec31afec9b3e8e39e15e2875",
+    "admin/class-h3-mgmt-admin-teams.php": "d83692f2e15bb2bbf216efb7e3c05c07f5f904552e5d4b508f65296d6c5913d8",
     "admin/class-h3-mgmt-admin-xchange.php": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "admin/class-h3-mgmt-admin.php": "3f1cbeae3e1d28556b07ea2a2f2dc69873bc0bd1bb8c9ba3c606441ccef7f797",
     "h3-management.php": "d7f2b8bbd7b6d8b3c031da52680e99c250f6e3a442a3e6c589da22cb8b3f5edc",
     "includes/class-h3-mgmt-mailer.php": "9c8aa22928ccb0fbae2fdbd1698d302d4c9b8d37efb3a4b9d5d7e7c1f77c3964",
     "includes/class-h3-mgmt-maintenance.php": "052285d837a5cbc2f31255f84442d31b073e2e18a87872028b6f9fef807b078e",
     "includes/class-h3-mgmt-media.php": "22d11d7a97412baf0de420fcc5bcc10368b1bed18d76d005312cc1db76fc525b",
-    "includes/class-h3-mgmt-profile.php": "d2f70614aa77b12d29553c8cd14665152084d239fb04b022822e2e6478b1905c",
+    "includes/class-h3-mgmt-profile.php": "2e672efdc41a3dee9b1cb6b026765435d8c845669e4331d514c1b38ac71bea12",
     "includes/class-h3-mgmt-races.php": "df2b9ff49ecbc809d5df1d2cc6f240a5be817dc1d024a7b5b4834a143d0269c8",
-    "includes/class-h3-mgmt-security.php": "b200628253788a53ac81e2aede35de6837bf53c833f21d052bb0e9c47fca28c5",
+    "includes/class-h3-mgmt-security.php": "926240ae80d8a78dc476e538193f60fde99c8e5be4b1ce0bc5abf60753ae2f73",
     "includes/class-h3-mgmt-sponsors.php": "31f15599ea90c314d6f62d1e14770e5dbf213fee18fb05e799bbe3e7e996afaa",
-    "includes/class-h3-mgmt-teams.php": "fb2636603af51e9e0e9825407db7f22997cdd435e595078fa0437501fb27ce6f",
+    "includes/class-h3-mgmt-teams.php": "afcf447517d78b0e4402425e6b7155061aee9b25b367efc884eabc5df3364cc8",
     "includes/class-h3-mgmt-ticker.php": "a02c8ab5d2a537158dd58e9a2000cfeadee0402f4f6f03028c0140829ac809b4",
     "includes/class-h3-mgmt-utilities.php": "3ea17dabe715226588d074661d6aeeed7072989e517b36e7a3bc80bfcbebd397",
     "includes/class-h3-mgmt-xchange.php": "e169a3afc36735fd66ddc52320d17f8752fe5ad592671122afa1d05b2bf308b0",
@@ -29,7 +29,7 @@
     "src/Application/Contracts/Logger.php": "d469a3171dd7cc51188208d1988d758b51e5eba7e5ab1695158adb2218eccc1c",
     "src/Application/Contracts/MailTransport.php": "68daf53110dc4fe4a263ff9fc3d071d9418205ff15284ce4a7d241f6a3b90cfe",
     "src/Application/Contracts/RandomSource.php": "bd6f5df141057e0e96ffb5dac833ac6e9b0b591e04b403f1a0a1aef8571ad110",
-    "src/Application/Events/EventEditor.php": "99aa6ef943a63f83e72f5e532dddf4350cf53ca11b7b416fa4caadceafc755c4",
+    "src/Application/Events/EventEditor.php": "6b7805c6de28fa00be354503f766f8b6925ab8decc45a00425af41536faea8a8",
     "src/Application/Events/EventException.php": "09f8595009cdc82b4cb6e0ee857bdcebd86d90138dfc99995ca2183067131594",
     "src/Application/Events/EventStore.php": "1e6fe2f17003268527a7fd26abe1b1819bceb7dd8796616b8a355a2d7970ede7",
     "src/Application/HttpResponse.php": "65385b58c5fe9acfb37f8bef65679abf29dcd75625cfc9016e8c7dd6eedcf6d7",
@@ -39,17 +39,23 @@
     "src/Application/Migration/TextCodec.php": "49b5a31fd1a0dc4eb04c4f2d3074142e5c72bf3ac63a16e0f71e1a9b8b867832",
     "src/Application/Requirements.php": "5ef8a63e831a82a67f717cd277312908df538c9aa604188574bbd561ade06325",
     "src/Application/Runtime.php": "0f795993484b79f49c198078476cb9bd5a6230a7f7f7f77752b644e277156cf3",
+    "src/Application/Teams/ParticipationException.php": "3b57dbfe6a5a9314fc080d5a18e4eb24b0a2f30d215362ba9e0a1b7196b30866",
+    "src/Application/Teams/ParticipationStore.php": "2cb7bd2c4328651ad96f72a6bf3b42c61b22b9262d879ab5d0122f5251198e35",
+    "src/Application/Teams/TeamManager.php": "737c369e2eec99c5fee4254d2aa011a9c3b8dabd3e6d17323fb4763260145e6b",
     "src/Application/TransportException.php": "cae0577e846a60a3497362143db67f3cf8eb1c6c80b05b8c53564c101d7aa9e3",
     "src/Domain/EventPolicy.php": "8c7657aa3376967ae7cd7a6ca776bc411274cf3ed8cbad34e476da2b3a86afa3",
     "src/Domain/InstallationStatus.php": "2b8e855e840f443e10a09ead7e85c19be32653e9f7e8ce7040a64dc039c80d60",
     "src/Domain/RacePhase.php": "34f39e0ea16dc989a54dc301d33adab208e3e9185405ac9336ab6130f79a9406",
+    "src/Domain/TeamPolicy.php": "839fc359f428fb5abdd3d6786d50e63d196edb0edecb97225621442c0183458d",
     "src/Infrastructure/SecureRandom.php": "e57a39674e2a9e5c1a6fe29997762d87030c020599a840c8d82d5cb9ad94320c",
     "src/Infrastructure/SystemClock.php": "61e7a294c202cc19d541d5af8378ab9d36422927b0ef5860841455e8c391b81a",
     "src/Infrastructure/WordPress/LegacyEventStore.php": "d015d788dd6d2c072e51d399568f908dc476cb5c0a4901b562fa7d35bf4865e2",
+    "src/Infrastructure/WordPress/ParticipationRepository.php": "b874a73052c8590112cb0fab09dee65c958d0b8e7953a1bbea14da62fed12e61",
     "src/Infrastructure/WordPress/Schema/Catalogue.php": "061201ee1fbbe9b47c98f739c87c968a14cf820a8d3d4a2c93cda11501d1dd33",
-    "src/Infrastructure/WordPress/Schema/Database.php": "40cfe471a525624073c2f444992bbad0e4eefaab67e6dd01237947513cd5651c",
-    "src/Infrastructure/WordPress/Schema/Inspector.php": "11f1947ecbaa76bbfb727874ef4d2b8c702ab599064c5c47bfe91e50c0a686d1",
-    "src/Infrastructure/WordPress/Schema/Installer.php": "3bccc6d754c97111a0bb3ef30dfb57fbb7a5e4744b22af8efd52a43452ef15bf",
+    "src/Infrastructure/WordPress/Schema/Database.php": "1c9b9f9204629ebb8f972cf2e4bd1f40a2d041751b0429b0b0529fb983cf842c",
+    "src/Infrastructure/WordPress/Schema/Inspector.php": "358c84f7e5257b409de54329563b303e43984e76ce4e10ceefcafb364c583c36",
+    "src/Infrastructure/WordPress/Schema/Installer.php": "585c2f932ce5daf04323426ce0063e76e1a10fc7815ade3c4b4329c386d20709",
+    "src/Infrastructure/WordPress/Schema/ParticipationSchema.php": "d45391e989f58444ce7fd49fa5bddfa0a13c34900b65c572213bcb448304b77f",
     "src/Infrastructure/WordPress/Schema/Preflight.php": "6b606789d0a539d587fe839ef190f0a2514771f7c8319fe1a834697d384d703b",
     "src/Infrastructure/WordPress/Schema/Projection.php": "9416e218615be027156b590a267c75429e4c421fd01e438b17c890dbd7e21e6f",
     "src/Infrastructure/WordPress/Schema/Runner.php": "dfcb37887703fd9aaf80d64ed27715aba7a78d6c20f01ab0f15187f7c5989c56",
@@ -59,12 +65,16 @@
     "src/Infrastructure/WordPress/WordPressLogger.php": "812910c3a7c305d041c90e694f4707922b00c4789a93a6a2f92041731e03378f",
     "src/Infrastructure/WordPress/WordPressMailTransport.php": "70d29f5071bc9a498540111399bc53f426b400c219e0695da5dd08765c608377",
     "src/WordPress/Capabilities.php": "10cc96a8dd72f6fa6a4dcd46013023b6c0a5ac71157c8e96db936269b9663658",
-    "src/WordPress/EventAdmin.php": "5e5dfc6bd619d266c34862cf2cc40055834ec831218e0d251a872345c4fc6c15",
-    "src/WordPress/EventForm.php": "d2b30b3ef03e0f0d1aa10143d117968e291411c413229d77f808acd7c27e2220",
+    "src/WordPress/EventAdmin.php": "ef699c6bb43a7672d410c2ec7f851c1c12bf04c893bb92b1916894b282c5ed14",
+    "src/WordPress/EventForm.php": "9be2bd818be1deecd9ba9aa0a9f123955ad2423918ea757d2ec3d2793d7f0d06",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
-    "src/WordPress/Lifecycle.php": "b857f11a6455b7dacf3545e126430e989f6e626d0f1549ebda22f52e39d35c35",
-    "src/WordPress/SchemaTools.php": "f50075c22c387e511ab74d91ceb57560726c2f261afc35aa1489b06d222f4e67",
+    "src/WordPress/Lifecycle.php": "88aae48775997d1d08cf190dab0f41d6bd51b721829e35681be61fe892e99de4",
+    "src/WordPress/ProfileAvatar.php": "38a400102fd08abcd41e541b04de4310f4353c209bcae403187879ce90e01e3d",
+    "src/WordPress/SchemaTools.php": "e1a2cba8f568418456d7ee72e3cfb5805b4c5208ed25954a66432b2f1f7fbff2",
     "src/WordPress/Services.php": "8e37ba4167038976f4b9cc62150f193dde32a03f3f11505da2d663be9ed2b9ea",
+    "src/WordPress/TeamAdmin.php": "23873f233536e60b166c8152c440cf7ee516ff520b461400ecbe88c987dabac0",
+    "src/WordPress/TeamBoundary.php": "52306dbf785fba656e31463d395d390833c27623e44e91a7eb3102abc33e0065",
+    "src/WordPress/TeamFrontend.php": "933b04a585d63e52cccd2ff82653895ad8eb88a30ff328ea9f3fd010de9f20ad",
     "templates/admin-custom-fields.php": "274ffcc1413d2d14bb40baa52cb1211008d2022993cfdc344b4c8b70c143d4d5",
     "templates/admin-profile.php": "46c14eafd1b131259b8ad1847522394053e48240275a8e5af81645d5cda19659",
     "templates/class-h3-mgmt-admin-form.php": "1518a77d556894ffcbd80e3c8ed505c3160cf62b0253b50df43f83dc92d15bf0",
@@ -72,8 +82,8 @@
     "templates/class-h3-mgmt-admin-page.php": "a8d0419f07a908d98278c198a9e038b972a6122b3049151664a6726c44e48d1e",
     "templates/class-h3-mgmt-admin-table.php": "4e68f2e235d73bc055198c69e90ab384782b504e6223a5374649116c87b9e037",
     "templates/frontend-form.php": "d1d439e76a18fe326c11015387599edb9df49e6581a511ed20a7ce171fc4bf8b",
-    "templates/frontend-profile.php": "bc8597ce13d1a417e14a67d5afa7fbeac977b81e578dd60e78f33ee50e2e31e6",
-    "templates/frontend-profile_int.php": "bc8597ce13d1a417e14a67d5afa7fbeac977b81e578dd60e78f33ee50e2e31e6",
+    "templates/frontend-profile.php": "be5c4013ca3d7880c59c812e7f093d5a6674ee2ea3c741ad0ce4b9b179804af5",
+    "templates/frontend-profile_int.php": "be5c4013ca3d7880c59c812e7f093d5a6674ee2ea3c741ad0ce4b9b179804af5",
     "templates/frontend-ticker.php": "5a2e512328c36a6297434d407b976618c83a76ba2d5813f02a117764d7caa45d"
   },
   "shortcodes": [
@@ -123,7 +133,7 @@
       "tag": "h3-rand-team",
       "handler": "random_team_info",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 2536,
+      "line": 2157,
       "defaults_source": "'event' => 0, 'race' => 0"
     },
     {
@@ -172,28 +182,28 @@
       "tag": "h3-team-dashboard",
       "handler": "team_dashboard_control",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1634,
+      "line": 1539,
       "defaults_source": "'event' => 1, 'race' => 0"
     },
     {
       "tag": "h3-team-dashboard-homework",
       "handler": "team_dashboard_homework_control",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1590,
+      "line": 1495,
       "defaults_source": "'event' => 1, 'race' => 0"
     },
     {
       "tag": "h3-team-homework",
       "handler": "team_homework",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1927,
+      "line": 1562,
       "defaults_source": "'event' => 0, 'race' => 0"
     },
     {
       "tag": "h3-teams",
       "handler": "display_teams",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 2260,
+      "line": 1895,
       "defaults_source": "'event' => 0, 'race' => 0, 'max' => 10"
     },
     {
@@ -235,7 +245,7 @@
       "tag": "h3-user-panel-link",
       "handler": "user_panel_link",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 2223,
+      "line": 1858,
       "defaults_source": "'event' => 0, 'race' => 0"
     }
   ],
@@ -392,79 +402,6 @@
       "case_labels": []
     },
     {
-      "file": "admin/class-h3-mgmt-admin-teams.php",
-      "method": "teams_control",
-      "line": 24,
-      "fields": [
-        "FILES:team_pic",
-        "GET:id",
-        "GET:todo",
-        "POST:description",
-        "POST:member1",
-        "POST:member2",
-        "POST:member3",
-        "POST:race_id",
-        "POST:route_id",
-        "POST:team_name",
-        "POST:team_phone",
-        "POST:team_pic-tmp"
-      ],
-      "case_labels": [
-        "delete",
-        "edit",
-        "save"
-      ]
-    },
-    {
-      "file": "admin/class-h3-mgmt-admin-teams.php",
-      "method": "participants_control",
-      "line": 295,
-      "fields": [
-        "GET:bulk",
-        "GET:id",
-        "GET:todo"
-      ],
-      "case_labels": [
-        "bulk-paid",
-        "bulk-unpaid",
-        "bulk-waiver-set",
-        "bulk-waiver-unset",
-        "paid",
-        "unpaid",
-        "waiver-set",
-        "waiver-unset"
-      ]
-    },
-    {
-      "file": "admin/class-h3-mgmt-admin-teams.php",
-      "method": "teams_list",
-      "line": 512,
-      "fields": [
-        "GET:order",
-        "GET:orderby"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "admin/class-h3-mgmt-admin-teams.php",
-      "method": "teams_edit",
-      "line": 633,
-      "fields": [
-        "POST:submitted"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "admin/class-h3-mgmt-admin-teams.php",
-      "method": "participants_list",
-      "line": 882,
-      "fields": [
-        "GET:order",
-        "GET:orderby"
-      ],
-      "case_labels": []
-    },
-    {
       "file": "includes/class-h3-mgmt-maintenance.php",
       "method": "page",
       "line": 42,
@@ -582,7 +519,7 @@
     {
       "file": "includes/class-h3-mgmt-security.php",
       "method": "ranking_request",
-      "line": 229,
+      "line": 231,
       "fields": [
         "POST:route",
         "POST:stage"
@@ -721,7 +658,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "is_invitation",
-      "line": 940,
+      "line": 871,
       "fields": [
         "GET:invitation",
         "POST:invitation"
@@ -731,7 +668,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "handle_invitation",
-      "line": 993,
+      "line": 901,
       "fields": [
         "GET:invitation",
         "POST:invitation"
@@ -741,7 +678,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_section",
-      "line": 1184,
+      "line": 1089,
       "fields": [
         "POST:submitted"
       ],
@@ -750,7 +687,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "primary_user_section",
-      "line": 1335,
+      "line": 1240,
       "fields": [
         "POST:submitted"
       ],
@@ -759,7 +696,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "invitations_section",
-      "line": 1438,
+      "line": 1343,
       "fields": [
         "POST:form_submitted"
       ],
@@ -768,7 +705,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "route_section",
-      "line": 1550,
+      "line": 1455,
       "fields": [
         "POST:route_id",
         "POST:submitted"
@@ -777,29 +714,8 @@
     },
     {
       "file": "includes/class-h3-mgmt-teams.php",
-      "method": "team_dashboard_control",
-      "line": 1634,
-      "fields": [
-        "GET:todo",
-        "POST:submitted",
-        "POST:todo"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-teams.php",
-      "method": "team_dashboard",
-      "line": 1723,
-      "fields": [
-        "GET:invitation",
-        "POST:invitation"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_homework",
-      "line": 1927,
+      "line": 1562,
       "fields": [
         "GET:id",
         "GET:todo",
@@ -811,7 +727,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "display_teams",
-      "line": 2260,
+      "line": 1895,
       "fields": [
         "GET:id"
       ],
@@ -820,7 +736,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_overview",
-      "line": 2629,
+      "line": 2251,
       "fields": [
         "GET:todo"
       ],
@@ -829,7 +745,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "validate_submit",
-      "line": 2756,
+      "line": 2378,
       "fields": [
         "POST:address",
         "POST:first_name",
@@ -841,44 +757,11 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "save_dashboard",
-      "line": 2787,
+      "line": 2409,
       "fields": [
-        "POST:birthday-day",
-        "POST:birthday-month",
-        "POST:birthday-year",
-        "POST:description",
-        "POST:donation_goal",
-        "POST:invitation",
-        "POST:invitations",
-        "POST:meta_4",
-        "POST:route_id",
-        "POST:team_name"
+        "POST:submitted"
       ],
       "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-teams.php",
-      "method": "persist_dashboard",
-      "line": 2841,
-      "fields": [
-        "FILES:team_pic",
-        "GET:invitation",
-        "POST:description",
-        "POST:donation_goal",
-        "POST:first_name",
-        "POST:invitation",
-        "POST:invitations",
-        "POST:meta_1",
-        "POST:meta_2",
-        "POST:meta_3",
-        "POST:meta_4",
-        "POST:meta_5",
-        "POST:route_id",
-        "POST:team_name"
-      ],
-      "case_labels": [
-        "date"
-      ]
     },
     {
       "file": "includes/class-h3-mgmt-ticker.php",
@@ -969,7 +852,7 @@
     {
       "file": "src/WordPress/EventAdmin.php",
       "method": "mutate",
-      "line": 23,
+      "line": 30,
       "fields": [
         "GET:bulk"
       ],
@@ -991,6 +874,15 @@
       "case_labels": []
     },
     {
+      "file": "src/WordPress/ProfileAvatar.php",
+      "method": "prepare",
+      "line": 60,
+      "fields": [
+        "FILES:cor_profile_avatar"
+      ],
+      "case_labels": []
+    },
+    {
       "file": "src/WordPress/SchemaTools.php",
       "method": "request",
       "line": 27,
@@ -1001,6 +893,103 @@
         "POST:operation",
         "POST:quiesced",
         "POST:run_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamAdmin.php",
+      "method": "control",
+      "line": 13,
+      "fields": [
+        "GET:bulk",
+        "GET:id",
+        "GET:todo"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamAdmin.php",
+      "method": "save",
+      "line": 51,
+      "fields": [
+        "FILES:team_pic",
+        "POST:route_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamAdmin.php",
+      "method": "form",
+      "line": 97,
+      "fields": [
+        "GET:race_id",
+        "POST:race_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamAdmin.php",
+      "method": "listing",
+      "line": 147,
+      "fields": [
+        "GET:complete_filter",
+        "GET:direction",
+        "GET:race_filter",
+        "GET:route_filter",
+        "GET:sort",
+        "GET:team_page"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamBoundary.php",
+      "method": "profileInput",
+      "line": 55,
+      "fields": [
+        "POST:birthday",
+        "POST:birthday-day",
+        "POST:birthday-month",
+        "POST:birthday-year"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamBoundary.php",
+      "method": "emails",
+      "line": 109,
+      "fields": [
+        "POST:invitations"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamBoundary.php",
+      "method": "save",
+      "line": 134,
+      "fields": [
+        "FILES:team_pic",
+        "POST:route_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamFrontend.php",
+      "method": "dashboard",
+      "line": 40,
+      "fields": [
+        "GET:invitation",
+        "POST:submitted",
+        "POST:todo"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TeamFrontend.php",
+      "method": "render",
+      "line": 80,
+      "fields": [
+        "GET:invitation",
+        "POST:invitation"
       ],
       "case_labels": []
     },

@@ -61,3 +61,7 @@ Normale WordPress-Updates per vollständigem Plugin-Paket müssen funktionieren.
 | I-12 | Bestehende Shortcodes/Links und historische Inhalte nach Upgrade | Kompatibilität gemäß Funktionsreferenz |
 
 Diese Prüfungen werden als Integrations-, Paket- und Browserprüfungen umgesetzt. Einzelne Lebenszyklus- und Paketgrenzen werden bereits automatisiert geprüft; I-01 bis I-12 sind insgesamt noch nicht abgenommen. Die unterstützten WordPress-/Datenbankversionen werden vor dem Release aus der tatsächlich bestandenen Matrix erklärt; Multisite-Unterstützung darf ohne entsprechende Prüfungen nicht behauptet werden.
+
+## Teilnahme-Modul ab Block 5
+
+Aktivierung richtet zusätzlich das Teilnahme-Modul 1.0.0 ein. Bereits aktive Installationen bieten dafür eine geschützte Aktion im Systemstatus an. Der Aufbau ergänzt ausschließlich Token-/Historientabellen, prüft Eigentum und exakte Struktur und ist wiederaufnehmbar. Keine automatischen Änderungen vorhandener Tabellenengines. Bei fehlender Einrichtung bleiben neue Teamwriter gesperrt; gewöhnliche Seitenaufrufe erzeugen keine Tabellen. Der übergeordnete Release-/Archivvertrag gilt weiter. Details: [Block 5](block-5-teams.md).

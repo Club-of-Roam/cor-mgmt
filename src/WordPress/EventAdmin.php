@@ -17,7 +17,14 @@ final class EventAdmin
     public static function editor(?\Closure $account = null): EventEditor
     {
         global $wpdb;
-        return new EventEditor(new LegacyEventStore(new Database($wpdb)), static fn (string $type, string $action, int $id): bool => \H3_MGMT_Security::can_object($type . 's', $action, $id), $account);
+        $db = new Database($wpdb);
+        $participation = new \Cor\Mgmt\Infrastructure\WordPress\ParticipationRepository($db);
+        return new EventEditor(
+            new LegacyEventStore($db),
+            static fn (string $type, string $action, int $id): bool => \H3_MGMT_Security::can_object($type . 's', $action, $id),
+            $account,
+            static fn (int $race): array => TeamBoundary::manager($participation)->reconcileRace($race)
+        );
     }
     /** @return array<string,mixed> */
     public static function mutate(string $type, int $id, string $action): array
@@ -152,7 +159,9 @@ final class EventAdmin
             }
         }
         try {
-            return self::editor($account)->save($type, $id, $input, $input['cor_event_revision'] ?? '', ($input['cor_event_confirm'] ?? '') === '1');
+            $result = self::editor($account)->save($type, $id, $input, $input['cor_event_revision'] ?? '', ($input['cor_event_confirm'] ?? '') === '1');
+            TeamBoundary::notify($result);
+            return $result;
         } catch (\Throwable $error) {
             if ($created) {
                 if (defined('ABSPATH')) {

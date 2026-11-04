@@ -24,6 +24,12 @@ final class Installer
             $this->create(Catalogue::shadow(), 'cor_mgmt_shadow_install', false);
         });
     }
+    public function participation(): void
+    {
+        $this->db->locked(function (): void {
+            $this->create(ParticipationSchema::definitions(), 'cor_mgmt_participation_install', false, false);
+        });
+    }
     public function pendingFresh(): bool
     {
         $raw = $this->db->option('cor_mgmt_fresh_install');
@@ -34,7 +40,7 @@ final class Installer
         return !is_array($state) || ($state['state'] ?? '') !== 'complete';
     }
     /** @param array<string,array{columns:array<string,string>,indexes:array<string,list<string>>}> $definitions */
-    private function create(array $definitions, string $owner, bool $fresh): void
+    private function create(array $definitions, string $owner, bool $fresh, bool $reuseShadow = true): void
     {
         $plan = hash('sha256', json_encode($definitions, JSON_THROW_ON_ERROR));
         $raw = $this->db->option($owner);
@@ -54,7 +60,7 @@ final class Installer
         }
         $inspector = new Inspector($this->db);
         // A verified shadow schema can be reused; a fresh install must never adopt a legacy site.
-        $existingShadow = !$fresh && $storage === Catalogue::STORAGE_VERSION;
+        $existingShadow = $reuseShadow && !$fresh && $storage === Catalogue::STORAGE_VERSION;
         if ($state === null && !$existingShadow) {
             if ($fresh && $this->db->option('h3_mgmt_db_version') !== null) {
                 throw new MigrationException('existing_installation');
@@ -79,7 +85,7 @@ final class Installer
                 }
                 foreach ($definition['indexes'] as $name => $fields) {
                     $identifiers = implode(',', array_map(fn(string $field): string=>$this->db->prepare('%i', $field), $fields));
-                    $columns[] = ($name === 'PRIMARY' ? 'PRIMARY KEY' : ('KEY ' . $this->db->prepare('%i', $name))) . ' (' . $identifiers . ')';
+                    $columns[] = ($name === 'PRIMARY' ? 'PRIMARY KEY' : ((str_starts_with($name, 'UNIQUE_') ? 'UNIQUE KEY ' : 'KEY ') . $this->db->prepare('%i', $name))) . ' (' . $identifiers . ')';
                 }
                 $sql = $this->db->prepare('CREATE TABLE %i', $table) . ' (' . implode(',', $columns) . ') ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ' . $this->db->prepare('COMMENT=%s', Catalogue::OWNER);
                 $this->db->execute($sql);

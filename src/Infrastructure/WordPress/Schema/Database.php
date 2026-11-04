@@ -81,6 +81,10 @@ final class Database
         wp_cache_delete('alloptions', 'options');
         wp_cache_delete('notoptions', 'options');
     }
+    public function hasLock(): bool
+    {
+        return $this->lockName !== null;
+    }
     public function assertLock(): void
     {
         if (

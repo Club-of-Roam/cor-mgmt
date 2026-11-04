@@ -150,29 +150,18 @@ class H3_MGMT_Profile {
             // Account deletion is a distinct destructive operation, never an incidental profile update.
             if ($_POST['deleteme'] !== 'forever' || get_current_user_id() !== $user_id
                 || !H3_MGMT_Security::post('cor-mgmt-delete-account-' . $user_id)) { return false; }
+            global $wpdb;
+            if ($wpdb->get_var($wpdb->prepare('SELECT id FROM %i WHERE user_id=%d LIMIT 1', $wpdb->prefix . 'h3_mgmt_teammates', $user_id))) { return false; }
             require_once ABSPATH . 'wp-admin/includes/user.php';
             wp_delete_user($user_id);
             return true;
         }
-        $values = [];
-        foreach ($this->create_extra_profile_fields() as $field) {
-            if (!isset($field['id']) || $field['type'] === 'avatar') { continue; }
-            $key = $field['id'];
-            if ($field['type'] === 'date') {
-                if (!isset($_POST[$key . '-year'], $_POST[$key . '-month'], $_POST[$key . '-day'])) { continue; }
-                $year = H3_MGMT_Security::id($_POST[$key . '-year'] ?? 0);
-                $month = H3_MGMT_Security::id($_POST[$key . '-month'] ?? 0);
-                $day = H3_MGMT_Security::id($_POST[$key . '-day'] ?? 0);
-                if (!checkdate($month, $day, $year) || $year > (int) gmdate('Y')) { return false; }
-                $values[$key] = mktime(0, 0, 0, $month, $day, $year);
-            } elseif (isset($_POST[$key])) {
-                if (!is_string($_POST[$key])) { return false; }
-                $value = wp_unslash($_POST[$key]);
-                if (isset($field['options']) && !in_array($value, array_map('strval', array_column($field['options'], 'value')), true)) { return false; }
-                $values[$key] = $field['type'] === 'textarea' ? sanitize_textarea_field($value) : sanitize_text_field($value);
-            }
+        try {
+            \Cor\Mgmt\WordPress\ProfileAvatar::save($user_id);
+        } catch (\Throwable $error) {
+            return false;
         }
-        foreach ($values as $key => $value) { update_user_meta($user_id, $key, $value); }
+
         return true;
     }
 

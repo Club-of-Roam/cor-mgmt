@@ -13,7 +13,7 @@ Phasen aus [Verwaltung](../admin/class-h3-mgmt-admin-races.php), Anzeigeverhalte
 | 2 geschlossen, vor Start | Formular verweigert | Bearbeitung mit Hinweis; Name im HTML schreibgeschützt | Nur erste Wahl bei route_id=0 und vollständigem Team |
 | 3 gestartet | Formular verweigert | Bearbeitung mit Hinweis; Name im HTML schreibgeschützt | Keine Auswahl |
 
-Eine gültige Einladung öffnet einen gesonderten Formularpfad auch bei geschlossener Anmeldung. Der Speicherpfad prüft die Phase nicht erneut. Schreibgeschützte HTML-Felder sind keine Berechtigungsprüfung. Quellen: [kombinierter Shortcode](../includes/class-h3-mgmt-teams.php#L1586), [Speichern](../includes/class-h3-mgmt-teams.php#L2775).
+Eine gültige Einladung öffnet einen gesonderten Formularpfad auch bei geschlossener Anmeldung. Der Speicherpfad prüft die Phase nicht erneut. Schreibgeschützte HTML-Felder sind keine Berechtigungsprüfung. Quellen: [kombinierter Shortcode](../includes/class-h3-mgmt-teams.php#L1586), [Speichern](../includes/class-h3-mgmt-teams.php).
 
 ### FACH-01: Beschlossene Zielmatrix
 
@@ -60,7 +60,7 @@ Diese Übergänge sind isoliert automatisiert. »Nur einmal« gilt für wiederho
 
 ## Einladungen und Formularvalidierung
 
-Quellen: [Anzahl](../includes/class-h3-mgmt-teams.php#L941), [Codeannahme](../includes/class-h3-mgmt-teams.php#L976), [Validierung](../includes/class-h3-mgmt-teams.php#L2744), [Speichern](../includes/class-h3-mgmt-teams.php#L2775).
+Quellen: [Anzahl](../includes/class-h3-mgmt-teams.php#L941), [Codeannahme](../includes/class-h3-mgmt-teams.php#L976), [Validierung](../includes/class-h3-mgmt-teams.php), [Speichern](../includes/class-h3-mgmt-teams.php).
 
 Bei Maximum 3 liefert allow_invitations für 0/1/2 Mitglieder 2/2/1 Einladungsplätze, ab 3 false. Beim noch leeren Team wird ein Platz für den Ersteller reserviert. Für Maximum 1 und leeres Team kommt 0 zurück. Diese Grenzen sind getestet. Ausstehende Einladungen werden in dieser Berechnung nicht gezählt; die Berechnung garantiert keine sichere Obergrenze beim Beitritt. Fehlende num_teammember-Einstellung wird vor dem vorgesehenen Standardwert bereits gelesen und kann warnen.
 
@@ -97,3 +97,7 @@ Die isolierten Tests, unter anderem [TeamRulesTest](../tests/Characterization/Te
 ## Ablösung der Verwaltungsbefunde ab Block 4
 
 Die obigen Ist-Befunde beschreiben den analysierten Ausgangscode. Die großen Renn-/Routen-/Etappen-Schreibcontroller sind durch [Block 4](block-4-events.md) ersetzt. Teilnahmevoraussetzungen sind in Phase 0 erneut bearbeitbar, weitere Felder folgen der verbindlichen Matrix. Die Platzabfrage zählt inzwischen ausschließlich gespeicherte vollständige Teams. Historische Quellcodeverweise auf den entfernten Controller wurden auf dessen erhaltene Adapterdatei verkürzt; aktuelle Regeln und Quellen sind in Block 4 verlinkt. Andere Teilnehmer-/Ergebnisbefunde bleiben bis zur jeweiligen Modulkorrektur bestehen.
+
+## Umsetzungsstand Block 5
+
+Teilnahme, Einladungen, Freigabe, Profil und Routenwahl folgen nun den bestätigten Phasenregeln über TeamPolicy/TeamManager. Die frühere is_complete-Charakterisierung ist durch schreibfreie Leser und explizite Writer ersetzt. Gemeinsame Transaktionen sichern letzte Mitglieds-/Routenplätze, inklusive erneuter Prüfung beim Übergang eines unvollständigen Teams zur Freigabe. Historische Spezialfälle werden erhalten oder zur kontrollierten Prüfung gesperrt. Vollständiger Archivsnapshot und Ergebnisabgleich folgen separat. [Umfang und Belege](block-5-teams.md).

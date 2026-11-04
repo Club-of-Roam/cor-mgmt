@@ -29,6 +29,7 @@ final class Lifecycle
     public static function register(string $plugin): void
     {
         SchemaTools::register();
+        ProfileAvatar::register();
         register_activation_hook($plugin, [self::class, 'activationHook']);
         register_deactivation_hook($plugin, [self::class, 'deactivate']);
         add_action('admin_notices', [self::class, 'notice']);
@@ -73,6 +74,11 @@ final class Lifecycle
         } elseif ($status !== InstallationStatus::Ready) {
             return new WP_Error('cor_mgmt_schema_review', __('The existing installation needs a controlled schema review. No data was changed.', 'h3-mgmt'));
         }
+        try {
+            $installer->participation();
+        } catch (MigrationException) {
+            return new WP_Error('cor_mgmt_participation_setup', __('Participation setup requires review. Existing data is retained.', 'h3-mgmt'));
+        }
         foreach (Capabilities::all() as $capability) {
             $administrator->add_cap($capability);
         }
@@ -99,7 +105,8 @@ final class Lifecycle
 
     public static function notice(): void
     {
-        if (!current_user_can('manage_options') || self::ready()) {
+        global $wpdb;
+        if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)))) {
             return;
         }
         echo '<div class="notice notice-warning"><p>' . esc_html__('cor-mgmt requires setup or a controlled schema review. Open Tools > cor-mgmt system status.', 'h3-mgmt') . '</p></div>';

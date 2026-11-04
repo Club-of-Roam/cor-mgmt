@@ -41,3 +41,7 @@ Umgebungskonfiguration bleibt außerhalb der Fachlogik. Tests dürfen keine prod
 ## Rennenverwaltung ab Block 4
 
 [Block 4](block-4-events.md) trennt EventPolicy/RacePhase, EventEditor, EventStore/LegacyEventStore und WordPress-Darstellung. Legacy-Menüs delegieren ihre Schreibaktionen an genau diesen Anwendungsfall; das Kompatibilitätsrepository schreibt weiterhin die bisherigen Tabellen. Dies ist keine Aktivierung der Zwischenprojektionen. Vollständige Modulumschaltung erst mit Archiv-/Leser-/Writervertrag. Neue Formular-/Tabellendarstellung verwendet WordPress und natives HTML ohne zusätzliche Runtime-Bibliothek.
+
+## Teilnahme-Modul ab Block 5
+
+TeamPolicy → TeamManager → ParticipationStore trennen Phasen/Freigabe, Anwendungsfälle und Persistenz. ParticipationRepository bildet den Übergang auf bestehende Tabellen/Benutzermetadaten und neue Token-/Historienjournal-Tabellen ab. TeamBoundary/TeamFrontend/TeamAdmin sind WordPress-Adapter; ProfileAvatar unterstützt native Bilder ohne Pflichtplugin. EventEditor kann den Teilnahmeabgleich innerhalb derselben Sperre/Transaktion anstoßen. Benachrichtigungen werden erst nach Commit transportiert; dauerhafte Versandverarbeitung folgt in Block 8. Details und Grenzen in [Block 5](block-5-teams.md).

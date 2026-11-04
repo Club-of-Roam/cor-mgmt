@@ -20,7 +20,8 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 2 | technische Laufzeitbasis umgesetzt | Autoloading, Adapter, Lebenszyklus, Qualitätsprüfungen und Paketbau gemäß block-2-foundation.md; Releaseabnahme separat |
 | 3 | Installation und kontrollierte Zwischenmigration umgesetzt | Fachliche Umschaltung, kompletter Archivsnapshot und abschließende Modul-/Releaseabnahme noch offen; block-3-migration.md |
 | 4 | Verwaltungsumbau im Kompatibilitätsbetrieb umgesetzt | block-4-events.md; Teilnehmer-Kapazitätsvertrag, aktive Migration und vollständiges Archiv mit Folgeblöcken abnehmen |
-| 5–6 | offen | Teams/Profile, Ergebnisse |
+| 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
+| 6 | offen | Ergebnisse normalisieren und historische Werte unverändert abgleichen |
 | 7 | offen | Fachliche Zahlungsprüfung zuerst |
 | 8–9 | offen | Kommunikation/Börse, Ticker/Medien |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
@@ -31,7 +32,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Nächster Fachumbau: Teams/Profile aus Block 5; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
+3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Teams/Profile aus Block 5 sind umgestellt; nächster Fachumbau: Ergebnisse aus Block 6; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -91,3 +92,11 @@ Prüfabschluss Block-3-Paket: 267 PHP-Tests / 1.261 Assertions auf jeder Version
 Keine Anwendungsmigration und keine aktive Generation ausgewählt. Rennen abschließen bleibt bis zum vollständigen Archivsnapshot gesperrt. Teilnehmerwriter/Routenfreigabe und ihre gemeinsame Nebenläufigkeit gehören zu Block 5; komplette Historie zu Block 3/6/7/9. MyISAM-Mehrfachaktionen benötigen zuerst kontrollierte Engine-Prüfung. Browser-/Releaseabnahme bleibt offen. Ausgeführte Prüfungen in verification.md. Keine Git-Aktionen.
 
 Prüfabschluss des Verwaltungspakets: Vollsuiten mit 370 Tests / 1.492 Assertions je PHP-Version 8.2/8.3/8.4/8.5 bestanden; betroffene Suite nach Etappenfilter-Ergänzung mit 42 Tests / 172 Assertions auf allen vier Versionen wiederholt, zusätzliche Kontoauswahlregression ebenfalls bestanden. Composer-Prüfungen, 7 Node-Tests und ESLint erfolgreich. Paketbau und Produktionsloader ohne Entwicklungsabhängigkeiten geprüft. Nachweise und Grenzen in verification.md. Geeigneter manueller Commit-Zeitpunkt; keine automatischen Commits oder Pushes.
+
+## Block 5 – Teams, Einladungen und Profile (2026-11-04)
+
+[Umsetzung und Grenzen](block-5-teams.md): TeamPolicy/TeamManager und transaktionales Kompatibilitätsrepository ersetzen die bisherigen Team-/Teilnehmerwriter. Anmeldung, unbegrenzte Einladungen ohne Reservierung, einmaliger Verbrauch, Widerruf, Altcode-Übergang, Mitgliedschaften, Freigabe, Routenwahl und Profilpflege folgen der Phasenmatrix. Teamstatus und Routenbelegung werden bei relevanten Änderungen ausdrücklich abgeglichen; reine Anzeigen schreiben und senden nichts. Letzte Plätze sind mit parallelen Prozessen geprüft.
+
+Native Team-/Profilformulare, eigene Avatarannahme und paginierte, sortierbare sowie filterbare Verwaltungslisten eingeführt. Objektberechtigte Einzel-/Sammelbestätigungen, unveränderte Bestätigungs-IDs und gesonderte Mitgliedschaftshistorie erhalten den Teilnahmeablauf. Additives Teilnahme-Modul 1.0.0 wird ausdrücklich oder bei Aktivierung eingerichtet, ohne automatische Engine-Änderungen oder Datenumschaltung.
+
+Prüfabschluss: 466 Tests / 1.963 Assertions je PHP-Version 8.2/8.3/8.4/8.5; ergänzter Formularfall danach auf allen vier Versionen erneut bestanden. Composer-Qualitätsprüfungen, 7 Node-Tests, ESLint und Produktionspaket mit 236 Dateien geprüft; Belege in verification.md. Browser-/Tastatur-/Accessibility- und positiver multipart-Nachweis stehen noch aus. Gesamter Archivsnapshot, Ergebnisnormalisierung, Zahlungsverfahren/-einheiten und Versandqueue bleiben in den zugeordneten Folgeblöcken. Keine historischen Ergebnisse geändert, keine Anwendungsmigration und keine Git-Aktionen. Nächster fachlicher Umbau: Block 6.

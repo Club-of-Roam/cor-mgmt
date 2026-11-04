@@ -96,3 +96,9 @@ TextCodecTest prüft erklärte Zeichensätze und byteidentische Rückkonvertieru
 ## Rennen-/Routenverwaltung ab Block 4
 
 [EventPolicyTest](../tests/Foundation/EventPolicyTest.php) prüft Feldgruppen über alle fünf Phasen. [EventManagementTest](../tests/Integration/EventManagementTest.php) verwendet echte WordPress-Rechte/Nonces, transaktionale Daten, eine weitere DB-Verbindung und eigene MyISAM-Testtabellen. Abgedeckt sind Warnung/Bestätigung ohne stille Umverteilung, Revisionen, verknüpfte Struktur, Rückwechsel, unveränderte Zusatzfelder/Zeitstempel, begrenzte Routenkonten, Lockkonflikt und Rollback. Renderingprüfungen ersetzen keine Browser-/Tastaturabnahme. Gemeinsame konkurrierende Teilnehmerwriter werden in Block 5 ergänzt. Ergebnisse in verification.md.
+
+## Teams und Profile ab Block 5
+
+TeamPolicyTest prüft die Phasenmatrix und Freigabe als reine Fachlogik. TeamManagementTest verwendet echte WordPress-Konten/Rechte/Nonces und transaktionale Daten für Anmeldung, Codes, Bestätigungen, Profil, Adminlisten, Widerruf und Fehler-Rollback. ParticipationInstallationTest verwendet disposable Präfixe für Modul-DDL. TeamConcurrencyTest startet getrennte PHP-Prozesse mit einer gemeinsamen Startbarriere und prüft die letzten Mitglieds-/Routenplätze sowie MyISAM-Legacycodes. Alle Ressourcen sind synthetisch und unterliegen der bestehenden Bootstrap-Isolation. Die PHP-Matrix führt diese Fälle automatisch mit aus.
+
+`php tools/export-schema.php --participation --write` aktualisiert die separate Modulreferenz; composer check vergleicht beide Schemareferenzen. Kein Test führt Engine-Änderungen an Anwendungsdaten aus. Native Formular-/Avataradapter sind serverseitig geprüft; vollständiger Browser-, Tastatur-, Accessibility- und positiver multipart-Uploadnachweis steht noch aus. Umfang: [Block 5](block-5-teams.md).
