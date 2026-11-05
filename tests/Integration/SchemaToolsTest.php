@@ -39,12 +39,17 @@ final class SchemaToolsTest extends TestCase {
     }
     public static function invalidRequests(): array {
         return [
+            ['GET',true,'valid','results-setup','post_required'],['POST',false,'valid','results-setup','forbidden'],['POST',true,'wrong','results-setup','invalid_nonce'],
             ['GET',true,'valid','participation-setup','post_required'],['POST',false,'valid','participation-setup','forbidden'],['POST',true,'wrong','participation-setup','invalid_nonce'],
             ['GET',true,'valid','preflight','post_required'],['POST',false,'valid','preflight','forbidden'],
             ['POST',true,'wrong','preflight','invalid_nonce'],['POST',true,[],'preflight','invalid_nonce'],
             ['POST',true,'valid',[],'invalid_operation'],['POST',true,'valid','drop','invalid_operation'],
             ['POST',true,'valid','start','maintenance_prerequisites'],['POST',true,'valid','step','maintenance_prerequisites'],
         ];
+    }
+    public function testAuthorizedResultsSetupIsExplicitAndIdempotent(): void {
+        $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'results-setup'];
+        $result=$this->request();self::assertTrue($result['success']);self::assertTrue($result['data']['reload']);
     }
     public function testAuthorizedPreflightReturnsOnlyAggregateReport(): void {
         $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'preflight'];

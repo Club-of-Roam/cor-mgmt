@@ -48,9 +48,16 @@ Stand 2026-11-02.
 - D-33: Teilnahme-Modulversion 1.0.0 mit eigenem Installationsmanifest; Storage-3.0.0-Pläne und bisherige Marker bleiben stabil. Einrichtung ausdrücklich oder bei Aktivierung, ohne DDL während gewöhnlicher Seitenaufrufe.
 - D-34: Leere Teams und entfernte Beziehungen bleiben historisch erhalten. Unklare Mehrfachmitgliedschaften und Rennwechsel werden gesperrt statt geraten. Eigener Avataradapter mit optionalem Legacy-Leseadapter; kompletter Archivsnapshot und Versandqueue bleiben den Folgeblöcken zugeordnet.
 
+## Umsetzung Block 6 (2026-11-05)
+
+- D-35: Neue Wertung erhält ein ausdrückliches Rennprofil 2.0.0. Aktivierung nur Phase 0 ohne historische Ergebniswerte; historische Rennen behalten gespeicherte Summen und bisherigen Renderer. Der alte fehlerhafte Writer existiert nur noch als nicht ausgelieferte Testreferenz.
+- D-36: Ergebnis-Modul 1.0.0 ist additiv und unabhängig von Storage 3.0.0, Legacy-Schema 2.8 und Plugin-Release. Ein Ergebnis gehört zu Team- und Etappen-ID; die ersten sechs Legacy-Slots und total_points sind bei neuen Wertungen nur eine Kompatibilitätsprojektion.
+- D-37: Ergebnisschreiben ist nur Phase 3 mit Route-/Rennberechtigung zulässig. Validierung aller Teams vor Schreibbeginn, gemeinsame Sperre/Transaktion, Revision einschließlich Journalgeneration, gespeicherte Regelwerte und Änderungsjournal. Identische Wiederholung verändert das Journal nicht. Gewertete Etappen werden nicht strukturell umgehängt/gelöscht; Teams mit Ergebnissen wechseln nicht unkontrolliert die Route.
+- D-38 (fachlich bestätigt 2026-11-05): Zusatzpunkte bleiben bei fehlender Platzierung (0) und Disqualifikation (99) möglich. Variable Zusatzpunkte bleiben bei aktiviertem Funktionsschalter auf Etappe 6 begrenzt. Beide Antworten bestätigen das bereits implementierte Verhalten; der bestehende technische Eingabebereich 0..255 bleibt unverändert. Historische Ergebnisse werden nicht neu berechnet. Weitere Etappen können weiterhin Platz-/feste Zusatzpunkte erhalten.
+
 ## Offene Fachprüfung
 
-Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D-17/18 beantwortet. Spätere Detailarbeit: Zusatzantworten genauer klassifizieren (bis dahin alle erlaubt), Wirkungen von Datumskorrekturen, konkrete Rollen-/Einzelrechte für Teilnehmer-Adminaktionen, Snapshotumfang des Archivs und zulässige variable Punkte. Wechsel in ein anderes Rennen separat behandeln. Ein gewöhnlicher Rückwechsel aus dem eingefrorenen Archiv ist nicht beschlossen. Historische Datenfehler sind weiterhin nicht durch den Codebefund allein nachgewiesen.
+Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D-17/18 beantwortet. Spätere Detailarbeit: Zusatzantworten genauer klassifizieren (bis dahin alle erlaubt), Wirkungen von Datumskorrekturen, konkrete Rollen-/Einzelrechte für Teilnehmer-Adminaktionen, Snapshotumfang des Archivs. Die beiden Zusatzpunktfragen sind durch D-38 beantwortet. Wechsel in ein anderes Rennen separat behandeln. Ein gewöhnlicher Rückwechsel aus dem eingefrorenen Archiv ist nicht beschlossen. Historische Datenfehler sind weiterhin nicht durch den Codebefund allein nachgewiesen.
 
 - Block 7: aktive Verfahren versus Archiv, maßgebliche Bestätigung, Testumgebung des Anbieters ermitteln; vor Implementierung dokumentieren.
 - Block 6: historische Punktefehler zunächst mit Ist-/Soll-Vergleich belegen; keine stille Neuberechnung der Historie.

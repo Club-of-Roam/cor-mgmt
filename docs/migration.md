@@ -64,3 +64,8 @@ Die [neun DDL-Anweisungen des Altinstallers](legacy-schema-reference.md) sind al
 ## Additives Teilnahme-Modul (Block 5)
 
 [Modulreferenz 1.0.0](schema-participation-1.0.0.sql) und eigenes Manifest ergänzen Hash-Codes sowie Rohdatenhistorie, ohne den eingefrorenen Storage-/Shadow-Plan zu verändern. Bestandscode-Verbrauch bleibt ohne ALTER/DELETE in der Quelltabelle nachvollziehbar. Team-/Benutzer-IDs bleiben maßgeblich; keine aktive Generation oder Archivsnapshots durch dieses Paket. Installation, Engine-Schutz und Übergangsgrenzen in [Block 5](block-5-teams.md).
+
+
+## Ergebnis-Modul aus Block 6
+
+Die kontrollierte Zwischenkopie legacy-shadow-v1 bleibt unverändert. Deren cor_mgmt_stage_results sind Rohprojektionen pro Lauf/Team/Legacy-Slot und keine Live-Ergebnistabelle. Das additive Ergebnis-Modul besitzt cor_mgmt_scoring_profiles, cor_mgmt_results und cor_mgmt_result_history; siehe [Schema](schema-results-1.0.0.sql). Neue Wertungen verwenden Team-/Etappen-IDs, gespeicherte Regelwerte und ein Journal. Keine automatische Übernahme alter Ergebnisse oder Neuberechnung. Der diagnostische Vergleich ist ausdrücklich keine fachlich freigegebene Korrektur und keine Aktivierung des Gesamtarchivs; siehe [Block 6](block-6-results.md).

@@ -30,6 +30,12 @@ final class Installer
             $this->create(ParticipationSchema::definitions(), 'cor_mgmt_participation_install', false, false);
         });
     }
+    public function results(): void
+    {
+        $this->db->locked(function (): void {
+            $this->create(ResultsSchema::definitions(), 'cor_mgmt_results_install', false, false);
+        });
+    }
     public function pendingFresh(): bool
     {
         $raw = $this->db->option('cor_mgmt_fresh_install');

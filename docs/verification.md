@@ -1,5 +1,27 @@
 # Prüfbelege
 
+## Block 6: Ergebnisse und Wertung – 2026-11-05
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Suite | 259 Tests / 529 Assertions | 259 / 529 | 259 / 529 | 259 / 529 |
+| WordPress-Gesamtsuite | 266 Tests / 1.692 Assertions | 266 / 1.692 | 266 / 1.692 | 266 / 1.692 |
+| Ergänzter Etappen-Grenztest | 1 Test / 4 Assertions | 1 / 4 | 1 / 4 | 1 / 4 |
+| Rennen/Teilnahme/Ergebnisse und parallele Writer erneut | 110 Tests / 767 Assertions | 110 / 767 | 110 / 767 | 110 / 767 |
+| Abschließende Ergebnis-/Teilnahmesuiten | 65 Tests / 543 Assertions | 65 / 543 | 65 / 543 | 65 / 543 |
+| composer check | bestanden | bestanden | bestanden | bestanden |
+
+Die Gesamtsuite wurde vor der abschließenden Anpassung der Etappenobergrenze ausgeführt. Nach der Korrektur entsprechend dem bestehenden tinyint-Feld wurde der zusätzliche Test für 255/256 auf allen vier Versionen separat erfolgreich ausgeführt. Danach wurden die betroffenen Rennen-/Teilnahme-/Ergebnis-Suiten einschließlich beider Prozess-Konkurrenztests nach der Freigaberückstufungs-Ergänzung erneut erfolgreich auf allen vier Versionen ausgeführt (110 Tests / 767 Assertions). Nach Ergänzung der Löschsperre für normalisierte Null-Punkte-Ergebnisse bestanden die Ergebnis-/Teilnahmesuiten nochmals auf allen vier Versionen (65 Tests / 543 Assertions). Die Wiederholungssuiten überschneiden sich und werden nicht zu einer Gesamtzahl addiert.
+
+Neue Nachweise: unveränderte Platzpunkte; Zusatzpunkte ohne Platzierung/bei Disqualifikation entsprechend der inzwischen fachlich bestätigten Regel D-38; unabhängiger fester Bonus; variable Werte 1 und 7 bleiben bei weiteren Etappeneingaben erhalten; siebte Etappe ohne erfundene Legacy-Spalten; Gleichstände, hohe Summen und exakte Top-Grenzen; Rechte, Nonce, Phase, Team-/Etappenzuordnung; veraltete Revisionen einschließlich Änderung/Rückkehr; identische Wiederholung ohne neues Journal. Erzwungene Fehler beim zweiten Ergebnis oder nach sämtlichen Ergebniswrites vor dem Journal rollen Ergebnisse und Legacy-Projektion gemeinsam zurück. Bestehende Ergebniswerte verhindern eine stille Aktivierung, Umhängung oder Löschung der gewerteten Struktur. Erlaubte Phasenrückwechsel dürfen Teams zurückstufen und Routenplätze freigeben; Ergebniszeilen und Summen bleiben erhalten, die bisherige Route kann später wieder zugewiesen werden.
+
+ResultConcurrencyTest startet zwei echte PHP-Prozesse mit derselben Revision. Genau ein Stand gewinnt; zwei Ergebniszeilen und genau ein Journal bleiben zusammen erhalten. ResultsInstallationTest prüft wiederholbare additive Einrichtung, fremde Tabellen, laufendes/abgeschlossenes Manifest, fehlende Tabelle und MyISAM-/Planabweichung. HistoricalComparison ist als schreibfreie arithmetische Diagnose geprüft; unklare Zuordnungen liefern keinen geratenen Kandidaten. Charakterisierung des alten TypeError-Writers liegt jetzt nur in der nicht ausgelieferten Testreferenz.
+
+7 Node-Tests und ESLint bestanden. Syntaxprüfung umfasst 134 PHP-Dateien; Inventar 93 PHP-Quellen / 23 Shortcodes / 69 Methoden mit literalen Request-Feldern. Dokumentationsprüfung: 28 Markdown-Dateien, 0 Fehler. Pluginheader, Lockdateien und beide bisherigen SQL-Referenzen unverändert. Keine Anwendungsmigration, keine Bestandsneuberechnung, keine produktiven Schnittstellen und keine Git-Aktionen. Aktueller Umsetzungsumfang und verbleibende Bestands-/Archiv-/Browserabnahme: [Block 6](block-6-results.md).
+
+Paketgrenzen und Produktionsloader mit 248 Dateien auf PHP 8.2/8.5 geprüft. Entwicklungswerkzeuge, Testreferenzen und private SQL-Dateien werden nicht ausgeliefert. Abschließender Paketbau zweimal mit identischem SHA256; Produktionsloader und Paketgrenzen erneut unter PHP 8.2/8.5 geprüft.
+
+
 ## Block 5: Teams und Profile – 2026-11-04
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

@@ -1,6 +1,6 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-04. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-05. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
 PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. Der fehlgeschlagene GitHub-Lauf wurde analysiert; für die Korrektur gibt es noch keinen entfernten Wiederholungslauf.
 
@@ -21,7 +21,7 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 3 | Installation und kontrollierte Zwischenmigration umgesetzt | Fachliche Umschaltung, kompletter Archivsnapshot und abschließende Modul-/Releaseabnahme noch offen; block-3-migration.md |
 | 4 | Verwaltungsumbau im Kompatibilitätsbetrieb umgesetzt | block-4-events.md; Teilnehmer-Kapazitätsvertrag, aktive Migration und vollständiges Archiv mit Folgeblöcken abnehmen |
 | 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
-| 6 | offen | Ergebnisse normalisieren und historische Werte unverändert abgleichen |
+| 6 | neue Wertung und Historienvergleich umgesetzt; Abnahme offen | block-6-results.md; vollständiges Archiv, Bestandsvergleich und Browserabnahme bleiben offen |
 | 7 | offen | Fachliche Zahlungsprüfung zuerst |
 | 8–9 | offen | Kommunikation/Börse, Ticker/Medien |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
@@ -32,7 +32,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Teams/Profile aus Block 5 sind umgestellt; nächster Fachumbau: Ergebnisse aus Block 6; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
+3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Teams/Profile aus Block 5 und die neue Wertung aus Block 6 sind umgestellt; nächster Fachbereich: fachliche Zahlungsprüfung in Block 7; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -100,3 +100,16 @@ Prüfabschluss des Verwaltungspakets: Vollsuiten mit 370 Tests / 1.492 Assertion
 Native Team-/Profilformulare, eigene Avatarannahme und paginierte, sortierbare sowie filterbare Verwaltungslisten eingeführt. Objektberechtigte Einzel-/Sammelbestätigungen, unveränderte Bestätigungs-IDs und gesonderte Mitgliedschaftshistorie erhalten den Teilnahmeablauf. Additives Teilnahme-Modul 1.0.0 wird ausdrücklich oder bei Aktivierung eingerichtet, ohne automatische Engine-Änderungen oder Datenumschaltung.
 
 Prüfabschluss: 466 Tests / 1.963 Assertions je PHP-Version 8.2/8.3/8.4/8.5; ergänzter Formularfall danach auf allen vier Versionen erneut bestanden. Composer-Qualitätsprüfungen, 7 Node-Tests, ESLint und Produktionspaket mit 236 Dateien geprüft; Belege in verification.md. Browser-/Tastatur-/Accessibility- und positiver multipart-Nachweis stehen noch aus. Gesamter Archivsnapshot, Ergebnisnormalisierung, Zahlungsverfahren/-einheiten und Versandqueue bleiben in den zugeordneten Folgeblöcken. Keine historischen Ergebnisse geändert, keine Anwendungsmigration und keine Git-Aktionen. Nächster fachlicher Umbau: Block 6.
+
+
+## Block 6 – Ergebnisse und Wertung (2026-11-05)
+
+[Umsetzung und Grenzen](block-6-results.md): reine versionierte Punkteberechnung, normalisierte Team-/Etappenergebnisse, transaktionale Mehrteam-Eingabe mit gemeinsamer Sperre, Revision und Änderungsjournal. Die bestehenden Ergebnis-Shortcodes delegieren an native Formulare; Ranglisten unterstützen Gesamt-/Routenränge, Gleichstände, exakte Begrenzung und dynamische Etappen. Fehlerhafte variable Summen betreffen die neue Berechnung; historische Summen und die bisherige historische Darstellung bleiben unverändert.
+
+Zusätzliches Ergebnis-Modul 1.0.0 mit eigenem Installationsmanifest; bestehende Storage-/Migrationspläne bleiben unverändert. Wertung 2.0 wird ausdrücklich pro Rennen in Phase 0 eingeschaltet und bei vorhandenen historischen Punkten/Flags abgewiesen. Ohne Wertungsprofil bleiben Ergebniswriter gesperrt; das ist kein stiller Wechsel der Historie. Ein nur lesender Vergleich meldet hypothetische Summenabweichungen und unklare Etappenzuordnungen.
+
+Keine Anwendungskopie migriert, keine Wertung aktiviert, keine vorhandenen Ergebnisse neu berechnet. Vollständiger Archivsnapshot, fachlicher Bestandsabgleich und Browser-/Tastaturabnahme bleiben offen. Zahlungswege weiterhin erst nach fachlicher Prüfung in Block 7. Prüfbelege in verification.md. Keine Git-Aktionen.
+
+Der erlaubte Phasenrückwechsel erhält auch bei vorhandenen Ergebnissen Freigaberückstufung und Freigabe von Routenplätzen. Die bisherigen Ergebniszeilen bleiben erhalten; dieselbe Route kann wieder zugewiesen werden. Gespeicherte Null-Punkte-Ergebnisse schützen ihr Team vor Löschung. Die abschließend betroffenen Suiten sind auf allen vier PHP-Versionen erfolgreich geprüft und gesondert in verification.md ausgewiesen.
+
+Fachbestätigung 2026-11-05 (D-38): Zusatzpunkte bei Platz 0/99 bleiben möglich; variable Zusatzpunkte bleiben bei aktiviertem Schalter ausschließlich auf Etappe 6. Beide zuvor vorläufigen Regeln sind damit verbindlich bestätigt. Kein Anwendungscode geändert; bestehende Tests decken dieses Verhalten bereits ab. Bestands-/Archiv- und Browserabnahme bleiben offen.

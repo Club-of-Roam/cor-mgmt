@@ -50,3 +50,12 @@ IDs, Benutzerzuordnungen, Sprachdaten und unbekannte Metadaten erhalten. Bekannt
 ## Sicherheitsverträge ab Block 1
 
 POST-/Nonce-/Objektprüfungen, authentifiziertes Medien-AJAX, HMAC-Gateway und Ersatz der Uploadskripte gemäß [Sicherheitsbasis](block-1-security.md). Die frühere unbekannte Verwendung von Profile_Layer_Pics ist jetzt auf das separate overlayer_maker-Plugin zurückgeführt: profile_layer erhält einen geschützten WordPress-Formularadapter. Die alte Upload-URL bleibt gesperrt. Theme und cor-ticker wurden nicht geändert. Diese Bestandsadapter ersetzen keine vollständige Gesamtabnahme der Nachbarplugins.
+
+
+## Ergebnisgrenze ab Block 6
+
+Die Shortcodes h3-submit-rankings und h3-ranking-table bleiben erhalten. Auch ranking_submission_form und save_ranking delegieren weiter. Neue Ergebnisformulare benötigen zusätzlich cor_result_revision aus der Plugin-Darstellung und weiterhin die routengebundene cor_mgmt_nonce; alte eigenständig gebaute POST-Formulare werden ohne Revision sicher abgewiesen. Eigene Themeformulare müssen den Plugin-Renderer verwenden oder diesen Vertrag übernehmen. Für Routen-/Etappenwahl wird ausschließlich das aktive Rennen berücksichtigt.
+
+Andere Module dürfen total_points und die ersten sechs Legacy-Slots weiter lesen; sie sind bei neuen Wertungen eine Kompatibilitätsprojektion. Ergebnisse weiterer Etappen liegen ausschließlich normalisiert vor. Direkte externe Ergebniswriter würden Sperre, Revision und Journal umgehen und müssen vor Veröffentlichung entfernt oder über den neuen Anwendungsfall angebunden werden. Der Schema-Zwischenlauf allein aktiviert keine neue Wertung und kopiert das additive Live-Ergebnis-Modul noch nicht.
+
+Theme, cor-ticker und ausgelagerte Endpunkte wurden in Block 6 nicht verändert. Ihre Gesamt-/Archiv- und Browserabnahme bleibt den Folgeblöcken zugeordnet; siehe [Block 6](block-6-results.md).

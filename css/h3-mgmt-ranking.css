@@ -4,3 +4,9 @@
 .trow-alt-2 th{
 	border: none;
 }
+/* Native result form and responsive ranking table. */
+.cor-ranking-scroll { max-width: 100%; overflow-x: auto; }
+.cor-result-form fieldset { margin-block: 1rem; padding: 1rem; border: 1px solid #767676; }
+.cor-result-form label { display: block; margin-block: .5rem; }
+.cor-result-form select, .cor-result-form input[type="number"] { min-height: 2.75rem; }
+.cor-result-form :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }

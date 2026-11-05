@@ -389,4 +389,12 @@ final class EventManagementTest extends TestCase
         self::assertStringContainsString('route_filter=11',$html);
     }
 
+    public function testAdditionalStagesRespectActualLegacyNumberStorage(): void
+    {
+        $this->save('stage',21,['number'=>'255']);
+        self::assertSame('255',$this->store->find('stage',21)['number']);
+        $this->rejects('invalid_number',fn()=>$this->save('stage',21,['number'=>'256']));
+        self::assertSame('255',$this->store->find('stage',21)['number']);
+    }
+
 }

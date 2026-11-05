@@ -883,29 +883,9 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @since 1.0
 		 * @access public
 		 */
-		public function ranking_submission_control() {
-			global $current_user;
-
-			$race_id = $this->get_active_race();
-
-			$output = '';
-			$users  = $this->get_route_users( $race_id );
-
-			if ( in_array( $current_user->ID, $users ) ) {
-				$route_id = $this->get_route_by_user( $current_user->ID );
-				if ( isset( $_POST['submitted'] ) ) {
-					$output .= $this->save_ranking();
-				} elseif ( isset( $_GET['stage'] ) ) {
-					$output .= $this->ranking_submission_form( $route_id, $_GET['stage'] );
-				} else {
-					$output .= $this->stage_selector( $route_id );
-				}
-			} else {
-				$output .= '<p>' . __( 'Rankings can only be submitted from a specific route user account!', 'h3-mgmt' ) . '</p>';
-			}
-
-			return $output;
-		}
+        public function ranking_submission_control() {
+            return \Cor\Mgmt\WordPress\ResultFrontend::control();
+        }
 
 		/**
 		 * Ranking Submission Form
@@ -913,170 +893,9 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @since 1.0
 		 * @access public
 		 */
-		public function ranking_submission_form( $route_id, $stage_number, $message = '' ) {
-			global $h3_mgmt_teams;
-
-			list( $team_count, $complete_count, $incomplete_count, $teams ) = $h3_mgmt_teams->get_teams_meta(
-				array(
-					'orderby'            => 'team_name',
-					'exclude_incomplete' => true,
-					'parent'             => $route_id,
-					'parent_type'        => 'route',
-				)
-			);
-
-				$race_id       = $this->get_route_parent( $route_id );
-				$race_settings = $this->get_race_setting( $race_id );
-
-			$stage_rank_string   = 'rank_stage_' . $stage_number;
-			$extra_string        = 'extra_stage_' . $stage_number;
-			$amount_extra_string = 'amount_extra_stage_' . $stage_number;
-			$vary_extra_string   = 'vary_extra_stage_' . $stage_number;
-
-			$output = '';
-
-			if ( ! empty( $message ) ) {
-				$output .= '<p class="message" style="max-width: 500px; margin-left: auto; margin-right: auto;">' . $message . '</p>';
-			}
-
-			$output .= '<form class="ranking-submissions" action="" method="post">' . H3_MGMT_Security::nonce('cor-mgmt-ranking-' . (int) $route_id) .
-				'<input type="hidden" name="submitted" value="y"/>' .
-				'<input type="hidden" name="route" id="route" value="' . $route_id . '" />' .
-				'<input type="hidden" name="stage" id="stage" value="' . $stage_number . '" />';
-
-			$options = array(
-				array(
-					'value' => 0,
-					'label' => '---------------------&nbsp;',
-				),
-				array(
-					'value' => 1,
-					'label' => __( '1st', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 2,
-					'label' => __( '2nd', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 3,
-					'label' => __( '3rd', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 4,
-					'label' => __( '4th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 5,
-					'label' => __( '5th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 6,
-					'label' => __( '6th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 7,
-					'label' => __( '7th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 8,
-					'label' => __( '8th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 9,
-					'label' => __( '9th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 10,
-					'label' => __( '10th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 11,
-					'label' => __( '11th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 12,
-					'label' => __( '12th', 'h3-mgmt' ),
-				),
-				array(
-					'value' => 99,
-					'label' => __( 'disqualified', 'h3-mgmt' ),
-				),
-			);
-
-			foreach ( $teams as $team ) {
-				$output .= '<div style="max-width: 500px; margin-left: auto; margin-right: auto;">' .
-					'<h3> Team: ' . $team['team_name'] . '</h3>' .
-					'<label>' . __( 'Rank', 'h3-mgmt' ) . '</label>&nbsp;&nbsp;' .
-					'<select style="width: 100%;" id="rank-' . $team['id'] . '" name="rank-' . $team['id'] . '">';
-
-				foreach ( $options as $option ) {
-					$output .= '<option value="' . $option['value'] . '"';
-					if ( $option['value'] == $team[ $stage_rank_string ] ) {
-						$output .= ' selected="selected"';
-					}
-					$output .= '>' . $option['label'] . '</option>';
-				}
-
-				if ( $stage_number < 6 ) {
-					$output .= '</select><br />';
-
-					if ( ! $race_settings['one_extra_point'] == null && ! $race_settings['one_extra_point'] == 0 ) {
-									$output .= '<input type="checkbox" name="one_extra-' . $team['id'] . '" id="one_extra-' . $team['id'] . '"';
-						if ( 1 == $team[ $extra_string ] ) {
-								$output .= ' checked="checked"';
-						}
-									$output .= ' />' .
-													'<label style="float: left;">' . __( 'Extra point?', 'h3-mgmt' ) . '</label><br style="clear: left">';
-					}
-
-					if ( ! $race_settings['amount_extra_point'] == null && ! $race_settings['one_extra_point'] == 0 ) {
-						$output .= '<input type="checkbox" name="amount_extra-' . $team['id'] . '" id="amount_extra-' . $team['id'] . '"';
-						if ( 1 == $team[ $amount_extra_string ] ) {
-								$output .= ' checked="checked"';
-						}
-						$output .= ' />' .
-										'<label style="float: left;">' . $race_settings['extra_point_amount'] . ' ' . __( 'Extra points?', 'h3-mgmt' ) . '</label><br style="clear: left">';
-					}
-
-					$output .= '<hr> </div>';
-				} else {
-					$output .= '</select><br />';
-
-					if ( ! $race_settings['one_extra_point'] == null && ! $race_settings['one_extra_point'] == 0 ) {
-						$output .= '<input type="checkbox" name="one_extra-' . $team['id'] . '" id="one_extra-' . $team['id'] . '"';
-						if ( 1 == $team[ $extra_string ] ) {
-								$output .= ' checked="checked"';
-						}
-						$output .= ' />' .
-										'<label style="float: left;">' . __( 'Extra point?', 'h3-mgmt' ) . '</label><br style="clear: left">';
-					}
-
-					if ( ! $race_settings['amount_extra_point'] == null && ! $race_settings['one_extra_point'] == 0 ) {
-						$output .= '<input type="checkbox" name="amount_extra-' . $team['id'] . '" id="amount_extra-' . $team['id'] . '"';
-						if ( 1 == $team[ $amount_extra_string ] ) {
-								$output .= ' checked="checked"';
-						}
-						$output .= ' />' .
-										'<label style="float: left;">' . $race_settings['extra_point_amount'] . ' ' . __( 'Extra points?', 'h3-mgmt' ) . '</label><br style="clear: left">';
-					}
-
-					if ( ! $race_settings['vary_extra_point_field'] == null && ! $race_settings['vary_extra_point_field'] == 0 ) {
-						$output .= '<label >' . __( 'Which extra point amount?', 'h3-mgmt' ) . '</label>' .
-										'<input type="text" name="vary_extra-' . $team['id'] . '" id="vary_extra-' . $team['id'] . '"';
-						$output .= ' value="' . $team[ $vary_extra_string ] . '" size="2"';
-
-						$output .= ' />';
-					}
-					$output .= '<hr> </div>';
-				}
-			}
-
-			$output .= '<div class="form-row" style="max-width: 500px; margin-left: auto; margin-right: auto;">' .
-					'<input type="submit" value="' . _x( 'Save Ranking', 'Ranking Submission', 'h3-mgmt' ) . '"></form>' .
-					'</div>';
-
-			return $output;
-		}
+        public function ranking_submission_form( $route_id, $stage_number, $message = '' ) {
+            return \Cor\Mgmt\WordPress\ResultFrontend::form((int) $route_id, (int) $stage_number, (string) $message);
+        }
 
 		/**
 		 * Saves ranking data
@@ -1084,131 +903,9 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @since 1.0
 		 * @access public
 		 */
-		public function save_ranking() {
-            if (!H3_MGMT_Security::ranking_request()) { return H3_MGMT_Security::error(); }
-            global $wpdb;
-            $wpdb->query('START TRANSACTION');
-            try {
-                $output = $this->persist_ranking();
-                if ($wpdb->last_error !== '') { throw new RuntimeException('Ranking write failed'); }
-                $wpdb->query('COMMIT');
-                return $output;
-            } catch (Throwable $error) {
-                $wpdb->query('ROLLBACK');
-                \Cor\Mgmt\WordPress\Services::get()->logger->error('ranking_write_failed', $error);
-                return H3_MGMT_Security::error();
-            }
+        public function save_ranking() {
+            return \Cor\Mgmt\WordPress\ResultBoundary::save();
         }
-
-        private function persist_ranking() {
-			global $wpdb, $h3_mgmt_teams;
-
-				$race_id       = $this->get_route_parent( $_POST['route'] );
-				$race_settings = $this->get_race_setting( $race_id );
-
-			$message = _x( 'Ranking successfully saved!', 'Ranking Submission', 'h3-mgmt' );
-
-			list( $team_count, $complete_count, $incomplete_count, $teams ) = $h3_mgmt_teams->get_teams_meta(
-				array(
-					'orderby'            => 'team_name',
-					'exclude_incomplete' => true,
-					'parent'             => $_POST['route'],
-				)
-			);
-
-			$stage               = $_POST['stage'];
-			$stage_rank_string   = 'rank_stage_' . $_POST['stage'];
-			$extra_string        = 'extra_stage_' . $_POST['stage'];
-			$amount_extra_string = 'amount_extra_stage_' . $_POST['stage'];
-			$vary_extra_string   = 'vary_extra_stage_' . $_POST['stage'];
-
-			foreach ( $teams as $team ) {
-				$rank_value_string              = 'rank-' . $team['id'];
-				$one_extra_value_string         = 'one_extra-' . $team['id'];
-				$amount_extra_value_string      = 'amount_extra-' . $team['id'];
-				$vary_extra_value_string        = 'vary_extra-' . $team['id'];
-						$bit_amount_extra_value = 0;
-
-				if ( $stage < 6 ) {
-					if ( isset( $_POST[ $one_extra_value_string ] ) ) {
-						$one_extra_value = 1;
-					} else {
-						$one_extra_value = 0;
-					}
-					if ( isset( $_POST[ $amount_extra_value_string ] ) ) {
-						$amount_extra_value                     = $race_settings['extra_point_amount'];
-										$bit_amount_extra_value = 1;
-					} else {
-						$amount_extra_value = 0;
-					}
-								$vary_extra_value = 0;
-				} else {
-					if ( isset( $_POST[ $one_extra_value_string ] ) ) {
-						$one_extra_value = 1;
-					} else {
-						$one_extra_value = 0;
-					}
-					if ( isset( $_POST[ $amount_extra_value_string ] ) ) {
-						$amount_extra_value                     = $race_settings['extra_point_amount'];
-										$bit_amount_extra_value = 1;
-					} else {
-						$amount_extra_value                     = 0;
-										$bit_amount_extra_value = 0;
-					}
-					if ( isset( $_POST[ $vary_extra_value_string ] ) ) {
-						$vary_extra_value = $_POST[ $vary_extra_value_string ];
-					} else {
-						$vary_extra_value = 0;
-					}
-				}
-
-				$points = 0;
-
-				for ( $i = 1; $i <= 6; $i++ ) {
-					$srs    = 'rank_stage_' . $i;
-					$ses    = 'extra_stage_' . $i;
-					$amount = 'amount_extra_stage_' . $i;
-					$vary   = 'vary_extra_stage_' . $i;
-
-					if ( $_POST['stage'] != $i ) {
-						$temp_pts = $this->points_conversion( $team[ $srs ] );
-						if ( 1 == $team[ $ses ] ) {
-							$points = $points + 1;
-						}
-						if ( 1 == $team[ $amount ] ) {
-							$points = $points + $race_settings['extra_point_amount'];
-						}
-						if ( 1 == $team[ $vary ] ) {
-							$points = $points + $vary_extra_value_string;
-						}
-					} else {
-						$temp_pts = $this->points_conversion( $_POST[ $rank_value_string ] );
-						$points   = $points + $one_extra_value + $vary_extra_value + $amount_extra_value;
-					}
-					$points = $points + $temp_pts;
-				}
-
-				$written = $wpdb->update(
-					$wpdb->prefix . 'h3_mgmt_teams',
-					array(
-						$stage_rank_string   => $_POST[ $rank_value_string ],
-						$extra_string        => $one_extra_value,
-						$amount_extra_string => $bit_amount_extra_value,
-						$vary_extra_string   => $vary_extra_value,
-						'total_points'       => $points,
-					),
-					array( 'id' => $team['id'] ),
-					array( '%d', '%d', '%d', '%d', '%d' ),
-					array( '%d' )
-				);
-                if ($written === false) { throw new RuntimeException('Ranking write failed'); }
-
-			}
-
-			$output = $this->ranking_submission_form( $_POST['route'], $_POST['stage'], $message );
-
-			return $output;
-		}
 
 		/**
 		 * Ranking Table Output
@@ -1217,6 +914,17 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function ranking_table( $atts = '' ) {
+            global $wpdb;
+            if ($wpdb instanceof \wpdb) {
+                try {
+                    $modern = \Cor\Mgmt\WordPress\ResultFrontend::table(is_array($atts) ? $atts : []);
+                    if ($modern !== null) { return $modern; }
+                } catch (\Throwable $error) {
+                    \Cor\Mgmt\WordPress\Services::get()->logger->error('ranking_read_failed', $error);
+                    return '<p>' . esc_html__('Rankings are currently unavailable.', 'h3-mgmt') . '</p>';
+                }
+            }
+
 			global $wpdb, $h3_mgmt_teams, $h3_mgmt_utilities, $h3_mgmt_races, $information_text;
 
 			extract(

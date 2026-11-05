@@ -58,6 +58,9 @@ final class ParticipationRepository implements ParticipationStore
     public function update(string $type, array $old, array $values): void
     {
         $this->db->assertLock();
+        if ($type === 'team' && isset($values['route_id']) && $values['route_id'] !== '0' && $values['route_id'] !== ($old['route_id'] ?? null) && $this->db->exists($this->db->table('cor_mgmt_results')) && $this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE team_id=%d AND route_id<>%d', $this->db->table('cor_mgmt_results'), (int) ($old['id'] ?? 0), (int) $values['route_id'])) !== '0') {
+            throw new ParticipationException('results_prevent_route_change');
+        }
         $changed = array_filter($values, static fn (?string $value, string $key): bool => !array_key_exists($key, $old) || $old[$key] !== $value, ARRAY_FILTER_USE_BOTH);
         if ($changed === []) {
             return;
@@ -77,6 +80,9 @@ final class ParticipationRepository implements ParticipationStore
     public function remove(string $type, array $old): void
     {
         $this->db->assertLock();
+        if ($type === 'team' && $this->db->exists($this->db->table('cor_mgmt_results')) && $this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE team_id=%d', $this->db->table('cor_mgmt_results'), (int) ($old['id'] ?? 0))) !== '0') {
+            throw new ParticipationException('dependent_records');
+        }
         $this->db->execute($this->db->prepare('DELETE FROM %i WHERE id=%d', $this->table($type), (int) ($old['id'] ?? 0)));
         if ($this->db->wpdb->rows_affected !== 1) {
             throw new ParticipationException('stale_record');

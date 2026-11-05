@@ -287,7 +287,7 @@ final class EventEditor
                 $this->integer($value, 0, 1);
             }
             if (in_array($field, ['max_teams', 'extra_point_amount', 'number'], true)) {
-                $this->integer($value, 0, $field === 'number' ? 6 : ($field === 'max_teams' ? 32767 : 65535));
+                $this->integer($value, 0, $field === 'number' ? 255 : ($field === 'max_teams' ? 32767 : 65535));
             }
             if (in_array($field, ['start', 'end', 'start_route_id', 'race_id', 'route_id', 'user_id'], true)) {
                 $this->integer($value, 0);

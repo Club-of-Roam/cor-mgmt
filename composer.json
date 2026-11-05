@@ -28,6 +28,7 @@
       "@php tools/check-docs.php",
       "@php tools/export-schema.php --check",
       "@php tools/export-schema.php --participation --check",
+      "@php tools/export-schema.php --results --check",
       "@analyse",
       "@lint:standards",
       "@lint:compatibility"

@@ -13,10 +13,10 @@ for ($index = 0; $index < $zip->numFiles; ++$index) {
     if (preg_match('~(?:^|/)(?:tests|tools|node_modules|phpunit|phpstan|\.git|\.env)(?:/|$)~', $name)) {
         throw new RuntimeException('Development or private files included: '.$name);
     }
-    if (!in_array($name, ['cor-mgmt/docs/schema-3.0.0.sql','cor-mgmt/docs/schema-participation-1.0.0.sql'], true) && preg_match('~(?:^|/)(?:error_log|[^/]+\.(?:log|sql|bak))$~i', $name)) { throw new RuntimeException('Private artifact included.'); }
+    if (!in_array($name, ['cor-mgmt/docs/schema-3.0.0.sql','cor-mgmt/docs/schema-participation-1.0.0.sql','cor-mgmt/docs/schema-results-1.0.0.sql'], true) && preg_match('~(?:^|/)(?:error_log|[^/]+\.(?:log|sql|bak))$~i', $name)) { throw new RuntimeException('Private artifact included.'); }
     $files[] = $name;
 }
-foreach (['h3-management.php','uninstall.php','vendor/autoload.php','runtime/legacy.php','src/WordPress/Lifecycle.php','js/app.js','docs/installation.md','docs/schema-3.0.0.sql','js/h3-mgmt-schema.js','docs/schema-participation-1.0.0.sql','src/WordPress/TeamFrontend.php'] as $required) {
+foreach (['h3-management.php','uninstall.php','vendor/autoload.php','runtime/legacy.php','src/WordPress/Lifecycle.php','js/app.js','docs/installation.md','docs/schema-3.0.0.sql','js/h3-mgmt-schema.js','docs/schema-participation-1.0.0.sql', 'docs/schema-results-1.0.0.sql','src/WordPress/TeamFrontend.php'] as $required) {
     if (!in_array('cor-mgmt/'.$required, $files, true)) { throw new RuntimeException('Missing runtime file: '.$required); }
 }
 $installed = json_decode($zip->getFromName('cor-mgmt/vendor/composer/installed.json'), true, 512, JSON_THROW_ON_ERROR);

@@ -38,7 +38,11 @@ final class EventForm
         if ($editable) {
             echo '<p><button type="submit" class="button button-primary">' . esc_html($confirm ? __('Confirm and save despite warning', 'h3-mgmt') : __('Save changes', 'h3-mgmt')) . '</button></p>';
         }
-        echo '</form></div>';
+        echo '</form>';
+        if ($type === 'race') {
+            ResultBoundary::enableForm($id);
+        }
+        echo '</div>';
     }
     /** @param array<string|int,mixed> $field */
     private static function field(string $resource, array $field, bool $editable): void

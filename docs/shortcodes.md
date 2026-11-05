@@ -11,7 +11,7 @@ Generiert mit `python tools/build-inventory.py`. Statische Registrierung und Sta
 | `h3-liveticker` | [the_ticker](../includes/class-h3-mgmt-ticker.php#L787) | 'max' => 10, 'route' => 'all', 'race' => 0, 'team' => 0, 'show_warning' => 1, 'show_nav' => 0 |
 | `h3-mate-xchange` | [xchange_control](../includes/class-h3-mgmt-xchange.php#L115) | keine direkten Defaults |
 | `h3-rand-team` | [random_team_info](../includes/class-h3-mgmt-teams.php#L2157) | 'event' => 0, 'race' => 0 |
-| `h3-ranking-table` | [ranking_table](../includes/class-h3-mgmt-races.php#L1219) | 'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1, |
+| `h3-ranking-table` | [ranking_table](../includes/class-h3-mgmt-races.php#L916) | 'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1, |
 | `h3-recent-sponsors` | [recent_sponsors](../includes/class-h3-mgmt-sponsors.php#L2503) | 'number' => 3, 'race' => 'all', |
 | `h3-sponsoring-form` | [new_sponsoring_handler](../includes/class-h3-mgmt-sponsors.php#L728) | 'race' => 0, |
 | `h3-stages` | [display_stages](../includes/class-h3-mgmt-races.php#L755) | 'race' => 1, 'class' => '', |

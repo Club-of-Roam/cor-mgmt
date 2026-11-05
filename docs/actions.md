@@ -19,9 +19,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [ajax_upload](../includes/class-h3-mgmt-media.php#L61) | `POST:race` |  |
 | [picture](../includes/class-h3-mgmt-media.php#L127) | `POST:left`, `POST:right`, `POST:ticker_pic_msg` |  |
 | [save_extra_profile_fields](../includes/class-h3-mgmt-profile.php#L144) | `POST:_wpnonce`, `POST:deleteme` |  |
-| [ranking_submission_control](../includes/class-h3-mgmt-races.php#L886) | `GET:stage`, `POST:submitted` |  |
-| [persist_ranking](../includes/class-h3-mgmt-races.php#L1103) | `POST:route`, `POST:stage` |  |
-| [ranking_table](../includes/class-h3-mgmt-races.php#L1219) | `GET:ranking_route` |  |
+| [ranking_table](../includes/class-h3-mgmt-races.php#L916) | `GET:ranking_route` |  |
 | [post](../includes/class-h3-mgmt-security.php#L26) | `POST:cor_mgmt_nonce` |  |
 | [donation_nonce](../includes/class-h3-mgmt-security.php#L36) | `COOKIE:client_token` |  |
 | [donation_request](../includes/class-h3-mgmt-security.php#L41) | `COOKIE:client_token`, `GET:donation_client_reference` |  |
@@ -59,6 +57,8 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [mutate](../src/WordPress/EventAdmin.php#L30) | `GET:bulk` |  |
 | [render](../src/WordPress/EventList.php#L30) | `GET:country_filter`, `GET:event_page`, `GET:number_filter`, `GET:order`, `GET:orderby`, `GET:race_filter`, `GET:route_filter` |  |
 | [prepare](../src/WordPress/ProfileAvatar.php#L60) | `FILES:cor_profile_avatar` |  |
+| [control](../src/WordPress/ResultFrontend.php#L13) | `GET:cor_result_route`, `GET:stage`, `POST:submitted` |  |
+| [table](../src/WordPress/ResultFrontend.php#L112) | `GET:ranking_route` |  |
 | [request](../src/WordPress/SchemaTools.php#L27) | `POST:backup`, `POST:fingerprint`, `POST:nonce`, `POST:operation`, `POST:quiesced`, `POST:run_id` |  |
 | [control](../src/WordPress/TeamAdmin.php#L13) | `GET:bulk`, `GET:id`, `GET:todo` |  |
 | [save](../src/WordPress/TeamAdmin.php#L51) | `FILES:team_pic`, `POST:route_id` |  |

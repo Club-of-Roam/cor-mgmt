@@ -20,7 +20,7 @@ Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d
 | SEC-05 hoch | [app.js](../js/app.js#L35) verwendet uploads/ticker_images/process.php; ausgelagerter Endpunkt verschiebt Upload ohne WP-/Bildprüfung | Geschützter Medienhandler; 1/9 |
 | SEC-06 hoch | Unpassende Ausgabebehandlung bei Börsennachrichten; Datenänderung nur anhand ID: [XChange](../includes/class-h3-mgmt-xchange.php#L67) | Validierung, Escaping, Eigentumsbedingung; 1/8 |
 | PHP-01 mittel | Implizit nullable Parameter: [date_diff2](../includes/class-h3-mgmt-utilities.php#L73); deprecated Interpolation: [XChange](../includes/class-h3-mgmt-xchange.php#L31) | Explizite Typen und moderne Interpolation; 2 |
-| PHP-02 hoch | Feldname als String zu Punkten addiert: [save_ranking](../includes/class-h3-mgmt-races.php#L1059) | Am 2026-11-02 isoliert als TypeError reproduziert; Fachkorrektur und Solltests in 6, Belege in ranking-reference.md |
+| PHP-02 hoch | Feldname als String zu Punkten addiert: [save_ranking](../includes/class-h3-mgmt-races.php) | Am 2026-11-02 isoliert als TypeError reproduziert; Fachkorrektur und Solltests in 6, Belege in ranking-reference.md |
 | PHP-03 mittel | strftime/utf8_encode, ungeprüfte Array-/DB-Ergebnisse | Aktuelle APIs, definierte Nullfälle; 2/Module |
 | ARCH-01 hoch | Abfrage schreibt Status/Route und sendet ggf. Mail: [is_complete](../includes/class-h3-mgmt-teams.php#L420) | Abfragen/Änderungen trennen; 5 |
 | ARCH-02 mittel | Globals, große Klassen, HTML/SQL/Fachlogik vermischt, wiederholte Abfragen in Schleifen | Services, Repositories, Views, gebündelte Abfragen; 2/Module |

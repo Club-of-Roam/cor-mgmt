@@ -102,3 +102,8 @@ TextCodecTest prüft erklärte Zeichensätze und byteidentische Rückkonvertieru
 TeamPolicyTest prüft die Phasenmatrix und Freigabe als reine Fachlogik. TeamManagementTest verwendet echte WordPress-Konten/Rechte/Nonces und transaktionale Daten für Anmeldung, Codes, Bestätigungen, Profil, Adminlisten, Widerruf und Fehler-Rollback. ParticipationInstallationTest verwendet disposable Präfixe für Modul-DDL. TeamConcurrencyTest startet getrennte PHP-Prozesse mit einer gemeinsamen Startbarriere und prüft die letzten Mitglieds-/Routenplätze sowie MyISAM-Legacycodes. Alle Ressourcen sind synthetisch und unterliegen der bestehenden Bootstrap-Isolation. Die PHP-Matrix führt diese Fälle automatisch mit aus.
 
 `php tools/export-schema.php --participation --write` aktualisiert die separate Modulreferenz; composer check vergleicht beide Schemareferenzen. Kein Test führt Engine-Änderungen an Anwendungsdaten aus. Native Formular-/Avataradapter sind serverseitig geprüft; vollständiger Browser-, Tastatur-, Accessibility- und positiver multipart-Uploadnachweis steht noch aus. Umfang: [Block 5](block-5-teams.md).
+
+
+## Ergebnis-Modul
+
+Block 6 ergänzt reine Punkte-/Rangfolgetests sowie WordPress-Integration für Versionierung, mehr als sechs Etappen, variable Summen, Rechte/Nonces, Revisionen einschließlich Journalgeneration, atomare Mehrteam-Verarbeitung und schreibfreien historischen Vergleich. ResultConcurrencyTest verwendet zwei getrennte PHP-Prozesse mit derselben Formularrevision; genau ein Stand gewinnt. ResultsInstallationTest prüft additive Einrichtung, Wiederholung, Kollisionen, Manifestwiederaufnahme und Engine-/Planabweichungen. Browser-/Tastaturabnahme bleibt ausdrücklich offen; siehe [Block 6](block-6-results.md) und [Prüfbelege](verification.md).

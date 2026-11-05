@@ -50,6 +50,7 @@ final class LegacyEventStore implements EventStore
     public function write(string $type, array $old, array $values): int
     {
         $this->db->assertLock();
+        $this->protectResults($type, $old, $values);
         $set = [];
         foreach ($values as $key => $value) {
             if ($old !== [] && array_key_exists($key, $old) && $old[$key] === $value) {
@@ -71,9 +72,26 @@ final class LegacyEventStore implements EventStore
     public function remove(string $type, array $old): void
     {
         $this->db->assertLock();
+        $this->protectResults($type, $old, [], true);
         $this->db->execute($this->db->prepare('DELETE FROM %i WHERE ', $this->table($type)) . $this->predicate($old));
         if ($this->db->wpdb->rows_affected !== 1) {
             throw new EventException('stale_record');
+        }
+    }
+    /** @param array<string,string|null> $old
+     * @param array<string,string|null> $values
+     */
+    private function protectResults(string $type, array $old, array $values, bool $deleting = false): void
+    {
+        if ($type !== 'stage' || !$old || !$this->db->exists($this->db->table('cor_mgmt_results'))) {
+            return;
+        }
+        $changed = $deleting;
+        foreach (['race_id', 'route_id', 'number'] as $field) {
+            $changed = $changed || (isset($values[$field]) && $values[$field] !== ($old[$field] ?? null));
+        }
+        if ($changed && $this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE stage_id=%d', $this->db->table('cor_mgmt_results'), (int) $old['id'])) !== '0') {
+            throw new EventException('stage_has_results');
         }
     }
     public function exclusive(callable $operation, bool $multirow): array

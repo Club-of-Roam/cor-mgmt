@@ -65,3 +65,8 @@ Diese Prüfungen werden als Integrations-, Paket- und Browserprüfungen umgesetz
 ## Teilnahme-Modul ab Block 5
 
 Aktivierung richtet zusätzlich das Teilnahme-Modul 1.0.0 ein. Bereits aktive Installationen bieten dafür eine geschützte Aktion im Systemstatus an. Der Aufbau ergänzt ausschließlich Token-/Historientabellen, prüft Eigentum und exakte Struktur und ist wiederaufnehmbar. Keine automatischen Änderungen vorhandener Tabellenengines. Bei fehlender Einrichtung bleiben neue Teamwriter gesperrt; gewöhnliche Seitenaufrufe erzeugen keine Tabellen. Der übergeordnete Release-/Archivvertrag gilt weiter. Details: [Block 5](block-5-teams.md).
+
+
+## Ergebnis-Modul
+
+Das additive Ergebnis-Modul 1.0.0 wird bei Aktivierung oder ausdrücklich über den Systemstatus eingerichtet. Normale Seitenaufrufe führen kein DDL aus. [SQL-Referenz](schema-results-1.0.0.sql); vorhandene Tabellen ohne passendes Manifest werden nicht übernommen. Anschließend kann ein berechtigter Organisator im Rennformular die Wertung 2.0 ausdrücklich aktivieren: nur Phase 0 und ohne bisherige Ergebniswerte. Schemaeinrichtung allein schaltet kein Rennen um. Einzelheiten und Historiengrenzen in [Block 6](block-6-results.md).

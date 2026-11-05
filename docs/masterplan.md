@@ -64,4 +64,9 @@ Block 1 ist am 2026-11-02 mit negativen und positiven WordPress-Sicherheitstests
 
 ## Umsetzung Teams/Profile
 
-Das Fachpaket aus Block 5 ist im Kompatibilitätsbetrieb implementiert: gemeinsame transaktionale Teilnahme-/Profil-/Adminwriter, phasenabhängige Rechte, sichere Codes mit Legacy-Übergang und eigener Avataradapter. Additive Einrichtung und ausdrücklich verbleibende Abnahmen stehen in [Block 5](block-5-teams.md). Versionsmarker und aktive Datenhaltung werden nicht vorzeitig umgeschaltet. Nächster fachlicher Umbau: Ergebnisse aus Block 6.
+Das Fachpaket aus Block 5 ist im Kompatibilitätsbetrieb implementiert: gemeinsame transaktionale Teilnahme-/Profil-/Adminwriter, phasenabhängige Rechte, sichere Codes mit Legacy-Übergang und eigener Avataradapter. Additive Einrichtung und ausdrücklich verbleibende Abnahmen stehen in [Block 5](block-5-teams.md). Versionsmarker und aktive Datenhaltung werden nicht vorzeitig umgeschaltet. Die neue versionierte Ergebnislogik folgt in [Block 6](block-6-results.md); offene fachliche/visuelle Abnahmen bleiben ausgewiesen.
+
+
+## Umsetzung Ergebnisse
+
+Block 6 liefert normalisierte Ergebnisse für ausdrücklich eingerichtete Wertungen, native Formulare, neue Ranglisten und einen nur lesenden historischen Vergleich. Historische Ergebnisse bleiben unverändert. Vollständiger Archivsnapshot und Bestands-/Browserabnahme bleiben offen; Umfang und Einrichtung in [Block 6](block-6-results.md). Nächster Fachbereich: Prüfung der Zahlungswege vor Block 7.

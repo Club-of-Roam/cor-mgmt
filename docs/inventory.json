@@ -14,7 +14,7 @@
     "includes/class-h3-mgmt-maintenance.php": "052285d837a5cbc2f31255f84442d31b073e2e18a87872028b6f9fef807b078e",
     "includes/class-h3-mgmt-media.php": "22d11d7a97412baf0de420fcc5bcc10368b1bed18d76d005312cc1db76fc525b",
     "includes/class-h3-mgmt-profile.php": "2e672efdc41a3dee9b1cb6b026765435d8c845669e4331d514c1b38ac71bea12",
-    "includes/class-h3-mgmt-races.php": "df2b9ff49ecbc809d5df1d2cc6f240a5be817dc1d024a7b5b4834a143d0269c8",
+    "includes/class-h3-mgmt-races.php": "eaa357641e33f78910f9d504224b2d223831197f868b86fd155f27d6179ced87",
     "includes/class-h3-mgmt-security.php": "926240ae80d8a78dc476e538193f60fde99c8e5be4b1ce0bc5abf60753ae2f73",
     "includes/class-h3-mgmt-sponsors.php": "31f15599ea90c314d6f62d1e14770e5dbf213fee18fb05e799bbe3e7e996afaa",
     "includes/class-h3-mgmt-teams.php": "afcf447517d78b0e4402425e6b7155061aee9b25b367efc884eabc5df3364cc8",
@@ -23,13 +23,13 @@
     "includes/class-h3-mgmt-xchange.php": "e169a3afc36735fd66ddc52320d17f8752fe5ad592671122afa1d05b2bf308b0",
     "includes/class-h3-mgmt.php": "1263837604a973c02e30670569789957734fc5757961432d628c9d4e36782bd3",
     "models/class-h3-mgmt-race.php": "31654bfb4034db208c2c94b08e87b34c404bb87892b3a0c01ffdcb6808bd14d8",
-    "runtime/legacy.php": "31c4e98a071c1389b19b9d9f40ff45783c6f7e0fdd49e0543b6a8e5f2eb76e84",
+    "runtime/legacy.php": "0df35218da80c924efe436d1d4e45e38647bdea84001126234d87d6b3aa5e9ca",
     "src/Application/Contracts/Clock.php": "4bd680629568a85104e127bf5eb8000636ed3e09c35671dbcc3f78efac25e31f",
     "src/Application/Contracts/HttpClient.php": "32894f9cd79de7e6e15d2f0bd62b864d30a0637b50639df93f39fb70e42a1041",
     "src/Application/Contracts/Logger.php": "d469a3171dd7cc51188208d1988d758b51e5eba7e5ab1695158adb2218eccc1c",
     "src/Application/Contracts/MailTransport.php": "68daf53110dc4fe4a263ff9fc3d071d9418205ff15284ce4a7d241f6a3b90cfe",
     "src/Application/Contracts/RandomSource.php": "bd6f5df141057e0e96ffb5dac833ac6e9b0b591e04b403f1a0a1aef8571ad110",
-    "src/Application/Events/EventEditor.php": "6b7805c6de28fa00be354503f766f8b6925ab8decc45a00425af41536faea8a8",
+    "src/Application/Events/EventEditor.php": "b206191912e1f99fedcbf647f60eb0c3d9bd655b0cb15e85471d6b166d51259f",
     "src/Application/Events/EventException.php": "09f8595009cdc82b4cb6e0ee857bdcebd86d90138dfc99995ca2183067131594",
     "src/Application/Events/EventStore.php": "1e6fe2f17003268527a7fd26abe1b1819bceb7dd8796616b8a355a2d7970ede7",
     "src/Application/HttpResponse.php": "65385b58c5fe9acfb37f8bef65679abf29dcd75625cfc9016e8c7dd6eedcf6d7",
@@ -38,6 +38,11 @@
     "src/Application/Migration/RawRow.php": "4914566d85c4c1318d9e07a14556f2aec328cb4df54e327fdb91241260daf5f8",
     "src/Application/Migration/TextCodec.php": "49b5a31fd1a0dc4eb04c4f2d3074142e5c72bf3ac63a16e0f71e1a9b8b867832",
     "src/Application/Requirements.php": "5ef8a63e831a82a67f717cd277312908df538c9aa604188574bbd561ade06325",
+    "src/Application/Results/HistoricalComparison.php": "03a2f25fbbff591fedb530df40fba4713ae34098e07f0673d7859acfe8687521",
+    "src/Application/Results/ResultContext.php": "b50e5801431238dc3843d091dbb718457d258b525775894dbdddd52fcd670cdd",
+    "src/Application/Results/ResultException.php": "a1203c685f0f0ac451abce24cb21dff34d0b0134a4c49df1e747d2484ab948e2",
+    "src/Application/Results/ResultManager.php": "636fb90eaea857a8da6948b2a15cb263b555bd8d96bccb6ec3d9b032561ba85d",
+    "src/Application/Results/ResultStore.php": "26534c74b646febbfcdd3a973b60a643ed78337a112e249d795d7e336c2c2ea6",
     "src/Application/Runtime.php": "0f795993484b79f49c198078476cb9bd5a6230a7f7f7f77752b644e277156cf3",
     "src/Application/Teams/ParticipationException.php": "3b57dbfe6a5a9314fc080d5a18e4eb24b0a2f30d215362ba9e0a1b7196b30866",
     "src/Application/Teams/ParticipationStore.php": "2cb7bd2c4328651ad96f72a6bf3b42c61b22b9262d879ab5d0122f5251198e35",
@@ -46,18 +51,21 @@
     "src/Domain/EventPolicy.php": "8c7657aa3376967ae7cd7a6ca776bc411274cf3ed8cbad34e476da2b3a86afa3",
     "src/Domain/InstallationStatus.php": "2b8e855e840f443e10a09ead7e85c19be32653e9f7e8ce7040a64dc039c80d60",
     "src/Domain/RacePhase.php": "34f39e0ea16dc989a54dc301d33adab208e3e9185405ac9336ab6130f79a9406",
+    "src/Domain/Scoring.php": "75d0c1ada3301dc151f8cb8217dfa86cdbd82d2497e6998d1751aa6e778391c7",
     "src/Domain/TeamPolicy.php": "839fc359f428fb5abdd3d6786d50e63d196edb0edecb97225621442c0183458d",
     "src/Infrastructure/SecureRandom.php": "e57a39674e2a9e5c1a6fe29997762d87030c020599a840c8d82d5cb9ad94320c",
     "src/Infrastructure/SystemClock.php": "61e7a294c202cc19d541d5af8378ab9d36422927b0ef5860841455e8c391b81a",
-    "src/Infrastructure/WordPress/LegacyEventStore.php": "d015d788dd6d2c072e51d399568f908dc476cb5c0a4901b562fa7d35bf4865e2",
-    "src/Infrastructure/WordPress/ParticipationRepository.php": "b874a73052c8590112cb0fab09dee65c958d0b8e7953a1bbea14da62fed12e61",
+    "src/Infrastructure/WordPress/LegacyEventStore.php": "cf1330a1e20c6f76cb80642bf7a0c8e401445a4a31ca78ca92b01ca773372095",
+    "src/Infrastructure/WordPress/ParticipationRepository.php": "05d3155d9902c25ed2e374c16d47527f8f7fd550ee249a5d180a6a7e70dd32b5",
+    "src/Infrastructure/WordPress/ResultRepository.php": "38891ef8670c22731a0ac919d6b939b1b570165fb61ddab85b363d317095a38b",
     "src/Infrastructure/WordPress/Schema/Catalogue.php": "061201ee1fbbe9b47c98f739c87c968a14cf820a8d3d4a2c93cda11501d1dd33",
     "src/Infrastructure/WordPress/Schema/Database.php": "1c9b9f9204629ebb8f972cf2e4bd1f40a2d041751b0429b0b0529fb983cf842c",
     "src/Infrastructure/WordPress/Schema/Inspector.php": "358c84f7e5257b409de54329563b303e43984e76ce4e10ceefcafb364c583c36",
-    "src/Infrastructure/WordPress/Schema/Installer.php": "585c2f932ce5daf04323426ce0063e76e1a10fc7815ade3c4b4329c386d20709",
+    "src/Infrastructure/WordPress/Schema/Installer.php": "1f0f5e3af3b2eff15570a5ebed31ed4f933a0f408a7f4738f817932638d6f8b4",
     "src/Infrastructure/WordPress/Schema/ParticipationSchema.php": "d45391e989f58444ce7fd49fa5bddfa0a13c34900b65c572213bcb448304b77f",
     "src/Infrastructure/WordPress/Schema/Preflight.php": "6b606789d0a539d587fe839ef190f0a2514771f7c8319fe1a834697d384d703b",
     "src/Infrastructure/WordPress/Schema/Projection.php": "9416e218615be027156b590a267c75429e4c421fd01e438b17c890dbd7e21e6f",
+    "src/Infrastructure/WordPress/Schema/ResultsSchema.php": "0cdaa2b121730785f9c776231f32dfa91e4993d55062ae1eebb416377b149909",
     "src/Infrastructure/WordPress/Schema/Runner.php": "dfcb37887703fd9aaf80d64ed27715aba7a78d6c20f01ab0f15187f7c5989c56",
     "src/Infrastructure/WordPress/Schema/Source.php": "0a145c7e4de8631b492d5f9d339388f4a9967714804bd73b14f3c3ac4e40b2d8",
     "src/Infrastructure/WordPress/SchemaInspector.php": "50097eff43e1aedfd078cdaa27128290a3a348ff80fc1904f345889705acbf22",
@@ -66,11 +74,13 @@
     "src/Infrastructure/WordPress/WordPressMailTransport.php": "70d29f5071bc9a498540111399bc53f426b400c219e0695da5dd08765c608377",
     "src/WordPress/Capabilities.php": "10cc96a8dd72f6fa6a4dcd46013023b6c0a5ac71157c8e96db936269b9663658",
     "src/WordPress/EventAdmin.php": "ef699c6bb43a7672d410c2ec7f851c1c12bf04c893bb92b1916894b282c5ed14",
-    "src/WordPress/EventForm.php": "9be2bd818be1deecd9ba9aa0a9f123955ad2423918ea757d2ec3d2793d7f0d06",
+    "src/WordPress/EventForm.php": "509d2c44f92da0d772f9ef5e2813c8137a7f9e2fd9e11285cbaf09df9607bf57",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
-    "src/WordPress/Lifecycle.php": "88aae48775997d1d08cf190dab0f41d6bd51b721829e35681be61fe892e99de4",
+    "src/WordPress/Lifecycle.php": "6b900d81af421b791141d3d213a5d4ddb005c9835edc7540569fcfe492938a1f",
     "src/WordPress/ProfileAvatar.php": "38a400102fd08abcd41e541b04de4310f4353c209bcae403187879ce90e01e3d",
-    "src/WordPress/SchemaTools.php": "e1a2cba8f568418456d7ee72e3cfb5805b4c5208ed25954a66432b2f1f7fbff2",
+    "src/WordPress/ResultBoundary.php": "432f6ed86f44420c118a4db0de1ba1ba21aaccc614c9edd268b05e8e69a32ecd",
+    "src/WordPress/ResultFrontend.php": "6fa77975fe3734ee97f90f18216ddc8e63cc373fdc78570638f7683bf8c0cc6f",
+    "src/WordPress/SchemaTools.php": "eb8579d72c0f9b57f58aeb5ab9bb602d8301e09fb09db4ca7c545e3fd0f5443e",
     "src/WordPress/Services.php": "8e37ba4167038976f4b9cc62150f193dde32a03f3f11505da2d663be9ed2b9ea",
     "src/WordPress/TeamAdmin.php": "23873f233536e60b166c8152c440cf7ee516ff520b461400ecbe88c987dabac0",
     "src/WordPress/TeamBoundary.php": "52306dbf785fba656e31463d395d390833c27623e44e91a7eb3102abc33e0065",
@@ -140,7 +150,7 @@
       "tag": "h3-ranking-table",
       "handler": "ranking_table",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 1219,
+      "line": 916,
       "defaults_source": "'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1,"
     },
     {
@@ -443,28 +453,8 @@
     },
     {
       "file": "includes/class-h3-mgmt-races.php",
-      "method": "ranking_submission_control",
-      "line": 886,
-      "fields": [
-        "GET:stage",
-        "POST:submitted"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-races.php",
-      "method": "persist_ranking",
-      "line": 1103,
-      "fields": [
-        "POST:route",
-        "POST:stage"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-races.php",
       "method": "ranking_table",
-      "line": 1219,
+      "line": 916,
       "fields": [
         "GET:ranking_route"
       ],
@@ -879,6 +869,26 @@
       "line": 60,
       "fields": [
         "FILES:cor_profile_avatar"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/ResultFrontend.php",
+      "method": "control",
+      "line": 13,
+      "fields": [
+        "GET:cor_result_route",
+        "GET:stage",
+        "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/ResultFrontend.php",
+      "method": "table",
+      "line": 112,
+      "fields": [
+        "GET:ranking_route"
       ],
       "case_labels": []
     },

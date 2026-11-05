@@ -4,7 +4,7 @@ Prüfdatum 2026-11-02. Echte Legacy-Methoden mit ausschließlich synthetischen D
 
 ## Ergebnisabgabe
 
-Quelle: [save_ranking](../includes/class-h3-mgmt-races.php#L1059). Tests: [RankingSubmissionTest](../tests/Characterization/RankingSubmissionTest.php).
+Quelle: [save_ranking](../includes/class-h3-mgmt-races.php). Tests: [RankingSubmissionTest](../tests/Characterization/RankingSubmissionTest.php).
 
 | Fall | Beobachtetes Ergebnis |
 |---|---|
@@ -26,11 +26,11 @@ Die komplette Datenübergabe an update einschließlich Team-ID, Feldern und Form
 
 **Bestätigter Fehler RANK-01:** Variable Zusatzpunkte anderer Etappen werden entweder ausgelassen oder lösen TypeError aus. **RANK-02:** Eine später scheiternde Berechnung kann eine zuvor begonnene Mehrteam-Verarbeitung teilweise ausgeführt hinterlassen. Die Tests belegen die Aufrufreihenfolge und fehlende Rücknahme im Handler; eine echte DB-Integration steht aus.
 
-**Validierungslücken:** Funktionsschalter, Bonuswerte, Etappengrenzen und Routenberechtigung am Schreibzugriff sichern. Nicht nachträglich raten, ob Zusatzpunkte bei Disqualifikation zulässig sein sollen; die v2-Regel hierzu vor fachlicher Umstellung konkretisieren.
+**Validierungslücken:** Funktionsschalter, Bonuswerte, Etappengrenzen und Routenberechtigung am Schreibzugriff sichern. Die Fachentscheidung D-38 vom 2026-11-05 bestätigt für neue Wertungen Zusatzpunkte bei Platz 0/99 und variable Zusatzpunkte ausschließlich auf Etappe 6. Historische Ergebnisse bleiben unverändert; siehe [Entscheidungen](decisions.md).
 
 ## Ranglistenanzeige
 
-Quelle: [ranking_table](../includes/class-h3-mgmt-races.php#L1174). Tests: [RankingDisplayTest](../tests/Characterization/RankingDisplayTest.php).
+Quelle: [ranking_table](../includes/class-h3-mgmt-races.php). Tests: [RankingDisplayTest](../tests/Characterization/RankingDisplayTest.php).
 
 | Fall | Beobachtetes Ergebnis |
 |---|---|
@@ -53,3 +53,8 @@ Die Anzeige sortiert nicht selbst, sondern fordert absteigende Summen beim Repos
 - Rangpositionen werden im Altcode zur Anzeige neu abgeleitet. Deshalb reicht das Bewahren von total_points allein nicht: Archivmigration muss historische Rangfolge/Positionen und bekannte Darstellungsabweichungen erfassen, bevor ein korrigierter Renderer die historischen Ausgaben verändert. Entscheidung über mögliche Abweichungen ausweisen, nicht still korrigieren.
 - Ob echte historische Datensätze von den synthetisch reproduzierten Fehlern betroffen sind, ist nicht nachgewiesen. Keine Anwendungssummen oder Datensätze wurden für diese Tests ausgelesen/verändert.
 - Vollständige WordPress-, Datenbank-, Migrations- und Browserabnahme bleibt offen. Referenzfälle F-RANK-02/03 sind damit teilweise charakterisiert, nicht vollständig abgenommen.
+
+
+## Umstellung Block 6 – 2026-11-05
+
+Die obigen Tabellen beschreiben den eingefrorenen Altbestand. Der alte Writer wird jetzt ausschließlich durch [LegacyRankingReference](../tests/Support/LegacyRankingReference.php) charakterisiert und nicht ausgeliefert. Historische Ranglisten lesen weiterhin die bisherigen Summen mit dem bisherigen Renderer. Die neue [Scoring](../src/Domain/Scoring.php)-Berechnung gilt nur für ausdrücklich eingerichtete Rennen. Fehlerkorrekturen und Prüfgrenzen: [Block 6](block-6-results.md).
