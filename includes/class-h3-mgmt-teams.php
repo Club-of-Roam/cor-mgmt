@@ -559,6 +559,7 @@ class H3_MGMT_Teams {
 			ARRAY_A
 		);
 
+        $sponsors_query = \Cor\Mgmt\WordPress\DonationFrontend::overlay($sponsors_query);
 		if( ! empty( $sponsors_query ) ) {
 			return $sponsors_query;
 		}
@@ -1824,11 +1825,11 @@ class H3_MGMT_Teams {
 			}
                         
                         if( $race_setting['show_donation_amount'] == 1 ){
-                            $amount = $h3_mgmt_sponsors->get_donation_amount( array('type'=>'team', 'id' => $team_id) );
+                            $amount = \Cor\Mgmt\Domain\DonationAmounts::whole($h3_mgmt_sponsors->get_donation_amount( array('type'=>'team', 'id' => $team_id) ));
                             if( $amount > 0 ) {
-                                    $output .= '<li><span class="to-do-positive">' . sprintf( _x( 'Your team donations counter: %dâ‚¬ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
+                                    $output .= '<li><span class="to-do-positive">' . sprintf( _x( 'Your team donations counter: %s EUR ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
                             } else {
-                                    $output .= '<li><span class="to-do-can">' . sprintf( _x( 'Your team donations counter: %dâ‚¬ ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
+                                    $output .= '<li><span class="to-do-can">' . sprintf( _x( 'Your team donations counter: %s EUR ', 'Homework', 'h3-mgmt' ), $amount ) . '</span></li>';
                             }
                         }
                         

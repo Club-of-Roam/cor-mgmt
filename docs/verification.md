@@ -1,5 +1,25 @@
 # Prüfbelege
 
+## Block 7: Verwaltung, Ganz-Euro-Anzeige und Altprüfung – 2026-11-05
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Suite | 296 Tests / 585 Assertions | 296 / 585 | 296 / 585 | 296 / 585 |
+| WordPress-Gesamtsuite | 309 Tests / 1.932 Assertions | 309 / 1.932 | 311 / 1.940 | 311 / 1.940 |
+| Abschließende Spendenfälle | 30 Tests / 185 Assertions | 30 / 185 | 30 / 185 | 30 / 185 |
+| composer check | bestanden | bestanden | bestanden | bestanden |
+
+Die Gesamtsuiten unter 8.2/8.3 liefen vor den zwei ergänzten Fällen für administrative Ausblendung und Owner-URL-Schutz. Danach bestanden auf allen Versionen sämtliche 30 Spendenfälle erneut, einschließlich der zuletzt ergänzten Prüfung der eigenen Routenliste. Wiederholungsläufe überschneiden sich und werden nicht addiert. Die aktuelle Ganz-Euro-Vorgabe ersetzt die frühere öffentliche Centanzeige; interne Werte und Verwaltungsanzeige bleiben exakt.
+
+Neue Regressionen: berechtigte/unberechtigte und eigene/fremde Routenbearbeitung, Nonce-Schutz, erlaubte Metadaten und unveränderliche Finanzfelder, veraltete Revisionen, vollständiger Sammelrollback bei unbestätigter Veröffentlichung oder fremder Zuständigkeit, Journalfehler-Rollback, identische Wiederholung, Archivsperre, administrativ versteckte Profile bleiben auch nach Spenderpflege versteckt, keine fremde Bild-URL/ausführbare Website. Historische Vorprüfung ist ausdrücklich, wiederholbar und unverändert hinsichtlich Ursprungszeile und Sitzungsrechten; Orphans, bestätigte Zeilen und Konfigurationsdrift werden abgewiesen. Der Prüfplan enthält keine alten Codes/Cookies und löst kein Anbieter-HTTP aus.
+
+Exakte interne Summen und Offsets, öffentliche Ganz-Euro-Beträge, unveränderte Lastschrift-Zählkonvention, bereitgestellter Rennzähler und keine Wiederaufnahme ausgefilterter Zeilen durch Zusatzspalten sind geprüft. Der öffentliche Spendenzähler schreibt keine Optionswerte mehr und zeigt auch ohne JavaScript einen Betrag. PHPStan Level 8, eingeführte PHPCS-/Kompatibilitätsprüfungen, vier unveränderte SQL-Referenzen und Syntaxprüfung (151 Dateien) bestanden. Inventar: 105 Quellen / 23 Shortcodes / 69 Methoden mit literalen Request-Feldern. Dokumentation: 30 Markdown-Dateien. 7 Node-Tests und ESLint bestanden. Altbestandsgrenzen der Werkzeuge gelten weiter.
+
+Zwei aufeinanderfolgende Builds erzeugten ein bytegleiches ZIP mit 263 Dateien. Paketgrenzen und Produktionsloader ohne Entwicklungsabhängigkeiten bestanden unter PHP 8.2 und 8.5.
+
+Keine neuen Schema-/Versionsmarker oder Laufzeitabhängigkeiten. Keine Anwendungsdaten migriert, keine echten Zahlungs-/Mail-/API-Aufrufe und keine Git-Aktionen. Kein Browser-/Tastatur-/Accessibility- oder Anbieter-/Bestandsnachweis daraus abzuleiten. Tatsächliche Übernahme alter Zahlungen bleibt bis zum Nachweis des ursprünglichen Vertrags gesperrt. [Umfang und Grenzen](block-7-administration.md).
+
+
 ## Block 7: Betterplace-Grundlage – 2026-11-05
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

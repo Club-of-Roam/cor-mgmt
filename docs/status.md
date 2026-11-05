@@ -22,7 +22,7 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 4 | Verwaltungsumbau im Kompatibilitätsbetrieb umgesetzt | block-4-events.md; Teilnehmer-Kapazitätsvertrag, aktive Migration und vollständiges Archiv mit Folgeblöcken abnehmen |
 | 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
 | 6 | neue Wertung und Historienvergleich umgesetzt; Abnahme offen | block-6-results.md; vollständiges Archiv, Bestandsvergleich und Browserabnahme bleiben offen |
-| 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestandsabgleich, Admin-Korrekturen und Browserabnahme offen |
+| 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestands-/Browserabnahme und nachgewiesene Altübernahme offen |
 | 8–9 | offen | Kommunikation/Börse, Ticker/Medien |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
 
@@ -119,3 +119,9 @@ Fachbestätigung 2026-11-05 (D-38): Zusatzpunkte bei Platz 0/99 bleiben möglich
 Fachentscheidung: ausschließlich Betterplace für neue Spenden, vorhandenen Zuordnungsablauf erhalten und Automatisierung prüfen (D-39/40). Umsetzung: exakte neue Centbeträge, injizierter begrenzter Kommentaradapter, transaktionale einmalige Bestätigung, Journal, native Formulare, Sitzungs-/Nonce-Bindung und additives Installationsmodul. Historische Datensätze und Einheiten werden nicht konvertiert. Alte Browserbestätigung bleibt gesperrt. Umfang und offene Abnahmen in [Block 7](block-7-donations.md). Keine Anbieter-/Releasefreigabe, Anwendungsmigration oder Git-Aktion.
 
 Prüfabschluss dieses Pakets: je 295 isolierte und 297 WordPress-Tests auf PHP 8.2/8.3/8.4/8.5 bestanden; zuletzt betroffene Spendenfälle danach erneut auf allen vier Versionen geprüft. Composer-Prüfungen, 7 Node-Tests und ESLint bestanden. Ein geeigneter Zwischenstand für einen manuellen Commit; Block 7 bleibt bis zu den ausgewiesenen Abnahmen offen.
+
+## Block 7 – Verwaltungs- und Anzeigepaket
+
+[Umsetzung](block-7-administration.md): geschützte Metadaten-/Sichtbarkeitsverwaltung, atomare Sammelaktionen, Revisionen und Journal. Kontrollierte Vorbereitung offener Altvorgänge ohne finanzielle/zeitliche Umdeutung. Exakte interne Summen, öffentlich ganze Euro gemäß Benutzerkorrektur; öffentliche Zähler schreiben keine Optionen. Anbieter-/Bestands-/Browserabnahme und belegte Altübernahme bleiben offen. Keine Anwendungsmigration oder Git-Aktionen.
+
+Prüfabschluss des Verwaltungs-/Anzeigepakets: PHP 8.2/8.3/8.4/8.5 geprüft, abschließend sämtliche 30 Spendenfälle mit je 185 Assertions auf allen Versionen bestanden. Composer-Prüfungen, 7 Node-Tests, ESLint und bytegleiche Paketbuilds mit Produktionsloader geprüft. Details und zeitliche Grenzen der Gesamtsuiten in verification.md. Geeigneter manueller Commit-Zwischenstand; englische Message direkt mitliefern.

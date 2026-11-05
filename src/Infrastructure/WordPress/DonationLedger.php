@@ -153,8 +153,12 @@ final class DonationLedger
                 $changed[$field] = ['old' => $row[$field] ?? null, 'new' => $values[$field]];
                 $set[] = $this->db->prepare('%i=%s', $field, $values[$field]);
             }
-            if ($set || $row['var_show'] !== '1') {
+            $firstPublication = $this->db->scalar($this->db->prepare("SELECT COUNT(*) FROM %i WHERE sponsor_id=%d AND kind IN ('profile_saved','admin_profile_saved')", $this->db->table('cor_mgmt_donation_history'), (int) $row['sponsor_id'])) === '0';
+            if ($firstPublication && $row['var_show'] !== '1') {
+                $changed['var_show'] = ['old' => $row['var_show'], 'new' => '1'];
                 $set[] = 'var_show=1';
+            }
+            if ($set) {
                 $this->db->execute($this->db->prepare('UPDATE %i SET ', $this->db->table('h3_mgmt_sponsors')) . implode(',', $set) . $this->db->prepare(' WHERE id=%d', (int) $row['sponsor_id']));
                 $this->journal($race, (int) $row['sponsor_id'], 'profile_saved', $changed);
             }

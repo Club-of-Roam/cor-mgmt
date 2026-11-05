@@ -122,7 +122,7 @@ final class DonationFrontend
     /** @param array<string,string|null> $row */
     private static function profileForm(int $race, array $row): string
     {
-        $html = '<p>' . esc_html__('Donation assigned:', 'h3-mgmt') . ' ' . esc_html((new EuroAmount((int) $row['amount_minor']))->format()) . ' EUR — ' . esc_html($row['type'] === 'owner' ? __('TeamOwner', 'h3-mgmt') : __('TeamSponsor', 'h3-mgmt')) . '</p><form method="post" enctype="multipart/form-data" class="cor-donation-form">' . self::fields($race, 3, $row['token'] ?? '');
+        $html = '<p>' . esc_html__('Donation assigned:', 'h3-mgmt') . ' ' . esc_html((string) intdiv((int) $row['amount_minor'], 100)) . ' EUR — ' . esc_html($row['type'] === 'owner' ? __('TeamOwner', 'h3-mgmt') : __('TeamSponsor', 'h3-mgmt')) . '</p><form method="post" enctype="multipart/form-data" class="cor-donation-form">' . self::fields($race, 3, $row['token'] ?? '');
         foreach (['display_name' => __('Display name (leave blank to stay anonymous)', 'h3-mgmt'), 'message' => __('Message to the team', 'h3-mgmt')] as $name => $label) {
             $html .= '<label>' . esc_html($label) . ' <textarea name="' . esc_attr($name) . '">' . esc_textarea($row[$name] ?? '') . '</textarea></label>';
         }

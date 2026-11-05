@@ -54,7 +54,7 @@ final class StatisticsReferenceTest extends TestCase
             ['donations-total', 120], ['thumbs', 9], ['cpk', 9]];
     }
 
-    public function testLegacyDonationAggregationDiffersFromFilteredListAndOmitsRaceCountKey(): void
+    public function testLegacyDonationCountingConventionsRemainAndRaceCountKeyIsProvided(): void
     {
         $saved = [];
         foreach (['wpdb', 'h3_mgmt_teams', 'h3_mgmt_utilities'] as $key) {
@@ -85,7 +85,7 @@ final class StatisticsReferenceTest extends TestCase
             self::assertSame(110, $donations['race']);
             self::assertSame(1, $counts['paypal-unpaid']);
             self::assertSame(1, $counts['debit']);
-            self::assertArrayNotHasKey('race', $counts); // race_stats('race-sponsors-count') expects this absent key.
+            self::assertSame(2, $counts['race']); // Previously absent; the existing computed count is now exposed.
         } finally {
             foreach ($saved as $key => [$exists, $value]) {
                 if ($exists) { $GLOBALS[$key] = $value; } else { unset($GLOBALS[$key]); }

@@ -29,6 +29,7 @@ final class Lifecycle
     public static function register(string $plugin): void
     {
         SchemaTools::register();
+        DonationAdmin::register();
         ProfileAvatar::register();
         ResultBoundary::register();
         register_activation_hook($plugin, [self::class, 'activationHook']);

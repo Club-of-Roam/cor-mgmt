@@ -141,84 +141,84 @@ if ( !class_exists( 'H3_MGMT_Sponsors' ) ) :
 			$debit_count           = 0;
 			$paypal_count          = 0;
 			$paypal_unpaid_count   = 0;
-			$donations_all         = 0;
-			$donations_race        = 0;
-			$donations_sponsor     = 0;
-			$donations_owner       = 0;
-			$donations_patron      = 0;
-			$donations_structure   = 0;
-			$donations_debit       = 0;
-			$donations_paypal      = 0;
-			$donations_thumbs      = 0;
+			$donations_all         = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_race        = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_sponsor     = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_owner       = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_patron      = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_structure   = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_debit       = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_paypal      = new \Cor\Mgmt\Domain\EuroAmount(0);
+			$donations_thumbs      = new \Cor\Mgmt\Domain\EuroAmount(0);
 			$betterplace_count     = 0;
-			$donations_betterplace = 0;
+			$donations_betterplace = new \Cor\Mgmt\Domain\EuroAmount(0);
 
 			foreach ( $sponsors_query as $key => $sponsor ) {
 				if ( $sponsor['method'] == 'debit' ) {
 					$debit_count ++;
 					$all_count ++;
-					$donations_all = $donations_all + $sponsor['donation'];
+					$donations_all = $donations_all->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					if ( $sponsor['type'] == 'sponsor' ) {
 						$sponsor_count ++;
-						$donations_sponsor = $donations_sponsor + $sponsor['donation'];
+						$donations_sponsor = $donations_sponsor->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'owner' ) {
 						$owner_count ++;
-						$donations_owner = $donations_owner + $sponsor['donation'];
+						$donations_owner = $donations_owner->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'patron' ) {
 						$patron_count ++;
-						$donations_patron = $donations_patron + $sponsor['donation'];
+						$donations_patron = $donations_patron->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'structure' ) {
 						$structure_count ++;
-						$donations_structure = $donations_structure + $sponsor['donation'];
+						$donations_structure = $donations_structure->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					}
 					if ( $sponsor['type'] != 'structure' ) {
 						$race_count ++;
-						$donations_race  = $donations_race + $sponsor['donation'];
-						$donations_debit = $donations_debit + $sponsor['donation'];
+						$donations_race  = $donations_race->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
+						$donations_debit = $donations_debit->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					}
 				} elseif ( $sponsor['method'] == 'paypal' && $sponsor['paid'] == 1 ) {
 					$paypal_count ++;
 					$all_count ++;
-					$donations_all = $donations_all + $sponsor['donation'];
+					$donations_all = $donations_all->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					if ( $sponsor['type'] == 'sponsor' ) {
 						$sponsor_count ++;
-						$donations_sponsor = $donations_sponsor + $sponsor['donation'];
+						$donations_sponsor = $donations_sponsor->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'owner' ) {
 						$owner_count ++;
-						$donations_owner = $donations_owner + $sponsor['donation'];
+						$donations_owner = $donations_owner->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'patron' ) {
 						$patron_count ++;
-						$donations_patron = $donations_patron + $sponsor['donation'];
+						$donations_patron = $donations_patron->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'structure' ) {
 						$structure_count ++;
-						$donations_structure = $donations_structure + $sponsor['donation'];
+						$donations_structure = $donations_structure->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					}
 					if ( $sponsor['type'] != 'structure' ) {
 						$race_count ++;
-						$donations_race   = $donations_race + $sponsor['donation'];
-						$donations_paypal = $donations_paypal + $sponsor['donation'];
+						$donations_race   = $donations_race->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
+						$donations_paypal = $donations_paypal->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					}
 				} elseif ( $sponsor['method'] == 'Betterplace' && $sponsor['paid'] == 1 ) {
 					$betterplace_count ++;
 					$all_count ++;
-					$donations_all = $donations_all + $sponsor['donation'];
+					$donations_all = $donations_all->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					if ( $sponsor['type'] == 'sponsor' ) {
 						$sponsor_count ++;
-						$donations_sponsor = $donations_sponsor + $sponsor['donation'];
+						$donations_sponsor = $donations_sponsor->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'owner' ) {
 						$owner_count ++;
-						$donations_owner = $donations_owner + $sponsor['donation'];
+						$donations_owner = $donations_owner->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'patron' ) {
 						$patron_count ++;
-						$donations_patron = $donations_patron + $sponsor['donation'];
+						$donations_patron = $donations_patron->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					} elseif ( $sponsor['type'] == 'structure' ) {
 						$structure_count ++;
-						$donations_structure = $donations_structure + $sponsor['donation'];
+						$donations_structure = $donations_structure->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					}
 					if ( $sponsor['type'] != 'structure' ) {
 						$race_count ++;
-						$donations_race        = $donations_race + $sponsor['donation'];
-						$donations_betterplace = $donations_betterplace + $sponsor['donation'];
+						$donations_race        = $donations_race->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
+						$donations_betterplace = $donations_betterplace->add(\Cor\Mgmt\Domain\EuroAmount::decimal((string) $sponsor['donation']));
 					}
 				} elseif ( $sponsor['method'] == 'paypal' && $sponsor['paid'] == 0 ) {
 					$paypal_unpaid_count ++;
@@ -231,7 +231,7 @@ if ( !class_exists( 'H3_MGMT_Sponsors' ) ) :
 						$sponsors[ $key ]              = $sponsor;
 						$sponsors[ $key ]['team_name'] = $h3_mgmt_teams->get_team_name( $sponsor['team_id'] );
 					}
-					if ( !empty( $extra_fields ) ) {
+					if ( isset($sponsors[$key]) && !empty( $extra_fields ) ) {
 						foreach ( $extra_fields as $field_id ) {
 							if ( 'bank_info' === $field_id ) {
 								$sponsors[ $key ][ $field_id ] = 'KTN: ' . $sponsor['account_id'] . '<br />' .
@@ -254,9 +254,10 @@ if ( !class_exists( 'H3_MGMT_Sponsors' ) ) :
 			}
 
 			$sponsors         = $h3_mgmt_utilities->sort_by_key( $sponsors, $orderby, $order );
-			$donations_thumbs = $donations_race / 10;
+			$donations_thumbs = \Cor\Mgmt\Domain\DonationAmounts::thumbs($donations_race);
 			$counts           = [
 				'all'           => $all_count,
+                'race'          => $race_count,
 				'sponsor'       => $sponsor_count,
 				'owner'         => $owner_count,
 				'patron'        => $patron_count,
@@ -267,16 +268,16 @@ if ( !class_exists( 'H3_MGMT_Sponsors' ) ) :
 				'paypal-unpaid' => $paypal_unpaid_count,
 			];
 			$donations        = [
-				'all'         => $donations_all,
-				'race'        => $donations_race,
+				'all'         => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_all),
+				'race'        => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_race),
 				'thumbs'      => $donations_thumbs,
-				'sponsor'     => $donations_sponsor,
-				'owner'       => $donations_owner,
-				'patron'      => $donations_patron,
-				'structure'   => $donations_structure,
-				'debit'       => $donations_debit,
-				'paypal'      => $donations_paypal,
-				'Betterplace' => $donations_betterplace,
+				'sponsor'     => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_sponsor),
+				'owner'       => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_owner),
+				'patron'      => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_patron),
+				'structure'   => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_structure),
+				'debit'       => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_debit),
+				'paypal'      => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_paypal),
+				'Betterplace' => \Cor\Mgmt\Domain\DonationAmounts::compatible($donations_betterplace),
 			];
 
 			return [ $sponsors, $counts, $donations ];
@@ -1773,7 +1774,7 @@ html;
 				$output .= '<p>';
 				$number = $number <= count( $sponsors_query ) ? $number : count( $sponsors_query );
 				for ( $i = 0; $i < $number; $i ++ ) {
-					$thumbs = $sponsors_query[ $i ]['donation'];
+					$thumbs = \Cor\Mgmt\Domain\DonationAmounts::whole($sponsors_query[ $i ]['donation']);
 					if ( empty( $sponsors_query[ $i ]['display_name'] ) ) {
 						$sponsors_query[ $i ]['display_name'] = _x( 'Anonymous Sponsor', 'Sponsoring', 'h3-mgmt' );
 					}

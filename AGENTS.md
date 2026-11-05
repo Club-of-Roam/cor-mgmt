@@ -36,3 +36,5 @@ Theme-, cor-ticker- und ausgelagerte Endpoint-Änderungen getrennt dokumentieren
 Fachlogik unabhängig von WP/SQL/HTTP halten. Zeit, Zufall und Dienste injizieren. Rechte am Objekt prüfen; Nonces ersetzen keine Autorisierung. Abfragen ohne Schreibnebenwirkungen.
 
 Keine Pflicht zur Delegation oder Nutzung von Subagenten. Commit, Push und Deployment entsprechend der jeweiligen Benutzerfreigabe.
+
+Bei einem geeigneten Commit-Zwischenstand direkt eine englische Commit-Message mitliefern. Commit und Push führt der Benutzer aus.

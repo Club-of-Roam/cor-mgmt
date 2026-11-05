@@ -653,8 +653,8 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 			} elseif ( $stat == 'structure-count' ) {
 				return $sponsor_counts['structure'];
 			} elseif ( $stat == 'donations-total' ) {
-				$donations['race'] = $donations['race'] - $offset;
-				return $donations['race'];
+				$donations['race'] = \Cor\Mgmt\Domain\DonationAmounts::offset($donations['race'], $offset);
+				return \Cor\Mgmt\Domain\DonationAmounts::whole($donations['race']);
 			} elseif ( $stat == 'thumbs' || $stat == 'cpk' ) {
 				return $donations['thumbs'];
 			} else {
@@ -664,7 +664,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				       _x( 'Participants', 'Race Stats', 'h3-mgmt' ) . ': ' . $participants_complete_count . '<br />' .
 				       _x( 'TeamSponsors', 'Race Stats', 'h3-mgmt' ) . ': ' . $sponsor_counts['sponsor'] . '<br />' .
 				       _x( 'TeamOwners', 'Race Stats', 'h3-mgmt' ) . ': ' . $sponsor_counts['owner'] . '<br />' .
-				       _x( 'Donations (Thumbs)', 'Race Stats', 'h3-mgmt' ) . ': ' . $donations['race'] . ' (' . $donations['thumbs'] . ')<br />' .
+				       _x( 'Donations (Thumbs)', 'Race Stats', 'h3-mgmt' ) . ': ' . \Cor\Mgmt\Domain\DonationAmounts::whole($donations['race']) . ' (' . $donations['thumbs'] . ')<br />' .
 				       '</p>';
 			}
 		}
@@ -701,19 +701,13 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 			);
 
 			$min            = 0;
-			$current        = isset( $donations['thumbs'] ) ? ( $donations['thumbs'] * 10 ) : 1;
-			$current        = $current - $offset;
+			$current        = \Cor\Mgmt\Domain\DonationAmounts::whole(\Cor\Mgmt\Domain\DonationAmounts::offset($donations['race'] ?? 0, $offset));
 			$max            = 20000;
 			$counter_params = array(
 				'min'     => $min,
 				'current' => $current,
 				'max'     => $max,
 			);
-
-			/* for use in dynamic stylesheet */
-			update_option( 'h3_min_counter_' . $race, $min );
-			update_option( 'h3_current_counter_' . $race, $current );
-			update_option( 'h3_max_counter_' . $race, $max );
 
 			wp_enqueue_script( 'h3-mgmt-donation-counter' );
 			wp_localize_script( 'h3-mgmt-donation-counter', 'counterParams', $counter_params );
@@ -735,7 +729,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 						'<img id="counter-fill" alt="Donation Counter" src="' . H3_MGMT_RELPATH . 'img/counter-fill.png" />' .
 					'</div>' .
 					'<div id="counter-value-wrap">' .
-						'<span id="counter-value">' . $min . '</span>' .
+						'<span id="counter-value">' . esc_html((string) $current) . '</span>' .
 						'<br /><span class="counter-thumbs">' . _x( 'Euros', 'Donation Counter', 'h3-mgmt' ) . '</span>' .
 					'</div>' .
 				'</div>' .

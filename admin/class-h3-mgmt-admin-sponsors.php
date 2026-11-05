@@ -30,8 +30,9 @@ if ( ! class_exists( 'H3_MGMT_Admin_Sponsors' ) ) :
 
             $ids = array_merge([$_GET['id'] ?? 0], isset($_GET['bulk']) && is_array($_GET['bulk']) ? $_GET['bulk'] : []);
             foreach ($ids as $candidate) {
-                if (in_array($todo, ['edit','save','delete','paid','unpaid','bulk-delete','bulk-paid','bulk-unpaid'], true) && \Cor\Mgmt\WordPress\DonationFrontend::managed(H3_MGMT_Security::id($candidate))) {
+                if (in_array($todo, ['edit','save','delete','paid','unpaid','bulk-delete','bulk-paid','bulk-unpaid','show','hide','bulk-show','bulk-hide'], true) && \Cor\Mgmt\WordPress\DonationFrontend::managed(H3_MGMT_Security::id($candidate))) {
                     echo '<p>' . esc_html__('This donation uses verified cent storage. Payment changes, deletion and reassignment require the controlled donation workflow; legacy editing is disabled.', 'h3-mgmt') . '</p>';
+                    echo '<p><a href="' . esc_url(add_query_arg(['page'=>'cor-mgmt-donations','donation_id'=>H3_MGMT_Security::id($candidate)], admin_url('admin.php'))) . '">' . esc_html__('Manage this donation profile', 'h3-mgmt') . '</a></p>';
                     return;
                 }
             }
@@ -485,6 +486,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Sponsors' ) ) :
 		private function sponsors_list( $method = 'all', $messages = array() ) {
 			global $wpdb, $h3_mgmt_sponsors, $H3_MGMT_Admin_Table, $h3_mgmt_races;
 
+            echo '<p><a class="button" href="' . esc_url(add_query_arg('page', 'cor-mgmt-donations', admin_url('admin.php'))) . '">' . esc_html__('Donation profiles and pending reviews', 'h3-mgmt') . '</a></p>';
 			$url             = 'admin.php?page=h3-mgmt-sponsors';
 			$debit_url       = 'admin.php?page=h3-mgmt-sponsors-debit';
 			$paypal_url      = 'admin.php?page=h3-mgmt-sponsors-debit';

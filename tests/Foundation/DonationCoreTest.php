@@ -88,4 +88,9 @@ final class DonationCoreTest extends TestCase
         }
     }
 
+    public function testDisplayArithmeticNeverRoundsCentsThroughFloats():void
+    {
+        self::assertSame(12,\Cor\Mgmt\Domain\DonationAmounts::whole('12.99'));self::assertSame(0,\Cor\Mgmt\Domain\DonationAmounts::whole('0.99'));self::assertSame('0.20',\Cor\Mgmt\Domain\DonationAmounts::offset('0.30','0.10'));self::assertSame('-0.10',\Cor\Mgmt\Domain\DonationAmounts::offset('0.10','0.20'));self::assertSame('0.40',\Cor\Mgmt\Domain\DonationAmounts::offset('0.30','-0.10'));self::assertSame(10,\Cor\Mgmt\Domain\DonationAmounts::compatible(new EuroAmount(1000)));self::assertSame('1.234',\Cor\Mgmt\Domain\DonationAmounts::thumbs(new EuroAmount(1234)));
+    }
+
 }

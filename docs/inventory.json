@@ -4,7 +4,7 @@
   "sources": {
     "admin/class-h3-mgmt-admin-emails.php": "5659e0657098eebda1deb3fdc75b9facb51ca85d688cc8258841eed1a1c75c8f",
     "admin/class-h3-mgmt-admin-races.php": "65f074b69ef38b2a8591970fb1625f4be36470dedc477aa1edc04dc29d7f9deb",
-    "admin/class-h3-mgmt-admin-sponsors.php": "430cf5b5dde8c0ca93bc55869afc619ac59f3f994e7940cebe7347ffb15bbc75",
+    "admin/class-h3-mgmt-admin-sponsors.php": "d6a9c751b30338c43a65cf3b42f4d0c7ec98d8d80813a07a2bcde7f311377d47",
     "admin/class-h3-mgmt-admin-statistics.php": "d39dde134a8ca710160bd18b937d9e8a42f5d8c99eac3e973b34e62fa0239960",
     "admin/class-h3-mgmt-admin-teams.php": "d83692f2e15bb2bbf216efb7e3c05c07f5f904552e5d4b508f65296d6c5913d8",
     "admin/class-h3-mgmt-admin-xchange.php": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -14,10 +14,10 @@
     "includes/class-h3-mgmt-maintenance.php": "052285d837a5cbc2f31255f84442d31b073e2e18a87872028b6f9fef807b078e",
     "includes/class-h3-mgmt-media.php": "22d11d7a97412baf0de420fcc5bcc10368b1bed18d76d005312cc1db76fc525b",
     "includes/class-h3-mgmt-profile.php": "2e672efdc41a3dee9b1cb6b026765435d8c845669e4331d514c1b38ac71bea12",
-    "includes/class-h3-mgmt-races.php": "670dae41108b96b182cb256cefb4807160ee1589f331c79439ea445126af79a9",
+    "includes/class-h3-mgmt-races.php": "712c8130435361ca8891a57fcaa6ec4c08864be6a545610cc5b021524b2c5777",
     "includes/class-h3-mgmt-security.php": "926240ae80d8a78dc476e538193f60fde99c8e5be4b1ce0bc5abf60753ae2f73",
-    "includes/class-h3-mgmt-sponsors.php": "c8d0d8de0e3037b941665650084e8b2a9a2e71c22eb015db18936af511750fc4",
-    "includes/class-h3-mgmt-teams.php": "afcf447517d78b0e4402425e6b7155061aee9b25b367efc884eabc5df3364cc8",
+    "includes/class-h3-mgmt-sponsors.php": "c9e5123967efbd25a3957fe3b4f6e7503ddc4a4f8dbbab72454fefa0874311f1",
+    "includes/class-h3-mgmt-teams.php": "3a1dd119b3beb234779fdb8d5a5fa219eb76dc34f3f95fb10c62f0116451adbc",
     "includes/class-h3-mgmt-ticker.php": "a02c8ab5d2a537158dd58e9a2000cfeadee0402f4f6f03028c0140829ac809b4",
     "includes/class-h3-mgmt-utilities.php": "1cc3ca890d3e7803e1729724ffcdc34bb12cfa7a68e5c556f8e6f0e0667210d5",
     "includes/class-h3-mgmt-xchange.php": "e169a3afc36735fd66ddc52320d17f8752fe5ad592671122afa1d05b2bf308b0",
@@ -51,6 +51,7 @@
     "src/Application/Teams/TeamManager.php": "737c369e2eec99c5fee4254d2aa011a9c3b8dabd3e6d17323fb4763260145e6b",
     "src/Application/TransportException.php": "cae0577e846a60a3497362143db67f3cf8eb1c6c80b05b8c53564c101d7aa9e3",
     "src/Domain/BetterplaceEvent.php": "b61080106a8d7e1ab949b566930d5fa2239bae2cfedc3df3850bb1f9d8353e7f",
+    "src/Domain/DonationAmounts.php": "f01c4a812a85b411c4ee9a59af57606f7c5dc4c3d9cc3199f8acd768d1e016ef",
     "src/Domain/EuroAmount.php": "39983aea92c0569352d44e08370804b629a7da7373fb997d337f8f4183b2dda3",
     "src/Domain/EventPolicy.php": "8c7657aa3376967ae7cd7a6ca776bc411274cf3ed8cbad34e476da2b3a86afa3",
     "src/Domain/InstallationStatus.php": "2b8e855e840f443e10a09ead7e85c19be32653e9f7e8ce7040a64dc039c80d60",
@@ -60,8 +61,9 @@
     "src/Infrastructure/Betterplace/PublicOpinions.php": "1d207fa613d3510f62234ace0a2f87e66615e150019f02790a503946c9a4f47c",
     "src/Infrastructure/SecureRandom.php": "e57a39674e2a9e5c1a6fe29997762d87030c020599a840c8d82d5cb9ad94320c",
     "src/Infrastructure/SystemClock.php": "61e7a294c202cc19d541d5af8378ab9d36422927b0ef5860841455e8c391b81a",
+    "src/Infrastructure/WordPress/DonationAdministration.php": "324db0fdbecd294c22dad919eccb0e91cf367a5bfcba4e048e3253211b514496",
     "src/Infrastructure/WordPress/DonationAudit.php": "54784ff77b7011ac433e34def003a995f2dc6d62f7c83244af7dd6e076808e95",
-    "src/Infrastructure/WordPress/DonationLedger.php": "63a57ce865acf0a6b6498c9e21c5daca7353fdf75728d1a532c77f5ea4078580",
+    "src/Infrastructure/WordPress/DonationLedger.php": "4a550957fd3763bec35f3e77ad75c35b4ecfadffded2d4f6c10877d53dc016a0",
     "src/Infrastructure/WordPress/LegacyEventStore.php": "cf1330a1e20c6f76cb80642bf7a0c8e401445a4a31ca78ca92b01ca773372095",
     "src/Infrastructure/WordPress/ParticipationRepository.php": "05d3155d9902c25ed2e374c16d47527f8f7fd550ee249a5d180a6a7e70dd32b5",
     "src/Infrastructure/WordPress/ResultRepository.php": "38891ef8670c22731a0ac919d6b939b1b570165fb61ddab85b363d317095a38b",
@@ -81,11 +83,12 @@
     "src/Infrastructure/WordPress/WordPressLogger.php": "812910c3a7c305d041c90e694f4707922b00c4789a93a6a2f92041731e03378f",
     "src/Infrastructure/WordPress/WordPressMailTransport.php": "70d29f5071bc9a498540111399bc53f426b400c219e0695da5dd08765c608377",
     "src/WordPress/Capabilities.php": "10cc96a8dd72f6fa6a4dcd46013023b6c0a5ac71157c8e96db936269b9663658",
-    "src/WordPress/DonationFrontend.php": "42e6f255ae443fcf9be16690f52ca1088b1821a195957d672ee2b98e14fd4c26",
+    "src/WordPress/DonationAdmin.php": "b814f2e56ef5a2a759951d617bc48f32744077af1bb577ebb9d6c0ccd6275e31",
+    "src/WordPress/DonationFrontend.php": "c51a41c365f5ee6a89c0c27d4fad25e879abe86602b7e5f5f5cb498310266df2",
     "src/WordPress/EventAdmin.php": "ef699c6bb43a7672d410c2ec7f851c1c12bf04c893bb92b1916894b282c5ed14",
     "src/WordPress/EventForm.php": "509d2c44f92da0d772f9ef5e2813c8137a7f9e2fd9e11285cbaf09df9607bf57",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
-    "src/WordPress/Lifecycle.php": "f9481786f0b0552b325509d269b0d66c257c4d796cf063f12f4763a91986d6fb",
+    "src/WordPress/Lifecycle.php": "2cba92d3d7bf4817a4968cd23f02eea0c312518538f3841f39323f3b3d035ca8",
     "src/WordPress/ProfileAvatar.php": "38a400102fd08abcd41e541b04de4310f4353c209bcae403187879ce90e01e3d",
     "src/WordPress/ResultBoundary.php": "432f6ed86f44420c118a4db0de1ba1ba21aaccc614c9edd268b05e8e69a32ecd",
     "src/WordPress/ResultFrontend.php": "6fa77975fe3734ee97f90f18216ddc8e63cc373fdc78570638f7683bf8c0cc6f",
@@ -124,14 +127,14 @@
       "tag": "h3-handle-betterplace-redirect",
       "handler": "handle_betterplace_redirect",
       "file": "includes/class-h3-mgmt-sponsors.php",
-      "line": 1878,
+      "line": 1879,
       "defaults_source": null
     },
     {
       "tag": "h3-list-sponsors",
       "handler": "sponsors_overview",
       "file": "includes/class-h3-mgmt-sponsors.php",
-      "line": 1809,
+      "line": 1810,
       "defaults_source": "'type' => 'sponsor', 'delimiter' => ', ', 'race' => 'all',"
     },
     {
@@ -152,77 +155,77 @@
       "tag": "h3-rand-team",
       "handler": "random_team_info",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 2157,
+      "line": 2158,
       "defaults_source": "'event' => 0, 'race' => 0"
     },
     {
       "tag": "h3-ranking-table",
       "handler": "ranking_table",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 917,
+      "line": 911,
       "defaults_source": "'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1,"
     },
     {
       "tag": "h3-recent-sponsors",
       "handler": "recent_sponsors",
       "file": "includes/class-h3-mgmt-sponsors.php",
-      "line": 1739,
+      "line": 1740,
       "defaults_source": "'number' => 3, 'race' => 'all',"
     },
     {
       "tag": "h3-sponsoring-form",
       "handler": "new_sponsoring_handler",
       "file": "includes/class-h3-mgmt-sponsors.php",
-      "line": 691,
+      "line": 692,
       "defaults_source": null
     },
     {
       "tag": "h3-stages",
       "handler": "display_stages",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 756,
+      "line": 750,
       "defaults_source": "'race' => 1, 'class' => '',"
     },
     {
       "tag": "h3-stages-isotope",
       "handler": "isotope_links",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 806,
+      "line": 800,
       "defaults_source": "'race' => 1, 'class' => '',"
     },
     {
       "tag": "h3-submit-rankings",
       "handler": "ranking_submission_control",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 887,
+      "line": 881,
       "defaults_source": null
     },
     {
       "tag": "h3-team-dashboard",
       "handler": "team_dashboard_control",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1539,
+      "line": 1540,
       "defaults_source": "'event' => 1, 'race' => 0"
     },
     {
       "tag": "h3-team-dashboard-homework",
       "handler": "team_dashboard_homework_control",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1495,
+      "line": 1496,
       "defaults_source": "'event' => 1, 'race' => 0"
     },
     {
       "tag": "h3-team-homework",
       "handler": "team_homework",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1562,
+      "line": 1563,
       "defaults_source": "'event' => 0, 'race' => 0"
     },
     {
       "tag": "h3-teams",
       "handler": "display_teams",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1895,
+      "line": 1896,
       "defaults_source": "'event' => 0, 'race' => 0, 'max' => 10"
     },
     {
@@ -264,7 +267,7 @@
       "tag": "h3-user-panel-link",
       "handler": "user_panel_link",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1858,
+      "line": 1859,
       "defaults_source": "'event' => 0, 'race' => 0"
     }
   ],
@@ -385,7 +388,7 @@
     {
       "file": "admin/class-h3-mgmt-admin-sponsors.php",
       "method": "sponsors_list",
-      "line": 485,
+      "line": 486,
       "fields": [
         "GET:order",
         "GET:orderby"
@@ -395,7 +398,7 @@
     {
       "file": "admin/class-h3-mgmt-admin-sponsors.php",
       "method": "add_values",
-      "line": 895,
+      "line": 897,
       "fields": [
         "GET:id",
         "POST:submitted"
@@ -405,7 +408,7 @@
     {
       "file": "admin/class-h3-mgmt-admin-sponsors.php",
       "method": "sponsors_edit",
-      "line": 915,
+      "line": 917,
       "fields": [
         "POST:submitted"
       ],
@@ -463,7 +466,7 @@
     {
       "file": "includes/class-h3-mgmt-races.php",
       "method": "ranking_table",
-      "line": 917,
+      "line": 911,
       "fields": [
         "GET:ranking_route"
       ],
@@ -528,7 +531,7 @@
     {
       "file": "includes/class-h3-mgmt-sponsors.php",
       "method": "sponsoring_section_output",
-      "line": 713,
+      "line": 714,
       "fields": [
         "GET:type",
         "POST:donation_client_reference"
@@ -538,7 +541,7 @@
     {
       "file": "includes/class-h3-mgmt-sponsors.php",
       "method": "add_values",
-      "line": 1267,
+      "line": 1268,
       "fields": [
         "GET:id",
         "POST:submitted"
@@ -548,7 +551,7 @@
     {
       "file": "includes/class-h3-mgmt-sponsors.php",
       "method": "donation_selector",
-      "line": 1414,
+      "line": 1415,
       "fields": [
         "POST:donation",
         "POST:thumbs"
@@ -558,7 +561,7 @@
     {
       "file": "includes/class-h3-mgmt-sponsors.php",
       "method": "make_form",
-      "line": 1466,
+      "line": 1467,
       "fields": [
         "GET:amount",
         "GET:donation_client_reference"
@@ -568,7 +571,7 @@
     {
       "file": "includes/class-h3-mgmt-sponsors.php",
       "method": "validate_submit",
-      "line": 1633,
+      "line": 1634,
       "fields": [
         "GET:method",
         "POST:address",
@@ -583,7 +586,7 @@
     {
       "file": "includes/class-h3-mgmt-sponsors.php",
       "method": "__construct",
-      "line": 1888,
+      "line": 1889,
       "fields": [
         "COOKIE:client_token"
       ],
@@ -592,7 +595,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "is_invitation",
-      "line": 871,
+      "line": 872,
       "fields": [
         "GET:invitation",
         "POST:invitation"
@@ -602,7 +605,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "handle_invitation",
-      "line": 901,
+      "line": 902,
       "fields": [
         "GET:invitation",
         "POST:invitation"
@@ -612,7 +615,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_section",
-      "line": 1089,
+      "line": 1090,
       "fields": [
         "POST:submitted"
       ],
@@ -621,7 +624,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "primary_user_section",
-      "line": 1240,
+      "line": 1241,
       "fields": [
         "POST:submitted"
       ],
@@ -630,7 +633,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "invitations_section",
-      "line": 1343,
+      "line": 1344,
       "fields": [
         "POST:form_submitted"
       ],
@@ -639,7 +642,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "route_section",
-      "line": 1455,
+      "line": 1456,
       "fields": [
         "POST:route_id",
         "POST:submitted"
@@ -649,7 +652,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_homework",
-      "line": 1562,
+      "line": 1563,
       "fields": [
         "GET:id",
         "GET:todo",
@@ -661,7 +664,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "display_teams",
-      "line": 1895,
+      "line": 1896,
       "fields": [
         "GET:id"
       ],
@@ -670,7 +673,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_overview",
-      "line": 2251,
+      "line": 2252,
       "fields": [
         "GET:todo"
       ],
@@ -679,7 +682,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "validate_submit",
-      "line": 2378,
+      "line": 2379,
       "fields": [
         "POST:address",
         "POST:first_name",
@@ -691,7 +694,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "save_dashboard",
-      "line": 2409,
+      "line": 2410,
       "fields": [
         "POST:submitted"
       ],
@@ -780,6 +783,36 @@
       "fields": [
         "POST:message",
         "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/DonationAdmin.php",
+      "method": "submit",
+      "line": 29,
+      "fields": [
+        "POST:donation_ids",
+        "POST:remove_image",
+        "POST:revisions",
+        "POST:visible"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/DonationAdmin.php",
+      "method": "page",
+      "line": 68,
+      "fields": [
+        "GET:donation_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/DonationAdmin.php",
+      "method": "listing",
+      "line": 131,
+      "fields": [
+        "GET:after"
       ],
       "case_labels": []
     },

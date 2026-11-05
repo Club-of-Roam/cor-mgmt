@@ -30,9 +30,9 @@ Anbieterquellen, geprüft 2026-11-05: [API-Übersicht](https://github.com/better
 
 Eigenes additives Spenden-Modul 1.0.0, unabhängig von Plugin 1.2.10, Legacy-Marker 2.8 und Storage 3.0.0. [SQL-Referenz](schema-donations-1.0.0.sql), [Definitionen](../src/Infrastructure/WordPress/Schema/DonationSchema.php). Tabellen `cor_mgmt_donations` und `cor_mgmt_donation_history` mit InnoDB/utf8mb4. Einrichtung bei Aktivierung oder ausdrücklich unter Systemstatus; keine DDL bei normalen Anzeigen. Bestehende Namenskollisionen oder beschädigte fertige Manifeste werden nicht automatisch übernommen/repariert. Gemeinsame transaktionale Writer benötigen auch transaktionale Legacy-Tabellen; keine automatische Engine-Umstellung.
 
-Keine Massendatenmigration: alte Spenden, Einheiten, Cookies, unbekannte Felder und verwaiste Beziehungen bleiben unverändert. Neue verifizierte Centbeträge sind im Modul maßgeblich; die alte Ganzzahlspalte ist nur eine Kompatibilitätsprojektion mit ganzen Euro. `get_sponsor`, `get_donation_amount`, `get_sponsors_meta` und jüngste Spenden lesen neue exakte Werte über den Adapter. Direkte SQL-Konsumenten müssen vor Freigabe auf diesen Vertrag umgestellt werden. Historische Statistikformeln sind keine neue centgenaue Buchhaltung.
+Keine Massendatenmigration: alte Spenden, Einheiten, Cookies, unbekannte Felder und verwaiste Beziehungen bleiben unverändert. Neue verifizierte Centbeträge sind im Modul maßgeblich; die alte Ganzzahlspalte ist nur eine Kompatibilitätsprojektion mit ganzen Euro. `get_sponsor`, `get_donation_amount`, `get_sponsors_meta` und jüngste Spenden lesen neue exakte Werte über den Adapter. Direkte SQL-Konsumenten müssen vor Freigabe auf diesen Vertrag umgestellt werden. Neue Summen werden mit Centarithmetik berechnet; historische Zählkonventionen bleiben erhalten. Öffentliche Euroanzeigen bleiben ganze Euro, interne Reader und Verwaltung behalten Centbeträge.
 
-Neue modulverwaltete Datensätze dürfen über alte Admin-Aktionen nicht bezahlt/unbezahlt gesetzt, verschoben, gelöscht oder bearbeitet werden. Die kontrollierte Metadatenpflege erfolgt derzeit über das zugehörige Spenderformular. Historische Verwaltungsaktionen bleiben bestehen. Systemstatus bietet [DonationAudit](../src/Infrastructure/WordPress/DonationAudit.php): nur aggregierte Zustände, Methoden, Beziehungsprobleme und bekannte neue Centbeträge; keine Personen-/Sitzungsdaten und keine automatische Umrechnung.
+Neue modulverwaltete Datensätze dürfen über alte Admin-Aktionen nicht bezahlt/unbezahlt gesetzt, verschoben, gelöscht oder bearbeitet werden. Kontrollierte Metadatenpflege und Sichtbarkeit bietet die [neue Verwaltung](block-7-administration.md), getrennt von unveränderlichen Zahlungsnachweisen. Historische Verwaltungsaktionen bleiben bestehen. Systemstatus bietet [DonationAudit](../src/Infrastructure/WordPress/DonationAudit.php): nur aggregierte Zustände, Methoden, Beziehungsprobleme und bekannte neue Centbeträge; keine Personen-/Sitzungsdaten und keine automatische Umrechnung.
 
 ## Abnahme und verbleibende Arbeit
 
@@ -42,8 +42,10 @@ Vor Einsatz zusätzlich erforderlich:
 
 1. Anbieterzugang und konkrete Produktionskonfiguration fachlich abnehmen; erhaltenen Ablauf samt öffentlichem Kommentar und Sichtbarkeit des Betrags bestätigen.
 2. Automatisierung prüfen: geeignete Client-API/Webhooks, Vertragszugang, Authentizität, Wiederholung, Rückerstattungen und Abgleich. Keine automatische Hintergrundbestätigung ist eingerichtet.
-3. Historische Betragseinheiten je Ursprung nachweisen und Bestandsabgleich durchführen. Alte offene Vorgänge bekommen keine stillschweigende neue Sitzungsberechtigung; Übergang kontrolliert planen.
-4. Direkte Theme-/Statistik-/Nachbarplugin-Konsumenten und verbleibende Legacy-Aggregation prüfen. Kontrollierte Admin-Korrektur neuer Spenden mit Journal noch ergänzen.
+3. Historische Betragseinheiten je Ursprung nachweisen und Bestandsabgleich durchführen. Die kontrollierte Vorprüfung/Protokollierung alter offener Vorgänge ist umgesetzt. Tatsächliche Übernahme nur mit nachgewiesenem ursprünglichem Vertrag; keine stillschweigende Sitzungsberechtigung.
+4. Verwaltung und Geldanzeigen sind ergänzt, Quellkonsumenten geprüft; vollständigen Bestands-/Browserabgleich weiterhin abnehmen. Details und erhaltene Statistikregeln in [Verwaltung und Anzeigen](block-7-administration.md).
 5. Echte Browser-/Tastatur-/Accessibility-Abnahme, positive multipart-Bildprüfung und vollständiger Archivsnapshot. Kein echter Spendenvorgang wurde zum Test ausgelöst.
 
 Block 7 ist damit technisch begonnen und serverseitig abgesichert; die genannten Freigabe- und Integrationskriterien bleiben offen.
+
+Die ergänzte Verwaltung, öffentliche Ganz-Euro-Anzeige und Vorbereitung offener Altvorgänge sind in [Block 7 – Verwaltung](block-7-administration.md) dokumentiert.

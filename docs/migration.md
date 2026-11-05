@@ -73,3 +73,5 @@ Die kontrollierte Zwischenkopie legacy-shadow-v1 bleibt unverändert. Deren cor_
 ## Ergänzung Block 7 (2026-11-05)
 
 [Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).
+
+Ergänzung: [Spendenverwaltung und Übergangsvorbereitung](block-7-administration.md) beschreibt Objektberechtigungen, Revisionen, Sammelrollback, Journale und die Grenze zwischen protokollierter Altprüfung und noch ausstehender belegter Übernahme. Das Frontend zeigt gemäß D-42 ganze Euro; interne Reader behalten Centbeträge.

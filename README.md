@@ -16,6 +16,7 @@ Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheit
 
 | Dokument | Inhalt |
 |---|---|
+| [Spendenverwaltung Block 7](docs/block-7-administration.md) | Profile, Sichtbarkeit, Altvorgangsprüfung und ganze Euro im Frontend |
 | [Spenden Block 7](docs/block-7-donations.md) | Betterplace, neue Centbeträge, einmalige Zuordnung, Installation und offene Automatisierungsprüfung |
 | [Ergebnisse Block 6](docs/block-6-results.md) | Versionierte Punkteberechnung, Etappenergebnisse, Ranglisten und Historienvergleich |
 | [Teams und Profile Block 5](docs/block-5-teams.md) | Teilnahme, Einladungen, Mitgliedschaften, Profilbilder, Freigabe und konkurrierende Platzvergabe |
