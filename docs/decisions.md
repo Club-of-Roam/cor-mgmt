@@ -74,3 +74,7 @@ Diese Fragen verhindern keine Dokumentation/Referenztests, aber die jeweilige un
 
 - D-42 (Anzeigevorgabe 2026-11-05): Frontend zeigt weiterhin ganze Euro; entsprechend vorhandener Ganzzahlkonvertierungen Nachkommastellen abschneiden. Centgenaue Speicherung und Verwaltung bleiben erhalten. Summen zuerst exakt bilden, dann anzeigen.
 - D-43 (technisch): Kontrollierte Profil-/Sichtbarkeitsverwaltung mit Objektberechtigung, Revision und Journal. Alte offene Vorgänge nur ausdrücklich zur Anbieterprüfung vorbereiten; keine geratene Bestätigung, Betragseinheit oder neue Sitzungsberechtigung.
+
+## Planung Block 8 (2026-11-05)
+
+- D-44 (vom Benutzer vorgegeben): Autoresponses zwingend je Event unabhängig erzeugen und einstellen können. Zwei parallele Events dürfen nicht dieselbe globale Konfiguration verwenden. Auflösung je Veranstaltung/Aktion/Sprache; Kopien bleiben unabhängig. Veranstaltung des Auslösers maßgeblich, kein Rückgriff auf das aktive Rennen oder fremde Eventvorlagen. Bestandsübernahme ausdrücklich und datenerhaltend; Umsetzung und Tests gemäß [Block-8-Plan](block-8-communication-plan.md) noch offen.

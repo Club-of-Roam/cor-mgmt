@@ -34,7 +34,7 @@ Block 0 ist am 2026-11-02 als Analyse-/Referenz-/Testgrundlagenpaket abgeschloss
 | 5 Teams/Profile | Anmeldung, Einladung, Mitgliedschaft, Freigabe, Dashboard, Bilder und Zusatzfragen | Vollständiger Teilnahmeablauf; Abfragen ohne Schreibnebenwirkungen |
 | 6 Ergebnisse | Ergebnistabelle, Punkteberechnung, Eingabe und Ranglisten | Historie verglichen; Altfehler gesondert dokumentiert |
 | 7 Spenden | Zuerst fachliche Prüfung; danach bestätigte Adapter, Centbeträge und wiederholbare Bestätigungen | Fachentscheidung plus Erfolgs-/Fehler-/Wiederholungsfälle |
-| 8 Kommunikation/Börse | Vorlagen, Empfänger, kontrollierter Versand und eigene Nachrichten | Rechte, Sprache und Empfänger stimmen; keine unbeabsichtigten Mehrfachsendungen |
+| 8 Kommunikation/Börse | Autoresponses je Event/Aktion/Sprache, Empfänger, kontrollierter Versand und eigene Nachrichten | Parallele Events strikt getrennt; Rechte, Sprache und Empfänger stimmen; keine unbeabsichtigten Mehrfachsendungen |
 | 9 Ticker/Medien | Texte, Kommentare, Bilder, Videos, Karten, authentifizierte Eingänge und cor-ticker-Adapter | Historische/neue Inhalte; sichere Uploads/Eingänge |
 | 10 Gesamtabnahme | Eigenständiges ZIP, Standardtheme ohne Zusatzplugins, optionale Integrationen, Übersetzungen, Statistiken, Bedienung, Leistung und Release | Release-Kandidat mit geprüfter Wiederherstellung |
 
@@ -74,3 +74,7 @@ Block 6 liefert normalisierte Ergebnisse für ausdrücklich eingerichtete Wertun
 ## Ergänzung Block 7 (2026-11-05)
 
 [Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).
+
+## Ergänzung Block 8: Autoresponses je Event
+
+D-44 verlangt unabhängig anlegbare und einstellbare Vorlagen pro Veranstaltung. Keine globale Auswahl über das aktive Rennen; Vorlage, Empfänger und Versandwarteschlange bleiben an die Veranstaltung des Auslösers gebunden. Explizite datenerhaltende Übernahme globaler Vorlagen und Tests mit zwei parallelen Events gehören zum Block. [Umsetzungsplan](block-8-communication-plan.md). Noch nicht implementiert.

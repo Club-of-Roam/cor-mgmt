@@ -23,7 +23,8 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
 | 6 | neue Wertung und Historienvergleich umgesetzt; Abnahme offen | block-6-results.md; vollständiges Archiv, Bestandsvergleich und Browserabnahme bleiben offen |
 | 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestands-/Browserabnahme und nachgewiesene Altübernahme offen |
-| 8–9 | offen | Kommunikation/Börse, Ticker/Medien |
+| 8 | Planung ergänzt; Umsetzung offen | block-8-communication-plan.md; Autoresponses je Event, kontrollierter Versand und Börse |
+| 9 | offen | Ticker/Medien |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
 
 Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist kein belegter GitHub-Lauf. WordPress-Referenzintegration ausgeführt; vollständige Modul-, Migrations- und Browserabnahme nicht erfolgt.
@@ -125,3 +126,7 @@ Prüfabschluss dieses Pakets: je 295 isolierte und 297 WordPress-Tests auf PHP 8
 [Umsetzung](block-7-administration.md): geschützte Metadaten-/Sichtbarkeitsverwaltung, atomare Sammelaktionen, Revisionen und Journal. Kontrollierte Vorbereitung offener Altvorgänge ohne finanzielle/zeitliche Umdeutung. Exakte interne Summen, öffentlich ganze Euro gemäß Benutzerkorrektur; öffentliche Zähler schreiben keine Optionen. Anbieter-/Bestands-/Browserabnahme und belegte Altübernahme bleiben offen. Keine Anwendungsmigration oder Git-Aktionen.
 
 Prüfabschluss des Verwaltungs-/Anzeigepakets: PHP 8.2/8.3/8.4/8.5 geprüft, abschließend sämtliche 30 Spendenfälle mit je 185 Assertions auf allen Versionen bestanden. Composer-Prüfungen, 7 Node-Tests, ESLint und bytegleiche Paketbuilds mit Produktionsloader geprüft. Details und zeitliche Grenzen der Gesamtsuiten in verification.md. Geeigneter manueller Commit-Zwischenstand; englische Message direkt mitliefern.
+
+## Block 8 – Planergänzung Autoresponses (2026-11-05)
+
+Benutzeranforderung D-44 aufgenommen: Vorlagen und Aktivierung je Event/Aktion/Sprache unabhängig verwalten. Bestätigter Quellbefund: Bestand speichert und lädt nur Aktion/Sprache, ohne Eventzuordnung. [Plan](block-8-communication-plan.md) enthält Eventkontext, unabhängiges Kopieren, ausdrückliche Übernahme globaler Vorlagen, Versandbindung und Parallel-Event-Abnahmefälle. Nur Dokumentation geändert; kein Anwendungscode, Schema oder Versand geändert. Keine Laufzeittests für diese Planergänzung ausgeführt.

@@ -16,6 +16,7 @@ Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheit
 
 | Dokument | Inhalt |
 |---|---|
+| [Plan Kommunikation Block 8](docs/block-8-communication-plan.md) | Autoresponses je Event, Übergang globaler Vorlagen, kontrollierter Versand und Börse |
 | [Spendenverwaltung Block 7](docs/block-7-administration.md) | Profile, Sichtbarkeit, Altvorgangsprüfung und ganze Euro im Frontend |
 | [Spenden Block 7](docs/block-7-donations.md) | Betterplace, neue Centbeträge, einmalige Zuordnung, Installation und offene Automatisierungsprüfung |
 | [Ergebnisse Block 6](docs/block-6-results.md) | Versionierte Punkteberechnung, Etappenergebnisse, Ranglisten und Historienvergleich |

@@ -59,3 +59,7 @@ Stand 2026-11-02. Dieser Katalog ergänzt [Funktionen](features.md), [Shortcodes
 ## Übergabe der Referenz
 
 Für eine Fachkorrektur den jeweiligen Ist-Fall unverändert nachvollziehbar halten und einen getrennten Soll-/Regressionstest hinzufügen. Rechte- und Fehlverhalten nicht als erwünschte Kompatibilität bewahren. Keine echte Historie für Tests verwenden. Block 0 liefert Inventar, Referenzen, bekannte Abweichungen und ausführbare Prüfgrundlage; er ersetzt weder die Sicherheitsbasis aus Block 1 noch die umfassende Modul-/Releaseabnahme. Referenzabschluss und Restarbeiten sind in [block-0-acceptance.md](block-0-acceptance.md) zugeordnet.
+
+## Ergänzung F-MAIL-01: Zielregeln Block 8
+
+D-44: Autoresponses je Event/Aktion/Sprache unabhängig anlegen, aktivieren und bearbeiten. Der globale Ausgangsbefund oben bleibt historische Referenz. Zusätzliche Abnahme mit zwei parallelen Events, getrennten Texten/Schaltern, demselben Teilnehmer in beiden Events, fehlender Vorlage ohne Fremdfallback und Wechsel des aktiven Rennens während wartender Zustellung. Bestandsübernahme ohne Duplikate, ungewolltes Überschreiben oder Versand. [Konkrete Szenarien](block-8-communication-plan.md). Noch nicht implementiert oder ausgeführt.
