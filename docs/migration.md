@@ -69,3 +69,7 @@ Die [neun DDL-Anweisungen des Altinstallers](legacy-schema-reference.md) sind al
 ## Ergebnis-Modul aus Block 6
 
 Die kontrollierte Zwischenkopie legacy-shadow-v1 bleibt unverändert. Deren cor_mgmt_stage_results sind Rohprojektionen pro Lauf/Team/Legacy-Slot und keine Live-Ergebnistabelle. Das additive Ergebnis-Modul besitzt cor_mgmt_scoring_profiles, cor_mgmt_results und cor_mgmt_result_history; siehe [Schema](schema-results-1.0.0.sql). Neue Wertungen verwenden Team-/Etappen-IDs, gespeicherte Regelwerte und ein Journal. Keine automatische Übernahme alter Ergebnisse oder Neuberechnung. Der diagnostische Vergleich ist ausdrücklich keine fachlich freigegebene Korrektur und keine Aktivierung des Gesamtarchivs; siehe [Block 6](block-6-results.md).
+
+## Ergänzung Block 7 (2026-11-05)
+
+[Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).

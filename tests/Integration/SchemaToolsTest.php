@@ -39,6 +39,8 @@ final class SchemaToolsTest extends TestCase {
     }
     public static function invalidRequests(): array {
         return [
+            ['GET',true,'valid','donation-setup','post_required'],['POST',false,'valid','donation-setup','forbidden'],['POST',true,'wrong','donation-setup','invalid_nonce'],
+            ['GET',true,'valid','donation-audit','post_required'],['POST',false,'valid','donation-audit','forbidden'],['POST',true,'wrong','donation-audit','invalid_nonce'],
             ['GET',true,'valid','results-setup','post_required'],['POST',false,'valid','results-setup','forbidden'],['POST',true,'wrong','results-setup','invalid_nonce'],
             ['GET',true,'valid','participation-setup','post_required'],['POST',false,'valid','participation-setup','forbidden'],['POST',true,'wrong','participation-setup','invalid_nonce'],
             ['GET',true,'valid','preflight','post_required'],['POST',false,'valid','preflight','forbidden'],
@@ -46,6 +48,12 @@ final class SchemaToolsTest extends TestCase {
             ['POST',true,'valid',[],'invalid_operation'],['POST',true,'valid','drop','invalid_operation'],
             ['POST',true,'valid','start','maintenance_prerequisites'],['POST',true,'valid','step','maintenance_prerequisites'],
         ];
+    }
+    public function testDonationSetupAndReadOnlyAggregateAudit(): void {
+        $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'donation-setup'];self::assertTrue($this->request()['success']);
+        global $wpdb;$before=$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_donation_history");
+        $_POST['operation']='donation-audit';$result=$this->request();self::assertTrue($result['success']);self::assertTrue($result['data']['read_only']);
+        self::assertSame('unresolved_without_source_provenance',$result['data']['historical_units']);self::assertArrayNotHasKey('session_hash',$result['data']);self::assertSame($before,$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_donation_history"));
     }
     public function testAuthorizedResultsSetupIsExplicitAndIdempotent(): void {
         $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'results-setup'];

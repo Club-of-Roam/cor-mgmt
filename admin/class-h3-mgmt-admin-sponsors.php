@@ -28,6 +28,13 @@ if ( ! class_exists( 'H3_MGMT_Admin_Sponsors' ) ) :
 
 			$todo = isset( $_GET['todo'] ) ? $_GET['todo'] : '';
 
+            $ids = array_merge([$_GET['id'] ?? 0], isset($_GET['bulk']) && is_array($_GET['bulk']) ? $_GET['bulk'] : []);
+            foreach ($ids as $candidate) {
+                if (in_array($todo, ['edit','save','delete','paid','unpaid','bulk-delete','bulk-paid','bulk-unpaid'], true) && \Cor\Mgmt\WordPress\DonationFrontend::managed(H3_MGMT_Security::id($candidate))) {
+                    echo '<p>' . esc_html__('This donation uses verified cent storage. Payment changes, deletion and reassignment require the controlled donation workflow; legacy editing is disabled.', 'h3-mgmt') . '</p>';
+                    return;
+                }
+            }
 			if ( $todo == 'edit' ) {
 				$this->sponsors_edit( $_GET['id'] );
 			} elseif ( isset( $_GET['id'] ) && is_numeric( $_GET['id'] ) ) {

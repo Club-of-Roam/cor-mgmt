@@ -107,3 +107,7 @@ TeamPolicyTest prüft die Phasenmatrix und Freigabe als reine Fachlogik. TeamMan
 ## Ergebnis-Modul
 
 Block 6 ergänzt reine Punkte-/Rangfolgetests sowie WordPress-Integration für Versionierung, mehr als sechs Etappen, variable Summen, Rechte/Nonces, Revisionen einschließlich Journalgeneration, atomare Mehrteam-Verarbeitung und schreibfreien historischen Vergleich. ResultConcurrencyTest verwendet zwei getrennte PHP-Prozesse mit derselben Formularrevision; genau ein Stand gewinnt. ResultsInstallationTest prüft additive Einrichtung, Wiederholung, Kollisionen, Manifestwiederaufnahme und Engine-/Planabweichungen. Browser-/Tastaturabnahme bleibt ausdrücklich offen; siehe [Block 6](block-6-results.md) und [Prüfbelege](verification.md).
+
+## Ergänzung Block 7 (2026-11-05)
+
+[Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).

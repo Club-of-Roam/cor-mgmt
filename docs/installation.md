@@ -70,3 +70,7 @@ Aktivierung richtet zusätzlich das Teilnahme-Modul 1.0.0 ein. Bereits aktive In
 ## Ergebnis-Modul
 
 Das additive Ergebnis-Modul 1.0.0 wird bei Aktivierung oder ausdrücklich über den Systemstatus eingerichtet. Normale Seitenaufrufe führen kein DDL aus. [SQL-Referenz](schema-results-1.0.0.sql); vorhandene Tabellen ohne passendes Manifest werden nicht übernommen. Anschließend kann ein berechtigter Organisator im Rennformular die Wertung 2.0 ausdrücklich aktivieren: nur Phase 0 und ohne bisherige Ergebniswerte. Schemaeinrichtung allein schaltet kein Rennen um. Einzelheiten und Historiengrenzen in [Block 6](block-6-results.md).
+
+## Ergänzung Block 7 (2026-11-05)
+
+[Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).

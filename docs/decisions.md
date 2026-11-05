@@ -12,7 +12,7 @@ Stand 2026-11-02.
 | D-06 | beschlossen | Dokumentation und Tests begleiten jeden Block |
 | D-07 | beschlossen | Synthetische Testdaten, eigene DB/Uploads, kein echter Versand oder Zahlungszugriff |
 | D-08 | beschlossen | Bestehende Shortcodes und Attribute kompatibel halten |
-| D-09 | zurückgestellt | Künftige Zahlungswege erst nach separater Fachprüfung; historische Methoden sind keine Freigabe |
+| D-09 | präzisiert 2026-11-05 | Für neue Spenden ausschließlich Betterplace (D-39/40); historische Methoden erhalten. Weitere Automatisierung und Anbieterfreigabe getrennt prüfen |
 | D-10 | beschlossen | PHPUnit 11.5-Linie passt zu PHP 8.2; genaue Version in composer.lock |
 | D-11 | beschlossen | Eigenständiges WordPress-Plugin mit vollständigem ZIP und Einrichtung; keine verpflichtenden Spezialthemes oder weiteren Fachplugins. Lebenszyklus und Abnahme gemäß installation.md |
 | D-12 | präzisiert 2026-11-02 | Drei Begriffe getrennt führen: Rennregeln ändern; Zahlung/Haftungsverzicht pro Teilnehmer bestätigen oder zurücknehmen; Team automatisch zurückstufen. Ab Rennstart sind die beiden Backend-Aktionen gesperrt und die automatische Rückstufung samt dadurch verursachtem Routenverlust ausgeschlossen. Begriffliche Klarstellung der bereits beabsichtigten Logik, keine neue Funktion. Andere Einflusswege mit Phasenregeln abstimmen |
@@ -59,9 +59,15 @@ Stand 2026-11-02.
 
 Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D-17/18 beantwortet. Spätere Detailarbeit: Zusatzantworten genauer klassifizieren (bis dahin alle erlaubt), Wirkungen von Datumskorrekturen, konkrete Rollen-/Einzelrechte für Teilnehmer-Adminaktionen, Snapshotumfang des Archivs. Die beiden Zusatzpunktfragen sind durch D-38 beantwortet. Wechsel in ein anderes Rennen separat behandeln. Ein gewöhnlicher Rückwechsel aus dem eingefrorenen Archiv ist nicht beschlossen. Historische Datenfehler sind weiterhin nicht durch den Codebefund allein nachgewiesen.
 
-- Block 7: aktive Verfahren versus Archiv, maßgebliche Bestätigung, Testumgebung des Anbieters ermitteln; vor Implementierung dokumentieren.
+- Block 7: Betterplace und bestehender Zuordnungsablauf durch D-39/40 bestätigt. Anbieterzugang, weitere Automatisierung, Rückerstattungen und Bestandsabgleich bleiben offen.
 - Block 6: historische Punktefehler zunächst mit Ist-/Soll-Vergleich belegen; keine stille Neuberechnung der Historie.
 - Block 3/7: Betragseinheiten pro Schreibpfad nachweisen; Mehrdeutiges berichten, keine pauschale Multiplikation.
 - Block 9: realen Gateway-Vertrag, Zeichensatz und Zeitformat ermitteln; vorher keine Rückwärtskompatibilität behaupten.
 
 Diese Fragen verhindern keine Dokumentation/Referenztests, aber die jeweilige unbelegte fachliche Umstellung.
+
+## Umsetzung Block 7 (2026-11-05)
+
+- D-39 (fachlich bestätigt): Für neue Spenden wird nur Betterplace genutzt. Historische Betterplace-/PayPal-/Lastschriftdatensätze bleiben erhalten; neue andere Zahlungen werden nicht angeboten.
+- D-40 (fachlich bestätigt): Bestehenden Ablauf einschließlich „Fertig“ und serverseitiger Kommentarzuordnung beibehalten. Weitere Automatisierung ausdrücklich zur Prüfung vormerken. Browserklick/Rückleitung allein bestätigen nichts; keine erfundene manuelle Bestätigungsregel. Befunde und offene Anbieterfreigabe in [Block 7](block-7-donations.md).
+- D-41 (technisch): Additives Spenden-Modul 1.0.0 mit exakten neuen EUR-Centbeträgen, einmaliger Opinion-Zuordnung und Journal. Historische Einheiten bleiben ungeklärt; alte Beträge werden nicht pauschal konvertiert. Legacy-Adminwriter dürfen modulverwaltete Bestätigungen nicht umgehen.

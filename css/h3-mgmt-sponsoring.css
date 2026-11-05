@@ -286,3 +286,7 @@ button.avia-button.button {
 #error-message.show {
     visibility: visible;
 }
+
+.cor-donation-form label { display: block; margin-block: 1rem; }
+.cor-donation-trap { display: none; }
+.cor-donation-checkout code { overflow-wrap: anywhere; user-select: all; }

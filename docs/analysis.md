@@ -26,7 +26,7 @@ Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d
 | ARCH-02 mittel | Globals, große Klassen, HTML/SQL/Fachlogik vermischt, wiederholte Abfragen in Schleifen | Services, Repositories, Views, gebündelte Abfragen; 2/Module |
 | DB-01 hoch | Tabellenanlage nur ohne installierte Version, Versionsoption trotzdem aktualisiert: [historische Installer-DDL](legacy-schema-reference.md) | Geprüfte versionierte Migration; 3 |
 | DB-02 hoch | Uninstall löscht neun Plugin-Tabellen: h3_mgmt_uninstall in [Bootstrap](../h3-management.php) | Standardmäßig Daten erhalten; 3 |
-| MONEY-01 hoch | Betterplace-Centbetrag /100, anschließend Integer-Speicherung: [Handler](../includes/class-h3-mgmt-sponsors.php#L1026) | Centmodell, Herkunft/Einheit prüfen; verlorene Stellen nicht erfinden; 7 |
+| MONEY-01 hoch | Betterplace-Centbetrag /100, anschließend Integer-Speicherung: [Handler](../includes/class-h3-mgmt-sponsors.php) | Centmodell, Herkunft/Einheit prüfen; verlorene Stellen nicht erfinden; 7 |
 | HTTP-01 mittel | get_headers/file_get_contents, historische HTTP-URL und sleep im Spendenablauf | WP HTTP API, Zeitlimits, Fehlerzustände, Adapter; 7 |
 | UI-01 mittel | Enfold-Markup, feste Domains/Pfade, ActiveX und seitenübergreifende Assets | Eigene Komponenten, WP-URLs, gezieltes Laden; Module |
 

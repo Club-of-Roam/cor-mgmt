@@ -13,6 +13,8 @@ if ( ! class_exists( 'H3_MGMT_Utilities' ) ) :
 
 	class H3_MGMT_Utilities {
 
+		private $sort_key = 'id';
+
 		/**
 		 * Calculates age,
 		 * i.e. the difference between two Unix Timestamps

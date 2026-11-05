@@ -59,3 +59,7 @@ Die Shortcodes h3-submit-rankings und h3-ranking-table bleiben erhalten. Auch ra
 Andere Module dürfen total_points und die ersten sechs Legacy-Slots weiter lesen; sie sind bei neuen Wertungen eine Kompatibilitätsprojektion. Ergebnisse weiterer Etappen liegen ausschließlich normalisiert vor. Direkte externe Ergebniswriter würden Sperre, Revision und Journal umgehen und müssen vor Veröffentlichung entfernt oder über den neuen Anwendungsfall angebunden werden. Der Schema-Zwischenlauf allein aktiviert keine neue Wertung und kopiert das additive Live-Ergebnis-Modul noch nicht.
 
 Theme, cor-ticker und ausgelagerte Endpunkte wurden in Block 6 nicht verändert. Ihre Gesamt-/Archiv- und Browserabnahme bleibt den Folgeblöcken zugeordnet; siehe [Block 6](block-6-results.md).
+
+## Ergänzung Block 7 (2026-11-05)
+
+[Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).

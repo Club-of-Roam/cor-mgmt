@@ -22,7 +22,7 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 4 | Verwaltungsumbau im Kompatibilitätsbetrieb umgesetzt | block-4-events.md; Teilnehmer-Kapazitätsvertrag, aktive Migration und vollständiges Archiv mit Folgeblöcken abnehmen |
 | 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
 | 6 | neue Wertung und Historienvergleich umgesetzt; Abnahme offen | block-6-results.md; vollständiges Archiv, Bestandsvergleich und Browserabnahme bleiben offen |
-| 7 | offen | Fachliche Zahlungsprüfung zuerst |
+| 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestandsabgleich, Admin-Korrekturen und Browserabnahme offen |
 | 8–9 | offen | Kommunikation/Börse, Ticker/Medien |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
 
@@ -32,7 +32,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Teams/Profile aus Block 5 und die neue Wertung aus Block 6 sind umgestellt; nächster Fachbereich: fachliche Zahlungsprüfung in Block 7; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
+3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Teams/Profile aus Block 5 und die neue Wertung aus Block 6 sind umgestellt; Betterplace-Grundlage und offene Abnahmen aus Block 7 beachten; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -113,3 +113,9 @@ Keine Anwendungskopie migriert, keine Wertung aktiviert, keine vorhandenen Ergeb
 Der erlaubte Phasenrückwechsel erhält auch bei vorhandenen Ergebnissen Freigaberückstufung und Freigabe von Routenplätzen. Die bisherigen Ergebniszeilen bleiben erhalten; dieselbe Route kann wieder zugewiesen werden. Gespeicherte Null-Punkte-Ergebnisse schützen ihr Team vor Löschung. Die abschließend betroffenen Suiten sind auf allen vier PHP-Versionen erfolgreich geprüft und gesondert in verification.md ausgewiesen.
 
 Fachbestätigung 2026-11-05 (D-38): Zusatzpunkte bei Platz 0/99 bleiben möglich; variable Zusatzpunkte bleiben bei aktiviertem Schalter ausschließlich auf Etappe 6. Beide zuvor vorläufigen Regeln sind damit verbindlich bestätigt. Kein Anwendungscode geändert; bestehende Tests decken dieses Verhalten bereits ab. Bestands-/Archiv- und Browserabnahme bleiben offen.
+
+## Block 7 – Betterplace (2026-11-05)
+
+Fachentscheidung: ausschließlich Betterplace für neue Spenden, vorhandenen Zuordnungsablauf erhalten und Automatisierung prüfen (D-39/40). Umsetzung: exakte neue Centbeträge, injizierter begrenzter Kommentaradapter, transaktionale einmalige Bestätigung, Journal, native Formulare, Sitzungs-/Nonce-Bindung und additives Installationsmodul. Historische Datensätze und Einheiten werden nicht konvertiert. Alte Browserbestätigung bleibt gesperrt. Umfang und offene Abnahmen in [Block 7](block-7-donations.md). Keine Anbieter-/Releasefreigabe, Anwendungsmigration oder Git-Aktion.
+
+Prüfabschluss dieses Pakets: je 295 isolierte und 297 WordPress-Tests auf PHP 8.2/8.3/8.4/8.5 bestanden; zuletzt betroffene Spendenfälle danach erneut auf allen vier Versionen geprüft. Composer-Prüfungen, 7 Node-Tests und ESLint bestanden. Ein geeigneter Zwischenstand für einen manuellen Commit; Block 7 bleibt bis zu den ausgewiesenen Abnahmen offen.

@@ -69,4 +69,8 @@ Das Fachpaket aus Block 5 ist im Kompatibilitätsbetrieb implementiert: gemeinsa
 
 ## Umsetzung Ergebnisse
 
-Block 6 liefert normalisierte Ergebnisse für ausdrücklich eingerichtete Wertungen, native Formulare, neue Ranglisten und einen nur lesenden historischen Vergleich. Historische Ergebnisse bleiben unverändert. Vollständiger Archivsnapshot und Bestands-/Browserabnahme bleiben offen; Umfang und Einrichtung in [Block 6](block-6-results.md). Nächster Fachbereich: Prüfung der Zahlungswege vor Block 7.
+Block 6 liefert normalisierte Ergebnisse für ausdrücklich eingerichtete Wertungen, native Formulare, neue Ranglisten und einen nur lesenden historischen Vergleich. Historische Ergebnisse bleiben unverändert. Vollständiger Archivsnapshot und Bestands-/Browserabnahme bleiben offen; Umfang und Einrichtung in [Block 6](block-6-results.md). Betterplace ist als aktiver Zahlungsweg bestätigt; Umsetzung und offene Freigaben in Block 7.
+
+## Ergänzung Block 7 (2026-11-05)
+
+[Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).

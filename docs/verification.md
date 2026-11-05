@@ -1,5 +1,25 @@
 # Prüfbelege
 
+## Block 7: Betterplace-Grundlage – 2026-11-05
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Suite | 295 Tests / 578 Assertions | 295 / 578 | 295 / 578 | 295 / 578 |
+| WordPress-Gesamtsuite | 297 Tests / 1.843 Assertions | 297 / 1.843 | 297 / 1.843 | 297 / 1.843 |
+| Abschließender Spenden-/Hinweistextlauf | 17 Tests / 92 Assertions | 17 / 92 | 17 / 92 | 17 / 92 |
+| composer check | bestanden | bestanden | bestanden | bestanden |
+
+Die vollständigen Suiten bestanden auf allen vier Versionen. Danach wurde der Schutz verwalteter Spenden bei gleichzeitig übergebener Einzel-ID und Bulk-Liste verschärft; die betroffenen 17 Fälle wurden auf allen vier Versionen erneut erfolgreich ausgeführt. Wiederholungsläufe werden nicht zur Gesamtzahl addiert. PHPStan Level 8, eingeführte PHPCS-/Kompatibilitätsregeln, vier SQL-Referenzen, Syntaxprüfung (148 Dateien) und Dokumentationsinventar (102 Quellen, 23 Shortcodes, 66 Methoden mit literalen Request-Feldern) bestanden. 7 Node-Tests und ESLint bestanden. Beschränkungen der bestehenden statischen Altbestandsprüfung gelten weiter.
+
+Neue Nachweise: exakte Dezimal-/Centbeträge und Überlaufgrenzen; zulässige HTTPS-Veranstaltungen; begrenzte paginierte Anbieterantworten; exakte Codes, verborgene Beträge, ungültige Antwortdaten, Sortierreihenfolge, mehrdeutige Treffer, Zeitgrenzen und Transportfehler. WordPress-Prüfungen belegen Sitzungs-/Rennbindung, idempotente Bestätigung, Profile erst nach Zuordnung, Owner-Verfügbarkeit und Sponsor-Rückfall, Schreibsperre im Archiv, geänderte Veranstaltung während HTTP, Journal-Rollback, erhaltene historische Zeilen und geschützte Admin-Aktionen. Routenabfrage und jüngste Spenden zeigen neue Centanteile; deklarierter Sortierschlüssel vermeidet eine PHP-8.2-Veraltungswarnung. Deaktivierte Spenden behalten ihren konfigurierten Hinweistext.
+
+DonationConcurrencyTest führt zwei echte PHP-Prozesse bis zur Anbieterbarriere: ein öffentlicher Nachweis mit beiden Codes führt zu genau einer Zuordnung und einem Bestätigungsjournal. Installationstests prüfen wiederholte additive Einrichtung, Datenerhalt, fremde Tabellenkollision, Wiederaufnahme und beschädigte fertige Manifeste einschließlich Anbieter-Unique-Index. Geschützte Systemstatus-Aktionen prüfen POST, Nonce, Rechte und nur lesenden aggregierten Prüfbericht.
+
+Zwei aufeinanderfolgende Builds erzeugten bytegleiches ZIP mit 259 Dateien. Paketgrenzen und vollständiger Produktionsloader ohne Entwicklungsabhängigkeiten wurden unter PHP 8.2 und 8.5 erfolgreich geprüft. Dies ersetzt keine vollständige Browser- oder Anbieterabnahme.
+
+Alle Antworten und Daten sind synthetisch; keine echten Mails, Zahlungen oder Anbieterabfragen. Die guarded WordPress-Testfixture verwendet für ihre synthetischen Passwörter eine niedrige bcrypt-Kostenstufe; keine Änderung an Anwendungspasswörtern. Pluginheader, Legacy-/Storage-Pläne und Lockdateien bleiben unverändert. Keine Anwendungsmigration oder Git-Aktionen. Browser-, Anbieter-, Bestands-, kontrollierte Admin-Korrektur- und Archivabnahme bleiben offen; [Block 7](block-7-donations.md) beschreibt die Grenzen. Die weitergehende Automatisierung ist zur Prüfung vorgemerkt und nicht umgesetzt.
+
+
 ## Block 6: Ergebnisse und Wertung – 2026-11-05
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

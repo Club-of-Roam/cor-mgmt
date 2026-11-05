@@ -4,19 +4,19 @@ Generiert mit `python tools/build-inventory.py`. Statische Registrierung und Sta
 
 | Shortcode | Handler / Quelle | Standardattribute (PHP-Ausdruck) |
 |---|---|---|
-| `h3-donation-counter` | [donation_counter](../includes/class-h3-mgmt-races.php#L678) | 'race' => 1, 'animation' => 0, 'offset' => 0, |
-| `h3-event-statistics` | [race_stats](../includes/class-h3-mgmt-races.php#L583) | 'stat' => 'all', 'race' => 0, 'event' => 1, 'offset' => 0, |
-| `h3-handle-betterplace-redirect` | [handle_betterplace_redirect](../includes/class-h3-mgmt-sponsors.php#L2641) | keine direkten Defaults |
-| `h3-list-sponsors` | [sponsors_overview](../includes/class-h3-mgmt-sponsors.php#L2572) | 'type' => 'sponsor', 'delimiter' => ', ', 'race' => 'all', |
+| `h3-donation-counter` | [donation_counter](../includes/class-h3-mgmt-races.php#L679) | 'race' => 1, 'animation' => 0, 'offset' => 0, |
+| `h3-event-statistics` | [race_stats](../includes/class-h3-mgmt-races.php#L584) | 'stat' => 'all', 'race' => 0, 'event' => 1, 'offset' => 0, |
+| `h3-handle-betterplace-redirect` | [handle_betterplace_redirect](../includes/class-h3-mgmt-sponsors.php#L1878) | keine direkten Defaults |
+| `h3-list-sponsors` | [sponsors_overview](../includes/class-h3-mgmt-sponsors.php#L1809) | 'type' => 'sponsor', 'delimiter' => ', ', 'race' => 'all', |
 | `h3-liveticker` | [the_ticker](../includes/class-h3-mgmt-ticker.php#L787) | 'max' => 10, 'route' => 'all', 'race' => 0, 'team' => 0, 'show_warning' => 1, 'show_nav' => 0 |
 | `h3-mate-xchange` | [xchange_control](../includes/class-h3-mgmt-xchange.php#L115) | keine direkten Defaults |
 | `h3-rand-team` | [random_team_info](../includes/class-h3-mgmt-teams.php#L2157) | 'event' => 0, 'race' => 0 |
-| `h3-ranking-table` | [ranking_table](../includes/class-h3-mgmt-races.php#L916) | 'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1, |
-| `h3-recent-sponsors` | [recent_sponsors](../includes/class-h3-mgmt-sponsors.php#L2503) | 'number' => 3, 'race' => 'all', |
-| `h3-sponsoring-form` | [new_sponsoring_handler](../includes/class-h3-mgmt-sponsors.php#L728) | 'race' => 0, |
-| `h3-stages` | [display_stages](../includes/class-h3-mgmt-races.php#L755) | 'race' => 1, 'class' => '', |
-| `h3-stages-isotope` | [isotope_links](../includes/class-h3-mgmt-races.php#L805) | 'race' => 1, 'class' => '', |
-| `h3-submit-rankings` | [ranking_submission_control](../includes/class-h3-mgmt-races.php#L886) | keine direkten Defaults |
+| `h3-ranking-table` | [ranking_table](../includes/class-h3-mgmt-races.php#L917) | 'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1, |
+| `h3-recent-sponsors` | [recent_sponsors](../includes/class-h3-mgmt-sponsors.php#L1739) | 'number' => 3, 'race' => 'all', |
+| `h3-sponsoring-form` | [new_sponsoring_handler](../includes/class-h3-mgmt-sponsors.php#L691) | keine direkten Defaults |
+| `h3-stages` | [display_stages](../includes/class-h3-mgmt-races.php#L756) | 'race' => 1, 'class' => '', |
+| `h3-stages-isotope` | [isotope_links](../includes/class-h3-mgmt-races.php#L806) | 'race' => 1, 'class' => '', |
+| `h3-submit-rankings` | [ranking_submission_control](../includes/class-h3-mgmt-races.php#L887) | keine direkten Defaults |
 | `h3-team-dashboard` | [team_dashboard_control](../includes/class-h3-mgmt-teams.php#L1539) | 'event' => 1, 'race' => 0 |
 | `h3-team-dashboard-homework` | [team_dashboard_homework_control](../includes/class-h3-mgmt-teams.php#L1495) | 'event' => 1, 'race' => 0 |
 | `h3-team-homework` | [team_homework](../includes/class-h3-mgmt-teams.php#L1562) | 'event' => 0, 'race' => 0 |

@@ -288,6 +288,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_race_information_text( $id ) {
+            $information_text_array = [];
             $id = H3_MGMT_Security::id($id);
 			global $wpdb, $h3_mgmt_utilities;
 

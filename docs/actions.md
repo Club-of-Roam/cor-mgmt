@@ -11,30 +11,26 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [edit](../admin/class-h3-mgmt-admin-races.php#L80) | `POST:cor_event_revision`, `POST:submitted` |  |
 | [fields](../admin/class-h3-mgmt-admin-races.php#L106) | `POST:submitted` |  |
 | [sponsors_control](../admin/class-h3-mgmt-admin-sponsors.php#L23) | `GET:bulk`, `GET:id`, `GET:method`, `GET:todo`, `POST:accound_id`, `POST:address_additional`, `POST:bank_id`, `POST:bank_name`, `POST:city`, `POST:country`, `POST:debit_confirmation`, `POST:display_name`, `POST:donation`, `POST:email`, `POST:first_name`, `POST:language`, `POST:last_name`, `POST:message`, `POST:method`, `POST:owner_link`, `POST:owner_pic`, `POST:paid`, `POST:race_id`, `POST:receipt`, `POST:street`, `POST:team_id`, `POST:type`, `POST:var_show`, `POST:zip_code` | `bulk-delete`, `bulk-hide`, `bulk-paid`, `bulk-show`, `bulk-unpaid`, `delete`, `hide`, `paid`, `save`, `show`, `unpaid` |
-| [sponsors_list](../admin/class-h3-mgmt-admin-sponsors.php#L478) | `GET:order`, `GET:orderby` |  |
-| [add_values](../admin/class-h3-mgmt-admin-sponsors.php#L888) | `GET:id`, `POST:submitted` |  |
-| [sponsors_edit](../admin/class-h3-mgmt-admin-sponsors.php#L908) | `POST:submitted` |  |
+| [sponsors_list](../admin/class-h3-mgmt-admin-sponsors.php#L485) | `GET:order`, `GET:orderby` |  |
+| [add_values](../admin/class-h3-mgmt-admin-sponsors.php#L895) | `GET:id`, `POST:submitted` |  |
+| [sponsors_edit](../admin/class-h3-mgmt-admin-sponsors.php#L915) | `POST:submitted` |  |
 | [statistics](../admin/class-h3-mgmt-admin-statistics.php#L17) | `POST:race_id` |  |
 | [page](../includes/class-h3-mgmt-maintenance.php#L42) | `POST:apply`, `POST:race` |  |
 | [ajax_upload](../includes/class-h3-mgmt-media.php#L61) | `POST:race` |  |
 | [picture](../includes/class-h3-mgmt-media.php#L127) | `POST:left`, `POST:right`, `POST:ticker_pic_msg` |  |
 | [save_extra_profile_fields](../includes/class-h3-mgmt-profile.php#L144) | `POST:_wpnonce`, `POST:deleteme` |  |
-| [ranking_table](../includes/class-h3-mgmt-races.php#L916) | `GET:ranking_route` |  |
+| [ranking_table](../includes/class-h3-mgmt-races.php#L917) | `GET:ranking_route` |  |
 | [post](../includes/class-h3-mgmt-security.php#L26) | `POST:cor_mgmt_nonce` |  |
 | [donation_nonce](../includes/class-h3-mgmt-security.php#L36) | `COOKIE:client_token` |  |
 | [donation_request](../includes/class-h3-mgmt-security.php#L41) | `COOKIE:client_token`, `GET:donation_client_reference` |  |
 | [admin_request](../includes/class-h3-mgmt-security.php#L111) | `GET:bulk`, `GET:id`, `GET:todo`, `POST:bulk`, `POST:id`, `POST:race_id`, `POST:route_id`, `POST:submitted`, `POST:team_id`, `POST:todo` |  |
 | [ranking_request](../includes/class-h3-mgmt-security.php#L231) | `POST:route`, `POST:stage` |  |
-| [new_sponsoring_handler](../includes/class-h3-mgmt-sponsors.php#L728) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:type`, `POST:display_name`, `POST:donation_token`, `POST:message`, `POST:new`, `POST:owner_link`, `POST:owner_pic-tmp`, `POST:submitted`, `POST:team_id`, `POST:type` |  |
-| [sponsoring_form_handler](../includes/class-h3-mgmt-sponsors.php#L1115) | `GET:section`, `POST:submitted` |  |
-| [sponsoring_section_output](../includes/class-h3-mgmt-sponsors.php#L1191) | `GET:type`, `POST:donation_client_reference` |  |
-| [add_values](../includes/class-h3-mgmt-sponsors.php#L1745) | `GET:id`, `POST:submitted` |  |
-| [donation_selector](../includes/class-h3-mgmt-sponsors.php#L1892) | `POST:donation`, `POST:thumbs` |  |
-| [make_form](../includes/class-h3-mgmt-sponsors.php#L1944) | `GET:amount`, `GET:donation_client_reference` |  |
-| [validate_submit](../includes/class-h3-mgmt-sponsors.php#L2111) | `GET:method`, `POST:address`, `POST:debit_confirmation`, `POST:email`, `POST:first_name`, `POST:last_name`, `POST:team_id` |  |
-| [save_donation](../includes/class-h3-mgmt-sponsors.php#L2170) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:amount`, `GET:donation_client_reference`, `GET:donation_token`, `POST:display_name`, `POST:donation_client_reference`, `POST:email`, `POST:first_name`, `POST:last_name`, `POST:message`, `POST:owner_link`, `POST:owner_pic-tmp`, `POST:team_id`, `POST:type` |  |
-| [handle_betterplace_redirect](../includes/class-h3-mgmt-sponsors.php#L2641) | `GET:amount`, `GET:donation_client_reference`, `GET:donation_token`, `GET:status` |  |
-| [__construct](../includes/class-h3-mgmt-sponsors.php#L2740) | `COOKIE:client_token` |  |
+| [sponsoring_section_output](../includes/class-h3-mgmt-sponsors.php#L713) | `GET:type`, `POST:donation_client_reference` |  |
+| [add_values](../includes/class-h3-mgmt-sponsors.php#L1267) | `GET:id`, `POST:submitted` |  |
+| [donation_selector](../includes/class-h3-mgmt-sponsors.php#L1414) | `POST:donation`, `POST:thumbs` |  |
+| [make_form](../includes/class-h3-mgmt-sponsors.php#L1466) | `GET:amount`, `GET:donation_client_reference` |  |
+| [validate_submit](../includes/class-h3-mgmt-sponsors.php#L1633) | `GET:method`, `POST:address`, `POST:debit_confirmation`, `POST:email`, `POST:first_name`, `POST:last_name`, `POST:team_id` |  |
+| [__construct](../includes/class-h3-mgmt-sponsors.php#L1888) | `COOKIE:client_token` |  |
 | [is_invitation](../includes/class-h3-mgmt-teams.php#L871) | `GET:invitation`, `POST:invitation` |  |
 | [handle_invitation](../includes/class-h3-mgmt-teams.php#L901) | `GET:invitation`, `POST:invitation` |  |
 | [team_section](../includes/class-h3-mgmt-teams.php#L1089) | `POST:submitted` |  |
@@ -51,9 +47,10 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [the_ticker](../includes/class-h3-mgmt-ticker.php#L787) | `GET:min`, `GET:ticker_race`, `GET:ticker_route`, `GET:todo` |  |
 | [team_ticker](../includes/class-h3-mgmt-ticker.php#L1132) | `GET:id`, `GET:min` |  |
 | [ticker_incoming_interface](../includes/class-h3-mgmt-ticker.php#L1311) | `POST:message` |  |
-| [table_order](../includes/class-h3-mgmt-utilities.php#L187) | `GET:order`, `GET:orderby` |  |
+| [table_order](../includes/class-h3-mgmt-utilities.php#L189) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L68) | `POST:address` |  |
 | [xchange_control](../includes/class-h3-mgmt-xchange.php#L115) | `POST:message`, `POST:submitted` |  |
+| [render](../src/WordPress/DonationFrontend.php#L24) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:id`, `GET:type`, `POST:new`, `POST:submitted` |  |
 | [mutate](../src/WordPress/EventAdmin.php#L30) | `GET:bulk` |  |
 | [render](../src/WordPress/EventList.php#L30) | `GET:country_filter`, `GET:event_page`, `GET:number_filter`, `GET:order`, `GET:orderby`, `GET:race_filter`, `GET:route_filter` |  |
 | [prepare](../src/WordPress/ProfileAvatar.php#L60) | `FILES:cor_profile_avatar` |  |

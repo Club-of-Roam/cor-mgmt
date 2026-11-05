@@ -40,7 +40,7 @@ final class SchemaTools
             wp_send_json_error(['code' => 'requirements'], 400);
         }
         $operation = $_POST['operation'] ?? null;
-        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','preflight','start','step','abandon'], true)) {
+        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','donation-setup','donation-audit','preflight','start','step','abandon'], true)) {
             wp_send_json_error(['code' => 'invalid_operation'], 400);
         }
         if (in_array($operation, ['start','step'], true) && (($_POST['backup'] ?? '') !== '1' || ($_POST['quiesced'] ?? '') !== '1')) {
@@ -61,6 +61,11 @@ final class SchemaTools
             } elseif ($operation === 'results-setup') {
                 (new Installer($db))->results();
                 $data = ['reload' => true];
+            } elseif ($operation === 'donation-setup') {
+                (new Installer($db))->donations();
+                $data = ['reload' => true];
+            } elseif ($operation === 'donation-audit') {
+                $data = \Cor\Mgmt\Infrastructure\WordPress\DonationAudit::report($db);
             } elseif ($operation === 'preflight') {
                 $report = (new Preflight($db))->run();
                 $tables = [];
@@ -117,6 +122,12 @@ final class SchemaTools
         }
         if ($status === InstallationStatus::Ready && !\Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready($db)) {
             echo '<p><button type="button" class="button button-primary" data-operation="results-setup">' . esc_html__('Set up result storage', 'h3-mgmt') . '</button></p>';
+        }
+        if ($status === InstallationStatus::Ready && !\Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready($db)) {
+            echo '<p><button type="button" class="button button-primary" data-operation="donation-setup">' . esc_html__('Set up donation storage', 'h3-mgmt') . '</button></p>';
+        }
+        if ($status === InstallationStatus::Ready) {
+            echo '<p><button type="button" class="button" data-operation="donation-audit">' . esc_html__('Review donation storage (read only)', 'h3-mgmt') . '</button></p>';
         }
         echo '<h2>' . esc_html__('Database setup and migration', 'h3-mgmt') . '</h2>';
         echo '<p>' . esc_html__('Migration prepares a separate verified copy. Current data is retained. Switching to that copy and publishing frozen archives are not available yet.', 'h3-mgmt') . '</p>';

@@ -48,6 +48,8 @@ $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
 $table_prefix = 'cortest_';
 require ABSPATH . 'wp-settings.php';
 
+// Low bcrypt cost only inside this guarded synthetic fixture; no application passwords.
+add_filter('wp_hash_password_options', static fn (array $options): array => ['cost' => 4] + $options);
 $GLOBALS['cor_test_mail'] = [];
 add_filter('pre_wp_mail', static function ($result, $attributes) {
     $GLOBALS['cor_test_mail'][] = $attributes;
