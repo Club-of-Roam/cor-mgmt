@@ -54,3 +54,6 @@ Kopieren verlangt zunächst eine schreibfreie Vorschau: alle Sprach-/Aktionsschl
 - Browser-/Tastatur-/Accessibility- und Bestandsabnahme sowie Paralleltests für die Worker ergänzen.
 
 Ausgeführte Prüfungen und Grenzen: [verification.md](verification.md). Vorlagentests belegen Eventtrennung und Konfigurationsmigration; daraus folgt keine fertige Versand- oder Queue-Abnahme. Keine echten Mails, keine produktiven Schnittstellen, keine Git-Aktionen.
+
+
+Nachtrag 2026-11-08: Die [Queue-Grundlage](block-8-queue.md) ergänzt das Rendering und die Workerzustände. Die oben beschriebene offene Auslöseranbindung und Umschaltung bleibt weiterhin erforderlich; dieser Nachtrag ändert keine bisherigen Vorlagen oder Mailauslöser.

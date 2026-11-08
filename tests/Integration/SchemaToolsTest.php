@@ -39,6 +39,7 @@ final class SchemaToolsTest extends TestCase {
     }
     public static function invalidRequests(): array {
         return [
+            ['GET',true,'valid','mail-queue-setup','post_required'],['POST',false,'valid','mail-queue-setup','forbidden'],['POST',true,'wrong','mail-queue-setup','invalid_nonce'],
             ['GET',true,'valid','communication-setup','post_required'],['POST',false,'valid','communication-setup','forbidden'],['POST',true,'wrong','communication-setup','invalid_nonce'],
             ['GET',true,'valid','donation-setup','post_required'],['POST',false,'valid','donation-setup','forbidden'],['POST',true,'wrong','donation-setup','invalid_nonce'],
             ['GET',true,'valid','donation-audit','post_required'],['POST',false,'valid','donation-audit','forbidden'],['POST',true,'wrong','donation-audit','invalid_nonce'],
@@ -58,6 +59,9 @@ final class SchemaToolsTest extends TestCase {
     }
     public function testCommunicationSetupIsExplicitAndRepeatable(): void {
         $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'communication-setup'];self::assertTrue($this->request()['success']);self::assertTrue($this->request()['success']);
+    }
+    public function testMailQueueSetupIsExplicitAndRepeatableWithoutDispatch(): void {
+        $before=$GLOBALS['cor_test_mail'];$_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'mail-queue-setup'];self::assertTrue($this->request()['success']);self::assertTrue($this->request()['success']);self::assertSame($before,$GLOBALS['cor_test_mail']);self::assertFalse(wp_next_scheduled('cor_mgmt_process_mail_queue'));
     }
     public function testAuthorizedResultsSetupIsExplicitAndIdempotent(): void {
         $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'results-setup'];

@@ -85,6 +85,14 @@ final class Database
     {
         return $this->lockName !== null;
     }
+    private function lockIdentifier(): string
+    {
+        return 'cor_mgmt_' . substr(hash('sha256', ($this->scalar('SELECT DATABASE()') ?? '') . ':' . $this->wpdb->prefix), 0, 48);
+    }
+    public function connectionHasLock(): bool
+    {
+        return $this->scalar($this->prepare('SELECT IS_USED_LOCK(%s)', $this->lockIdentifier())) === $this->scalar('SELECT CONNECTION_ID()');
+    }
     public function assertLock(): void
     {
         if (
@@ -104,7 +112,7 @@ final class Database
         if ($this->lockName !== null) {
             throw new MigrationException('nested_migration_lock');
         }
-        $name = 'cor_mgmt_' . substr(hash('sha256', ($this->scalar('SELECT DATABASE()') ?? '') . ':' . $this->wpdb->prefix), 0, 48);
+        $name = $this->lockIdentifier();
         if ($this->scalar($this->prepare('SELECT GET_LOCK(%s,0)', $name)) !== '1') {
             throw new MigrationException('migration_locked');
         }

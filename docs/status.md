@@ -136,3 +136,13 @@ Benutzeranforderung D-44 aufgenommen: Vorlagen und Aktivierung je Event/Aktion/S
 [Teilpaket](block-8-templates.md): Bestandsaufnahme, additive Einrichtung, unabhängige Event-/Aktions-/Sprachvorlagen, native Verwaltungsseite, Revisionen/Journal und kontrollierte globale bzw. Event-Kopie. Globaler Mailer bleibt unverändert; UI kennzeichnet die neue Konfiguration als Vorbereitung ohne Versandwirkung. Nächster Schritt: dauerhafte Fachereignisse, atomare Outbox-/Queue-Erzeugung und explizite Eventbindung der Auslöser. Erst danach Versandumschaltung und Worker, anschließend Börse. Kein vollständiger Block-8-Abschluss oder Releasekandidat. Keine Anwendungsmigration, kein Versand und keine Git-Aktionen.
 
 Prüfabschluss des ersten Block-8-Teilpakets: isolierte Suite und echte WordPress-Gesamtsuite unter PHP 8.2/8.3/8.4/8.5 erfolgreich; abschließende 18 Konfigurationsfälle nach Setup-Hinweis erneut auf allen Versionen bestanden. Qualitätsprüfungen, 7 Node-Tests, ESLint und Produktionspaket geprüft; Details in verification.md. Geeigneter manueller Commit-Zwischenstand. Versandumschaltung und Queue sind ausdrücklich die nächste Arbeit.
+
+
+## Block 8 – Queue-Grundlage (2026-11-08)
+
+[Zweites Teilpaket](block-8-queue.md): additives Queue-Modul mit eigener Installation, unveränderlichen Nachrichtensnapshots und Wiederholungsschlüssel je Event/Vorgang/Empfänger. Einreihen verlangt die gemeinsame Fachtransaktion. Worker mit atomarem Anspruch, expliziter Freigabe, höchstens drei Versuchen und getrenntem unklarem Transportausgang. Kein Mailaufruf unter Sperre oder offener Transaktion; Archive blockieren neue Versuche. Keine Registrierung oder automatische Verarbeitung.
+
+Nächster Arbeitsauftrag bleibt die atomare Anbindung der tatsächlichen Teamereignisse und übrigen Mailauslöser einschließlich Empfänger-/Sprach-/Linkauflösung. Danach geschützte Queueverwaltung, ausdrückliche Versandumschaltung, manueller Versand und Börse. Bestehender Mailer bleibt bis dahin unverändert; neue Eventvorlagen steuern ihn weiterhin nicht. Block 8 bleibt offen. Keine Anwendungsmigration, kein echter Versand, keine Git-Aktionen.
+
+
+Prüfabschluss der Queue-Grundlage: isolierte Suiten mit je 319 Tests auf PHP 8.2/8.3/8.4/8.5 bestanden. WordPress-Gesamtläufe und abschließende Queue-/Einrichtungsfälle ebenfalls erfolgreich; zeitliche Grenzen und genaue Zahlen in verification.md. Composer-Prüfungen auf allen vier Versionen, 7 Node-Tests, ESLint und reproduzierbarer Paketbau mit Produktionsloader geprüft. Geeigneter manueller Commit-Zwischenstand; Block 8 bleibt bis zur oben genannten Anbindung und Abnahme offen.

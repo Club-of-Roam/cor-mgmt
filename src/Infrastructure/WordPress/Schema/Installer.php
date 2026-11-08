@@ -48,6 +48,12 @@ final class Installer
             $this->create(CommunicationSchema::definitions(), 'cor_mgmt_communication_install', false, false);
         });
     }
+    public function mailQueue(): void
+    {
+        $this->db->locked(function (): void {
+            $this->create(MailQueueSchema::definitions(), 'cor_mgmt_mail_queue_install', false, false);
+        });
+    }
     public function pendingFresh(): bool
     {
         $raw = $this->db->option('cor_mgmt_fresh_install');

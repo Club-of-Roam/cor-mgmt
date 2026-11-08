@@ -1,5 +1,24 @@
 # Prüfbelege
 
+## Block 8: Queue-Grundlage – 2026-11-08
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Gesamtsuite | 319 Tests / 628 Assertions | 319 / 628 | 319 / 628 | 319 / 628 |
+| WordPress-Gesamtsuite | 359 Tests / 2.273 Assertions | 360 / 2.278 | 359 / 2.273 | 360 / 2.278 |
+| Abschließender Queue-/Einrichtungsnachlauf | 53 Tests / 281 Assertions | in Gesamtsuite enthalten | 53 / 281 | in Gesamtsuite enthalten |
+
+Zeitliche Grenze: Nach den Gesamtläufen für PHP 8.2/8.4 kam der Regressionstest für einen zweiten Adapter derselben gesperrten Verbindung hinzu. Die betroffenen Queue-/Einrichtungsfälle bestanden danach auf beiden Versionen vollständig erneut. PHP 8.3/8.5 liefen bereits mit diesem abschließenden Stand. Wiederholungssuiten nicht zur Gesamtzahl addieren.
+
+Neue Nachweise mit echtem WordPress/wpdb und synthetischen Datensätzen: additive wiederholbare Installation, Erhalt vorhandener Nachrichten, Namenskollision, beschädigtes Manifest bzw. fehlender eindeutiger Nachrichtenschlüssel, POST-/Nonce-/Adminschutz der Einrichtung und kein Schedulerstart. Vorgangsidentität je Event/Aktion/Empfänger/Sprache, kanonische Eingaben, unveränderliche Nachrichtensnapshots trotz Vorlagen-/Aktivwechsel, abweichende Wiederholung als Konflikt, fehlende/deaktivierte Vorlagen ohne Fremdfallback und ohne spätere automatische Reaktivierung. Fachänderung und Queueeintrag rollen gemeinsam zurück; unvollständiges Rendering hinterlässt keinen Eintrag.
+
+Anspruch und Besitz wurden mit zwei echten Datenbankverbindungen geprüft: besetzte Sperre und bereits beanspruchte Nachricht verhindern eine zweite Übernahme. Falsches Token verhindert Abschluss. Der injizierte Transport läuft nach Commit und ohne gehaltene Sperre; äußere Transaktionen und eine durch einen zweiten Adapter verdeckte Verbindungssperre verhindern Versand. Ablehnung verlangt ausdrücklichen Retry mit maximal drei Versuchen. Ausnahme und abgelaufener Anspruch werden unklar, niemals automatisch erneut gesendet. Archive verhindern neue Nachrichten/Ansprüche; bereits laufende Ergebnisse bleiben protokollierbar. Kein Anbietertext oder Nachrichteninhalt im Statusjournal.
+
+Abschließende Composer-Prüfungen unter PHP 8.2/8.3/8.4/8.5 bestanden: strikte Composer-Validierung, Syntax für 166 PHP-Dateien, Dokumentations-/Inventarprüfung, sechs SQL-Referenzen, PHPStan Level 8, eingeführte Standards und PHPCompatibility. Inventar: 114 Quellen / 23 Shortcodes / 73 Methoden mit literalen Request-Feldern; 33 Markdown-Dateien. 7 Node-Tests und ESLint bestanden. Zwei bytegleiche Paketbuilds und Paketgrenzen/Produktionsloader unter PHP 8.2 und 8.5 geprüft. Kein Remote-CI-Lauf oder Git-Vorgang.
+
+Grenzen: Die Queue wird noch von keinem bisherigen Mailauslöser befüllt. Keine End-to-End-Abnahme der Teilnahmebenachrichtigungen, keine registrierte produktive Verarbeitung, keine neue Queue-Verwaltungsoberfläche, keine parallelen Workerprozesse oder echten Mailzustellungen geprüft. Zwei Verbindungen sind kein Nachweis des vollständigen Produzenten-/Workerpfads. Manueller Versand, Absendervertrag, Börse und Browser-/Tastatur-/Accessibility-Abnahme bleiben offen. Keine Anwendungsmigration oder produktiven Zugriffe. Pluginheader, Lockdateien, bisherige fünf SQL-Pläne und Mailauslöser bleiben unverändert.
+
+
 ## Block 8: Vorlagenbasis – 2026-11-08
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

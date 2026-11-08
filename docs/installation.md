@@ -78,3 +78,6 @@ Das additive Ergebnis-Modul 1.0.0 wird bei Aktivierung oder ausdrücklich über 
 ## Kommunikations-Vorlagenmodul
 
 Additives Modul 1.0.0 mit eigenem Manifest und zwei eigenen Tabellen; ausdrücklich unter Systemstatus oder bei Aktivierung einrichten. Keine alten Vorlagen automatisch zuordnen und keine bestehenden Pläne/Marker ändern. Einrichtung und Kopieren lösen keinen Versand aus. Die Eventkonfiguration ist bis zum Anschluss der Versandereignisse Vorbereitung ohne Laufzeitwirkung. [Umfang](block-8-templates.md).
+
+
+Die Queue-Grundlage aus [Block 8](block-8-queue.md) besitzt ein separates additives Manifest `cor_mgmt_mail_queue_install` und die [Schema-Referenz](schema-mail-queue-1.0.0.sql). Einrichtung bei Aktivierung oder über das geschützte Datenbankwerkzeug; keine Änderung bestehender Installationspläne und kein Versandstart. Bestehende Mailauslöser sind noch nicht umgestellt.
