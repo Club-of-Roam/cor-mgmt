@@ -1,6 +1,6 @@
 # Block 8 – Kommunikation und Börse: Umsetzungsplan
 
-Stand: 2026-11-05. Planung, noch keine Laufzeit- oder Schemaänderung. Verbindliche Ergänzung des Benutzers: Autoresponses müssen je Event unabhängig angelegt und eingestellt werden können, damit parallele Events keine gemeinsamen Versandregeln verwenden (D-44).
+Planstand: 2026-11-05. Seit 2026-11-08 ist das erste Vorlagen-Teilpaket umgesetzt; [aktueller Umfang und Übergangsgrenze](block-8-templates.md). Versandumschaltung, Queue und Börse bleiben offen. Verbindliche Ergänzung des Benutzers: Autoresponses müssen je Event unabhängig angelegt und eingestellt werden können, damit parallele Events keine gemeinsamen Versandregeln verwenden (D-44).
 
 ## Bestätigter Ausgangsbefund
 
@@ -47,4 +47,4 @@ Bei neuer Veranstaltung einen eigenen Vorlagensatz einrichten; tatsächlicher Ve
 | Globale Vorlagen werden erneut übernommen | Unveränderte Quelle, keine doppelten Kopien oder überschriebenen individuellen Änderungen, kein Versand |
 | Zwei Worker verarbeiten denselben Vorgang | Kontrollierter Anspruch und Wiederholungsschutz innerhalb desselben Events |
 
-Diese Szenarien sind geplante Abnahmekriterien, noch keine ausgeführten Tests. Die übrigen Kriterien für Kommunikation/Börse aus Masterplan und Referenzkatalog gelten weiter.
+Die Konfigurationsfälle sind im ersten Teilpaket automatisiert geprüft; Queue-/Versandfälle bleiben geplante Abnahmekriterien. Tatsächliche Nachweise siehe verification.md. Die übrigen Kriterien für Kommunikation/Börse aus Masterplan und Referenzkatalog gelten weiter.

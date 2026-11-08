@@ -74,3 +74,7 @@ Das additive Ergebnis-Modul 1.0.0 wird bei Aktivierung oder ausdrücklich über 
 ## Ergänzung Block 7 (2026-11-05)
 
 [Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).
+
+## Kommunikations-Vorlagenmodul
+
+Additives Modul 1.0.0 mit eigenem Manifest und zwei eigenen Tabellen; ausdrücklich unter Systemstatus oder bei Aktivierung einrichten. Keine alten Vorlagen automatisch zuordnen und keine bestehenden Pläne/Marker ändern. Einrichtung und Kopieren lösen keinen Versand aus. Die Eventkonfiguration ist bis zum Anschluss der Versandereignisse Vorbereitung ohne Laufzeitwirkung. [Umfang](block-8-templates.md).

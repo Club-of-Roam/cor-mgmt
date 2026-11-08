@@ -77,4 +77,4 @@ Block 6 liefert normalisierte Ergebnisse für ausdrücklich eingerichtete Wertun
 
 ## Ergänzung Block 8: Autoresponses je Event
 
-D-44 verlangt unabhängig anlegbare und einstellbare Vorlagen pro Veranstaltung. Keine globale Auswahl über das aktive Rennen; Vorlage, Empfänger und Versandwarteschlange bleiben an die Veranstaltung des Auslösers gebunden. Explizite datenerhaltende Übernahme globaler Vorlagen und Tests mit zwei parallelen Events gehören zum Block. [Umsetzungsplan](block-8-communication-plan.md). Noch nicht implementiert.
+D-44 verlangt unabhängig anlegbare und einstellbare Vorlagen pro Veranstaltung. Keine globale Auswahl über das aktive Rennen; Vorlage, Empfänger und Versandwarteschlange bleiben an die Veranstaltung des Auslösers gebunden. Explizite datenerhaltende Übernahme globaler Vorlagen und Tests mit zwei parallelen Events gehören zum Block. [Umsetzungsplan](block-8-communication-plan.md). Erstes Vorlagen-Teilpaket seit 2026-11-08 umgesetzt; [Umfang und Grenze](block-8-templates.md). Versandumschaltung, Queue und Börse bleiben offen.

@@ -30,6 +30,7 @@ final class Lifecycle
     {
         SchemaTools::register();
         DonationAdmin::register();
+        CommunicationAdmin::register();
         ProfileAvatar::register();
         ResultBoundary::register();
         register_activation_hook($plugin, [self::class, 'activationHook']);
@@ -80,6 +81,7 @@ final class Lifecycle
             $installer->participation();
             $installer->results();
             $installer->donations();
+            $installer->communication();
         } catch (MigrationException) {
             return new WP_Error('cor_mgmt_participation_setup', __('Additional module setup requires review. Existing data is retained.', 'h3-mgmt'));
         }
@@ -110,7 +112,7 @@ final class Lifecycle
     public static function notice(): void
     {
         global $wpdb;
-        if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready(new Database($wpdb)))) {
+        if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema::ready(new Database($wpdb)))) {
             return;
         }
         echo '<div class="notice notice-warning"><p>' . esc_html__('cor-mgmt requires setup or a controlled schema review. Open Tools > cor-mgmt system status.', 'h3-mgmt') . '</p></div>';

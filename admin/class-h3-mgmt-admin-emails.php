@@ -243,6 +243,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Emails' ) ) :
 		 */
 		public function autoresponses_edit() {
             if (!H3_MGMT_Security::admin_request('autoresponses')) { echo H3_MGMT_Security::error(); return; }
+            echo '<p>' . esc_html__('These are the existing global autoresponses. Event-specific templates can be prepared separately; they do not control delivery yet.', 'h3-mgmt') . ' <a href="' . esc_url(add_query_arg('page', 'cor-mgmt-responses', admin_url('admin.php'))) . '">' . esc_html__('Prepare event autoresponses', 'h3-mgmt') . '</a></p>';
 			global $wpdb;
 
 			if ( isset( $_GET['tab'] ) && in_array( $_GET['tab'], array( 'en', 'de' ) ) ) {

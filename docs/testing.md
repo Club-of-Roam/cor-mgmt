@@ -113,3 +113,7 @@ Block 6 ergänzt reine Punkte-/Rangfolgetests sowie WordPress-Integration für V
 [Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).
 
 Ergänzung: [Spendenverwaltung und Übergangsvorbereitung](block-7-administration.md) beschreibt Objektberechtigungen, Revisionen, Sammelrollback, Journale und die Grenze zwischen protokollierter Altprüfung und noch ausstehender belegter Übernahme. Das Frontend zeigt gemäß D-42 ganze Euro; interne Reader behalten Centbeträge.
+
+## Kommunikations-Vorlagenbasis
+
+AutoResponseTemplateTest prüft bekannte Aktionen, Sprachschlüssel, nicht rekursive Platzhalter und Headergrenzen. ResponseTemplatesTest prüft Eventtrennung, Rechte, Revisionen, Archive, unveränderte globale Originale, unabhängiges Kopieren, Quellkonflikte und Rollback ohne Mailversand. CommunicationInstallationTest prüft additive Einrichtung und den eindeutigen Event-/Aktions-/Sprachschlüssel. Neue Systemstatus-Aktion separat gegen GET, fehlende Rechte und ungültige Nonce prüfen. Diese Fälle sind kein Nachweis eines Queue-Workers oder einer Versandumschaltung. Aktuelle ausgeführte Matrix in [verification.md](verification.md).

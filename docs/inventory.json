@@ -2,7 +2,7 @@
   "format": 1,
   "scope": "Static legacy PHP; no request execution",
   "sources": {
-    "admin/class-h3-mgmt-admin-emails.php": "5659e0657098eebda1deb3fdc75b9facb51ca85d688cc8258841eed1a1c75c8f",
+    "admin/class-h3-mgmt-admin-emails.php": "6b59ba85bbe8b4af74a1e442d86710512288f6b8b964c199915739ab772b2d74",
     "admin/class-h3-mgmt-admin-races.php": "65f074b69ef38b2a8591970fb1625f4be36470dedc477aa1edc04dc29d7f9deb",
     "admin/class-h3-mgmt-admin-sponsors.php": "d6a9c751b30338c43a65cf3b42f4d0c7ec98d8d80813a07a2bcde7f311377d47",
     "admin/class-h3-mgmt-admin-statistics.php": "d39dde134a8ca710160bd18b937d9e8a42f5d8c99eac3e973b34e62fa0239960",
@@ -24,6 +24,7 @@
     "includes/class-h3-mgmt.php": "1263837604a973c02e30670569789957734fc5757961432d628c9d4e36782bd3",
     "models/class-h3-mgmt-race.php": "31654bfb4034db208c2c94b08e87b34c404bb87892b3a0c01ffdcb6808bd14d8",
     "runtime/legacy.php": "17880efcfa2be4873485913692df4e065ce29d743c252030174319dc5b7ed13c",
+    "src/Application/Communication/CommunicationException.php": "b56ded537f6f026aa19eab7bd09f07168b337cd5b0cc9a7b7afa8e1cf8f8b429",
     "src/Application/Contracts/Clock.php": "4bd680629568a85104e127bf5eb8000636ed3e09c35671dbcc3f78efac25e31f",
     "src/Application/Contracts/HttpClient.php": "32894f9cd79de7e6e15d2f0bd62b864d30a0637b50639df93f39fb70e42a1041",
     "src/Application/Contracts/Logger.php": "d469a3171dd7cc51188208d1988d758b51e5eba7e5ab1695158adb2218eccc1c",
@@ -50,6 +51,7 @@
     "src/Application/Teams/ParticipationStore.php": "2cb7bd2c4328651ad96f72a6bf3b42c61b22b9262d879ab5d0122f5251198e35",
     "src/Application/Teams/TeamManager.php": "737c369e2eec99c5fee4254d2aa011a9c3b8dabd3e6d17323fb4763260145e6b",
     "src/Application/TransportException.php": "cae0577e846a60a3497362143db67f3cf8eb1c6c80b05b8c53564c101d7aa9e3",
+    "src/Domain/AutoResponseTemplate.php": "b27372b9b22858c0497f878786852d632f2ca91a240691eb369cf051fd95df0f",
     "src/Domain/BetterplaceEvent.php": "b61080106a8d7e1ab949b566930d5fa2239bae2cfedc3df3850bb1f9d8353e7f",
     "src/Domain/DonationAmounts.php": "f01c4a812a85b411c4ee9a59af57606f7c5dc4c3d9cc3199f8acd768d1e016ef",
     "src/Domain/EuroAmount.php": "39983aea92c0569352d44e08370804b629a7da7373fb997d337f8f4183b2dda3",
@@ -66,12 +68,14 @@
     "src/Infrastructure/WordPress/DonationLedger.php": "4a550957fd3763bec35f3e77ad75c35b4ecfadffded2d4f6c10877d53dc016a0",
     "src/Infrastructure/WordPress/LegacyEventStore.php": "cf1330a1e20c6f76cb80642bf7a0c8e401445a4a31ca78ca92b01ca773372095",
     "src/Infrastructure/WordPress/ParticipationRepository.php": "05d3155d9902c25ed2e374c16d47527f8f7fd550ee249a5d180a6a7e70dd32b5",
+    "src/Infrastructure/WordPress/ResponseTemplates.php": "30b2f8cd84e579874dd77bd2b4cbca022dfab4e8a740d50e999aee12b9f957c3",
     "src/Infrastructure/WordPress/ResultRepository.php": "38891ef8670c22731a0ac919d6b939b1b570165fb61ddab85b363d317095a38b",
     "src/Infrastructure/WordPress/Schema/Catalogue.php": "061201ee1fbbe9b47c98f739c87c968a14cf820a8d3d4a2c93cda11501d1dd33",
+    "src/Infrastructure/WordPress/Schema/CommunicationSchema.php": "fc3df2805ae9cb6fb7e5a516fb105b75465e170f3c28fc5f8036309dbf5a23bd",
     "src/Infrastructure/WordPress/Schema/Database.php": "1c9b9f9204629ebb8f972cf2e4bd1f40a2d041751b0429b0b0529fb983cf842c",
     "src/Infrastructure/WordPress/Schema/DonationSchema.php": "117afb451b7f32fd008030327008bfada3adabfd9d6e1004864999af82ae66ff",
     "src/Infrastructure/WordPress/Schema/Inspector.php": "358c84f7e5257b409de54329563b303e43984e76ce4e10ceefcafb364c583c36",
-    "src/Infrastructure/WordPress/Schema/Installer.php": "3be44378e5ec852fcd07650a7932df40f431de9c23bb08015ebdd90195d20f99",
+    "src/Infrastructure/WordPress/Schema/Installer.php": "2ecf5620a534b6f4f4fad9967cf294ae403d1dbe75c96717f4de4e155408d7c4",
     "src/Infrastructure/WordPress/Schema/ParticipationSchema.php": "d45391e989f58444ce7fd49fa5bddfa0a13c34900b65c572213bcb448304b77f",
     "src/Infrastructure/WordPress/Schema/Preflight.php": "6b606789d0a539d587fe839ef190f0a2514771f7c8319fe1a834697d384d703b",
     "src/Infrastructure/WordPress/Schema/Projection.php": "9416e218615be027156b590a267c75429e4c421fd01e438b17c890dbd7e21e6f",
@@ -83,16 +87,17 @@
     "src/Infrastructure/WordPress/WordPressLogger.php": "812910c3a7c305d041c90e694f4707922b00c4789a93a6a2f92041731e03378f",
     "src/Infrastructure/WordPress/WordPressMailTransport.php": "70d29f5071bc9a498540111399bc53f426b400c219e0695da5dd08765c608377",
     "src/WordPress/Capabilities.php": "10cc96a8dd72f6fa6a4dcd46013023b6c0a5ac71157c8e96db936269b9663658",
+    "src/WordPress/CommunicationAdmin.php": "bd90b20a407a56059d234313196afed2db4dfd3720a3527c1db19106f057076e",
     "src/WordPress/DonationAdmin.php": "b814f2e56ef5a2a759951d617bc48f32744077af1bb577ebb9d6c0ccd6275e31",
     "src/WordPress/DonationFrontend.php": "c51a41c365f5ee6a89c0c27d4fad25e879abe86602b7e5f5f5cb498310266df2",
     "src/WordPress/EventAdmin.php": "ef699c6bb43a7672d410c2ec7f851c1c12bf04c893bb92b1916894b282c5ed14",
     "src/WordPress/EventForm.php": "509d2c44f92da0d772f9ef5e2813c8137a7f9e2fd9e11285cbaf09df9607bf57",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
-    "src/WordPress/Lifecycle.php": "2cba92d3d7bf4817a4968cd23f02eea0c312518538f3841f39323f3b3d035ca8",
+    "src/WordPress/Lifecycle.php": "2aa07167b95ae04bfdc2c1d0df169b77d3c7776d23b73f632104175063ce7ece",
     "src/WordPress/ProfileAvatar.php": "38a400102fd08abcd41e541b04de4310f4353c209bcae403187879ce90e01e3d",
     "src/WordPress/ResultBoundary.php": "432f6ed86f44420c118a4db0de1ba1ba21aaccc614c9edd268b05e8e69a32ecd",
     "src/WordPress/ResultFrontend.php": "6fa77975fe3734ee97f90f18216ddc8e63cc373fdc78570638f7683bf8c0cc6f",
-    "src/WordPress/SchemaTools.php": "e9e320eca31a890d4cdbd1ed38338c715583fec64e37b8bd6937da12aca09d6b",
+    "src/WordPress/SchemaTools.php": "989c61f16405317bf91648aa3fbaef77e4e5112b20141ff9f343f80e670bd0f0",
     "src/WordPress/Services.php": "8e37ba4167038976f4b9cc62150f193dde32a03f3f11505da2d663be9ed2b9ea",
     "src/WordPress/TeamAdmin.php": "23873f233536e60b166c8152c440cf7ee516ff520b461400ecbe88c987dabac0",
     "src/WordPress/TeamBoundary.php": "52306dbf785fba656e31463d395d390833c27623e44e91a7eb3102abc33e0065",
@@ -783,6 +788,43 @@
       "fields": [
         "POST:message",
         "POST:submitted"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/CommunicationAdmin.php",
+      "method": "submit",
+      "line": 48,
+      "fields": [
+        "POST:enabled"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/CommunicationAdmin.php",
+      "method": "page",
+      "line": 65,
+      "fields": [
+        "GET:race_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/CommunicationAdmin.php",
+      "method": "event",
+      "line": 109,
+      "fields": [
+        "GET:language",
+        "GET:template_action"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/CommunicationAdmin.php",
+      "method": "copyPreview",
+      "line": 138,
+      "fields": [
+        "GET:source_id"
       ],
       "case_labels": []
     },

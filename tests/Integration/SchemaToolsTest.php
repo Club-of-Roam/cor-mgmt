@@ -39,6 +39,7 @@ final class SchemaToolsTest extends TestCase {
     }
     public static function invalidRequests(): array {
         return [
+            ['GET',true,'valid','communication-setup','post_required'],['POST',false,'valid','communication-setup','forbidden'],['POST',true,'wrong','communication-setup','invalid_nonce'],
             ['GET',true,'valid','donation-setup','post_required'],['POST',false,'valid','donation-setup','forbidden'],['POST',true,'wrong','donation-setup','invalid_nonce'],
             ['GET',true,'valid','donation-audit','post_required'],['POST',false,'valid','donation-audit','forbidden'],['POST',true,'wrong','donation-audit','invalid_nonce'],
             ['GET',true,'valid','results-setup','post_required'],['POST',false,'valid','results-setup','forbidden'],['POST',true,'wrong','results-setup','invalid_nonce'],
@@ -54,6 +55,9 @@ final class SchemaToolsTest extends TestCase {
         global $wpdb;$before=$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_donation_history");
         $_POST['operation']='donation-audit';$result=$this->request();self::assertTrue($result['success']);self::assertTrue($result['data']['read_only']);
         self::assertSame('unresolved_without_source_provenance',$result['data']['historical_units']);self::assertArrayNotHasKey('session_hash',$result['data']);self::assertSame($before,$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_donation_history"));
+    }
+    public function testCommunicationSetupIsExplicitAndRepeatable(): void {
+        $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'communication-setup'];self::assertTrue($this->request()['success']);self::assertTrue($this->request()['success']);
     }
     public function testAuthorizedResultsSetupIsExplicitAndIdempotent(): void {
         $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'results-setup'];

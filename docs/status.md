@@ -1,6 +1,6 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-05. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-08. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
 PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. Der fehlgeschlagene GitHub-Lauf wurde analysiert; für die Korrektur gibt es noch keinen entfernten Wiederholungslauf.
 
@@ -23,7 +23,7 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
 | 6 | neue Wertung und Historienvergleich umgesetzt; Abnahme offen | block-6-results.md; vollständiges Archiv, Bestandsvergleich und Browserabnahme bleiben offen |
 | 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestands-/Browserabnahme und nachgewiesene Altübernahme offen |
-| 8 | Planung ergänzt; Umsetzung offen | block-8-communication-plan.md; Autoresponses je Event, kontrollierter Versand und Börse |
+| 8 | erste Vorlagenbasis umgesetzt; Versandumschaltung offen | block-8-templates.md; neue Eventkonfiguration noch ohne Laufzeitwirkung, Queue/Worker und Börse folgen |
 | 9 | offen | Ticker/Medien |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
 
@@ -130,3 +130,9 @@ Prüfabschluss des Verwaltungs-/Anzeigepakets: PHP 8.2/8.3/8.4/8.5 geprüft, abs
 ## Block 8 – Planergänzung Autoresponses (2026-11-05)
 
 Benutzeranforderung D-44 aufgenommen: Vorlagen und Aktivierung je Event/Aktion/Sprache unabhängig verwalten. Bestätigter Quellbefund: Bestand speichert und lädt nur Aktion/Sprache, ohne Eventzuordnung. [Plan](block-8-communication-plan.md) enthält Eventkontext, unabhängiges Kopieren, ausdrückliche Übernahme globaler Vorlagen, Versandbindung und Parallel-Event-Abnahmefälle. Nur Dokumentation geändert; kein Anwendungscode, Schema oder Versand geändert. Keine Laufzeittests für diese Planergänzung ausgeführt.
+
+## Block 8 – Vorlagenbasis (2026-11-08)
+
+[Teilpaket](block-8-templates.md): Bestandsaufnahme, additive Einrichtung, unabhängige Event-/Aktions-/Sprachvorlagen, native Verwaltungsseite, Revisionen/Journal und kontrollierte globale bzw. Event-Kopie. Globaler Mailer bleibt unverändert; UI kennzeichnet die neue Konfiguration als Vorbereitung ohne Versandwirkung. Nächster Schritt: dauerhafte Fachereignisse, atomare Outbox-/Queue-Erzeugung und explizite Eventbindung der Auslöser. Erst danach Versandumschaltung und Worker, anschließend Börse. Kein vollständiger Block-8-Abschluss oder Releasekandidat. Keine Anwendungsmigration, kein Versand und keine Git-Aktionen.
+
+Prüfabschluss des ersten Block-8-Teilpakets: isolierte Suite und echte WordPress-Gesamtsuite unter PHP 8.2/8.3/8.4/8.5 erfolgreich; abschließende 18 Konfigurationsfälle nach Setup-Hinweis erneut auf allen Versionen bestanden. Qualitätsprüfungen, 7 Node-Tests, ESLint und Produktionspaket geprüft; Details in verification.md. Geeigneter manueller Commit-Zwischenstand. Versandumschaltung und Queue sind ausdrücklich die nächste Arbeit.

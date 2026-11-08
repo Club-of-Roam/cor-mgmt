@@ -30,6 +30,7 @@
       "@php tools/export-schema.php --participation --check",
       "@php tools/export-schema.php --results --check",
       "@php tools/export-schema.php --donations --check",
+      "@php tools/export-schema.php --communication --check",
       "@analyse",
       "@lint:standards",
       "@lint:compatibility"

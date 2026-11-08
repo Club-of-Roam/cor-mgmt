@@ -40,7 +40,7 @@ final class SchemaTools
             wp_send_json_error(['code' => 'requirements'], 400);
         }
         $operation = $_POST['operation'] ?? null;
-        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','donation-setup','donation-audit','preflight','start','step','abandon'], true)) {
+        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','donation-setup','communication-setup','donation-audit','preflight','start','step','abandon'], true)) {
             wp_send_json_error(['code' => 'invalid_operation'], 400);
         }
         if (in_array($operation, ['start','step'], true) && (($_POST['backup'] ?? '') !== '1' || ($_POST['quiesced'] ?? '') !== '1')) {
@@ -63,6 +63,9 @@ final class SchemaTools
                 $data = ['reload' => true];
             } elseif ($operation === 'donation-setup') {
                 (new Installer($db))->donations();
+                $data = ['reload' => true];
+            } elseif ($operation === 'communication-setup') {
+                (new Installer($db))->communication();
                 $data = ['reload' => true];
             } elseif ($operation === 'donation-audit') {
                 $data = \Cor\Mgmt\Infrastructure\WordPress\DonationAudit::report($db);
@@ -125,6 +128,9 @@ final class SchemaTools
         }
         if ($status === InstallationStatus::Ready && !\Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready($db)) {
             echo '<p><button type="button" class="button button-primary" data-operation="donation-setup">' . esc_html__('Set up donation storage', 'h3-mgmt') . '</button></p>';
+        }
+        if ($status === InstallationStatus::Ready && !\Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema::ready($db)) {
+            echo '<p><button type="button" class="button button-primary" data-operation="communication-setup">' . esc_html__('Set up event autoresponse storage', 'h3-mgmt') . '</button></p>';
         }
         if ($status === InstallationStatus::Ready) {
             echo '<p><button type="button" class="button" data-operation="donation-audit">' . esc_html__('Review donation storage (read only)', 'h3-mgmt') . '</button></p>';

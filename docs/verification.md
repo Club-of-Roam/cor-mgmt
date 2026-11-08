@@ -1,5 +1,25 @@
 # Prüfbelege
 
+## Block 8: Vorlagenbasis – 2026-11-08
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Suite, abschließend | 309 Tests / 615 Assertions | 309 / 615 | 309 / 615 | 309 / 615 |
+| WordPress-Gesamtsuite | 337 Tests / 2.099 Assertions | 337 / 2.099 | 337 / 2.099 | 337 / 2.099 |
+| Abschließende Konfigurationssuite | 18 Tests / 138 Assertions | 18 / 138 | 18 / 138 | 18 / 138 |
+| composer check | bestanden | bestanden | bestanden | bestanden |
+
+Nach Ergänzung mehrteiliger Sprachschlüssel wie de_DE_formal wurde die isolierte Gesamtsuite auf allen vier Versionen erneut ausgeführt; die zusätzliche Assertion ist in der Tabelle enthalten. Nach dem zusätzlichen Setup-Hinweis für nicht eingerichtete Installationen bestanden sämtliche 18 Konfigurationsfälle auf allen vier Versionen erneut; PHPStan und betroffene Standards wurden ebenfalls erneut geprüft. Keine Wiederholungssuiten zur Gesamtzahl addieren. Vorlagenkonfiguration und Renderer sind getestet, keine neue Versandverarbeitung.
+
+Neue Nachweise: getrennte Eventvorlagen und Aktivierung trotz Wechsel des aktiven Rennens, fehlende Vorlage ohne Fremd-/Global-/Sprachfallback, Sprachalias-Normalisierung, alle 14 vorhandenen Aktionsnamen und Platzhalter, nicht rekursive Ersetzung, fehlende Werte und Header-Injection. Kontext-/Revisionsschutz, Autorisierung pro Event, Archivschutz, Vorschau und unveränderte globale Originale, unabhängige Kopien, Erhalt individuell bearbeiteter Ziele, Wiederholung ohne Duplikate, doppelte/ungültige/unvollständige Quellen, Änderungen nach Vorschau und Journal-Rollback sind mit echtem WordPress/wpdb geprüft. Leseoperationen schreiben nicht, fehlendes Modul wird nicht bei Anzeige angelegt. Native Formulare prüfen POST/Nonce/Eventrechte und escaped Textausgabe.
+
+Additive Installation ist wiederholbar, übernimmt keine fremden Tabellen und erkennt beschädigte fertige Manifeste bzw. den veränderten Event-/Aktions-/Sprachschlüssel. Systemstatus-Aktion lehnt GET, fehlende Rechte und ungültige Nonces ab. Syntaxprüfung: 159 PHP-Dateien. Inventar: 110 Quellen / 23 Shortcodes / 73 Methoden mit literalen Request-Feldern. Dokumentation: 32 Markdown-Dateien. PHPStan Level 8, eingeführte Standards-/Kompatibilitätsprüfungen, fünf SQL-Referenzen, 7 Node-Tests und ESLint bestanden; Altbestandsgrenzen der Werkzeuge gelten weiter.
+
+Zwei Paketbuilds ergaben ein bytegleiches ZIP mit 271 Dateien; Paketgrenzen und Produktionsloader ohne Entwicklungsabhängigkeiten bestanden unter PHP 8.2 und 8.5.
+
+Pluginheader, Lockdateien und alle vier vorherigen SQL-Pläne bleiben unverändert. Alter Mailer, Teilnahme-Benachrichtigungsbrücke und Börse sind unverändert; neue Eventvorlagen haben ausdrücklich noch keine Versandwirkung. Kein neuer Zahlungsweg, keine Anwendungsmigration und keine echten Mails/API-Aufrufe. Kein Browser-/Accessibility-/Worker-/Versandnachweis. Nächster Schritt: dauerhafte Fachereignisse und atomare Outbox, anschließend Auslöser-/Versandumschaltung. [Umsetzung und Grenzen](block-8-templates.md). Keine Git-Aktionen.
+
+
 ## Block 7: Verwaltung, Ganz-Euro-Anzeige und Altprüfung – 2026-11-05
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

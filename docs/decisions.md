@@ -78,3 +78,5 @@ Diese Fragen verhindern keine Dokumentation/Referenztests, aber die jeweilige un
 ## Planung Block 8 (2026-11-05)
 
 - D-44 (vom Benutzer vorgegeben): Autoresponses zwingend je Event unabhängig erzeugen und einstellen können. Zwei parallele Events dürfen nicht dieselbe globale Konfiguration verwenden. Auflösung je Veranstaltung/Aktion/Sprache; Kopien bleiben unabhängig. Veranstaltung des Auslösers maßgeblich, kein Rückgriff auf das aktive Rennen oder fremde Eventvorlagen. Bestandsübernahme ausdrücklich und datenerhaltend; Umsetzung und Tests gemäß [Block-8-Plan](block-8-communication-plan.md) noch offen.
+
+- D-45 (technisch 2026-11-08): Vorlagenbasis als erstes Teilpaket mit unabhängigem Kommunikations-Installationsmanifest 1.0.0. Globale Originale unverändert erhalten; neue Konfiguration hat bis zur expliziten Auslöser-/Queue-Umschaltung keine Versandwirkung. Übergang in beiden Verwaltungsseiten kennzeichnen. Strikter neuer Resolver ohne Event-/Sprachfallback, Kopien nur nach Vorschau/Fingerabdruck und ohne Zielüberschreiben. Keine zusätzlichen Zahlungswege aktivieren.

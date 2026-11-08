@@ -50,6 +50,10 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [table_order](../includes/class-h3-mgmt-utilities.php#L189) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L68) | `POST:address` |  |
 | [xchange_control](../includes/class-h3-mgmt-xchange.php#L115) | `POST:message`, `POST:submitted` |  |
+| [submit](../src/WordPress/CommunicationAdmin.php#L48) | `POST:enabled` |  |
+| [page](../src/WordPress/CommunicationAdmin.php#L65) | `GET:race_id` |  |
+| [event](../src/WordPress/CommunicationAdmin.php#L109) | `GET:language`, `GET:template_action` |  |
+| [copyPreview](../src/WordPress/CommunicationAdmin.php#L138) | `GET:source_id` |  |
 | [submit](../src/WordPress/DonationAdmin.php#L29) | `POST:donation_ids`, `POST:remove_image`, `POST:revisions`, `POST:visible` |  |
 | [page](../src/WordPress/DonationAdmin.php#L68) | `GET:donation_id` |  |
 | [listing](../src/WordPress/DonationAdmin.php#L131) | `GET:after` |  |

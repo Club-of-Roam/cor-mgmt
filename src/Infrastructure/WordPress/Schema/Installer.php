@@ -42,6 +42,12 @@ final class Installer
             $this->create(DonationSchema::definitions(), 'cor_mgmt_donation_install', false, false);
         });
     }
+    public function communication(): void
+    {
+        $this->db->locked(function (): void {
+            $this->create(CommunicationSchema::definitions(), 'cor_mgmt_communication_install', false, false);
+        });
+    }
     public function pendingFresh(): bool
     {
         $raw = $this->db->option('cor_mgmt_fresh_install');
