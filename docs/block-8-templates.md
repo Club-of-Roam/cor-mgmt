@@ -1,5 +1,6 @@
 # Block 8 – Erstes Teilpaket: eventbezogene Vorlagen
 
+Aktueller Nachtrag 2026-11-08: [Teamauslöser und Queueverwaltung](block-8-delivery.md) sind inzwischen angebunden; Eventvorlagen steuern diese Nachrichten. Die weiter unten beschriebene Grenze ohne Versandwirkung bezeichnet den früheren Abschluss dieses Vorlagen-Teilpakets.
 Stand: 2026-11-08. Umsetzung der Vorlagenbasis aus [Plan](block-8-communication-plan.md), noch kein Abschluss von Block 8.
 
 ## Umfang und wichtige Übergangsgrenze

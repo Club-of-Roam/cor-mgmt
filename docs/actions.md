@@ -37,11 +37,11 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [primary_user_section](../includes/class-h3-mgmt-teams.php#L1241) | `POST:submitted` |  |
 | [invitations_section](../includes/class-h3-mgmt-teams.php#L1344) | `POST:form_submitted` |  |
 | [route_section](../includes/class-h3-mgmt-teams.php#L1456) | `POST:route_id`, `POST:submitted` |  |
-| [team_homework](../includes/class-h3-mgmt-teams.php#L1563) | `GET:id`, `GET:todo`, `POST:id`, `POST:todo` |  |
-| [display_teams](../includes/class-h3-mgmt-teams.php#L1896) | `GET:id` |  |
-| [team_overview](../includes/class-h3-mgmt-teams.php#L2252) | `GET:todo` |  |
-| [validate_submit](../includes/class-h3-mgmt-teams.php#L2379) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
-| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2410) | `POST:submitted` |  |
+| [team_homework](../includes/class-h3-mgmt-teams.php#L1563) | `GET:todo`, `POST:todo` |  |
+| [display_teams](../includes/class-h3-mgmt-teams.php#L1894) | `GET:id` |  |
+| [team_overview](../includes/class-h3-mgmt-teams.php#L2250) | `GET:todo` |  |
+| [validate_submit](../includes/class-h3-mgmt-teams.php#L2377) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
+| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2408) | `POST:submitted` |  |
 | [ticker_Page_controll](../includes/class-h3-mgmt-ticker.php#L172) | `GET:todo`, `POST:coordinates`, `POST:coordinates_informations`, `POST:message`, `POST:submit_form`, `POST:ticker_id`, `POST:ticker_pic_msg`, `POST:video`, `POST:video_message` |  |
 | [ticker_Page_map](../includes/class-h3-mgmt-ticker.php#L535) | `GET:ticker_route` |  |
 | [the_ticker](../includes/class-h3-mgmt-ticker.php#L787) | `GET:min`, `GET:ticker_race`, `GET:ticker_route`, `GET:todo` |  |
@@ -60,6 +60,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [render](../src/WordPress/DonationFrontend.php#L24) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:id`, `GET:type`, `POST:new`, `POST:submitted` |  |
 | [mutate](../src/WordPress/EventAdmin.php#L30) | `GET:bulk` |  |
 | [render](../src/WordPress/EventList.php#L30) | `GET:country_filter`, `GET:event_page`, `GET:number_filter`, `GET:order`, `GET:orderby`, `GET:race_filter`, `GET:route_filter` |  |
+| [page](../src/WordPress/MailQueueAdmin.php#L59) | `GET:message_id`, `GET:queue_page`, `GET:race_id`, `POST:message_id`, `POST:race_id` |  |
 | [prepare](../src/WordPress/ProfileAvatar.php#L60) | `FILES:cor_profile_avatar` |  |
 | [control](../src/WordPress/ResultFrontend.php#L13) | `GET:cor_result_route`, `GET:stage`, `POST:submitted` |  |
 | [table](../src/WordPress/ResultFrontend.php#L112) | `GET:ranking_route` |  |
@@ -68,11 +69,12 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [save](../src/WordPress/TeamAdmin.php#L51) | `FILES:team_pic`, `POST:route_id` |  |
 | [form](../src/WordPress/TeamAdmin.php#L97) | `GET:race_id`, `POST:race_id` |  |
 | [listing](../src/WordPress/TeamAdmin.php#L147) | `GET:complete_filter`, `GET:direction`, `GET:race_filter`, `GET:route_filter`, `GET:sort`, `GET:team_page` |  |
-| [profileInput](../src/WordPress/TeamBoundary.php#L55) | `POST:birthday`, `POST:birthday-day`, `POST:birthday-month`, `POST:birthday-year` |  |
-| [emails](../src/WordPress/TeamBoundary.php#L109) | `POST:invitations` |  |
-| [save](../src/WordPress/TeamBoundary.php#L134) | `FILES:team_pic`, `POST:route_id` |  |
+| [profileInput](../src/WordPress/TeamBoundary.php#L57) | `POST:birthday`, `POST:birthday-day`, `POST:birthday-month`, `POST:birthday-year` |  |
+| [emails](../src/WordPress/TeamBoundary.php#L111) | `POST:invitations` |  |
+| [save](../src/WordPress/TeamBoundary.php#L136) | `FILES:team_pic`, `POST:route_id` |  |
 | [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
 | [render](../src/WordPress/TeamFrontend.php#L80) | `GET:invitation`, `POST:invitation` |  |
+| [serve](../src/WordPress/TeamPortal.php#L21) | `GET:race_id` |  |
 | [output](../templates/class-h3-mgmt-admin-form.php#L69) | `GET:page` |  |
 | [__construct](../templates/class-h3-mgmt-admin-table.php#L73) | `GET:order`, `GET:orderby` |  |
 | [output](../templates/class-h3-mgmt-admin-table.php#L122) | `GET:filter_name0`, `GET:order`, `GET:orderby`, `GET:page` |  |

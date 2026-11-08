@@ -9,7 +9,7 @@ use Cor\Mgmt\Application\Teams\ParticipationException;
 use Cor\Mgmt\Infrastructure\WordPress\ParticipationRepository;
 use Cor\Mgmt\Infrastructure\WordPress\Schema\Database;
 
-/** Request validation and post-transaction notification bridge for team workflows. */
+/** Request validation and transactional notification composition for team workflows. */
 final class TeamBoundary
 {
     public static function repository(): ParticipationRepository
@@ -20,7 +20,9 @@ final class TeamBoundary
     public static function manager(?ParticipationRepository $repository = null): TeamManager
     {
         $runtime = Services::get();
-        return new TeamManager($repository ?? self::repository(), $runtime->clock, $runtime->random, static fn (string $action, int $id): bool => match ($action) {
+        $repository ??= self::repository();
+        $notifications = new \Cor\Mgmt\Infrastructure\WordPress\TeamNotifications($repository->database(), $runtime->clock);
+        return new TeamManager($repository, $runtime->clock, $runtime->random, static fn (string $action, int $id): bool => match ($action) {
             'reconcile' => \H3_MGMT_Security::can_object('races', 'edit', $id),
             'self' => is_user_logged_in() && get_current_user_id() === $id,
             'profile' => current_user_can('edit_user', $id),
@@ -29,7 +31,7 @@ final class TeamBoundary
             'member' => \H3_MGMT_Security::can_object('participants', 'edit', $id),
             'route' => current_user_can('h3_mgmt_edit_teams') || \H3_MGMT_Security::assigned_route($id),
             default => false,
-        });
+        }, $notifications->capture(...));
     }
     public static function value(string $key, string $default = ''): string
     {
@@ -185,41 +187,7 @@ final class TeamBoundary
     /** @param array<string,mixed> $result */
     public static function notify(array $result): void
     {
-        global $h3_mgmt_mailer;
-        $events = $result['events'] ?? [];
-        if (!is_array($events)) {
-            return;
-        }
-        foreach ($events as $event) {
-            if (!is_array($event) || !is_int($event['team'] ?? null)) {
-                continue;
-            }
-            $team = self::repository()->find('team', $event['team']);
-            $action = $event['action'] ?? '';
-            $user = is_int($event['user'] ?? null) ? $event['user'] : 0;
-            $profile = $user ? self::repository()->profile($user) : [];
-            $args = ['team_name' => (string) ($team['team_name'] ?? ''),'name' => $profile['first_name'] ?? '','invitee' => $profile['first_name'] ?? '', 'inviter' => $profile['first_name'] ?? '', 'link' => get_permalink() ?: home_url('/')];
-            try {
-                if ($action === 'invitation' && is_string($event['email'] ?? null) && is_string($event['code'] ?? null)) {
-                    $args['code'] = $event['code'];
-                    $args['link'] = add_query_arg('invitation', $event['code'], $args['link']);
-                    $h3_mgmt_mailer->auto_response($event['email'], 'invitation', $args, 'email', substr(determine_locale(), 0, 2));
-                } elseif ($action === 'team-creation') {
-                    $h3_mgmt_mailer->auto_response($user, 'team-creation', $args, 'id', substr(determine_locale(), 0, 2));
-                } elseif ($action === 'publishable' && is_array($event['users'] ?? null)) {
-                    $h3_mgmt_mailer->auto_response($event['users'], 'publishable', $args, 'id', substr(determine_locale(), 0, 2));
-                } elseif ($action === 'joined') {
-                    $h3_mgmt_mailer->auto_response($user, 'invitation-accepted-invitee', $args, 'id', substr(determine_locale(), 0, 2));
-                    foreach (self::repository()->related('teammate', 'team_id', (string) $event['team']) as $member) {
-                        if ((int) $member['user_id'] !== $user) {
-                            $h3_mgmt_mailer->auto_response((int) $member['user_id'], 'invitation-accepted-inviter', $args, 'id', (string) $member['language']);
-                        }
-                    }
-                }
-            } catch (\Throwable $error) {
-                Services::get()->logger->error('team_notification_failed', $error);
-            }
-        }
+        // Compatibility hook: TeamManager has already persisted notifications before commit.
     }
     public static function message(\Throwable $error): string
     {

@@ -1584,17 +1584,14 @@ class H3_MGMT_Teams {
 			return;	
 		}
 		
-		if (($_POST['todo'] ?? $_GET['todo'] ?? '') === 'resend') {
-            $requested = H3_MGMT_Security::id($_POST['id'] ?? $_GET['id'] ?? 0);
-            if (!H3_MGMT_Security::post('cor-mgmt-team-' . (int) $race_id) || !H3_MGMT_Security::owns_team($requested)
-                || $this->get_team_race($requested) != $race_id || H3_MGMT_Security::archived((int) $race_id)) { return H3_MGMT_Security::error(); }
-            $_GET['id'] = $requested;
-			$response_args = array(
-				'name' => $current_user->first_name,
-				'team_name' => $this->get_team_name( $_GET['id'] )
-			);
-			$h3_mgmt_mailer->auto_response( $current_user->ID, 'team-creation', $response_args, 'id', $language );
-		}
+        if (($_POST['todo'] ?? $_GET['todo'] ?? '') === 'resend') {
+            if (!H3_MGMT_Security::post('cor-mgmt-team-' . (int) $race_id)) { return H3_MGMT_Security::error(); }
+            try {
+                \Cor\Mgmt\WordPress\TeamBoundary::manager()->resendConfirmation((int) $race_id, get_current_user_id(), \Cor\Mgmt\WordPress\TeamBoundary::value('confirmation_request'));
+            } catch (\Throwable $error) {
+                return '<p>' . esc_html(\Cor\Mgmt\WordPress\TeamBoundary::message($error)) . '</p>';
+            }
+        }
 
 		$output = '';
 
@@ -1792,6 +1789,7 @@ class H3_MGMT_Teams {
 					$output .= stripcslashes( $information_text[17] ) 
                         . '<form method="post" action="' . esc_url($post_url) . '">' . H3_MGMT_Security::nonce('cor-mgmt-team-' . (int) $race_id) .
                         '<input type="hidden" name="todo" value="resend"><input type="hidden" name="id" value="' . (int) $team['id'] . '">' .
+                        '<input type="hidden" name="confirmation_request" value="' . esc_attr(bin2hex(random_bytes(16))) . '">' .
                         '<button type="submit">' . esc_html_x('Resend Mail.', 'Homework', 'h3-mgmt') . '</button></form>';
 
 				}

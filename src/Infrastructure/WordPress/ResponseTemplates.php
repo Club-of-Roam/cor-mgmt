@@ -44,7 +44,7 @@ final class ResponseTemplates
             throw new CommunicationException('invalid_event');
         }
         $templates = $this->db->rows($this->db->prepare('SELECT * FROM %i WHERE race_id=%d ORDER BY action,language', $this->db->table('cor_mgmt_response_templates'), $race));
-        $generation = $this->db->scalar($this->db->prepare('SELECT MAX(id) FROM %i WHERE race_id=%d', $this->db->table('cor_mgmt_communication_history'), $race));
+        $generation = $this->db->scalar($this->db->prepare("SELECT MAX(id) FROM %i WHERE race_id=%d AND kind IN ('template_saved','templates_copied')", $this->db->table('cor_mgmt_communication_history'), $race));
         return ['race' => $row, 'templates' => $templates, 'revision' => hash('sha256', json_encode([$row,$templates,$generation], JSON_THROW_ON_ERROR)), 'writable' => (int) $rules['status'] !== 4 && ($this->authorize)($race, $actor, 'edit')];
     }
     /** Strict resolution primitive for the forthcoming sender. Missing never means global. */

@@ -40,7 +40,7 @@ final class TeamFrontend
     public static function dashboard(int $race): string
     {
         if (!is_user_logged_in()) {
-            $redirect = get_permalink() ?: home_url('/');
+            $redirect = TeamPortal::url($race);
             $code = is_string($_GET['invitation'] ?? null) ? wp_unslash($_GET['invitation']) : '';
             if (preg_match('/^(?:v2-[a-f0-9]{64}|[0-9]{1,19})$/D', $code)) {
                 $redirect = add_query_arg('invitation', $code, $redirect);

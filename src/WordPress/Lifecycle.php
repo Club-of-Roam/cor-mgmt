@@ -31,6 +31,8 @@ final class Lifecycle
         SchemaTools::register();
         DonationAdmin::register();
         CommunicationAdmin::register();
+        MailQueueAdmin::register();
+        TeamPortal::register();
         ProfileAvatar::register();
         ResultBoundary::register();
         register_activation_hook($plugin, [self::class, 'activationHook']);

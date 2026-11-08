@@ -17,9 +17,24 @@ final class TeamManager
     public const TEAM_FIELDS = ['team_name','description','team_pic','team_phone','donation_goal','meta_1','meta_2','meta_3','meta_4','meta_5'];
     /** @var list<array<string,mixed>> */
     private array $events = [];
-    /** @param Closure(string,int):bool $authorize */
-    public function __construct(private readonly ParticipationStore $store, private readonly Clock $clock, private readonly RandomSource $random, private readonly Closure $authorize)
+    /** @param Closure(string,int):bool $authorize
+     * @param Closure(list<array<string,mixed>>):void|null $notifications
+     */
+    public function __construct(private readonly ParticipationStore $store, private readonly Clock $clock, private readonly RandomSource $random, private readonly Closure $authorize, private readonly ?Closure $notifications = null)
     {
+    }
+    /** @param callable():array{events:list<array<string,mixed>>,team?:int} $operation
+     * @return array<string,mixed>
+     */
+    private function atomic(callable $operation): array
+    {
+        return $this->store->atomic(function () use ($operation): array {
+            $result = $operation();
+            if ($this->notifications !== null) {
+                ($this->notifications)($result['events']);
+            }
+            return $result;
+        });
     }
     /** @return array<string,string|null> */
     private function race(int $id): array
@@ -193,7 +208,7 @@ final class TeamManager
     public function save(int $raceId, int $user, array $teamValues, array $profile, string $code = '', array $emails = [], ?int $route = null, string $revision = ''): array
     {
         $this->events = [];
-        return $this->store->atomic(function () use ($raceId, $user, $teamValues, $profile, $code, $emails, $route, $revision): array {
+        return $this->atomic(function () use ($raceId, $user, $teamValues, $profile, $code, $emails, $route, $revision): array {
             $race = $this->race($raceId);
             $this->permit('profile', $race);
             if (!$user || !($this->authorize)('self', $user) || !$this->store->find('user', $user)) {
@@ -219,7 +234,7 @@ final class TeamManager
                         $this->store->insert('token', array_replace($token, ['consumed_at' => (string) $this->clock->now(),'consumed_by' => (string) $user]));
                     }
                     $joined = true;
-                    $this->events[] = ['action' => 'joined','team' => (int) $team['id'],'user' => $user];
+                    $this->events[] = ['action' => 'joined','team' => (int) $team['id'],'user' => $user,'invitation_hash' => $token['token_hash']];
                 } else {
                     $this->permit('create', $race);
                     if (!isset($teamValues['team_name'])) {
@@ -252,10 +267,31 @@ final class TeamManager
         });
     }
     /** @return array<string,mixed> */
+    public function resendConfirmation(int $raceId, int $user, string $request): array
+    {
+        $this->events = [];
+        return $this->atomic(function () use ($raceId, $user, $request): array {
+            $race = $this->race($raceId);
+            $this->permit('content', $race);
+            $team = $this->owned($raceId, $user);
+            if (!$team || !($this->authorize)('self', $user) || !preg_match('/^[a-f0-9]{32}$/D', $request)) {
+                throw new ParticipationException('not_permitted');
+            }
+            foreach ($this->store->related('history', 'team_id', (string) $team['id']) as $entry) {
+                $payload = json_decode($entry['payload'] ?? '', true);
+                if ($entry['kind'] === 'confirmation_request' && is_array($payload) && ($payload['request'] ?? '') === bin2hex($request)) {
+                    return ['events' => []];
+                }
+            }
+            $this->history('confirmation_request', ['request' => $request], $raceId, (int) $team['id']);
+            return ['events' => [['action' => 'team-creation', 'team' => (int) $team['id'], 'user' => $user]]];
+        });
+    }
+    /** @return array<string,mixed> */
     public function reconcileRace(int $raceId): array
     {
         $this->events = [];
-        return $this->store->atomic(function () use ($raceId): array {
+        return $this->atomic(function () use ($raceId): array {
             if (!($this->authorize)('reconcile', $raceId)) {
                 throw new ParticipationException('not_permitted');
             }
@@ -372,7 +408,7 @@ final class TeamManager
     public function leave(int $raceId, int $user): array
     {
         $this->events = [];
-        return $this->store->atomic(function () use ($raceId, $user): array {
+        return $this->atomic(function () use ($raceId, $user): array {
             $race = $this->race($raceId);
             $this->permit('leave', $race);
             if (!($this->authorize)('self', $user)) {
@@ -421,7 +457,7 @@ final class TeamManager
     /** @return array<string,mixed> */
     public function cancelInvitation(int $raceId, int $user, string $email): array
     {
-        return $this->store->atomic(function () use ($raceId, $user, $email): array {
+        return $this->atomic(function () use ($raceId, $user, $email): array {
             $race = $this->race($raceId);
             $this->permit('invite', $race);
             if (!($this->authorize)('self', $user)) {
@@ -466,7 +502,7 @@ final class TeamManager
     public function profile(int $user, array $profile): array
     {
         $this->events = [];
-        return $this->store->atomic(function () use ($user, $profile): array {
+        return $this->atomic(function () use ($user, $profile): array {
             if (!($this->authorize)('profile', $user) || !$this->store->find('user', $user)) {
                 throw new ParticipationException('not_permitted');
             }
@@ -484,7 +520,7 @@ final class TeamManager
     public function administer(int $raceId, int $id, array $values, array $members, array $languages, ?int $route, string $revision = ''): array
     {
         $this->events = [];
-        return $this->store->atomic(function () use ($raceId, $id, $values, $members, $languages, $route, $revision): array {
+        return $this->atomic(function () use ($raceId, $id, $values, $members, $languages, $route, $revision): array {
             if (!($this->authorize)('team', $id)) {
                 throw new ParticipationException('not_permitted');
             }
@@ -550,7 +586,7 @@ final class TeamManager
         if (!in_array($field, ['paid','waiver'], true) || !$ids || count($ids) > 500) {
             throw new ParticipationException('invalid_confirmation');
         }
-        return $this->store->atomic(function () use ($ids, $field, $value): array {
+        return $this->atomic(function () use ($ids, $field, $value): array {
             $teams = [];
             foreach (array_unique($ids) as $id) {
                 if (!($this->authorize)('member', $id)) {
@@ -575,7 +611,7 @@ final class TeamManager
     /** @return array<string,mixed> */
     public function delete(int $id): array
     {
-        return $this->store->atomic(function () use ($id): array {
+        return $this->atomic(function () use ($id): array {
             if (!($this->authorize)('delete', $id)) {
                 throw new ParticipationException('not_permitted');
             }

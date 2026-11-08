@@ -146,3 +146,17 @@ Nächster Arbeitsauftrag bleibt die atomare Anbindung der tatsächlichen Teamere
 
 
 Prüfabschluss der Queue-Grundlage: isolierte Suiten mit je 319 Tests auf PHP 8.2/8.3/8.4/8.5 bestanden. WordPress-Gesamtläufe und abschließende Queue-/Einrichtungsfälle ebenfalls erfolgreich; zeitliche Grenzen und genaue Zahlen in verification.md. Composer-Prüfungen auf allen vier Versionen, 7 Node-Tests, ESLint und reproduzierbarer Paketbau mit Produktionsloader geprüft. Geeigneter manueller Commit-Zwischenstand; Block 8 bleibt bis zur oben genannten Anbindung und Abnahme offen.
+
+
+## Block 8 – Teamauslöser und Queueverwaltung (2026-11-08)
+
+[Umgesetztes Paket](block-8-delivery.md): TeamManager speichert Benachrichtigungen vor dem Commit in derselben Transaktion. Gründung, Einladung, Annahme, Freigabe und ausdrückliche erneute Bestätigung verwenden konkrete Events, Empfänger, Mitgliedersprachen und feste Inhalte. Neuer eigenständiger Teilnehmer-/Gasteinstieg für Eventlinks. Globaler automatischer Mailerfallback entfernt; notify bleibt kompatibel wirkungslos, globale Originalvorlagen bleiben Kopierquelle.
+
+Native Eventverwaltung mit paginierter Liste, Textvorschau, Freigabe/Pause, geprüftem Einzelversand, ausdrücklicher Nachbereitung fehlender Vorlagen, begrenztem Retry, Anspruchsklärung, Abschluss unklarer Nachrichten und Akteursjournal. POST/Nonce, Objektberechtigung, Event-/Nachrichtenbindung, Revision und zusätzliche Versandbestätigung. Reale Zustellung bleibt ohne Serverfreigabe und Eventaktivierung gesperrt; kein Hintergrundjob und kein Versand aus dieser Umsetzung.
+
+Die zuvor offene Teamanbindung und Queueverwaltung sind damit implementiert. Als Nächstes manuellen Rundmailversand modernisieren, anschließend Börse. Aufbewahrung/Bereinigung, Browser-/Tastatur-/Accessibility-, Anbieter- und Bestandsabnahme sowie vollständiger Block-8-/Releaseabschluss bleiben offen. Bisherige Schema-/Installationspläne bleiben unverändert; keine Anwendungsmigration und keine Git-Aktionen.
+
+
+Prüfabschluss der Auslöser-/Verwaltungslogik: vollständige isolierte und WordPress-Suiten unter PHP 8.2/8.3/8.4/8.5 bestanden; nach letzter Einladungs-Kompatibilitätsprüfung alle 21 betroffenen Integrationsfälle mit je 235 Assertions auf allen Versionen wiederholt. Composer-Prüfungen, 7 Node-Tests und ESLint erfolgreich. Zwei echte Workerprozesse verhindern doppelten Transport, Teilnehmer-/Gasteinstieg in getrennten WordPress-Prozessen geprüft. Prüfgrenzen und exakte Gesamtzahlen in verification.md. Geeigneter Zwischenstand für einen manuellen Commit; kein vollständiger Block-8-Abschluss.
+
+Paketabschluss: 282 Dateien, bytegleiche Wiederholungsbuilds, Paketgrenzen und Produktionsautoloader unter PHP 8.2/8.5 geprüft. Reale Zustellung und Browserabnahme weiterhin nicht ausgeführt. Keine Git-Aktionen.

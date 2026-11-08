@@ -1,5 +1,29 @@
 # Prüfbelege
 
+## Block 8: Teamauslöser und Queueverwaltung – 2026-11-08
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Gesamtsuite | 319 Tests / 628 Assertions | 319 / 628 | 319 / 628 | 319 / 628 |
+| WordPress-Gesamtsuite | 381 Tests / 2.511 Assertions | 381 / 2.512 | 381 / 2.511 | 381 / 2.512 |
+| Abschließender Auslöser-/Verwaltungsnachlauf | 21 Tests / 235 Assertions | 21 / 235 | 21 / 235 | 21 / 235 |
+| Composer check | bestanden | bestanden | bestanden | bestanden |
+
+Zeitliche Grenze: Die vollständigen 8.2-/8.4-Läufe lagen vor der letzten Kompatibilitätsassertion zum bisherigen Einladungsplatzhalter name. 8.3/8.5 enthielten diese Assertion bereits. Nach ausdrücklicher UTF-8-Konvertierung beim Lesen der JSON-Ereignisreferenz bestanden alle 21 Auslöser-/Verwaltungsfälle mit je 235 Assertions erneut auf allen vier Versionen; betroffene Standards ebenfalls. PHPStan Level 8 abschließend erneut bestanden. Wiederholungssuiten nicht zur Gesamtzahl addieren.
+
+Echte WordPress-/wpdb-Nachweise: Gründung, Einladung, Annahme und Freigabe erzeugen passende Eventvorlagen, konkrete Empfänger, Mitgliedersprachen, Namen und Eventlinks in derselben Fachtransaktion. Dasselbe Konto in zwei Events bleibt getrennt. Wiederholung ohne Statuswechsel, alte notify-Aufrufe und Replay desselben Bestätigungsformulars erzeugen keine Duplikate. Fehlende Vorlagen erzeugen blockierte Nachrichten ohne Globalfallback. Ein Einrichtungsfehler rollt Team und Profil zurück; ein Fehler in der zweiten Nachricht rollt auch die erste Nachricht, Einladung und das Ereignisjournal zurück. Historischer kontextfreier auto_response-Einstieg sendet nicht mehr; der entsprechende frühere Ist-Test wurde ausdrücklich auf den neuen Vertrag umgestellt. Neue positive Event-/Sprach-/Platzhalterfälle ersetzen dessen frühere Globalfallback-Erwartung.
+
+Verwaltung: Objekt-/Event-/Nachrichtengrenzen, POST, Nonce, ausdrückliche Versandbestätigung, fehlende Rechte, geänderte Revision, Aus-/Einschaltzyklus und Replay geprüft. Unabhängige Teamereignisse blockieren keine Vorlagenbearbeitung. Vorschau escaped, Server- und Eventblockade ohne Transportaufruf, nur gezielt geprüfte Nachricht statt nächstem beliebigen Queueeintrag. Blockierte Nachrichten nur ausdrücklich nachbereitet, feste Snapshots unverändert; Fehler-Retry auf drei Versuche begrenzt. Unklare Ausgänge ohne Retry und mit protokollierter externer Klärung; Abschluss ohne weiteren Versand und Archivschutz geprüft. Verbrauchte Einladungen und geschlossene Anmeldung verhindern Versand; gültige Einladung bleibt nach Versand annehmbar.
+
+Zwei gleichzeitig gestartete echte Workerprozesse erzeugten für denselben geprüften Vorgang genau eine synthetische Transportannahme und einen Versuch. Vorhandene parallele Platz-/Beitrittstests prüfen zusätzlich die atomare Nachrichtenerzeugung nur für den Gewinner. Getrennte WordPress-Prozesse rufen die registrierten Teilnehmer-/Gasthooks auf und prüfen Teamformular bzw. Anmelderückleitung. Der Transport ist injiziert und schreibt ausschließlich eine synthetische Quittung; keine echte Nachricht. Providerannahme ist keine Zusage über Zustellung ins Postfach.
+
+Qualitätsumfang: 172 PHP-Dateien ohne Syntaxfehler, 34 Markdown-Dateien, 118 Inventarquellen / 23 Shortcodes / 75 Methoden mit literalen Request-Feldern, sechs unveränderte SQL-Referenzen. Strikte Composer-Validierung, PHPStan Level 8, eingeführte Standards und PHPCompatibility sowie 7 Node-Tests und ESLint bestanden. Anwendungsheader, Lockdateien, Abhängigkeiten und sämtliche bestehenden Schema-/Installationspläne sind unverändert. Keine Anwendungsmigration, kein Remote-CI-Lauf und keine Git-Aktionen.
+
+Paketabschluss: zwei bytegleiche Builds mit 282 Dateien. Paketgrenzen und gebündelter Produktionsautoloader ohne Entwicklungsabhängigkeiten unter PHP 8.2 und 8.5 geprüft.
+
+Grenzen: MariaDB-Integration, kein gesonderter MySQL-Lauf. Kein SMTP-/Anbieterversand oder Produktionsbestandsabgleich. Rendering in WordPress-Subprozessen ersetzt keine HTTP-/Browser-/Tastatur-/Accessibility-Abnahme. Kein Hintergrundversand; Serverfreigabe wird nicht gesetzt. Manueller Rundmailversand, Börse, Aufbewahrungsverfahren und Release-/Gesamtabnahme bleiben Folgearbeit. Der aktuelle Vertrag steht in [Mailauslöser und Queueverwaltung](block-8-delivery.md).
+
+
 ## Block 8: Queue-Grundlage – 2026-11-08
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

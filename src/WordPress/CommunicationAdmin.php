@@ -10,7 +10,7 @@ use Cor\Mgmt\Infrastructure\WordPress\ResponseTemplates;
 use Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema;
 use Cor\Mgmt\Infrastructure\WordPress\Schema\Database;
 
-/** Configuration preparation only; never invokes the old sender or a mail transport. */
+/** Event template configuration; saving and copying never dispatch mail. */
 final class CommunicationAdmin
 {
     public static function register(): void
@@ -68,7 +68,7 @@ final class CommunicationAdmin
             echo '<p>' . esc_html__('You are not allowed to manage autoresponses.', 'h3-mgmt') . '</p>';
             return;
         }
-        echo '<div class="wrap"><h1>' . esc_html__('Event autoresponses', 'h3-mgmt') . '</h1><p class="notice notice-warning">' . esc_html__('Preparation: these event templates do not control delivery yet. Current automatic responses still use the existing global configuration. Saving, previewing and copying here sends no email.', 'h3-mgmt') . '</p>';
+        echo '<div class="wrap"><h1>' . esc_html__('Event autoresponses', 'h3-mgmt') . '</h1><p class="notice notice-warning">' . esc_html__('These event templates now control queued team notifications. Saving, previewing and copying sends no email; review and release messages separately in the event mail queue.', 'h3-mgmt') . '</p>';
         if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             try {
                 self::submit();
@@ -130,7 +130,7 @@ final class CommunicationAdmin
             self::copyPreview($race, $db);
         }
         echo '<h3>' . esc_html__('Recent configuration changes', 'h3-mgmt') . '</h3><ul>';
-        foreach ($db->rows($db->prepare('SELECT id,actor_id,created_at,kind FROM %i WHERE race_id=%d ORDER BY id DESC LIMIT 10', $db->table('cor_mgmt_communication_history'), $race)) as $history) {
+        foreach ($db->rows($db->prepare("SELECT id,actor_id,created_at,kind FROM %i WHERE race_id=%d AND kind IN ('template_saved','templates_copied') ORDER BY id DESC LIMIT 10", $db->table('cor_mgmt_communication_history'), $race)) as $history) {
             echo '<li>' . esc_html(($history['id'] ?? '') . ' · ' . ($history['kind'] ?? '') . ' · ' . ($history['actor_id'] ?? '') . ' · ' . gmdate('Y-m-d H:i:s', (int) $history['created_at']) . ' UTC') . '</li>';
         }
         echo '</ul>';

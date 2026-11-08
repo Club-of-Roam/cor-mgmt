@@ -81,3 +81,6 @@ Additives Modul 1.0.0 mit eigenem Manifest und zwei eigenen Tabellen; ausdrückl
 
 
 Die Queue-Grundlage aus [Block 8](block-8-queue.md) besitzt ein separates additives Manifest `cor_mgmt_mail_queue_install` und die [Schema-Referenz](schema-mail-queue-1.0.0.sql). Einrichtung bei Aktivierung oder über das geschützte Datenbankwerkzeug; keine Änderung bestehender Installationspläne und kein Versandstart. Bestehende Mailauslöser sind noch nicht umgestellt.
+
+
+Nachtrag: [Teamauslöser und Queueverwaltung](block-8-delivery.md) verwenden die bestehenden additiven Module ohne Änderung ihrer Manifeste. Eventvorlagen ersetzen den globalen automatischen Mailer. Fehlende Module vor Teilnahmeänderungen ausdrücklich einrichten. Eventvorlagen vor Verwendung prüfen/kopieren; fehlende Vorlagen führen zu blockierten Nachrichten. Die Eventfreigabe allein startet keinen Versand. Reale Einzelverarbeitung erfordert zusätzlich `COR_MGMT_ALLOW_MAIL_DELIVERY = true` und WordPress-Umgebung `production`; standardmäßig gesperrt. Keine automatische Cronaktivierung oder rückwirkende Mailerzeugung.

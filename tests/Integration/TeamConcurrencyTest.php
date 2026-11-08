@@ -31,6 +31,8 @@ final class TeamConcurrencyTest extends TestCase
     }
     protected function tearDown(): void
     {
+        $this->db->execute($this->db->prepare('DELETE FROM %i WHERE message_id IN (SELECT id FROM %i WHERE race_id=%d)',$this->db->table('cor_mgmt_mail_history'),$this->db->table('cor_mgmt_mail_queue'),$this->base));
+        foreach(['cor_mgmt_mail_queue','cor_mgmt_communication_history'] as $suffix){$this->db->execute($this->db->prepare('DELETE FROM %i WHERE race_id=%d',$this->db->table($suffix),$this->base));}
         if($this->restoreEngine){$this->db->execute($this->db->prepare('ALTER TABLE %i ENGINE=InnoDB',$this->db->table('h3_mgmt_invitations')));}
         foreach(['h3_mgmt_invitations','h3_mgmt_teammates','cor_mgmt_invitation_tokens','cor_mgmt_membership_history'] as $suffix){$this->db->execute($this->db->prepare('DELETE FROM %i WHERE team_id IN (%d,%d)',$this->db->table($suffix),$this->base,$this->base+1));}
         $this->db->execute($this->db->prepare('DELETE FROM %i WHERE id IN (%d,%d)',$this->db->table('h3_mgmt_teams'),$this->base,$this->base+1));
@@ -68,11 +70,12 @@ final class TeamConcurrencyTest extends TestCase
     }
     public function testTwoProcessesCannotAllocateTheLastRoutePlaceTwice(): void
     {
-        $this->team($this->base,$this->base+1,1);$this->team($this->base+1,$this->base+2,1);
+        $this->team($this->base,$this->base+1,0);$this->team($this->base+1,$this->base+2,0);
         $requests=[['mode'=>'route','user'=>$this->base+1,'value'=>(string)$this->base],['mode'=>'route','user'=>$this->base+2,'value'=>(string)$this->base]];
         $results=$this->runWorkers($requests);
         self::assertCount(1,array_filter($results,static fn(array $result):bool=>$result['success']===true));
         self::assertSame('1',$this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE route_id=%d AND complete=1',$this->db->table('h3_mgmt_teams'),$this->base)));
+        self::assertSame('1',$this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE race_id=%d',$this->db->table('cor_mgmt_mail_queue'),$this->base)));
         $loser=$results[0]['success']?1:0;self::assertContains($results[$loser]['code'],['migration_locked','route_full']);
         $retry=$this->runWorkers([$requests[$loser]]);self::assertSame('route_full',$retry[0]['code']);
     }
@@ -86,6 +89,7 @@ final class TeamConcurrencyTest extends TestCase
         $results=$this->runWorkers($requests);self::assertCount(1,array_filter($results,static fn(array $result):bool=>$result['success']===true));
         self::assertSame('2',$this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE team_id=%d',$this->db->table('h3_mgmt_teammates'),$this->base)));
         self::assertSame('1',$this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE team_id=%d AND consumed_at IS NOT NULL',$this->db->table('cor_mgmt_invitation_tokens'),$this->base)));
+        self::assertSame('2',$this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE race_id=%d',$this->db->table('cor_mgmt_mail_queue'),$this->base)));
         self::assertSame('2',$this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE team_id=%d',$this->db->table('h3_mgmt_invitations'),$this->base)));
         $loser=$results[0]['success']?1:0;$retry=$this->runWorkers([$requests[$loser]]);self::assertSame('team_full',$retry[0]['code']);
     }

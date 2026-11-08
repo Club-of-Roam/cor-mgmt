@@ -1,6 +1,6 @@
 # Block 8 – Kommunikation und Börse: Umsetzungsplan
 
-Planstand: 2026-11-05. Seit 2026-11-08 ist das erste Vorlagen-Teilpaket umgesetzt; [aktueller Umfang und Übergangsgrenze](block-8-templates.md). Die [Queue-Grundlage](block-8-queue.md) ist als zweites Teilpaket umgesetzt. Auslöseranbindung, Verwaltungsfreigabe, Versandumschaltung und Börse bleiben offen. Verbindliche Ergänzung des Benutzers: Autoresponses müssen je Event unabhängig angelegt und eingestellt werden können, damit parallele Events keine gemeinsamen Versandregeln verwenden (D-44).
+Planstand: 2026-11-05. Seit 2026-11-08 ist das erste Vorlagen-Teilpaket umgesetzt; [aktueller Umfang und Übergangsgrenze](block-8-templates.md). Die [Queue-Grundlage](block-8-queue.md) ist als zweites Teilpaket umgesetzt. [Teamauslöser und Queueverwaltung](block-8-delivery.md) sind ebenfalls umgesetzt. Manueller Rundmailversand, Börse sowie die ausgewiesenen Gesamtabnahmen bleiben offen. Verbindliche Ergänzung des Benutzers: Autoresponses müssen je Event unabhängig angelegt und eingestellt werden können, damit parallele Events keine gemeinsamen Versandregeln verwenden (D-44).
 
 ## Bestätigter Ausgangsbefund
 

@@ -19,6 +19,10 @@ final class ParticipationRepository implements ParticipationStore
     public function __construct(private readonly Database $db)
     {
     }
+    public function database(): Database
+    {
+        return $this->db;
+    }
     private function table(string $type): string
     {
         return match ($type) {

@@ -174,7 +174,7 @@ final class LegacyWordPressTest extends TestCase
         self::assertSame([], $GLOBALS['cor_test_mail']);
     }
 
-    public function testMailLanguageTemplatePlaceholdersAndRecipients(): void
+    public function testContextFreeAutomaticMailNeverUsesGlobalTemplates(): void
     {
         global $wpdb;
         $id = $this->user();
@@ -187,11 +187,7 @@ final class LegacyWordPressTest extends TestCase
         $GLOBALS['h3_mgmt_mailer']->auto_response($id, 'team-creation', [
             'team_name' => 'Synthetic', 'code' => '1234', 'link' => 'https://example.invalid/invitation',
         ], 'id', 'de');
-        self::assertCount(1, $GLOBALS['cor_test_mail']);
-        $mail = $GLOBALS['cor_test_mail'][0];
-        self::assertSame('synthetic_member@example.invalid', $mail['to']);
-        self::assertSame('Deutsch Synthetic', $mail['subject']);
-        self::assertStringContainsString('Example 1234 https://example.invalid/invitation', $mail['message']);
+        self::assertSame([], $GLOBALS['cor_test_mail']);
     }
 
     public function testMailerSendsSeparatelyAndDoesNotDeduplicateAddresses(): void

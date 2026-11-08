@@ -65,3 +65,10 @@ Theme, cor-ticker und ausgelagerte Endpunkte wurden in Block 6 nicht verändert.
 [Betterplace und Spenden](block-7-donations.md) dokumentiert den bestätigten Ablauf, das additive Modul 1.0.0, den Schutz historischer Daten und die noch offene Automatisierungs-/Anbieter-/Browserabnahme. Neue Beträge werden in EUR-Cent geführt; keine geratene Bestandskonvertierung. Ausgeführte Prüfungen: [verification.md](verification.md).
 
 Ergänzung: [Spendenverwaltung und Übergangsvorbereitung](block-7-administration.md) beschreibt Objektberechtigungen, Revisionen, Sammelrollback, Journale und die Grenze zwischen protokollierter Altprüfung und noch ausstehender belegter Übernahme. Das Frontend zeigt gemäß D-42 ganze Euro; interne Reader behalten Centbeträge.
+
+
+## Ergänzung Block 8 – Teamnachrichten und Verwaltung
+
+[Mailauslöser und Queueverwaltung](block-8-delivery.md) dokumentiert die atomare Anbindung. TeamBoundary erzeugt den TeamManager mit Ereignisempfänger und derselben Database-Instanz. Direkte eigene TeamManager-Konstruktionen müssen diese Anbindung ausdrücklich übernehmen. `notify()` führt nachträglich keine Aktion mehr aus; `auto_response()` ohne Event-/Fachtransaktion liefert false statt eines globalen Fallbacks. Bestehende manuelle `send()`-Aufrufer sind separat zu modernisieren. Homework-Bestätigungsformulare benötigen neben POST/Nonce einen eigenen `confirmation_request`-Wert mit 32 Hexzeichen, der bei Wiederholung desselben Formulars stabil bleibt.
+
+Teilnehmerlinks nutzen `admin-post.php` mit `action=cor_mgmt_team`, `race_id` und gegebenenfalls Einladungstoken. TeamPortal erzeugt die Adresse über WordPress; eigene Themes müssen keine neue Datei bereitstellen. Queueverwaltung nutzt `h3_mgmt_send_emails` und zusätzlich konkrete Eventrechte. Keine Änderungen an Theme, cor-ticker oder Upload-Endpunkten in diesem Paket.

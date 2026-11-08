@@ -79,6 +79,67 @@ final class MailQueue
         });
     }
 
+    /** Trusted orchestration API; callers must authorize before invoking mutations.
+     * @template T
+     * @param callable():T $operation
+     * @return T
+     */
+    public function controlled(callable $operation): mixed
+    {
+        return $this->atomic($operation);
+    }
+
+    public function closeMessage(int $race, int $id, bool $delivered): void
+    {
+        $this->atomic(function () use ($race, $id, $delivered): void {
+            $this->eventOpen($race);
+            $row = $this->db->rows($this->db->prepare('SELECT * FROM %i WHERE id=%d AND race_id=%d FOR UPDATE', $this->db->table('cor_mgmt_mail_queue'), $id, $race))[0] ?? [];
+            $allowed = $delivered ? ['uncertain'] : ['pending','blocked','skipped','failed','uncertain'];
+            if (!in_array($row['status'] ?? '', $allowed, true)) {
+                throw new CommunicationException('mail_resolution_not_allowed');
+            }
+            $this->change($row, $delivered ? 'sent' : 'cancelled', $delivered ? 'operator_confirmed_delivery' : 'operator_closed');
+        });
+    }
+
+    /** Explicitly render a previously missing template; existing rendered snapshots never change. */
+    public function prepareBlocked(int $race, int $id): void
+    {
+        $this->atomic(function () use ($race, $id): void {
+            $this->eventOpen($race);
+            $row = $this->db->rows($this->db->prepare('SELECT * FROM %i WHERE id=%d AND race_id=%d FOR UPDATE', $this->db->table('cor_mgmt_mail_queue'), $id, $race))[0] ?? [];
+            if (($row['status'] ?? '') !== 'blocked' || ($row['attempts'] ?? '') !== '0') {
+                throw new CommunicationException('mail_preparation_not_allowed');
+            }
+            $decoded = json_decode($row['context'] ?? '', true, 512, JSON_THROW_ON_ERROR);
+            if (!is_array($decoded)) {
+                throw new CommunicationException('invalid_mail_context');
+            }
+            $values = [];
+            foreach ($decoded as $key => $value) {
+                if (!is_string($key) || !is_string($value)) {
+                    throw new CommunicationException('invalid_mail_context');
+                }
+                $values[$key] = $value;
+            }
+            $request = new MailRequest($race, $row['occurrence'] ?? '', $row['action'] ?? '', $row['recipient'] ?? '', $row['language'] ?? '', $values);
+            if (!hash_equals($row['input_hash'] ?? '', $request->fingerprint()) || !hash_equals($row['message_key'] ?? '', $request->key())) {
+                throw new CommunicationException('mail_occurrence_conflict');
+            }
+            $source = $this->db->rows($this->db->prepare('SELECT * FROM %i WHERE race_id=%d AND action=%s AND language=%s FOR UPDATE', $this->db->table('cor_mgmt_response_templates'), $race, $request->action, $request->language))[0] ?? [];
+            if (($source['enabled'] ?? '') !== '1') {
+                throw new CommunicationException('active_event_template_required');
+            }
+            $template = new AutoResponseTemplate($request->action, $request->language, true, $source['subject'] ?? '', $source['message'] ?? '');
+            $content = $template->render($values);
+            if (strlen($content['message']) > 200000) {
+                throw new CommunicationException('rendered_message_too_large');
+            }
+            $this->db->execute($this->db->prepare('UPDATE %i SET subject=%s,message=%s,template_revision=%d WHERE id=%d', $this->db->table('cor_mgmt_mail_queue'), $content['subject'], $content['message'], (int) $source['revision'], $id));
+            $this->change($row, 'pending', 'explicit_preparation');
+        });
+    }
+
     private function eventOpen(int $race): void
     {
         $row = $this->db->rows($this->db->prepare('SELECT setting FROM %i WHERE id=%d FOR UPDATE', $this->db->table('h3_mgmt_races'), $race))[0] ?? [];
@@ -126,14 +187,17 @@ final class MailQueue
     }
 
     /** @return array<string,string|null>|null */
-    public function claim(int $race, string $token): ?array
+    public function claim(int $race, string $token, int $id = 0, ?callable $beforeClaim = null): ?array
     {
         if (!preg_match('/^[a-f0-9]{64}$/D', $token)) {
             throw new CommunicationException('invalid_claim_token');
         }
-        return $this->atomic(function () use ($race, $token): ?array {
+        return $this->atomic(function () use ($race, $token, $id, $beforeClaim): ?array {
+            if ($beforeClaim !== null) {
+                $beforeClaim();
+            }
             $this->eventOpen($race);
-            $row = $this->db->rows($this->db->prepare("SELECT * FROM %i WHERE race_id=%d AND status='pending' AND attempts<%d ORDER BY id LIMIT 1 FOR UPDATE", $this->db->table('cor_mgmt_mail_queue'), $race, self::MAX_ATTEMPTS))[0] ?? null;
+            $row = $this->db->rows($this->db->prepare("SELECT * FROM %i WHERE race_id=%d AND status='pending' AND attempts<%d AND (%d=0 OR id=%d) ORDER BY id LIMIT 1 FOR UPDATE", $this->db->table('cor_mgmt_mail_queue'), $race, self::MAX_ATTEMPTS, $id, $id))[0] ?? null;
             if ($row === null) {
                 return null;
             }

@@ -57,7 +57,7 @@ final class MailQueueTest extends TestCase
             public function __construct(private Database $db,private string $outcome){}
             public function send(string $recipient,string $subject,string $body,string $headers):bool{
                 TestCase::assertSame('0',$this->db->scalar('SELECT @@in_transaction'));TestCase::assertFalse($this->db->hasLock());
-                TestCase::assertSame('member@example.invalid',$recipient);TestCase::assertStringStartsWith('Event Race ',$subject);TestCase::assertSame('Hello Member',$body);TestCase::assertSame('Content-Type: text/plain; charset=UTF-8',$headers);
+                TestCase::assertSame('member@example.invalid',$recipient);TestCase::assertStringStartsWith('Event Race ',$subject);TestCase::assertSame('Hello Member',$body);TestCase::assertStringContainsString('Content-Type: text/plain; charset=UTF-8',$headers);
                 if($this->outcome==='uncertain'){throw new \RuntimeException('Synthetic ambiguous provider outcome');}return $this->outcome==='sent';
             }
         };

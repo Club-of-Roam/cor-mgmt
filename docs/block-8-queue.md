@@ -1,6 +1,6 @@
 # Block 8 – Grundlage der Versandwarteschlange
 
-Stand: 2026-11-08. Zweites technisches Teilpaket nach der [Vorlagenverwaltung](block-8-templates.md). Die Queue und der Worker sind implementiert, aber noch nicht an die bestehenden Mailauslöser angebunden. Bisheriger Versand und dessen globale Vorlagen bleiben bis zu dieser Umschaltung unverändert. Kein vollständiger Abschluss von Block 8.
+Stand: 2026-11-08. Zweites technisches Teilpaket nach der [Vorlagenverwaltung](block-8-templates.md). Die Grundlage ist inzwischen durch [Mailauslöser und Queueverwaltung](block-8-delivery.md) angebunden. Für aktuelle Bedienung und Versandgrenzen gilt dieses Folgepaket. Kein vollständiger Abschluss von Block 8.
 
 ## Einrichtung und Schnittstellengrenze
 
@@ -24,13 +24,15 @@ Beim Einreihen werden Adresse, Sprache, Vorlagenrevision, Platzhalterkontext und
 | `failed` | Transport meldet Ablehnung; nur ausdrückliche Wiederholung, höchstens drei Versuche insgesamt |
 | `uncertain` | Ausnahme oder veralteter Anspruch; Annahme möglicherweise erfolgt, kein automatisches oder gewöhnliches Fehler-Retry |
 
-Ein Anspruch wird atomar unter der gemeinsamen Sperre vergeben. Ein zweiter Worker kann dieselbe Nachricht nicht übernehmen; Abschluss erfordert passendes Event, Nachricht und Token. Der [Worker](../src/Infrastructure/WordPress/MailQueueWorker.php) verarbeitet pro Aufruf höchstens eine Nachricht und ruft den injizierten Transport erst nach Commit und Freigabe der Sperre auf. Ein äußerer offener Transaktionskontext verhindert die Verarbeitung. Die Freigabefunktion ist standardmäßig gesperrt und muss je Event ausdrücklich injiziert werden. Es existiert keine produktive Registrierung, kein Scheduler und kein Versandknopf für diesen Worker.
+Ein Anspruch wird atomar unter der gemeinsamen Sperre vergeben. Ein zweiter Worker kann dieselbe Nachricht nicht übernehmen; Abschluss erfordert passendes Event, Nachricht und Token. Der [Worker](../src/Infrastructure/WordPress/MailQueueWorker.php) verarbeitet pro Aufruf höchstens eine Nachricht und ruft den injizierten Transport erst nach Commit und Freigabe der Sperre auf. Ein äußerer offener Transaktionskontext verhindert die Verarbeitung. Die Freigabefunktion ist standardmäßig gesperrt und muss je Event ausdrücklich injiziert werden. Das Folgepaket registriert eine geschützte Verwaltung für einzelne geprüfte Nachrichten; es gibt weiterhin keinen Scheduler.
 
 Nach 900 Sekunden kann eine begrenzte Aufräumaktion höchstens 50 veraltete Ansprüche auf `uncertain` setzen. Sie stellt sie niemals wieder auf `pending`. Ein später zurückkehrender alter Worker verliert seinen Abschlussanspruch. Transportausnahmen werden nicht mitsamt möglicherweise privaten Anbieterdetails ins Statusjournal geschrieben. Zwischen Mailannahme und Speicherung des Ergebnisses bleibt ein unvermeidbarer Unsicherheitsbereich; keine Exactly-once-Zusage für `wp_mail`.
 
 Archive erlauben weder neue Nachrichten noch neue Ansprüche oder Fehler-Retries. Der Ausgang eines bereits laufenden Versuchs und die Erkennung veralteter Ansprüche dürfen noch protokolliert werden. Das verändert keine eingefrorenen Fach- oder Ergebnisdaten.
 
-## Noch offene Anbindung
+## Beim Grundlagenabschluss noch offene Anbindung
+
+Die folgende Liste hält den damaligen Übergabeauftrag fest. Die Teamanbindung und Queueverwaltung sind inzwischen im [Folgepaket](block-8-delivery.md) umgesetzt; dessen Abnahmegrenzen gelten weiter. Manueller Rundmailversand, Aufbewahrung und Börse bleiben Folgearbeit.
 
 - Flüchtige Teamereignisse durch dauerhafte Fachvorgänge ersetzen und dieselbe Transaktion/Database mit der Queue teilen. Empfänger, Mitgliedersprache, Namen und eventbezogene Links müssen vor dem Commit bestimmt sein. Die Queue allein beweist diesen Produzentenpfad noch nicht.
 - Bisherige `auto_response`-Aufrufer und manuelle Rundmails kontrolliert umstellen; alten Globalfallback erst mit dieser Anbindung entfernen. Absender-/Antwortadressen und Sprachwahl dabei erhalten und prüfen.
