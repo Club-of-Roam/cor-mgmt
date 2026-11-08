@@ -4,9 +4,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 
 | Methode / Quelle | Request-Felder | case-Labels |
 |---|---|---|
-| [mail_form](../admin/class-h3-mgmt-admin-emails.php#L27) | `GET:email`, `GET:todo`, `POST:subject` |  |
-| [mail_send](../admin/class-h3-mgmt-admin-emails.php#L179) | `POST:message`, `POST:receipient`, `POST:sender`, `POST:subject` |  |
-| [autoresponses_edit](../admin/class-h3-mgmt-admin-emails.php#L244) | `GET:tab`, `GET:todo`, `POST:submitted` |  |
+| [autoresponses_edit](../admin/class-h3-mgmt-admin-emails.php#L35) | `GET:tab`, `GET:todo`, `POST:submitted` |  |
 | [control](../admin/class-h3-mgmt-admin-races.php#L30) | `GET:id`, `GET:todo`, `POST:submitted` |  |
 | [edit](../admin/class-h3-mgmt-admin-races.php#L80) | `POST:cor_event_revision`, `POST:submitted` |  |
 | [fields](../admin/class-h3-mgmt-admin-races.php#L106) | `POST:submitted` |  |
@@ -48,8 +46,10 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [team_ticker](../includes/class-h3-mgmt-ticker.php#L1132) | `GET:id`, `GET:min` |  |
 | [ticker_incoming_interface](../includes/class-h3-mgmt-ticker.php#L1311) | `POST:message` |  |
 | [table_order](../includes/class-h3-mgmt-utilities.php#L189) | `GET:order`, `GET:orderby` |  |
-| [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L68) | `POST:address` |  |
-| [xchange_control](../includes/class-h3-mgmt-xchange.php#L115) | `POST:message`, `POST:submitted` |  |
+| [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L15) | `POST:address` |  |
+| [register](../src/WordPress/BroadcastAdmin.php#L16) | `GET:page` |  |
+| [compose](../src/WordPress/BroadcastAdmin.php#L144) | `GET:email`, `POST:mode` |  |
+| [page](../src/WordPress/BroadcastAdmin.php#L201) | `GET:campaign_id`, `GET:campaign_page`, `GET:recipient_page` |  |
 | [submit](../src/WordPress/CommunicationAdmin.php#L48) | `POST:enabled` |  |
 | [page](../src/WordPress/CommunicationAdmin.php#L65) | `GET:race_id` |  |
 | [event](../src/WordPress/CommunicationAdmin.php#L109) | `GET:language`, `GET:template_action` |  |
@@ -60,6 +60,9 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [render](../src/WordPress/DonationFrontend.php#L24) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:id`, `GET:type`, `POST:new`, `POST:submitted` |  |
 | [mutate](../src/WordPress/EventAdmin.php#L30) | `GET:bulk` |  |
 | [render](../src/WordPress/EventList.php#L30) | `GET:country_filter`, `GET:event_page`, `GET:number_filter`, `GET:order`, `GET:orderby`, `GET:race_filter`, `GET:route_filter` |  |
+| [result](../src/WordPress/ExchangeBoundary.php#L40) | `POST:submitted` |  |
+| [shortcode](../src/WordPress/ExchangeBoundary.php#L52) | `GET:exchange_page` |  |
+| [page](../src/WordPress/ExchangeBoundary.php#L92) | `GET:exchange_page` |  |
 | [page](../src/WordPress/MailQueueAdmin.php#L59) | `GET:message_id`, `GET:queue_page`, `GET:race_id`, `POST:message_id`, `POST:race_id` |  |
 | [prepare](../src/WordPress/ProfileAvatar.php#L60) | `FILES:cor_profile_avatar` |  |
 | [control](../src/WordPress/ResultFrontend.php#L13) | `GET:cor_result_route`, `GET:stage`, `POST:submitted` |  |

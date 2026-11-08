@@ -40,7 +40,7 @@ final class SchemaTools
             wp_send_json_error(['code' => 'requirements'], 400);
         }
         $operation = $_POST['operation'] ?? null;
-        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','donation-setup','communication-setup','mail-queue-setup','donation-audit','preflight','start','step','abandon'], true)) {
+        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','donation-setup','communication-setup','mail-queue-setup','broadcast-setup','exchange-setup','donation-audit','preflight','start','step','abandon'], true)) {
             wp_send_json_error(['code' => 'invalid_operation'], 400);
         }
         if (in_array($operation, ['start','step'], true) && (($_POST['backup'] ?? '') !== '1' || ($_POST['quiesced'] ?? '') !== '1')) {
@@ -69,6 +69,12 @@ final class SchemaTools
                 $data = ['reload' => true];
             } elseif ($operation === 'mail-queue-setup') {
                 (new Installer($db))->mailQueue();
+                $data = ['reload' => true];
+            } elseif ($operation === 'broadcast-setup') {
+                (new Installer($db))->broadcasts();
+                $data = ['reload' => true];
+            } elseif ($operation === 'exchange-setup') {
+                (new Installer($db))->exchange();
                 $data = ['reload' => true];
             } elseif ($operation === 'donation-audit') {
                 $data = \Cor\Mgmt\Infrastructure\WordPress\DonationAudit::report($db);
@@ -137,6 +143,11 @@ final class SchemaTools
         }
         if ($status === InstallationStatus::Ready && !\Cor\Mgmt\Infrastructure\WordPress\Schema\MailQueueSchema::ready($db)) {
             echo '<p><button type="button" class="button button-primary" data-operation="mail-queue-setup">' . esc_html__('Set up mail queue storage', 'h3-mgmt') . '</button></p>';
+        }
+        foreach (['broadcast-setup' => \Cor\Mgmt\Infrastructure\WordPress\Schema\BroadcastSchema::ready($db), 'exchange-setup' => \Cor\Mgmt\Infrastructure\WordPress\Schema\ExchangeSchema::ready($db)] as $operation => $ready) {
+            if ($status === InstallationStatus::Ready && !$ready) {
+                echo '<p><button type="button" class="button button-primary" data-operation="' . esc_attr($operation) . '">' . esc_html($operation === 'broadcast-setup' ? __('Set up manual mail storage', 'h3-mgmt') : __('Set up exchange audit storage', 'h3-mgmt')) . '</button></p>';
+            }
         }
         if ($status === InstallationStatus::Ready) {
             echo '<p><button type="button" class="button" data-operation="donation-audit">' . esc_html__('Review donation storage (read only)', 'h3-mgmt') . '</button></p>';

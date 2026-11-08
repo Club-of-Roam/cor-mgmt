@@ -126,10 +126,13 @@ final class LegacyWordPressTest extends TestCase
         wp_set_current_user($id);
         $this->postNonce('cor-mgmt-xchange');
         $exchange = new \H3_MGMT_XChange();
+        $_POST['revision'] = \Cor\Mgmt\WordPress\ExchangeBoundary::manager()->context($id)['revision'];
         self::assertSame(1, $exchange->insertUpdateDeleteMessage('First synthetic text', null));
-        $messageId = (int) $wpdb->insert_id;
+        $messageId = (int) $wpdb->get_var("SELECT id FROM {$wpdb->prefix}h3_mgmt_xchange WHERE user_id=$id");
+        $_POST['revision'] = \Cor\Mgmt\WordPress\ExchangeBoundary::manager()->context($id, $messageId)['revision'];
         self::assertSame(1, $exchange->insertUpdateDeleteMessage('Second synthetic text', $messageId));
         self::assertSame('Second synthetic text', $wpdb->get_var("SELECT message FROM {$wpdb->prefix}h3_mgmt_xchange WHERE id=$messageId"));
+        $_POST['revision'] = \Cor\Mgmt\WordPress\ExchangeBoundary::manager()->context($id, $messageId)['revision'];
         self::assertSame(1, $exchange->insertUpdateDeleteMessage('', $messageId));
         self::assertNull($wpdb->get_var("SELECT id FROM {$wpdb->prefix}h3_mgmt_xchange WHERE id=$messageId"));
     }
@@ -313,7 +316,7 @@ final class LegacyWordPressTest extends TestCase
         self::assertCount(2, $errors);
     }
 
-    public function testAdminRaceMailResolvesOnlyParticipantsOfChosenRace(): void
+    public function testRetiredImmediateRaceMailCannotBypassQueue(): void
     {
         require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin-emails.php';
         $id = $this->user();
@@ -322,19 +325,18 @@ final class LegacyWordPressTest extends TestCase
         $_POST = ['receipient' => 'race-9', 'subject' => 'Synthetic', 'message' => 'Body', 'sender' => 'nr'];
         $this->postNonce('cor-mgmt-admin-emails');
         $method = new ReflectionMethod(\H3_MGMT_Admin_Emails::class, 'mail_send');
-        self::assertTrue($method->invoke(new \H3_MGMT_Admin_Emails()));
-        self::assertSame(['synthetic_member@example.invalid'], array_column($GLOBALS['cor_test_mail'], 'to'));
+        self::assertFalse($method->invoke(new \H3_MGMT_Admin_Emails()));
+        self::assertSame([], $GLOBALS['cor_test_mail']);
     }
 
-    public function testAdminSelfMailUsesCurrentAddress(): void
+    public function testRetiredImmediateSelfMailCannotBypassQueue(): void
     {
         require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin-emails.php';
         wp_set_current_user($this->user('synthetic_self_admin', 'administrator'));
         $_POST = ['receipient' => 'self', 'subject' => 'Synthetic', 'message' => 'Body', 'sender' => 'nr'];
         $this->postNonce('cor-mgmt-admin-emails');
         (new ReflectionMethod(\H3_MGMT_Admin_Emails::class, 'mail_send'))->invoke(new \H3_MGMT_Admin_Emails());
-        self::assertCount(1, $GLOBALS['cor_test_mail']);
-        self::assertSame('synthetic_self_admin@example.invalid', $GLOBALS['cor_test_mail'][0]['to']);
+        self::assertSame([], $GLOBALS['cor_test_mail']);
     }
 
     #[DataProvider('tickerPosts')]

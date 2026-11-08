@@ -1,5 +1,7 @@
 # Block 8 – Grundlage der Versandwarteschlange
 
+Aktueller Nachtrag: [Rundmails, Börse und technische Abnahme](block-8-completion.md) ersetzen die unten dokumentierten früheren offenen Folgearbeiten. Fachliche, Anbieter- und Aufbewahrungsfreigaben bleiben gesondert offen.
+
 Stand: 2026-11-08. Zweites technisches Teilpaket nach der [Vorlagenverwaltung](block-8-templates.md). Die Grundlage ist inzwischen durch [Mailauslöser und Queueverwaltung](block-8-delivery.md) angebunden. Für aktuelle Bedienung und Versandgrenzen gilt dieses Folgepaket. Kein vollständiger Abschluss von Block 8.
 
 ## Einrichtung und Schnittstellengrenze

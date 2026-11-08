@@ -1,5 +1,7 @@
 # Block 8 – Mailauslöser und Queueverwaltung
 
+Aktueller Nachtrag: [Rundmails, Börse und technische Abnahme](block-8-completion.md) ersetzen die unten dokumentierten früheren offenen Folgearbeiten. Fachliche, Anbieter- und Aufbewahrungsfreigaben bleiben gesondert offen.
+
 Stand: 2026-11-08. Dieses Paket verbindet die vorhandenen Teamereignisse mit der [Queue](block-8-queue.md) und ergänzt deren Verwaltung. Eventvorlagen sind damit für diese Benachrichtigungen wirksam. Manueller Rundmailversand und Börse bleiben eigenständige Folgearbeiten; kein vollständiger Block-8- oder Releaseabschluss.
 
 ## Fachvorgang und Nachricht gemeinsam speichern

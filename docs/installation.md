@@ -84,3 +84,10 @@ Die Queue-Grundlage aus [Block 8](block-8-queue.md) besitzt ein separates additi
 
 
 Nachtrag: [Teamauslöser und Queueverwaltung](block-8-delivery.md) verwenden die bestehenden additiven Module ohne Änderung ihrer Manifeste. Eventvorlagen ersetzen den globalen automatischen Mailer. Fehlende Module vor Teilnahmeänderungen ausdrücklich einrichten. Eventvorlagen vor Verwendung prüfen/kopieren; fehlende Vorlagen führen zu blockierten Nachrichten. Die Eventfreigabe allein startet keinen Versand. Reale Einzelverarbeitung erfordert zusätzlich `COR_MGMT_ALLOW_MAIL_DELIVERY = true` und WordPress-Umgebung `production`; standardmäßig gesperrt. Keine automatische Cronaktivierung oder rückwirkende Mailerzeugung.
+
+
+## Kommunikation: manuelle Kampagnen und Börsenjournal
+
+Zusätzliche Module broadcasts 1.0.0 und exchange 1.0.0 entstehen bei Aktivierung oder über die ausdrücklichen Systemstatus-Aktionen „Set up manual mail storage“ / „Set up exchange audit storage“. Referenzen: [Kampagnen](schema-broadcasts-1.0.0.sql), [Börse](schema-exchange-1.0.0.sql). Keine Änderung bereits festgeschriebener Installationspläne; alte Tabellen/IDs bleiben erhalten. Börsenwriter benötigen InnoDB für Nachricht und Audit in einer Transaktion; fehlende Voraussetzungen verlangen kontrollierten Schemaabgleich. Keine automatische Umstellung beim Lesen.
+
+E-Mails führt zur Kampagnenvorschau und geschützten Verarbeitung; Werkzeuge → HitchMate XChange zur Moderation. Lesender Speicherbericht im E-Mail-Bereich. Einrichtung erzeugt keinen Versand. Server- und Kampagnenfreigabe bleiben ausdrücklich nötig. [Betriebsvertrag und offene Freigaben](block-8-completion.md).

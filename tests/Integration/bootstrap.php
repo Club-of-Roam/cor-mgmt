@@ -34,16 +34,20 @@ define('DISABLE_WP_CRON', true);
 define('AUTOMATIC_UPDATER_DISABLED', true);
 define('WP_HTTP_BLOCK_EXTERNAL', true);
 define('DISALLOW_FILE_MODS', true);
-define('WP_HOME', 'https://example.invalid');
-define('WP_SITEURL', 'https://example.invalid');
+$browserBase = (string) getenv('COR_TEST_BROWSER_BASE');
+if ($browserBase !== '' && (!preg_match('~^http://127\.0\.0\.1:[1-9][0-9]{3,4}$~D', $browserBase) || strlen((string) getenv('COR_TEST_BROWSER_TOKEN')) < 32)) {
+    throw new RuntimeException('Invalid synthetic browser origin.');
+}
+define('WP_HOME', $browserBase ?: 'https://example.invalid');
+define('WP_SITEURL', WP_HOME);
 // Core normally derives this from the installed siteurl. A fresh fixture has no
 // options yet while wp-settings.php initializes constants, so define it explicitly.
-define('WP_CONTENT_URL', 'https://example.invalid/wp-content');
+define('WP_CONTENT_URL', WP_HOME . '/wp-content');
 define('WP_DEBUG', false);
 define('WP_CACHE', false);
 define('WP_DEFAULT_THEME', 'cor-test-no-theme');
-$_SERVER['HTTP_HOST'] = 'example.invalid';
-$_SERVER['REQUEST_URI'] = '/';
+$_SERVER['HTTP_HOST'] = $browserBase !== '' ? substr($browserBase, 7) : 'example.invalid';
+$_SERVER['REQUEST_URI'] = $browserBase !== '' ? ($_SERVER['REQUEST_URI'] ?? '/') : '/';
 $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
 $table_prefix = 'cortest_';
 require ABSPATH . 'wp-settings.php';

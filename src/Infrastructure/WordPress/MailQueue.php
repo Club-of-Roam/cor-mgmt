@@ -8,6 +8,8 @@ use Cor\Mgmt\Application\Communication\CommunicationException;
 use Cor\Mgmt\Application\Contracts\Clock;
 use Cor\Mgmt\Domain\AutoResponseTemplate;
 use Cor\Mgmt\Domain\MailRequest;
+use Cor\Mgmt\Domain\MailSender;
+use Cor\Mgmt\Infrastructure\WordPress\Schema\BroadcastSchema;
 use Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema;
 use Cor\Mgmt\Infrastructure\WordPress\Schema\Database;
 use Cor\Mgmt\Infrastructure\WordPress\Schema\Inspector;
@@ -142,6 +144,11 @@ final class MailQueue
 
     private function eventOpen(int $race): void
     {
+        if ($race === 0) {
+            $this->manualReady();
+            return;
+        }
+
         $row = $this->db->rows($this->db->prepare('SELECT setting FROM %i WHERE id=%d FOR UPDATE', $this->db->table('h3_mgmt_races'), $race))[0] ?? [];
         $rules = json_decode($row['setting'] ?? '', true);
         if (!is_array($rules) || !in_array($rules['status'] ?? null, [0,1,2,3,'0','1','2','3'], true)) {
@@ -192,6 +199,9 @@ final class MailQueue
         if (!preg_match('/^[a-f0-9]{64}$/D', $token)) {
             throw new CommunicationException('invalid_claim_token');
         }
+        if ($race === 0 && $id < 1) {
+            throw new CommunicationException('manual_message_required');
+        }
         return $this->atomic(function () use ($race, $token, $id, $beforeClaim): ?array {
             if ($beforeClaim !== null) {
                 $beforeClaim();
@@ -200,6 +210,13 @@ final class MailQueue
             $row = $this->db->rows($this->db->prepare("SELECT * FROM %i WHERE race_id=%d AND status='pending' AND attempts<%d AND (%d=0 OR id=%d) ORDER BY id LIMIT 1 FOR UPDATE", $this->db->table('cor_mgmt_mail_queue'), $race, self::MAX_ATTEMPTS, $id, $id))[0] ?? null;
             if ($row === null) {
                 return null;
+            }
+            if ($race === 0) {
+                $envelope = $this->db->rows($this->db->prepare('SELECT headers FROM %i WHERE message_id=%d', $this->db->table('cor_mgmt_mail_envelopes'), (int) $row['id']))[0] ?? [];
+                if ($row['action'] !== 'manual' || !$envelope) {
+                    throw new CommunicationException('invalid_manual_envelope');
+                }
+                $row['_headers'] = $envelope['headers'];
             }
             $attempt = (int) $row['attempts'] + 1;
             $this->db->execute($this->db->prepare("UPDATE %i SET status='sending',attempts=%d,claim_token=%s,claimed_at=%d,updated_at=%d,reason='' WHERE id=%d", $this->db->table('cor_mgmt_mail_queue'), $attempt, $token, $this->clock->now(), $this->clock->now(), (int) $row['id']));
@@ -237,15 +254,68 @@ final class MailQueue
     }
 
     /** A stale claim is uncertain, never automatically pending again. Bounded housekeeping. */
-    public function recoverStale(int $race): int
+    public function recoverStale(int $race, int $id = 0): int
     {
-        return $this->atomic(function () use ($race): int {
-            $rows = $this->db->rows($this->db->prepare("SELECT * FROM %i WHERE race_id=%d AND status='sending' AND claimed_at<=%d ORDER BY id LIMIT 50 FOR UPDATE", $this->db->table('cor_mgmt_mail_queue'), $race, $this->clock->now() - self::CLAIM_SECONDS));
+        if ($race === 0 && $id < 1) {
+            throw new CommunicationException('manual_message_required');
+        }
+        return $this->atomic(function () use ($race, $id): int {
+            $rows = $this->db->rows($this->db->prepare("SELECT * FROM %i WHERE race_id=%d AND status='sending' AND claimed_at<=%d AND (%d=0 OR id=%d) ORDER BY id LIMIT 50 FOR UPDATE", $this->db->table('cor_mgmt_mail_queue'), $race, $this->clock->now() - self::CLAIM_SECONDS, $id, $id));
             foreach ($rows as $row) {
                 $this->change($row, 'uncertain', 'claim_expired');
             }
             return count($rows);
         });
+    }
+
+    private function manualReady(): void
+    {
+        if (!BroadcastSchema::ready($this->db)) {
+            throw new CommunicationException('broadcast_setup_required');
+        }
+        foreach (BroadcastSchema::definitions() as $suffix => $definition) {
+            (new Inspector($this->db))->verify($this->db->table($suffix), $definition);
+        }
+    }
+
+    /** @param list<array<string,string|null>> $recipients
+     * @return array<int,int> Recipient ID => queue ID.
+     */
+    public function enqueueManualBatch(int $campaign, array $recipients, MailSender $sender): array
+    {
+        $this->transactionRequired();
+        $this->ready();
+        $this->manualReady();
+        if ($campaign < 1 || count($recipients) > 100) {
+            throw new CommunicationException('invalid_manual_batch');
+        }
+        $result = [];
+        foreach ($recipients as $row) {
+            $id = (int) ($row['id'] ?? 0);
+            $email = $row['recipient'] ?? '';
+            $language = AutoResponseTemplate::language($row['language'] ?? '');
+            $subject = $row['subject'] ?? '';
+            $message = $row['message'] ?? '';
+            if ($id < 1 || (int) ($row['broadcast_id'] ?? 0) !== $campaign || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 254 || preg_match('/[\r\n\x00]/', $email) || trim($subject) === '' || trim($message) === '' || strlen($subject) > 998 || preg_match('/[\r\n\x00]/', $subject) || strlen($message) > 200000 || str_contains($message, "\0") || !hash_equals($sender->headers(), $row['headers'] ?? '')) {
+                throw new CommunicationException('invalid_manual_snapshot');
+            }
+            $key = hash('sha256', 'broadcast:' . $campaign . ':' . $id);
+            $hash = hash('sha256', json_encode([$email,$language,$subject,$message,$sender->headers()], JSON_THROW_ON_ERROR));
+            $old = $this->db->rows($this->db->prepare('SELECT id,input_hash FROM %i WHERE message_key=%s FOR UPDATE', $this->db->table('cor_mgmt_mail_queue'), $key))[0] ?? [];
+            if ($old) {
+                if (!hash_equals($old['input_hash'] ?? '', $hash)) {
+                    throw new CommunicationException('mail_occurrence_conflict');
+                }
+                $result[$id] = (int) $old['id'];
+                continue;
+            }
+            $this->db->execute($this->db->prepare("INSERT INTO %i (message_key,input_hash,race_id,occurrence,action,recipient,language,template_revision,context,subject,message,status,claim_token,created_at,updated_at,reason) VALUES (%s,%s,0,%s,'manual',%s,%s,0,'{}',%s,%s,'pending','',%d,%d,'')", $this->db->table('cor_mgmt_mail_queue'), $key, $hash, 'broadcast:' . $campaign . ':' . $id, $email, $language, $subject, $message, $this->clock->now(), $this->clock->now()));
+            $queue = (int) $this->db->wpdb->insert_id;
+            $this->db->execute($this->db->prepare('INSERT INTO %i (message_id,broadcast_id,headers) VALUES (%d,%d,%s)', $this->db->table('cor_mgmt_mail_envelopes'), $queue, $campaign, $sender->headers()));
+            $this->history($queue, 'pending', 0, 'manual_campaign');
+            $result[$id] = $queue;
+        }
+        return $result;
     }
 
     /** @param array<string,string|null> $row */

@@ -2,6 +2,11 @@ import js from '@eslint/js';
 import globals from 'globals';
 
 export default [
+  {
+    ...js.configs.recommended,
+    files: ['playwright.config.cjs', 'tests/Browser/*.cjs', 'tests/broadcast-js.test.cjs'],
+    languageOptions: { ecmaVersion: 'latest', sourceType: 'commonjs', globals: globals.node },
+  },
   { ignores: ['js/vendor/**', 'js/isotope.pkgd.min.js', 'node_modules/**'] },
   {
     files: ['js/*.js'],

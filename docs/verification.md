@@ -1,5 +1,32 @@
 # Prüfbelege
 
+## Block 8: Rundmails, Börse und Browsernachweis – 2026-11-08
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Gesamtsuite | 327 Tests / 637 Assertions | 327 / 637 | 327 / 637 | 327 / 637 |
+| WordPress-Gesamtsuite dieses Pakets | nicht vollständig wiederholt | 407 Tests / 2.734 Assertions | nicht vollständig wiederholt | 407 / 2.734 |
+| Betroffene Kommunikations-/Queue-/Vorlagen-/Legacy-/Sicherheits-/Einrichtungsfälle | 228 Tests / 1.618 Assertions | in der Gesamtsuite | 228 / 1.618 | in der Gesamtsuite |
+| Abschließende Rundmail-/Börsen-/Stapelsuite | 31 Tests / 277 Assertions | 31 / 277 | 31 / 277 | 31 / 277 |
+| Vollständiger Composer-Qualitätslauf | bestanden | bestanden | bestanden | bestanden |
+| Abschließende HTTP-/Browser-/Tastatur-/axe-Szenarien | 4 bestanden | nicht ausgeführt | 4 für diese PHP-Version nicht ausgeführt | 4 bestanden |
+
+Prüfsoftware: WordPress 7.1.4, MariaDB 11.4.13, PHPUnit 11.5.57, Node.js 24.22.2, Playwright Test 1.65.0 und @axe-core/playwright 4.14.0; Browser Microsoft Edge 157.0.4341.42. JavaScript: sämtliche 14 Node-Regressionen und ESLint für Produktivskripte sowie die eingeführten Browser-/Stapeltreibern bestanden.
+
+Zeitliche Grenzen: Die vollständigen WordPress-Läufe und die 228er-Auswahl lagen vor den letzten Vorprüfungs-/Formularregressionen und dem stoppbaren Stapellauf. Anschließend sämtliche 31 betroffenen Integrationsfälle mit je 277 Assertions auf allen vier PHP-Versionen wiederholt. Die vollständigen Composer-Läufe umfassen 184 Syntaxprüfungen, Dokumentation/Inventar, acht SQL-Referenzen, PHPStan Level 8, Standards und PHPCompatibility; der letzte Stapel-/Zuordnungsnachlauf wurde zusätzlich mit PHPStan (PHP-8.2-Ziel), betroffenen Standards und PHPCompatibility geprüft. Browserfälle wurden danach über echte HTTP-Requests erneut unter PHP 8.2/8.5 ausgeführt. Wiederholungssuiten nicht addieren und daraus keine neue Gesamtsuitenzahl berechnen.
+
+Integrationsnachweise: getrennte konkrete Event-/Teamgruppen, eigene und explizite Einzeladresse sowie deduplizierte bisherige Teilnehmer. Sprachfilter und eindeutige Mitgliedersprache, keine erfundene Personalisierung, fehlende/leere gerenderte Inhalte, widersprüchliche gemeinsame Adressen und Empfängeränderung nach Vorschau. Unveränderliche Empfänger-/Text-/Absenderhüllen, wiederholungsfester Auftrag und Konflikt bei abweichendem Fingerabdruck. Queue-Schritte maximal 100 und Versand-Schritte maximal 5; fehlerhafte zweite Hülle rollt den gesamten Schritt zurück. Server-/Kampagnenblockade und verlorene Rechte verhindern Transport; fremde oder beschädigte Queue-/Hüllenverknüpfungen werden abgewiesen. Fehlgeschlagene und unklare Ausgänge verlangen ausdrückliche Nachbereitung. Stapelfortschritt, frische Revisionen, noncegeschützter privater AJAX-Hook und fehlende Versandbestätigung sind geprüft. Transportannahme ist synthetisch, außerhalb der Transaktion und keine echte Zustellung.
+
+Börse: eigene CRUD-Aktionen mit realem SQL, fremde IDs, ausdrückliche Moderation, Revisionskonflikte und Wiederholung alter Leerformulare nach Anlegen/Löschen. Öffentlicher Jahres-/Teilnahmefilter, globale Bestandshaltung, Escaping, maximale Textlänge und native Formulare. InnoDB-Voraussetzung verweigert Writer ohne automatische Engineänderung. Der im Browser gefundene Unterschied zwischen Revision der eigenen Formularansicht und konkreter Eintrags-ID ist korrigiert und durch einen eigenen Integrationsfall gesichert. Alte direkte Rundmailtests verlangen jetzt ausdrücklich die Verweigerung des unmittelbaren Altwegs; neue positive Kampagnenszenarien ersetzen den bisherigen Umgehungspfad.
+
+Browser: Vorschau, Auftrag, echter AJAX-Queue-Stapelschritt mit Fortschritt, Freigabe/Pause ohne SMTP, Rechteverweigerung, Börseneintrag per Tastatur, Bearbeiten/Löschen und verweigertes altes Formular. Administrative Bearbeitung/Löschung mit sichtbarem Journal sowie lesender Speicherbericht. axe-Prüfungen für WCAG 2.1 A/AA in den geprüften Ansichten ohne gemeldete Regelverletzungen. Zusätzliche Node-Fälle prüfen Stop nach dem laufenden Request ohne Abbruch, frische Revision/Nonce, bestätigten Start, Fehler ohne Retry sowie gleiche Herkunft und verweigerte Weiterleitungen.
+
+Browserfixture verwendet synthetische Testidentitäten und native Seitenrenderer; sie ist kein Nachweis der echten WordPress-Anmeldung, des vollständigen Adminrahmens oder der endgültigen Theme-Darstellung. Keine gesonderten Firefox-/WebKit-/Screenreader-/MySQL-Läufe. Manuelle Tastatur-/Inhalts-/Bestandsabnahme, echter SMTP-/Anbietertest und Aufbewahrungsentscheidung bleiben offen. CI um Chromium-Browserläufe unter PHP 8.2/8.5 ergänzt; kein entfernter CI-Lauf ausgeführt.
+
+Inventar: 127 Quellen, 23 Shortcodes, 78 Methoden mit literalen Request-Feldern; 35 Markdown-Dateien. Pluginheader, composer.lock und die sechs bisherigen SQL-Pläne bleiben bytegleich. Neue Browserwerkzeuge ausschließlich als festgeschriebene Entwicklungsabhängigkeiten; package-lock.json aktualisiert. Kein Anwendungsschema umgeschaltet, keine echten Mails oder externen Schreibzugriffe, keine Git-Aktionen. [Umsetzung und notwendige Mitwirkung](block-8-completion.md).
+
+Paketabschluss: zwei bytegleiche ZIP-Builds mit 295 Dateien; Paketgrenzen und sämtliche gebündelten Produktionstypen unter PHP 8.2/8.5 geprüft. Keine Testdaten, Testserver, Browserwerkzeuge oder Entwicklungsabhängigkeiten im ZIP.
+
 ## Block 8: Teamauslöser und Queueverwaltung – 2026-11-08
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

@@ -63,6 +63,18 @@ jobs:
           COR_TEST_DB_USER: cor_mgmt_runner
           COR_TEST_DB_PASSWORD: synthetic-runner-ci-only
         run: composer test:integration
+      - name: Install browser for UI acceptance
+        if: matrix.php == '8.2' || matrix.php == '8.5'
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Run isolated communication browser and accessibility checks
+        if: matrix.php == '8.2' || matrix.php == '8.5'
+        env:
+          COR_TEST_WP_ROOT: ${{ runner.temp }}/cor-wordpress
+          COR_TEST_DB_NAME: cor_mgmt_test_ci
+          COR_TEST_DB_HOST: 127.0.0.1:33379
+          COR_TEST_DB_USER: cor_mgmt_runner
+          COR_TEST_DB_PASSWORD: synthetic-runner-ci-only
+        run: npm run test:browser
       - name: Build package without development dependencies
         run: composer build
       - name: Verify standalone package loader and contents

@@ -54,6 +54,18 @@ final class Installer
             $this->create(MailQueueSchema::definitions(), 'cor_mgmt_mail_queue_install', false, false);
         });
     }
+    public function broadcasts(): void
+    {
+        $this->db->locked(function (): void {
+            $this->create(BroadcastSchema::definitions(), 'cor_mgmt_broadcast_install', false, false);
+        });
+    }
+    public function exchange(): void
+    {
+        $this->db->locked(function (): void {
+            $this->create(ExchangeSchema::definitions(), 'cor_mgmt_exchange_install', false, false);
+        });
+    }
     public function pendingFresh(): bool
     {
         $raw = $this->db->option('cor_mgmt_fresh_install');

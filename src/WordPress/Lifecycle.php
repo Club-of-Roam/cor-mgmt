@@ -32,6 +32,9 @@ final class Lifecycle
         DonationAdmin::register();
         CommunicationAdmin::register();
         MailQueueAdmin::register();
+        BroadcastAdmin::register();
+        ExchangeBoundary::register();
+        CommunicationReport::register();
         TeamPortal::register();
         ProfileAvatar::register();
         ResultBoundary::register();
@@ -85,6 +88,8 @@ final class Lifecycle
             $installer->donations();
             $installer->communication();
             $installer->mailQueue();
+            $installer->broadcasts();
+            $installer->exchange();
         } catch (MigrationException) {
             return new WP_Error('cor_mgmt_participation_setup', __('Additional module setup requires review. Existing data is retained.', 'h3-mgmt'));
         }
@@ -115,7 +120,7 @@ final class Lifecycle
     public static function notice(): void
     {
         global $wpdb;
-        if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\MailQueueSchema::ready(new Database($wpdb)))) {
+        if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\MailQueueSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\BroadcastSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ExchangeSchema::ready(new Database($wpdb)))) {
             return;
         }
         echo '<div class="notice notice-warning"><p>' . esc_html__('cor-mgmt requires setup or a controlled schema review. Open Tools > cor-mgmt system status.', 'h3-mgmt') . '</p></div>';
