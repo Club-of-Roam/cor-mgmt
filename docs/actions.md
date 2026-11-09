@@ -16,7 +16,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [page](../includes/class-h3-mgmt-maintenance.php#L42) | `POST:apply`, `POST:race` |  |
 | [ajax_upload](../includes/class-h3-mgmt-media.php#L67) | `POST:race` |  |
 | [save_extra_profile_fields](../includes/class-h3-mgmt-profile.php#L144) | `POST:_wpnonce`, `POST:deleteme` |  |
-| [ranking_table](../includes/class-h3-mgmt-races.php#L911) | `GET:ranking_route` |  |
+| [ranking_table](../includes/class-h3-mgmt-races.php#L910) | `GET:ranking_route` |  |
 | [post](../includes/class-h3-mgmt-security.php#L26) | `POST:cor_mgmt_nonce` |  |
 | [donation_nonce](../includes/class-h3-mgmt-security.php#L36) | `COOKIE:client_token` |  |
 | [donation_request](../includes/class-h3-mgmt-security.php#L41) | `COOKIE:client_token`, `GET:donation_client_reference` |  |
@@ -62,6 +62,9 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [control](../src/WordPress/ResultFrontend.php#L13) | `GET:cor_result_route`, `GET:stage`, `POST:submitted` |  |
 | [table](../src/WordPress/ResultFrontend.php#L112) | `GET:ranking_route` |  |
 | [request](../src/WordPress/SchemaTools.php#L27) | `POST:backup`, `POST:fingerprint`, `POST:nonce`, `POST:operation`, `POST:quiesced`, `POST:run_id` |  |
+| [register](../src/WordPress/SitePages.php#L21) | `POST:race_id` |  |
+| [submit](../src/WordPress/SitePages.php#L89) | `POST:cor_mgmt_nonce`, `POST:kind`, `POST:page_id`, `POST:page_operation`, `POST:race_id` |  |
+| [page](../src/WordPress/SitePages.php#L151) | `GET:race_id` |  |
 | [control](../src/WordPress/TeamAdmin.php#L13) | `GET:bulk`, `GET:id`, `GET:todo` |  |
 | [save](../src/WordPress/TeamAdmin.php#L51) | `FILES:team_pic`, `POST:route_id` |  |
 | [form](../src/WordPress/TeamAdmin.php#L97) | `GET:race_id`, `POST:race_id` |  |
@@ -71,7 +74,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [save](../src/WordPress/TeamBoundary.php#L136) | `FILES:team_pic`, `POST:route_id` |  |
 | [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
 | [render](../src/WordPress/TeamFrontend.php#L80) | `GET:invitation`, `POST:invitation` |  |
-| [serve](../src/WordPress/TeamPortal.php#L21) | `GET:race_id` |  |
+| [serve](../src/WordPress/TeamPortal.php#L25) | `GET:race_id` |  |
 | [race](../src/WordPress/TickerBoundary.php#L85) | `GET:ticker_race` |  |
 | [form](../src/WordPress/TickerBoundary.php#L183) | `POST:message` |  |
 | [feed](../src/WordPress/TickerBoundary.php#L334) | `GET:min`, `GET:page_id`, `GET:ticker_page`, `GET:ticker_route` |  |

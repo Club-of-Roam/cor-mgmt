@@ -55,6 +55,7 @@ jobs:
           mkdir "$RUNNER_TEMP/wp-source"
           tar -xzf "$RUNNER_TEMP/wordpress.tar.gz" -C "$RUNNER_TEMP/wp-source"
           php tools/create-wordpress-fixture.php "$RUNNER_TEMP/wp-source/wordpress" "$RUNNER_TEMP/cor-wordpress"
+          php tools/create-wordpress-fixture.php "$RUNNER_TEMP/wp-source/wordpress" "$RUNNER_TEMP/cor-standalone-core" --standard-theme
       - name: Run WordPress reference and security integration
         env:
           COR_TEST_WP_ROOT: ${{ runner.temp }}/cor-wordpress
@@ -76,6 +77,15 @@ jobs:
           COR_TEST_DB_PASSWORD: synthetic-runner-ci-only
         run: npm run test:browser
       - name: Build package without development dependencies
-        run: composer build
+        run: composer build -- "$RUNNER_TEMP/cor-mgmt-artifacts/cor-mgmt.zip"
       - name: Verify standalone package loader and contents
-        run: php tools/check-package.php
+        run: php tools/check-package.php "$RUNNER_TEMP/cor-mgmt-artifacts/cor-mgmt.zip"
+      - name: Verify ZIP installation and lifecycle with a standard theme
+        if: matrix.php == '8.2' || matrix.php == '8.5'
+        env:
+          COR_TEST_STANDALONE_CORE: ${{ runner.temp }}/cor-standalone-core
+          COR_TEST_DB_NAME: cor_mgmt_test_ci
+          COR_TEST_DB_HOST: 127.0.0.1:33379
+          COR_TEST_DB_USER: cor_mgmt_runner
+          COR_TEST_DB_PASSWORD: synthetic-runner-ci-only
+        run: php tools/check-standalone.php "$RUNNER_TEMP/cor-mgmt-artifacts/cor-mgmt.zip"

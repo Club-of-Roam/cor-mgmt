@@ -96,3 +96,9 @@ E-Mails führt zur Kampagnenvorschau und geschützten Verarbeitung; Werkzeuge �
 ## Ergänzung Block 9 (2026-11-09)
 
 [Integrierter Webticker](block-9-ticker.md): additives Ticker-Modul 1.0.0, eigener Writer/Renderer, kontrollierte schrittweise Übernahme mit Original-IDs und Rohdatenvergleich. SMS-/MMS-/Gateway-Eingänge sind stillgelegt. Das Nebenplugin und direkte Dateien sind gesonderte Ausrolländerungen; keine automatische Anwendungsmigration. Historische Tabellen und Medien bleiben erhalten. Fachliche und visuelle Gesamtabnahme in Block 10.
+
+## Seiteneinrichtung und ZIP-Abnahme in Block 10
+
+Unter Werkzeuge → Event pages können Administratoren für ein konkretes Event Teamdashboard, Teamliste, Rangliste, Ticker und Karte als Entwurfsseiten anlegen oder passende vorhandene Seiten zuordnen. Der angezeigte Shortcode muss die konkrete Event-ID enthalten; keine implizite Auswahl über das aktive Rennen. Wiederholung verwendet die bestehende Zuordnung. Vorhandene Inhalte werden nie automatisch geändert. Entwürfe anschließend in WordPress prüfen und veröffentlichen; eine veröffentlichte passwortfreie Teamseite ersetzt den bisherigen themeunabhängigen Portal-Link. Ohne gültige Seite bleibt dieser Fallback nutzbar.
+
+Der zusätzliche Pakettest prüft das fertige ZIP mit frischem WordPress, Twenty Twenty-Five, Unterverzeichnis und getrennten echten WordPress-Anfragen. Die Kerninstallation besitzt keine Fachplugins oder Entwicklungsabhängigkeiten. Ein synthetischer Transportblocker verhindert echten Versand. Dieser Nachweis ist ein Teil von I-01/I-02/I-04/I-06/I-08/I-10/I-11, keine vollständige fachliche Freigabe aller Funktionen. [Umfang und offene Releaseblocker](block-10-acceptance.md).

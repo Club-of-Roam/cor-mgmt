@@ -2,6 +2,8 @@
 
 Checkliste für Block 10; noch kein Release oder Deployment freigegeben.
 
+Aktueller technischer Stand, ausgeführte Übernahme-/Wiederherstellungsprobe, gemeinsame Abnahmeliste und ausdrücklich offene Releaseblocker: [Block 10](block-10-acceptance.md). Insbesondere sind aktive Fachumschaltung und vollständiges Archiv weiterhin Implementierungsarbeit; eine erfolgreiche Zwischenkopie allein genügt nicht zur Veröffentlichung.
+
 ## Vorbedingungen
 
 Alle erforderlichen Blöcke und Zahlungsentscheidung abgeschlossen. Erst dann Versionsheader 2.0.0/Requires PHP >= 8.2 setzen. Unterstützte WordPress-Version anhand Tests deklarieren. Reproduzierbares Paket ohne Dumps, private Daten, Tests und Entwicklungsabhängigkeiten; benötigte Runtime-Abhängigkeiten/Autoloader einschließen.

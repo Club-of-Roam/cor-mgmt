@@ -1,5 +1,27 @@
 # Prüfbelege
 
+## Block 10: Installations- und Übernahmeprüfung – 2026-11-09
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Gesamtsuite | 350 Tests / 678 Assertions | 350 / 678 | 350 / 678 | 350 / 678 |
+| WordPress-Gesamtsuite nach Laufzeitänderungen | 437 Tests / 3.174 Assertions | 437 / 3.174 | 437 / 3.174 | 437 / 3.174 |
+| Vollständiger Composer-Qualitätslauf | bestanden | bestanden | bestanden | bestanden |
+| HTTP-/Browser-/Tastatur-/axe-Szenarien | 7 bestanden | nicht ausgeführt | nicht ausgeführt | 7 bestanden |
+| ZIP-Lebenszyklus mit Standardtheme | bestanden | nicht ausgeführt | zusätzlicher Umsetzungslauf bestanden | bestanden |
+
+Sechs neue Integrationsfälle prüfen Entwürfe, wiederholte Anlage, Veröffentlichung und Portal-Fallback, unveränderte Bestandsseiten, Fremd-/Gast-/GET-/Nonce-Verweigerung, falsche Events/Shortcodes, lesende Einrichtung und sichere Textausgabe bei fehlender Eventkonfiguration. Der bestehende Portaltest entfernt im separaten Worker nun absichtlich den geerbten Servernamen; Bootstrap ergänzt ihn aus der geprüften Testadresse. Die vollständigen Suiten bestehen einschließlich dieses Nachweises auf allen vier Versionen.
+
+GitHub: Alle vier Logs des [Laufs 42684774834](https://github.com/Club-of-Roam/cor-mgmt/actions/runs/42684774834) gelesen. Jeweils genau ein fehlgeschlagener Test `CommunicationDeliveryTest::testIndependentPortalRendersParticipantFormAndGuestLogin`: fehlendes `SERVER_NAME` in der CLI-Umgebung, WordPress `general-template.php`. Metadaten-/Qualitätslauf, JavaScript und isolierte Tests hatten bereits bestanden. Fixturekorrektur und Regression sind implementiert; ein grüner entfernter Wiederholungslauf wird ausdrücklich nicht behauptet.
+
+Gesonderte manuelle Bestandsprobe der Sicherung vom 2026-11-01: neun eigene Tabellen / 7.772 Datensätze in 84 Schritten verifiziert, 15 Archivkandidaten vorgemerkt, 16.115 Tickerzeilen kopiert und zweitgeprüft. Ursprüngliche Quelle vor/nach Übernahme unverändert. Dump und Wiederimport der Prüfkopie über 95 Tabellen / 387.187 Zeilen verglichen; sämtliche verglichenen Werte gleich. Keine Anwendungsmigration, keine Aktivierung eines Wechsels in der bestehenden Website, keine Neuberechnung oder geratene Geldkonvertierung. Originale und private Artefakte außerhalb des Repositorys; keine Bestandsdaten als automatisierte Testfixtures übernommen. Dies war keine frische Produktionskopie. Details und aggregierte Befunde in [Block 10](block-10-acceptance.md).
+
+Qualitätslauf: 195 PHP-Dateien syntaktisch geprüft, 38 Markdown-Dateien / 23 Shortcodes / 133 inventarisierte Quellen, neun SQL-Referenzen, PHPStan Level 8, Standards und PHPCompatibility. Acht bisherige Schema-Referenzen, bisherige Tickerassets und Versionsheader zusätzlich bytegleich gegen die Ausgangsreferenz geprüft. 14 Node-Regressionen und ESLint bestanden. Keine Laufzeitänderungen nach den abschließenden Gesamtsuiten; anschließende Änderungen betreffen Dokumentation und den zusätzlichen Prüfwerkzeug-Abschlussnachweis.
+
+Paket: 308 Dateien, produktiver Autoloader ohne Entwicklungsabhängigkeiten. ZIP-Lebenszyklus auf PHP 8.2/8.5 mit frischem WordPress und Twenty Twenty-Five bestanden, einschließlich kompletter Themeausgabe, neuer Anfrage nach Aktivierung, fünf eventbezogener Seitenrollen, Wiederholung, Unterverzeichnis und datenerhaltendem Lebenszyklus. Auf PHP 8.4 zusätzlicher Umsetzungslauf, kein weiterer behaupteter Pflichtmatrixlauf. Sieben vorhandene Browserfälle mit synthetischen Daten auf PHP 8.2/8.5 erneut bestanden; keine vollständige manuelle Bedienungs-/Screenreaderfreigabe. Prüfsoftware wie im Block-9-Nachweis. Der fertige Runtime-Inhalt wird beim abschließenden Dokumentations-/Wiederholungsbuild mit dem geprüften ZIP verglichen.
+
+Keine Git-Aktionen oder produktiven Dienste. Die aktive Fachumschaltung und das vollständige Archiv bleiben ausdrücklich offene Implementierungsarbeit (R-01/R-02); die gemeinsame fachliche/visuelle Abnahme und der tatsächliche Wechsel sind nicht erfolgt.
+
 ## Block 9: Integrierter Ticker und Medien – 2026-11-09
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

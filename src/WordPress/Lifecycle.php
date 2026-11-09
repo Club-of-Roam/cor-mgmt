@@ -37,6 +37,7 @@ final class Lifecycle
         TickerBoundary::register();
         CommunicationReport::register();
         TeamPortal::register();
+        SitePages::register();
         ProfileAvatar::register();
         ResultBoundary::register();
         register_activation_hook($plugin, [self::class, 'activationHook']);

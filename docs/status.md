@@ -2,7 +2,7 @@
 
 Stand 2026-11-09. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
-PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. Der fehlgeschlagene GitHub-Lauf wurde analysiert; für die Korrektur gibt es noch keinen entfernten Wiederholungslauf.
+PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. GitHub-Lauf 42684774834 scheiterte in allen vier Jobs am fehlenden SERVER_NAME im CLI-Portaltest; Fixture und Regression sind korrigiert. Noch kein entfernter Wiederholungslauf nach dieser Korrektur.
 
 
 ## Verbindliche Ergänzung: Eigenständigkeit
@@ -25,7 +25,7 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestands-/Browserabnahme und nachgewiesene Altübernahme offen |
 | 8 | Kommunikation, Queue, Rundmails und Börse technisch umgesetzt | block-8-completion.md; Inhalts-/Bestands-/Anbieter- und Aufbewahrungsfreigaben bleiben zur Gesamtabnahme offen |
 | 9 | Webticker und Medien technisch integriert | block-9-ticker.md; eigenständige Einrichtung, kontrollierte Altübernahme, Moderation und stillgelegte SMS-Eingänge; Bestands-/Gesamtabnahme in Block 10 |
-| 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
+| 10 | technische Gesamtabnahme begonnen | block-10-acceptance.md; ZIP-/Lebenszyklus- und Übernahmeprobe, Seiteneinrichtung; aktive Fachmigration/Archiv und gemeinsame Abnahme bleiben offen |
 
 Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist kein belegter GitHub-Lauf. WordPress-Referenzintegration ausgeführt; vollständige Modul-, Migrations- und Browserabnahme nicht erfolgt.
 
@@ -189,3 +189,11 @@ Eigenes additives Tickerschema mit ausdrücklicher Einrichtung und begrenzter, w
 Technische Umsetzung ohne weitere fachliche Mitwirkung abgeschlossen. Abschließende Fachsuite (350 Tests / 678 Assertions) und WordPress-Gesamtsuite (431 / 3.129) sowie Composer-Qualitätsprüfungen auf PHP 8.2/8.3/8.4/8.5 erfolgreich. Browser-, JavaScript- und Paketnachweise samt Grenzen stehen in [Prüfbelegen](verification.md). Keine Anwendungsdaten migriert, kein echter Versand und keine Git-Aktionen. Geeigneter Zwischenstand für einen manuellen Commit; englische Message mitliefern.
 
 Nächster Block: 10, gemeinsame Bestands-, Funktions-, Oberflächen- und Releaseabnahme. Dazu gehören die kontrollierte Übernahme einer frischen Bestandskopie, historische Sonderfälle, Theme-/Nachbarintegration, Übersetzungen, Leistung sowie Sicherung und Wiederherstellung. Eine Produktions- oder Releasefreigabe ist mit diesem technischen Abschluss nicht erteilt.
+
+## Block 10 – Installation, Übernahmeprobe und Abnahmeliste (2026-11-09)
+
+[Technisches Abnahmepaket](block-10-acceptance.md): GitHub-Fehler anhand aller vier Joblogs identifiziert und ohne Warnungsunterdrückung behoben. Neue eventbezogene Seiteneinrichtung mit Entwürfen, ausdrücklicher Zuordnung und unverändertem Altinhalt. Fehlende Veranstaltungstexte und Rennen im Legacy-Leseadapter ohne PHP-Veraltungswarnung behandelt.
+
+Zusätzlicher ZIP-Abnahmetreiber prüft echte WordPress-Aktivierung und einen neuen Request mit produktivem Loader, Standardtheme, Unterverzeichnis und Lebenszyklus. In CI für PHP 8.2/8.5 nach Paketbau vorgesehen. Automatisierte Tests enthalten ausschließlich synthetische Daten; gesonderte manuelle Übernahmeprobe der vorhandenen Sicherung vom 2026-11-01 mit 7.772 eigenen Datensätzen und 16.115 Tickerzeilen erfolgreich. Quelle unverändert. Wiederherstellung der Prüfkopie über 95 Tabellen / 387.187 Zeilen abgeglichen. Keine Daten oder Zugangsdaten im Repository.
+
+Gemeinsame Abnahmeliste vorbereitet, noch nicht fachlich/visuell bestätigt. R-01/R-02 sind reale Implementierungsreste: aktive Fachumschaltung und vollständiges eingefrorenes Archiv. Diese dürfen nicht als bloß noch fehlende Benutzerbestätigung oder bereits erledigte Migration bezeichnet werden. Rennabschluss bleibt bis zur Archivimplementierung gesperrt. Weitere Befunde, Freigabegrenzen und nächste Arbeiten stehen im Abnahmepaket; Prüfergebnisse in verification.md. Bestehende Anwendung unverändert, keine Git-Aktionen und kein Versionssprung. Block 10 bleibt offen.

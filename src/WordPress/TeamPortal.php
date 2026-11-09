@@ -15,6 +15,10 @@ final class TeamPortal
 
     public static function url(int $race): string
     {
+        $page = SitePages::url($race, 'team');
+        if ($page !== '') {
+            return $page;
+        }
         return add_query_arg(['action' => 'cor_mgmt_team', 'race_id' => $race], admin_url('admin-post.php'));
     }
 

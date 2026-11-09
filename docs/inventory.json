@@ -14,7 +14,7 @@
     "includes/class-h3-mgmt-maintenance.php": "3b5d9e568b5e14a1145096c371a450963a374945e5b7f90c19415ba000150833",
     "includes/class-h3-mgmt-media.php": "2db8d718e8d70be69ff1f74c583f9bfda5f1b3a584d9ddf96782196d6e6d2800",
     "includes/class-h3-mgmt-profile.php": "2e672efdc41a3dee9b1cb6b026765435d8c845669e4331d514c1b38ac71bea12",
-    "includes/class-h3-mgmt-races.php": "712c8130435361ca8891a57fcaa6ec4c08864be6a545610cc5b021524b2c5777",
+    "includes/class-h3-mgmt-races.php": "7d2cbec2da4c53b1d4a4f21ce9b44dc8b2e56209abf1e0c16e657abd0d65ff2e",
     "includes/class-h3-mgmt-security.php": "926240ae80d8a78dc476e538193f60fde99c8e5be4b1ce0bc5abf60753ae2f73",
     "includes/class-h3-mgmt-sponsors.php": "c9e5123967efbd25a3957fe3b4f6e7503ddc4a4f8dbbab72454fefa0874311f1",
     "includes/class-h3-mgmt-teams.php": "3c1351353f5d36a9b9742e4470f88af2617f972682aff05e284d14a7b3b2be08",
@@ -112,17 +112,18 @@
     "src/WordPress/EventForm.php": "509d2c44f92da0d772f9ef5e2813c8137a7f9e2fd9e11285cbaf09df9607bf57",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
     "src/WordPress/ExchangeBoundary.php": "1c519b999336432dcc3c9f333e50c16f55c166558ae8453bf385593eecd17025",
-    "src/WordPress/Lifecycle.php": "66c9bc71e140ea201107c3ca690e53cf5610335a4a9604a8977855d7df431c48",
+    "src/WordPress/Lifecycle.php": "be4fc1af4521a5ee8fa37ab19b2f28fb6db6c478b2d2bba761f38e02878ef800",
     "src/WordPress/MailQueueAdmin.php": "e5937c9dfd14adfb7e7eb4ae47d63cc2b6feef22c3c2b23dac65e94a4d6a6e06",
     "src/WordPress/ProfileAvatar.php": "38a400102fd08abcd41e541b04de4310f4353c209bcae403187879ce90e01e3d",
     "src/WordPress/ResultBoundary.php": "432f6ed86f44420c118a4db0de1ba1ba21aaccc614c9edd268b05e8e69a32ecd",
     "src/WordPress/ResultFrontend.php": "6fa77975fe3734ee97f90f18216ddc8e63cc373fdc78570638f7683bf8c0cc6f",
     "src/WordPress/SchemaTools.php": "706c517695aa18de704643dd0720c17e29d221866c2248a9fe1bbe71ba1d3b25",
     "src/WordPress/Services.php": "8e37ba4167038976f4b9cc62150f193dde32a03f3f11505da2d663be9ed2b9ea",
+    "src/WordPress/SitePages.php": "43132d4dd37c8db0800194ba7d8b103f6b230ecdb37bc490fcce4e5a1f1d74c4",
     "src/WordPress/TeamAdmin.php": "23873f233536e60b166c8152c440cf7ee516ff520b461400ecbe88c987dabac0",
     "src/WordPress/TeamBoundary.php": "447ab06aa45bd5bab39a7d6a624d1341fcd8e169c7b82619d9513a284e81c70d",
     "src/WordPress/TeamFrontend.php": "1818a5902e9d4ae8a01b3199aa365f43dbccfed6ed8b62da08b565c8b3ac06d1",
-    "src/WordPress/TeamPortal.php": "744678d244053f72eddeef264ad1ba0a6750700460c26183da7315564a721a5a",
+    "src/WordPress/TeamPortal.php": "cf9bdaeb89eba9b05e4690b84561591c153891e6b3b68bcfaf5ca71ab86b6de8",
     "src/WordPress/TickerBoundary.php": "553cfa181aca9077238ec0cb2576fe9094985d8561160a52646716063726cd36",
     "templates/admin-custom-fields.php": "274ffcc1413d2d14bb40baa52cb1211008d2022993cfdc344b4c8b70c143d4d5",
     "templates/admin-profile.php": "46c14eafd1b131259b8ad1847522394053e48240275a8e5af81645d5cda19659",
@@ -140,14 +141,14 @@
       "tag": "h3-donation-counter",
       "handler": "donation_counter",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 679,
+      "line": 678,
       "defaults_source": "'race' => 1, 'animation' => 0, 'offset' => 0,"
     },
     {
       "tag": "h3-event-statistics",
       "handler": "race_stats",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 584,
+      "line": 583,
       "defaults_source": "'stat' => 'all', 'race' => 0, 'event' => 1, 'offset' => 0,"
     },
     {
@@ -189,7 +190,7 @@
       "tag": "h3-ranking-table",
       "handler": "ranking_table",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 911,
+      "line": 910,
       "defaults_source": "'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1,"
     },
     {
@@ -210,21 +211,21 @@
       "tag": "h3-stages",
       "handler": "display_stages",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 750,
+      "line": 749,
       "defaults_source": "'race' => 1, 'class' => '',"
     },
     {
       "tag": "h3-stages-isotope",
       "handler": "isotope_links",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 800,
+      "line": 799,
       "defaults_source": "'race' => 1, 'class' => '',"
     },
     {
       "tag": "h3-submit-rankings",
       "handler": "ranking_submission_control",
       "file": "includes/class-h3-mgmt-races.php",
-      "line": 881,
+      "line": 880,
       "defaults_source": null
     },
     {
@@ -459,7 +460,7 @@
     {
       "file": "includes/class-h3-mgmt-races.php",
       "method": "ranking_table",
-      "line": 911,
+      "line": 910,
       "fields": [
         "GET:ranking_route"
       ],
@@ -929,6 +930,37 @@
       "case_labels": []
     },
     {
+      "file": "src/WordPress/SitePages.php",
+      "method": "register",
+      "line": 21,
+      "fields": [
+        "POST:race_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/SitePages.php",
+      "method": "submit",
+      "line": 89,
+      "fields": [
+        "POST:cor_mgmt_nonce",
+        "POST:kind",
+        "POST:page_id",
+        "POST:page_operation",
+        "POST:race_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/SitePages.php",
+      "method": "page",
+      "line": 151,
+      "fields": [
+        "GET:race_id"
+      ],
+      "case_labels": []
+    },
+    {
       "file": "src/WordPress/TeamAdmin.php",
       "method": "control",
       "line": 13,
@@ -1028,7 +1060,7 @@
     {
       "file": "src/WordPress/TeamPortal.php",
       "method": "serve",
-      "line": 21,
+      "line": 25,
       "fields": [
         "GET:race_id"
       ],

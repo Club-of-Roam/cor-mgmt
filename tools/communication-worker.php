@@ -4,6 +4,8 @@ declare(strict_types=1);
 if (PHP_SAPI!=='cli'||!isset($argv[1],$argv[2],$argv[3],$argv[4],$argv[5])){exit(2);}
 require dirname(__DIR__).'/vendor/autoload.php';
 define('COR_TEST_PARTICIPATION_WORKER',true);
+// Reproduce a clean Linux CLI environment even on a developer web server.
+unset($_SERVER['SERVER_NAME']);
 require dirname(__DIR__).'/tests/Integration/bootstrap.php';
 $user=(int)$argv[2];$race=(int)$argv[3];$id=(int)$argv[4];
 if(!in_array($race,[951,952],true)){exit(3);}

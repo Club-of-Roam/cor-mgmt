@@ -47,6 +47,9 @@ define('WP_DEBUG', false);
 define('WP_CACHE', false);
 define('WP_DEFAULT_THEME', 'cor-test-no-theme');
 $_SERVER['HTTP_HOST'] = $browserBase !== '' ? substr($browserBase, 7) : 'example.invalid';
+// CLI workers do not receive a web server environment on Linux. Core callbacks
+// attached to wp_head() still require SERVER_NAME (for example page URL output).
+$_SERVER['SERVER_NAME'] = (string) parse_url(WP_HOME, PHP_URL_HOST);
 $_SERVER['REQUEST_URI'] = $browserBase !== '' ? ($_SERVER['REQUEST_URI'] ?? '/') : '/';
 $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
 $table_prefix = 'cortest_';

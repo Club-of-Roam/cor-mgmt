@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FoundationTest extends TestCase {
     public function testFreshFixtureAlwaysHasAnAbsoluteUploadUrl(): void {
+        self::assertSame('example.invalid', $_SERVER['SERVER_NAME']);
         $uploads = wp_upload_dir();
         self::assertSame('https', wp_parse_url($uploads['baseurl'], PHP_URL_SCHEME));
         self::assertSame('example.invalid', wp_parse_url($uploads['baseurl'], PHP_URL_HOST));

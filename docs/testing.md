@@ -135,3 +135,9 @@ Browserfixture verwendet nur erlaubte synthetische Konten, eine isolierte Testda
 ## Ergänzung Block 9 (2026-11-09)
 
 [Integrierter Webticker](block-9-ticker.md): additives Ticker-Modul 1.0.0, eigener Writer/Renderer, kontrollierte schrittweise Übernahme mit Original-IDs und Rohdatenvergleich. SMS-/MMS-/Gateway-Eingänge sind stillgelegt. Das Nebenplugin und direkte Dateien sind gesonderte Ausrolländerungen; keine automatische Anwendungsmigration. Historische Tabellen und Medien bleiben erhalten. Fachliche und visuelle Gesamtabnahme in Block 10.
+
+## Paketinstallation und Gesamtprüfung
+
+`tools/check-standalone.php` prüft das fertige ZIP in einer eigenen synthetischen WordPress-Installation mit Twenty Twenty-Five und produktivem Autoloader. Getrennte Aktivierungs-/Folgeanfrage, Seitenanlage und vollständige Themeausgabe sowie Deaktivierung, Reaktivierung und datenerhaltende Deinstallation/Wiederinstallation. Keine zusätzlichen Fachplugins; ein ausschließlich synthetischer Must-use-Guard verhindert Mail und externe HTTP-Verbindungen. Zufälliger eigener Tabellenpräfix und markierte temporäre Dateien begrenzen die Bereinigung. Fehlende Guardwerte oder nicht fertig durchlaufene Prüfungen liefern Fehlerstatus, auch bei vorzeitigem WordPress-Ausgang. CI führt den Test auf PHP 8.2/8.5 nach dem ZIP-Bau aus; dies ist ohne tatsächlich grünen Wiederholungslauf keine entfernte CI-Freigabe.
+
+Reale Bestandsproben bleiben von synthetischen Regressionssuiten getrennt. Nur aggregierte Befunde dokumentieren; keine Personen, Zeileninhalte, Tokens oder Zugangsdaten als Testfixtures übernehmen. Eine vorhandene ältere Sicherung ersetzt die frische Produktionsprobe vor dem tatsächlichen Wechsel nicht. [Ausgeführte Probe und Abnahmeliste](block-10-acceptance.md).

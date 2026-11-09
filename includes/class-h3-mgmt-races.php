@@ -274,11 +274,9 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				$wpdb->prefix . 'h3_mgmt_races ' .
 				'WHERE id = ' . $id . ' LIMIT 1', ARRAY_A
 			);
-			$data = $data[0];
+			$json_array = json_decode( (string) ( $data[0]['setting'] ?? '' ), true );
 
-			$json_array = json_decode( $data['setting'], true );
-
-			return $json_array;
+			return is_array( $json_array ) ? $json_array : [];
 		}
 
 		/**
@@ -288,7 +286,9 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 		 * @access public
 		 */
 		public function get_race_information_text( $id ) {
-            $information_text_array = [];
+            // Legacy templates address all 27 text slots directly, including on
+            // freshly created events whose optional information_text is NULL.
+            $information_text_array = array_fill(1, 27, '');
             $id = H3_MGMT_Security::id($id);
 			global $wpdb, $h3_mgmt_utilities;
 
@@ -297,17 +297,16 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 				$wpdb->prefix . 'h3_mgmt_races ' .
 				'WHERE id = ' . $id . ' LIMIT 1', ARRAY_A
 			);
-			$data = $data[0];
-
-			$json_array = json_decode( $data['information_text'], true );
+			$json_array = json_decode( (string) ( $data[0]['information_text'] ?? '' ), true );
 
 			$x        = 1;
 			$language = $h3_mgmt_utilities->user_language();
 
-			if ( isset( $json_array, $language ) && $json_array != 0 ) {
-				while ( array_key_exists( $x . $language, $json_array ) ) {
-						$information_text_array[ $x ] = $json_array[ $x . $language ];
-						$x ++;
+			if ( is_array( $json_array ) ) {
+				for ( $x = 1; $x <= 27; $x ++ ) {
+                        if (is_string($json_array[$x . $language] ?? null)) {
+                            $information_text_array[$x] = $json_array[$x . $language];
+                        }
 				}
 			}
 

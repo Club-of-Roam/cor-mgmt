@@ -24,5 +24,12 @@ foreach (glob($source . '/*.php') as $file) {
     if (basename($file) !== 'wp-config.php') { $copy($file, $target . '/' . basename($file)); }
 }
 foreach (['plugins', 'themes'] as $directory) { mkdir($target . '/wp-content/' . $directory, 0700, true); }
+if (($argv[3] ?? '') === '--standard-theme') {
+    $theme = $source . '/wp-content/themes/twentytwentyfive';
+    if (!is_file($theme . '/style.css') || !is_file($theme . '/templates/index.html')) {
+        throw new RuntimeException('The standalone fixture requires the bundled Twenty Twenty-Five theme.');
+    }
+    $copy($theme, $target . '/wp-content/themes/twentytwentyfive');
+}
 file_put_contents($target . '/.cor-mgmt-test-fixture', "synthetic-wordpress-only\n");
 echo "Core-only WordPress fixture created; no database installed by this command.\n";
