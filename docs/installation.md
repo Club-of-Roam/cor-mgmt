@@ -8,12 +8,12 @@ cor-mgmt ist ein eigenständig installierbares WordPress-Plugin. WordPress und d
 
 PHP-Vertrag: jeweils neueste stabile PHP-Version als Ziel; PHP 8.2 und alle stabilen Zwischenversionen bleiben mit vollständigem Funktionsumfang unterstützt. Installation, Upgrade und Migration sowie sämtliche verpflichtenden Laufzeitabhängigkeiten müssen diesen Bereich abdecken. Release-Abnahme mindestens unter PHP 8.2 und der neuesten stabilen Version; Zielmatrix gemäß [Masterplan](masterplan.md). Noch keine erreichte Kompatibilitätsfreigabe.
 
-Für seine fachlichen Funktionen benötigt das fertige Plugin weder cor-theme/Enfold noch cor-ticker, Members, Theme My Login, ein Avatar- oder Sprachplugin. Bestehende Integrationen bleiben optional kompatibel. Funktionen, die bisher nur durch Theme oder Nachbarplugin bereitgestellt werden, werden nach Inventarisierung innerhalb des Plugins oder mit WordPress-Bordmitteln zugänglich gemacht. Fremde Erweiterungen werden dadurch nicht pauschal ersetzt oder kopiert.
+Für seine fachlichen Funktionen benötigt das fertige Plugin weder cor-theme/Enfold noch cor-ticker, Members, Theme My Login, ein Avatar- oder Sprachplugin. Bestehende benötigte Integrationen bleiben optional kompatibel; das separate cor-ticker wird gemäß D-50 durch den integrierten Ticker abgelöst. Funktionen, die bisher nur durch Theme oder Nachbarplugin bereitgestellt werden, werden nach Inventarisierung innerhalb des Plugins oder mit WordPress-Bordmitteln zugänglich gemacht. Fremde Erweiterungen werden dadurch nicht pauschal ersetzt oder kopiert.
 
 - Eigene Templates, Styles und Formularverarbeitung funktionieren mit einem unveränderten WordPress-Standardtheme.
 - Anmeldung und Registrierung verwenden WordPress; kein zwingendes Theme-Login-System.
 - Berechtigungen werden vom Plugin eingerichtet und geprüft, nicht von einem optionalen Rollenplugin vorausgesetzt.
-- Ticker-Verwaltung und Datenhaltung sind ohne cor-ticker nutzbar. Bestehende gemeinsame Tabellen werden über einen kontrollierten Übergang weiter unterstützt; keine konkurrierenden Writer.
+- Ticker-Verwaltung, Webeingabe und Datenhaltung sind ohne cor-ticker nutzbar. Benötigte Funktionen werden in cor-mgmt integriert; gemeinsamer Bestand bleibt beim kontrollierten Wechsel erhalten und das alte Plugin wird abgelöst. SMS-Gateway und alte direkte SMS-/MMS-Eingänge werden stillgelegt; keine konkurrierenden Writer. [Plan Block 9](block-9-ticker-plan.md).
 - Sprach-/Avatar-Erweiterungen sind optional. Ohne sie existieren definierte Standardausgaben und WordPress-Fallbacks.
 - Keine ausführbare PHP-Datei im Upload-Verzeichnis und keine manuellen Theme- oder Core-Änderungen erforderlich.
 - Seiten, URLs, IDs und Tabellenpräfixe werden ermittelt oder konfiguriert statt aus einer vorhandenen Website vorausgesetzt.
@@ -91,3 +91,8 @@ Nachtrag: [Teamauslöser und Queueverwaltung](block-8-delivery.md) verwenden die
 Zusätzliche Module broadcasts 1.0.0 und exchange 1.0.0 entstehen bei Aktivierung oder über die ausdrücklichen Systemstatus-Aktionen „Set up manual mail storage“ / „Set up exchange audit storage“. Referenzen: [Kampagnen](schema-broadcasts-1.0.0.sql), [Börse](schema-exchange-1.0.0.sql). Keine Änderung bereits festgeschriebener Installationspläne; alte Tabellen/IDs bleiben erhalten. Börsenwriter benötigen InnoDB für Nachricht und Audit in einer Transaktion; fehlende Voraussetzungen verlangen kontrollierten Schemaabgleich. Keine automatische Umstellung beim Lesen.
 
 E-Mails führt zur Kampagnenvorschau und geschützten Verarbeitung; Werkzeuge → HitchMate XChange zur Moderation. Lesender Speicherbericht im E-Mail-Bereich. Einrichtung erzeugt keinen Versand. Server- und Kampagnenfreigabe bleiben ausdrücklich nötig. [Betriebsvertrag und offene Freigaben](block-8-completion.md).
+
+
+## Ergänzung Block 9 (2026-11-09)
+
+[Integrierter Webticker](block-9-ticker.md): additives Ticker-Modul 1.0.0, eigener Writer/Renderer, kontrollierte schrittweise Übernahme mit Original-IDs und Rohdatenvergleich. SMS-/MMS-/Gateway-Eingänge sind stillgelegt. Das Nebenplugin und direkte Dateien sind gesonderte Ausrolländerungen; keine automatische Anwendungsmigration. Historische Tabellen und Medien bleiben erhalten. Fachliche und visuelle Gesamtabnahme in Block 10.

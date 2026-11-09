@@ -38,3 +38,5 @@ Fachlogik unabhängig von WP/SQL/HTTP halten. Zeit, Zufall und Dienste injiziere
 Keine Pflicht zur Delegation oder Nutzung von Subagenten. Commit, Push und Deployment entsprechend der jeweiligen Benutzerfreigabe.
 
 Bei einem geeigneten Commit-Zwischenstand direkt eine englische Commit-Message mitliefern. Commit und Push führt der Benutzer aus.
+
+Tickerbefehle ausschließlich über den nativen Writer mit Eventrechten, Revision bzw. Anfrageschlüssel und Journal ausführen. SMS/MMS bleiben eingestellt; alte gemeinsame Tabellen und Originalmedien nicht überschreiben oder automatisch löschen. Bestandswechsel nur ausdrücklich mit gestoppten alten Writern und erfolgreich geprüftem Übernahmelauf; keine Kopie beim Seitenaufruf.

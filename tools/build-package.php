@@ -36,7 +36,7 @@ $cleanup = static function (string $directory) use ($stage): void {
     rmdir($resolved);
 };
 try {
-    foreach (['h3-management.php', 'uninstall.php', 'composer.json', 'composer.lock', 'README.md', 'docs/schema-3.0.0.sql', 'docs/schema-participation-1.0.0.sql', 'docs/schema-results-1.0.0.sql', 'docs/schema-donations-1.0.0.sql', 'docs/schema-communication-1.0.0.sql', 'docs/schema-mail-queue-1.0.0.sql','docs/schema-broadcasts-1.0.0.sql','docs/schema-exchange-1.0.0.sql'] as $file) { $copy($file); }
+    foreach (['h3-management.php', 'uninstall.php', 'composer.json', 'composer.lock', 'README.md', 'docs/schema-3.0.0.sql', 'docs/schema-participation-1.0.0.sql', 'docs/schema-results-1.0.0.sql', 'docs/schema-donations-1.0.0.sql', 'docs/schema-communication-1.0.0.sql', 'docs/schema-mail-queue-1.0.0.sql','docs/schema-broadcasts-1.0.0.sql','docs/schema-exchange-1.0.0.sql','docs/schema-ticker-1.0.0.sql'] as $file) { $copy($file); }
     foreach (['src','runtime','includes','admin','templates','models','js','css','img','lib','languages','docs'] as $folder) {
         if (!is_dir($root . '/' . $folder)) { continue; }
         $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/' . $folder, FilesystemIterator::SKIP_DOTS));

@@ -74,7 +74,7 @@ if (!defined('COR_TEST_PARTICIPATION_WORKER')) {
     new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb)
 ))->fresh();
 }
-// Shared ticker storage is still an optional integration pending block 9.
+// Historical source fixture for the explicit ticker transfer; no runtime dependency.
 if ($wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}sms_ticker (id bigint unsigned AUTO_INCREMENT PRIMARY KEY, send_from varchar(80), msg text, type int, img_url text, img longtext, timestamp varchar(40), race_id bigint unsigned) ENGINE=InnoDB") === false) {
     throw new RuntimeException('Cannot create synthetic ticker fixture.');
 }

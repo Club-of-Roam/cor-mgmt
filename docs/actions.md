@@ -14,8 +14,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [sponsors_edit](../admin/class-h3-mgmt-admin-sponsors.php#L917) | `POST:submitted` |  |
 | [statistics](../admin/class-h3-mgmt-admin-statistics.php#L17) | `POST:race_id` |  |
 | [page](../includes/class-h3-mgmt-maintenance.php#L42) | `POST:apply`, `POST:race` |  |
-| [ajax_upload](../includes/class-h3-mgmt-media.php#L61) | `POST:race` |  |
-| [picture](../includes/class-h3-mgmt-media.php#L127) | `POST:left`, `POST:right`, `POST:ticker_pic_msg` |  |
+| [ajax_upload](../includes/class-h3-mgmt-media.php#L67) | `POST:race` |  |
 | [save_extra_profile_fields](../includes/class-h3-mgmt-profile.php#L144) | `POST:_wpnonce`, `POST:deleteme` |  |
 | [ranking_table](../includes/class-h3-mgmt-races.php#L911) | `GET:ranking_route` |  |
 | [post](../includes/class-h3-mgmt-security.php#L26) | `POST:cor_mgmt_nonce` |  |
@@ -40,11 +39,6 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [team_overview](../includes/class-h3-mgmt-teams.php#L2250) | `GET:todo` |  |
 | [validate_submit](../includes/class-h3-mgmt-teams.php#L2377) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
 | [save_dashboard](../includes/class-h3-mgmt-teams.php#L2408) | `POST:submitted` |  |
-| [ticker_Page_controll](../includes/class-h3-mgmt-ticker.php#L172) | `GET:todo`, `POST:coordinates`, `POST:coordinates_informations`, `POST:message`, `POST:submit_form`, `POST:ticker_id`, `POST:ticker_pic_msg`, `POST:video`, `POST:video_message` |  |
-| [ticker_Page_map](../includes/class-h3-mgmt-ticker.php#L535) | `GET:ticker_route` |  |
-| [the_ticker](../includes/class-h3-mgmt-ticker.php#L787) | `GET:min`, `GET:ticker_race`, `GET:ticker_route`, `GET:todo` |  |
-| [team_ticker](../includes/class-h3-mgmt-ticker.php#L1132) | `GET:id`, `GET:min` |  |
-| [ticker_incoming_interface](../includes/class-h3-mgmt-ticker.php#L1311) | `POST:message` |  |
 | [table_order](../includes/class-h3-mgmt-utilities.php#L189) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L15) | `POST:address` |  |
 | [register](../src/WordPress/BroadcastAdmin.php#L16) | `GET:page` |  |
@@ -78,6 +72,11 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
 | [render](../src/WordPress/TeamFrontend.php#L80) | `GET:invitation`, `POST:invitation` |  |
 | [serve](../src/WordPress/TeamPortal.php#L21) | `GET:race_id` |  |
+| [race](../src/WordPress/TickerBoundary.php#L85) | `GET:ticker_race` |  |
+| [form](../src/WordPress/TickerBoundary.php#L183) | `POST:message` |  |
+| [feed](../src/WordPress/TickerBoundary.php#L334) | `GET:min`, `GET:page_id`, `GET:ticker_page`, `GET:ticker_route` |  |
+| [queryRace](../src/WordPress/TickerBoundary.php#L450) | `GET:race`, `POST:race` |  |
+| [page](../src/WordPress/TickerBoundary.php#L467) | `GET:ticker_page` |  |
 | [output](../templates/class-h3-mgmt-admin-form.php#L69) | `GET:page` |  |
 | [__construct](../templates/class-h3-mgmt-admin-table.php#L73) | `GET:order`, `GET:orderby` |  |
 | [output](../templates/class-h3-mgmt-admin-table.php#L122) | `GET:filter_name0`, `GET:order`, `GET:orderby`, `GET:page` |  |

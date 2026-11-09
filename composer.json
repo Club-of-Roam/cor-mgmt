@@ -34,6 +34,7 @@
       "@php tools/export-schema.php --mail-queue --check",
       "@php tools/export-schema.php --broadcasts --check",
       "@php tools/export-schema.php --exchange --check",
+      "@php tools/export-schema.php --ticker --check",
       "@analyse",
       "@lint:standards",
       "@lint:compatibility"

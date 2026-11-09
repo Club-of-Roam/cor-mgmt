@@ -14,7 +14,7 @@ Composer PSR-4 unter Cor\Mgmt ist aktiv. Der Bootstrap lädt neue Klassen, der A
 
 ## Eigenständiger Betrieb
 
-[Installationsvertrag](installation.md) ist verpflichtend. WordPress bleibt Voraussetzung; Spezialtheme, cor-ticker, Members, Sprach-/Avatar-/Login-Erweiterungen bleiben optionale Integrationen. Eigene Darstellung, Rechte, Konfiguration und benötigte Ticker-Verwaltung liegen im Plugin. Vollständiges ZIP enthält fertige Runtime-Dateien; Composer/npm werden nur für Entwicklung/Build benötigt.
+[Installationsvertrag](installation.md) ist verpflichtend. WordPress bleibt Voraussetzung; Spezialtheme, Members, Sprach-/Avatar-/Login-Erweiterungen bleiben optionale Integrationen. Der bisher separate cor-ticker wird gemäß D-50 durch das integrierte Tickermodul abgelöst. Eigene Darstellung, Rechte, Konfiguration und benötigte Ticker-Verwaltung liegen im Plugin. Vollständiges ZIP enthält fertige Runtime-Dateien; Composer/npm werden nur für Entwicklung/Build benötigt.
 
 ## Übergang
 
@@ -27,7 +27,7 @@ Lesen verändert keine Daten. Änderungen prüfen Nonce und Objektberechtigung; 
 | Komponente | Kopplung | Behandlung |
 |---|---|---|
 | cor-theme | Templates, Anmeldung, Datenschutz, Layout | Eigene funktionsfähige Oberfläche; Adapter für bestehendes Theme |
-| cor-ticker | Gemeinsame sms_ticker-Tabelle | Eigene Ticker-Verwaltung; optionaler Adapter, kontrollierter Datenübergang |
+| cor-ticker | Gemeinsame sms_ticker-Tabelle | Benötigte Funktionen in cor-mgmt integrieren, getrenntes Plugin kontrolliert ablösen; historischen Bestand erhalten, SMS-Eingänge stilllegen |
 | uploads/ticker_images/process.php | Eigenständiger Upload aus app.js | Geschützter Plugin-Endpunkt, Aufrufer umstellen, alten Eingang stilllegen |
 | Profile_Layer_Pics | Historische Bildverarbeitung | Nutzung vor Änderung klären |
 | WPML/Members/Avatar/Embed Privacy | Integrationen | WordPress-Fallbacks; Abwesenheit, Sprache und Version prüfen |
@@ -45,3 +45,8 @@ Umgebungskonfiguration bleibt außerhalb der Fachlogik. Tests dürfen keine prod
 ## Teilnahme-Modul ab Block 5
 
 TeamPolicy → TeamManager → ParticipationStore trennen Phasen/Freigabe, Anwendungsfälle und Persistenz. ParticipationRepository bildet den Übergang auf bestehende Tabellen/Benutzermetadaten und neue Token-/Historienjournal-Tabellen ab. TeamBoundary/TeamFrontend/TeamAdmin sind WordPress-Adapter; ProfileAvatar unterstützt native Bilder ohne Pflichtplugin. EventEditor kann den Teilnahmeabgleich innerhalb derselben Sperre/Transaktion anstoßen. Benachrichtigungen werden erst nach Commit transportiert; dauerhafte Versandverarbeitung folgt in Block 8. Details und Grenzen in [Block 5](block-5-teams.md).
+
+
+## Ergänzung Block 9 (2026-11-09)
+
+[Integrierter Webticker](block-9-ticker.md): additives Ticker-Modul 1.0.0, eigener Writer/Renderer, kontrollierte schrittweise Übernahme mit Original-IDs und Rohdatenvergleich. SMS-/MMS-/Gateway-Eingänge sind stillgelegt. Das Nebenplugin und direkte Dateien sind gesonderte Ausrolländerungen; keine automatische Anwendungsmigration. Historische Tabellen und Medien bleiben erhalten. Fachliche und visuelle Gesamtabnahme in Block 10.

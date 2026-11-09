@@ -11,14 +11,14 @@
     "admin/class-h3-mgmt-admin.php": "3f1cbeae3e1d28556b07ea2a2f2dc69873bc0bd1bb8c9ba3c606441ccef7f797",
     "h3-management.php": "d7f2b8bbd7b6d8b3c031da52680e99c250f6e3a442a3e6c589da22cb8b3f5edc",
     "includes/class-h3-mgmt-mailer.php": "bbef4a436965980f791209c322a3f244eda55af4b7fa2a4843b97e919a5b2331",
-    "includes/class-h3-mgmt-maintenance.php": "052285d837a5cbc2f31255f84442d31b073e2e18a87872028b6f9fef807b078e",
-    "includes/class-h3-mgmt-media.php": "22d11d7a97412baf0de420fcc5bcc10368b1bed18d76d005312cc1db76fc525b",
+    "includes/class-h3-mgmt-maintenance.php": "3b5d9e568b5e14a1145096c371a450963a374945e5b7f90c19415ba000150833",
+    "includes/class-h3-mgmt-media.php": "2db8d718e8d70be69ff1f74c583f9bfda5f1b3a584d9ddf96782196d6e6d2800",
     "includes/class-h3-mgmt-profile.php": "2e672efdc41a3dee9b1cb6b026765435d8c845669e4331d514c1b38ac71bea12",
     "includes/class-h3-mgmt-races.php": "712c8130435361ca8891a57fcaa6ec4c08864be6a545610cc5b021524b2c5777",
     "includes/class-h3-mgmt-security.php": "926240ae80d8a78dc476e538193f60fde99c8e5be4b1ce0bc5abf60753ae2f73",
     "includes/class-h3-mgmt-sponsors.php": "c9e5123967efbd25a3957fe3b4f6e7503ddc4a4f8dbbab72454fefa0874311f1",
-    "includes/class-h3-mgmt-teams.php": "b7dc2b3602bd1234fff07881cff3af1b96db94749e69ebcf59e741d6b23fdcb4",
-    "includes/class-h3-mgmt-ticker.php": "a02c8ab5d2a537158dd58e9a2000cfeadee0402f4f6f03028c0140829ac809b4",
+    "includes/class-h3-mgmt-teams.php": "3c1351353f5d36a9b9742e4470f88af2617f972682aff05e284d14a7b3b2be08",
+    "includes/class-h3-mgmt-ticker.php": "2ff7d33e49ba9975caaa6dc431e678b7bd16e9b422ad84e517d63b41a39b68d7",
     "includes/class-h3-mgmt-utilities.php": "1cc3ca890d3e7803e1729724ffcdc34bb12cfa7a68e5c556f8e6f0e0667210d5",
     "includes/class-h3-mgmt-xchange.php": "cd18eda1fb946face5ca6b623809a52ca90afe04536b3f50fbe2a4cb6111669c",
     "includes/class-h3-mgmt.php": "1263837604a973c02e30670569789957734fc5757961432d628c9d4e36782bd3",
@@ -63,6 +63,7 @@
     "src/Domain/RacePhase.php": "34f39e0ea16dc989a54dc301d33adab208e3e9185405ac9336ab6130f79a9406",
     "src/Domain/Scoring.php": "75d0c1ada3301dc151f8cb8217dfa86cdbd82d2497e6998d1751aa6e778391c7",
     "src/Domain/TeamPolicy.php": "839fc359f428fb5abdd3d6786d50e63d196edb0edecb97225621442c0183458d",
+    "src/Domain/Ticker/Content.php": "0516aaabd34be736fd2c015b00addbb50450fe03712ce2f57c6d457e7c8056f5",
     "src/Infrastructure/Betterplace/PublicOpinions.php": "1d207fa613d3510f62234ace0a2f87e66615e150019f02790a503946c9a4f47c",
     "src/Infrastructure/SecureRandom.php": "e57a39674e2a9e5c1a6fe29997762d87030c020599a840c8d82d5cb9ad94320c",
     "src/Infrastructure/SystemClock.php": "61e7a294c202cc19d541d5af8378ab9d36422927b0ef5860841455e8c391b81a",
@@ -85,7 +86,7 @@
     "src/Infrastructure/WordPress/Schema/DonationSchema.php": "117afb451b7f32fd008030327008bfada3adabfd9d6e1004864999af82ae66ff",
     "src/Infrastructure/WordPress/Schema/ExchangeSchema.php": "f38847db98fbdfe8dae530c62ce12c1e4b6712b76121018880a8886b04e19dfc",
     "src/Infrastructure/WordPress/Schema/Inspector.php": "358c84f7e5257b409de54329563b303e43984e76ce4e10ceefcafb364c583c36",
-    "src/Infrastructure/WordPress/Schema/Installer.php": "aca44314091a2ee8421faa93b6ca5b2717c65f5c86e56addbe18785b5e62890e",
+    "src/Infrastructure/WordPress/Schema/Installer.php": "12eb6377b043d8d84757260430a4be07deff1317060235aafec548be46dd5527",
     "src/Infrastructure/WordPress/Schema/MailQueueSchema.php": "5cafb2a8f43f8945a17e8dd3b38cab067185c5633695e9a6a216964d2dbb19ee",
     "src/Infrastructure/WordPress/Schema/ParticipationSchema.php": "d45391e989f58444ce7fd49fa5bddfa0a13c34900b65c572213bcb448304b77f",
     "src/Infrastructure/WordPress/Schema/Preflight.php": "6b606789d0a539d587fe839ef190f0a2514771f7c8319fe1a834697d384d703b",
@@ -93,8 +94,11 @@
     "src/Infrastructure/WordPress/Schema/ResultsSchema.php": "0cdaa2b121730785f9c776231f32dfa91e4993d55062ae1eebb416377b149909",
     "src/Infrastructure/WordPress/Schema/Runner.php": "dfcb37887703fd9aaf80d64ed27715aba7a78d6c20f01ab0f15187f7c5989c56",
     "src/Infrastructure/WordPress/Schema/Source.php": "0a145c7e4de8631b492d5f9d339388f4a9967714804bd73b14f3c3ac4e40b2d8",
+    "src/Infrastructure/WordPress/Schema/TickerSchema.php": "8512b81f17d7625b108f49a9cbb37f001383e2a92ce6b5c977697f9d8b623b90",
     "src/Infrastructure/WordPress/SchemaInspector.php": "50097eff43e1aedfd078cdaa27128290a3a348ff80fc1904f345889705acbf22",
     "src/Infrastructure/WordPress/TeamNotifications.php": "39d1b137c2e4096539fe301cd4a2a2353f76fc15a82d1a24800abf1a25cb0504",
+    "src/Infrastructure/WordPress/Ticker.php": "3cdf512dc033ecdef0ecb55c5c60327e4d11b85ed1ff342e3930dee1d12ebf72",
+    "src/Infrastructure/WordPress/TickerImport.php": "607ae0c4c4c8b361822ac6dfc36111b3d5c91c7514b8e6365fd1f78cb0565629",
     "src/Infrastructure/WordPress/WordPressHttpClient.php": "8340e4a28598e083a26aec0ad500eb08e110b362f122008030f7911db06989c0",
     "src/Infrastructure/WordPress/WordPressLogger.php": "812910c3a7c305d041c90e694f4707922b00c4789a93a6a2f92041731e03378f",
     "src/Infrastructure/WordPress/WordPressMailTransport.php": "70d29f5071bc9a498540111399bc53f426b400c219e0695da5dd08765c608377",
@@ -108,7 +112,7 @@
     "src/WordPress/EventForm.php": "509d2c44f92da0d772f9ef5e2813c8137a7f9e2fd9e11285cbaf09df9607bf57",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
     "src/WordPress/ExchangeBoundary.php": "1c519b999336432dcc3c9f333e50c16f55c166558ae8453bf385593eecd17025",
-    "src/WordPress/Lifecycle.php": "ba6c2f6e841290cdbb292816fcfabe6cc925e4a9702939afcc29bbc4dfd7a5e5",
+    "src/WordPress/Lifecycle.php": "66c9bc71e140ea201107c3ca690e53cf5610335a4a9604a8977855d7df431c48",
     "src/WordPress/MailQueueAdmin.php": "e5937c9dfd14adfb7e7eb4ae47d63cc2b6feef22c3c2b23dac65e94a4d6a6e06",
     "src/WordPress/ProfileAvatar.php": "38a400102fd08abcd41e541b04de4310f4353c209bcae403187879ce90e01e3d",
     "src/WordPress/ResultBoundary.php": "432f6ed86f44420c118a4db0de1ba1ba21aaccc614c9edd268b05e8e69a32ecd",
@@ -119,6 +123,7 @@
     "src/WordPress/TeamBoundary.php": "447ab06aa45bd5bab39a7d6a624d1341fcd8e169c7b82619d9513a284e81c70d",
     "src/WordPress/TeamFrontend.php": "1818a5902e9d4ae8a01b3199aa365f43dbccfed6ed8b62da08b565c8b3ac06d1",
     "src/WordPress/TeamPortal.php": "744678d244053f72eddeef264ad1ba0a6750700460c26183da7315564a721a5a",
+    "src/WordPress/TickerBoundary.php": "553cfa181aca9077238ec0cb2576fe9094985d8561160a52646716063726cd36",
     "templates/admin-custom-fields.php": "274ffcc1413d2d14bb40baa52cb1211008d2022993cfdc344b4c8b70c143d4d5",
     "templates/admin-profile.php": "46c14eafd1b131259b8ad1847522394053e48240275a8e5af81645d5cda19659",
     "templates/class-h3-mgmt-admin-form.php": "1518a77d556894ffcbd80e3c8ed505c3160cf62b0253b50df43f83dc92d15bf0",
@@ -163,8 +168,8 @@
       "tag": "h3-liveticker",
       "handler": "the_ticker",
       "file": "includes/class-h3-mgmt-ticker.php",
-      "line": 787,
-      "defaults_source": "'max' => 10, 'route' => 'all', 'race' => 0, 'team' => 0, 'show_warning' => 1, 'show_nav' => 0"
+      "line": 201,
+      "defaults_source": null
     },
     {
       "tag": "h3-mate-xchange",
@@ -254,36 +259,36 @@
       "tag": "h3-ticker-datenbank-change",
       "handler": "Ticker_Datenbank_Change",
       "file": "includes/class-h3-mgmt-ticker.php",
-      "line": 1418,
+      "line": 221,
       "defaults_source": null
     },
     {
       "tag": "h3-ticker-incoming-interface",
       "handler": "ticker_incoming_interface",
       "file": "includes/class-h3-mgmt-ticker.php",
-      "line": 1311,
+      "line": 211,
       "defaults_source": null
     },
     {
       "tag": "h3-ticker-map",
       "handler": "ticker_Page_map",
       "file": "includes/class-h3-mgmt-ticker.php",
-      "line": 535,
-      "defaults_source": "'route' => 'all', 'race' => 0, 'show_nav' => 1, 'show_warning' => 1, 'coord_center_lat' => 54.0237934, 'coord_center_lng' => 9.3754401"
+      "line": 194,
+      "defaults_source": null
     },
     {
       "tag": "h3-ticker-message",
       "handler": "ticker_Page_controll",
       "file": "includes/class-h3-mgmt-ticker.php",
-      "line": 172,
-      "defaults_source": "'race' => 0, 'comment' => false, 'comment_get' => false"
+      "line": 190,
+      "defaults_source": null
     },
     {
       "tag": "h3-ticker-send-message-link",
       "handler": "ticker_send_message_link",
       "file": "includes/class-h3-mgmt-ticker.php",
-      "line": 1381,
-      "defaults_source": "'url' => get_site_url() . '/send-ticker-message/', 'race' => 1"
+      "line": 215,
+      "defaults_source": null
     },
     {
       "tag": "h3-user-panel-link",
@@ -435,20 +440,9 @@
     {
       "file": "includes/class-h3-mgmt-media.php",
       "method": "ajax_upload",
-      "line": 61,
+      "line": 67,
       "fields": [
         "POST:race"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-media.php",
-      "method": "picture",
-      "line": 127,
-      "fields": [
-        "POST:left",
-        "POST:right",
-        "POST:ticker_pic_msg"
       ],
       "case_labels": []
     },
@@ -694,63 +688,6 @@
       "line": 2408,
       "fields": [
         "POST:submitted"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-ticker.php",
-      "method": "ticker_Page_controll",
-      "line": 172,
-      "fields": [
-        "GET:todo",
-        "POST:coordinates",
-        "POST:coordinates_informations",
-        "POST:message",
-        "POST:submit_form",
-        "POST:ticker_id",
-        "POST:ticker_pic_msg",
-        "POST:video",
-        "POST:video_message"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-ticker.php",
-      "method": "ticker_Page_map",
-      "line": 535,
-      "fields": [
-        "GET:ticker_route"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-ticker.php",
-      "method": "the_ticker",
-      "line": 787,
-      "fields": [
-        "GET:min",
-        "GET:ticker_race",
-        "GET:ticker_route",
-        "GET:todo"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-ticker.php",
-      "method": "team_ticker",
-      "line": 1132,
-      "fields": [
-        "GET:id",
-        "GET:min"
-      ],
-      "case_labels": []
-    },
-    {
-      "file": "includes/class-h3-mgmt-ticker.php",
-      "method": "ticker_incoming_interface",
-      "line": 1311,
-      "fields": [
-        "POST:message"
       ],
       "case_labels": []
     },
@@ -1094,6 +1031,55 @@
       "line": 21,
       "fields": [
         "GET:race_id"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TickerBoundary.php",
+      "method": "race",
+      "line": 85,
+      "fields": [
+        "GET:ticker_race"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TickerBoundary.php",
+      "method": "form",
+      "line": 183,
+      "fields": [
+        "POST:message"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TickerBoundary.php",
+      "method": "feed",
+      "line": 334,
+      "fields": [
+        "GET:min",
+        "GET:page_id",
+        "GET:ticker_page",
+        "GET:ticker_route"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TickerBoundary.php",
+      "method": "queryRace",
+      "line": 450,
+      "fields": [
+        "GET:race",
+        "POST:race"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/TickerBoundary.php",
+      "method": "page",
+      "line": 467,
+      "fields": [
+        "GET:ticker_page"
       ],
       "case_labels": []
     },

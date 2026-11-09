@@ -66,7 +66,7 @@ jobs:
       - name: Install browser for UI acceptance
         if: matrix.php == '8.2' || matrix.php == '8.5'
         run: npx --no-install playwright install --with-deps chromium
-      - name: Run isolated communication browser and accessibility checks
+      - name: Run isolated communication and ticker browser checks
         if: matrix.php == '8.2' || matrix.php == '8.5'
         env:
           COR_TEST_WP_ROOT: ${{ runner.temp }}/cor-wordpress

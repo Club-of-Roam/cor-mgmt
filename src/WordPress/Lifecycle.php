@@ -34,6 +34,7 @@ final class Lifecycle
         MailQueueAdmin::register();
         BroadcastAdmin::register();
         ExchangeBoundary::register();
+        TickerBoundary::register();
         CommunicationReport::register();
         TeamPortal::register();
         ProfileAvatar::register();
@@ -90,7 +91,11 @@ final class Lifecycle
             $installer->mailQueue();
             $installer->broadcasts();
             $installer->exchange();
-        } catch (MigrationException) {
+            $installer->ticker();
+            if (!$database->exists($database->table('sms_ticker'))) {
+                (new \Cor\Mgmt\Infrastructure\WordPress\TickerImport($database))->start(true);
+            }
+        } catch (\RuntimeException) {
             return new WP_Error('cor_mgmt_participation_setup', __('Additional module setup requires review. Existing data is retained.', 'h3-mgmt'));
         }
         foreach (Capabilities::all() as $capability) {

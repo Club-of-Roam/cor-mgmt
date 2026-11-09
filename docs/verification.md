@@ -1,5 +1,29 @@
 # Prüfbelege
 
+## Block 9: Integrierter Ticker und Medien – 2026-11-09
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Gesamtsuite | 350 Tests / 678 Assertions | 350 / 678 | 350 / 678 | 350 / 678 |
+| Abschließende WordPress-Gesamtsuite | 431 Tests / 3.129 Assertions | 431 / 3.129 | 431 / 3.129 | 431 / 3.129 |
+| Vollständiger Composer-Qualitätslauf | bestanden | bestanden | bestanden | bestanden |
+| HTTP-/Browser-/Tastatur-/axe-Szenarien | 7 bestanden | nicht ausgeführt | nicht ausgeführt | 7 bestanden |
+| Multipart-Bildfluss nach abschließender Pfadprüfung | erneut bestanden | nicht ausgeführt | nicht ausgeführt | erneut bestanden |
+
+Prüfsoftware: WordPress 7.1.4, MariaDB 11.4.13, PHPUnit 11.5.57, Node.js 24.22.2, Playwright Test 1.65.0, @axe-core/playwright 4.14.0 und Microsoft Edge 157.0.4341.42. Alle 14 Node-Regressionen und ESLint bestanden. Composer prüft 192 PHP-Dateien, Dokumentation/Inventar mit 37 Markdown-Dateien und 23 Shortcodes, neun SQL-Referenzen, PHPStan Level 8, Standards und PHPCompatibility. Die acht bisherigen SQL-Referenzen sind zusätzlich gegen die private Ausgangsreferenz bytegleich geprüft.
+
+Die vollständigen Fach-, WordPress- und Composer-Läufe wurden nach den letzten Laufzeitänderungen auf allen vier PHP-Versionen ausgeführt. Die WordPress-Suite enthält 19 Tickerfälle einschließlich getrennt registrierter Legacy-/Modulassets, Kodierungsprüfung und abgewiesener externer Bildpfade. Wiederholungsläufe werden nicht zu einer zusätzlichen Gesamtsuitenzahl addiert. Kein entfernter GitHub-Lauf ausgeführt.
+
+Migration: eigenständige additive Einrichtung ohne cor-ticker, Wiederholung, Original-IDs, Kommentare und bytegetreue Rohdaten einschließlich Null-/Binärspalten. Explizit geprüft: alte UTF-32-Variante mit `from`, Umlaute und unbekannte Zusatzfelder; nicht geprüfte Kodierung stoppt ohne Quellenänderung. Eine nicht transaktionale Fortschrittstabelle wird abgewiesen. Übernahme von 101 Zeilen in begrenzten Paketen mit zweiter Prüfung, Wiederaufnahme, geänderte Quelle trotz unveränderter Anzahl und beschädigte Zielprojektion trotz intaktem Originalpayload. Neue IDs liegen oberhalb der übernommenen IDs. Historische Tabellen und Dateien bleiben unverändert bestehen.
+
+Writer und Rechte: neue Texte, Kommentare, Videos, Standorte und Bilder mit konkretem Event, Objektberechtigung und Anfragebindung. Fremde Events/Eltern/Attachments, gefälschte Nonces, veraltete Moderation und mehrdeutige Mitgliedschaft werden abgewiesen. Derselbe Befehl erhält kein zweites Ergebnis; veränderte Wiederholung wird abgelehnt. Zwei echte gleichzeitige Workerprozesse erzeugen zusammen genau einen Beitrag und einen Journaleintrag. Eingabe und Anzeige sind unabhängig; Archive blockieren Änderungen bei weiterhin erlaubter administrativer Einsicht. Rendern verarbeitet keine übermittelten Befehle. Fehlende Eventtexte und unbekannte Events erzeugen keine Veraltungswarnungen.
+
+Medien: echte multipart-Übertragung über HTTP, Eigentum/Eventbindung und neue Drehdatei statt Überschreiben. Originalpfad/-hash bleiben erhalten. Historische ausführbare Dateien, `.php.png`, SVG und als PNG getarnter Code werden ohne Bildanforderung zurückgewiesen; auch gefälschte Attachment-Metadaten öffnen diesen Pfad nicht. Originale bleiben im synthetischen Prüffall bis zur ausdrücklich begrenzten Fixturebereinigung bestehen. Ehemals gültig signierte Gatewayanfragen erhalten jetzt ausschließlich 410 ohne Schreibwirkung; alte Positivtests wurden bewusst durch den Stilllegungsvertrag ersetzt. Die drei gesonderten cor-ticker-Dateien sind syntaktisch und über ihren 410-Ausgang geprüft. Quellsuche in Theme-/Upload-PHP fand keine weiteren literalen Verweise auf die untersuchten Ticker-Schreibwege.
+
+Browser: Schreiben und Kommentieren, Tastaturbedienung, Nonceverweigerung, vollständiger Bildfluss mit Erhalt der Original-URL und moderiertes Ausblenden. Tickerverwaltung verweigert Teilnehmern HTTP 403. Standortabfrage nur nach Klick, Video-/Kartenfreigabe ohne vorherige Fremdanfragen. Zwei Teams auf getrennten Routen, Markeröffnung per Tastatur, Teamverlauf und Umschalten der Routenebenen sind geprüft. Kartenkacheln wurden synthetisch beantwortet, andere externe Browserverbindungen blockiert. axe prüfte WCAG-2.1-A/AA-Tags; das ist keine vollständige manuelle Barrierefreiheitsfreigabe und kein Nachweis echter YouTube-/OSM-Verfügbarkeit. Kein echter Mail-, Zahlungs- oder Gatewayversand.
+
+Paketgrenzen und mitgelieferter Produktionsautoloader mit 306 Dateien unter PHP 8.2 und 8.5 geprüft; keine Entwicklungsabhängigkeiten im ZIP. Abschließende Wiederholungsbuilds werden auf Bytegleichheit geprüft. Die sieben Browserfälle wurden nach sämtlichen Laufzeitänderungen erneut auf beiden Versionen bestanden, ebenso 14 Node-Regressionen und ESLint. Aktuelle Umsetzung und separate Nachbaränderungen: [Block 9](block-9-ticker.md). Keine Anwendungsmigration, keine Aktivierung eines Bestandswechsels und keine Git-Aktionen. Fachliche, visuelle, Bestands-, Übersetzungs-, Leistungs- und Releaseabnahme gemeinsam in Block 10.
+
 ## Block 8: Rundmails, Börse und Browsernachweis – 2026-11-08
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

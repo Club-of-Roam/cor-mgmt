@@ -62,7 +62,7 @@ Die groben Fachfragen FACH-01 bis FACH-05 sind durch die Matrix und Nachträge D
 - Block 7: Betterplace und bestehender Zuordnungsablauf durch D-39/40 bestätigt. Anbieterzugang, weitere Automatisierung, Rückerstattungen und Bestandsabgleich bleiben offen.
 - Block 6: historische Punktefehler zunächst mit Ist-/Soll-Vergleich belegen; keine stille Neuberechnung der Historie.
 - Block 3/7: Betragseinheiten pro Schreibpfad nachweisen; Mehrdeutiges berichten, keine pauschale Multiplikation.
-- Block 9: realen Gateway-Vertrag, Zeichensatz und Zeitformat ermitteln; vorher keine Rückwärtskompatibilität behaupten.
+- Block 9: Historische Zeichensätze, Zeitformate und Nachrichtentypen für den Datenerhalt ermitteln. Der frühere Auftrag zur Wiederanbindung des SMS-Gateways entfällt durch D-50; dessen alte Eingänge kontrolliert stilllegen.
 
 Diese Fragen verhindern keine Dokumentation/Referenztests, aber die jeweilige unbelegte fachliche Umstellung.
 
@@ -87,3 +87,12 @@ Diese Fragen verhindern keine Dokumentation/Referenztests, aber die jeweilige un
 
 - D-48 (technisch 2026-11-08): Manuelle Kampagnen besitzen eigene unveränderliche Empfänger-/Text-/Absendersnapshots und technische Queue-Scope 0; keine erfundene Veranstaltung oder Archiveingriffe. Vorschau/Fingerabdruck und Anfrageschlüssel, Queue-Schritte maximal 100, bestätigte Versand-Schritte maximal 5, individuelle Freigabe/Pause und gemeinsame bestehende Transportgrenzen. Ausdrücklich gestarteter Browserlauf verarbeitet dieselben begrenzten Schritte mit Stop/Fortschritt; Rechte und Revision bei jedem Request, Fehler ohne automatischen Retry. Globale Gruppen und fremde Aufträge nur mit zusätzlichen Administratorrechten; Rechte bei jeder Aktion erneut prüfen. Keine automatische Übersetzung oder Auswahl bei widersprüchlichen gemeinsamen Adressen. [Vertrag](block-8-completion.md).
 - D-49 (technisch 2026-11-08): Börse bleibt entsprechend bestätigtem Bestand global; keine stillschweigende Bindung an Event-Autoresponses. Native Formulare, paginierte Anzeige, Eigentum und Revisionen, transaktionales Journal sowie ausdrücklich administrative Moderation. Historische IDs/Duplikate und automatische Änderungszeit erhalten; keine automatische Engine-Konvertierung oder Löschung. Aufbewahrung zunächst nur lesend erfassen; destruktive Bereinigung erst nach ausdrücklicher Frist-/Anonymisierungsentscheidung.
+
+
+## Integration Ticker und gemeinsame Abnahme (2026-11-09)
+
+- D-50 (vom Benutzer vorgegeben): SMS-Ticker ist eingestellt. Der benötigte Webticker einschließlich Verwaltung wird vollständig in cor-mgmt integriert; cor-ticker wird beim kontrollierten Wechsel abgelöst. Kein neuer SMS-/MMS-Gatewaybetrieb. Historische Inhalte und IDs auch aus sms_ticker/sms_ticker_status erhalten; Bestandsbezeichnung nicht mit aktiver SMS-Funktion gleichsetzen. Alte Endpunkte und konkurrierende Writer gezielt stilllegen, notwendige Anzeigen/Shortcodes kompatibel erhalten. [Plan](block-9-ticker-plan.md). Dies ist die Zielentscheidung, keine bereits ausgeführte Abschaltung oder Datenmigration.
+- D-51 (vom Benutzer vorgegeben): Fachliche und visuelle Abnahme aller Bereiche gemeinsam am Ende in Block 10. Die bisher offenen Modulabnahmen werden dorthin gebündelt; automatisierte Tests und technische Prüfungen laufen während der Umsetzung weiter. Keine vorgezogene Versand-/Anbieter- oder Produktionsfreigabe daraus ableiten.
+
+
+- D-52 (technisch 2026-11-09): Eigenes additives Ticker-Modul statt Adoption der gemeinsamen Alttabelle. Begrenzte explizite Kopie und Zweitprüfung mit Original-IDs, bytegetreuen Snapshots und Quellstillstand; kein konkurrierender Writer. Historische Quellen und Statusdaten bleiben unverändert erhalten. Native Webbefehle werden protokolliert; SMS-/MMS-Eingänge liefern 410. [Umsetzung und Übergangsgrenzen](block-9-ticker.md).

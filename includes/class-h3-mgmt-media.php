@@ -51,11 +51,17 @@ final class H3_MGMT_Media {
     }
 
     public static function may_post(int $race): bool {
-        global $h3_mgmt_teams;
-        if (!is_user_logged_in() || !$race || H3_MGMT_Security::archived($race)) { return false; }
-        if (current_user_can('h3_mgmt_edit_teams')) { return true; }
-        $team = (int) $h3_mgmt_teams->user_has_team($race);
-        return $team > 0 && (bool) $h3_mgmt_teams->is_complete($team);
+        return \Cor\Mgmt\WordPress\TickerBoundary::manager()->native()
+            && \Cor\Mgmt\WordPress\TickerBoundary::allowed(get_current_user_id(), $race, 'write');
+    }
+
+    public static function ticker_upload(int $race): int {
+        if (!self::may_post($race)) { throw new RuntimeException('forbidden_ticker_upload'); }
+        $file = H3_MGMT_Security::upload('photo');
+        if (is_wp_error($file)) { throw new RuntimeException('invalid_ticker_image'); }
+        $id = self::attach($file, $race);
+        if (!$id) { wp_delete_file($file['file']); throw new RuntimeException('ticker_image_registration_failed'); }
+        return $id;
     }
 
     public static function ajax_upload(): void {
@@ -68,6 +74,24 @@ final class H3_MGMT_Media {
         $id = self::attach($result, $race);
         if (!$id) { wp_send_json_error(['message'=>__('Image registration failed.', 'h3-mgmt')], 500); }
         wp_send_json_success(['id'=>$id, 'url'=>self::legacy_url($result['url'])]);
+    }
+
+    /** Rotation creates a distinct attachment; shared originals are never overwritten. */
+    public static function rotated_copy(int $attachment, int $race, int $angle): int {
+        if (!self::may_post($race) || !in_array($angle, [90,180,270], true)
+            || !\Cor\Mgmt\WordPress\TickerBoundary::allowed(get_current_user_id(), $race, 'attachment:' . $attachment)) {
+            throw new RuntimeException('forbidden_ticker_rotation');
+        }
+        $path = self::local_path((string) get_attached_file($attachment));
+        $editor = wp_get_image_editor($path);
+        if (is_wp_error($editor) || is_wp_error($editor->rotate($angle))) { throw new RuntimeException('ticker_rotation_unavailable'); }
+        $uploads = wp_upload_dir();
+        $name = wp_unique_filename($uploads['path'], 'cor-ticker-' . wp_generate_uuid4() . '.' . pathinfo($path, PATHINFO_EXTENSION));
+        $result = $editor->save(trailingslashit($uploads['path']) . $name);
+        if (is_wp_error($result)) { throw new RuntimeException('ticker_rotation_failed'); }
+        $id = self::attach(['file'=>$result['path'], 'url'=>trailingslashit($uploads['url']) . basename($result['path']), 'type'=>$result['mime-type']], $race);
+        if (!$id) { wp_delete_file($result['path']); throw new RuntimeException('ticker_image_registration_failed'); }
+        return $id;
     }
 
     private static function attach(array $file, int $race): int {
@@ -95,6 +119,11 @@ final class H3_MGMT_Media {
         $marker = 'wp-content/uploads/';
         $position = strpos($normalized, $marker);
         if ($position !== false) { $normalized = $base . DIRECTORY_SEPARATOR . substr($normalized, $position + strlen($marker)); }
+        // Reject unknown absolute/UNC paths before realpath can touch an external filesystem.
+        $root = trailingslashit(wp_normalize_path($base));
+        $normalized = wp_normalize_path($normalized);
+        $inside = DIRECTORY_SEPARATOR === '\\' ? strncasecmp($normalized, $root, strlen($root)) === 0 : str_starts_with($normalized, $root);
+        if (!$inside) { return ''; }
         $path = realpath($normalized);
         return $path && str_starts_with($path, $base . DIRECTORY_SEPARATOR) && is_file($path) ? $path : '';
     }
@@ -111,6 +140,15 @@ final class H3_MGMT_Media {
         return self::attach($file, $race) ? self::legacy_url($file['url']) : new WP_Error('upload_failed', 'Upload failed');
     }
 
+    /** Historical paths may predate upload validation: never request executable or active image formats. */
+    public static function safe_image_path(string $value): string {
+        $path = self::local_path($value);
+        if ($path === '' || !in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['jpg','jpeg','jpe','png','gif','webp','bmp','avif'], true)
+            || preg_match('/\.(?:php[0-9]*|phtml|pht|phar|cgi|pl|py|asp|aspx|jsp|jspx|shtml|sh)(?:\.|$)/i', basename($path))) { return ''; }
+        $image = @getimagesize($path);
+        return $image && in_array($image['mime'] ?? '', ['image/jpeg','image/png','image/gif','image/webp','image/bmp','image/x-ms-bmp','image/avif'], true) ? $path : '';
+    }
+
     public static function owned_image(string $value, int $race): int {
         if (!self::may_post($race)) { return 0; }
         $url = preg_match('~^https?://~i', $value) ? $value : site_url('/' . ltrim($value, '/'));
@@ -124,32 +162,8 @@ final class H3_MGMT_Media {
         return $path && $base && str_starts_with($path, $base . DIRECTORY_SEPARATOR) ? $id : 0;
     }
 
+    /** Retired direct SQL writer; native forms use TickerBoundary and the journaled writer. */
     public static function picture(int $race, bool $rotate = false): string {
-        global $wpdb;
-        $value = $_POST[$rotate ? 'ticker_pic_url' : 'image_name'] ?? '';
-        if (!is_string($value) || !($id = self::owned_image(wp_unslash($value), $race))) { return H3_MGMT_Security::error(); }
-        $oldUrl = wp_get_attachment_url($id);
-        $url = $oldUrl;
-        if ($rotate) {
-            $editor = wp_get_image_editor(get_attached_file($id));
-            if (is_wp_error($editor)) { return H3_MGMT_Security::error(); }
-            $angle = isset($_POST['left']) ? 90 : (isset($_POST['right']) ? 270 : 180);
-            if (is_wp_error($editor->rotate($angle))) { return H3_MGMT_Security::error(); }
-            $saved = $editor->save();
-            if (is_wp_error($saved)) { return H3_MGMT_Security::error(); }
-            $uploads = wp_upload_dir();
-            $url = trailingslashit($uploads['baseurl']) . ltrim(str_replace(wp_normalize_path($uploads['basedir']), '', wp_normalize_path($saved['path'])), '/');
-            if (!self::attach(['file'=>$saved['path'], 'url'=>$url, 'type'=>$saved['mime-type']], $race)) { return H3_MGMT_Security::error(); }
-            $wpdb->update($wpdb->prefix . 'sms_ticker', ['img_url'=>self::legacy_url($url)],
-                ['img_url'=>self::legacy_url($oldUrl), 'race_id'=>$race, 'send_from'=>'U_' . get_current_user_id()], ['%s'], ['%s','%d','%s']);
-        } else {
-            $text = sanitize_textarea_field(wp_unslash(is_string($_POST['ticker_pic_msg'] ?? null) ? $_POST['ticker_pic_msg'] : ''));
-            $wpdb->insert($wpdb->prefix . 'sms_ticker', ['send_from'=>'U_' . get_current_user_id(), 'msg'=>esc_html($text),
-                'type'=>3, 'timestamp'=>time(), 'race_id'=>$race, 'img_url'=>self::legacy_url($url)], ['%s','%s','%d','%d','%d','%s']);
-        }
-        return '<p>' . esc_html__('Image saved.', 'h3-mgmt') . '</p><img alt="" src="' . esc_url($url) . '">' .
-            '<form method="post" action="?todo=rotate">' . H3_MGMT_Security::nonce('cor-mgmt-ticker-' . $race) .
-            '<input type="hidden" name="ticker_pic_url" value="' . esc_attr(self::legacy_url($url)) . '">' .
-            '<button name="left" value="1">90° ↶</button><button name="right" value="1">90° ↷</button><button name="180" value="1">180°</button></form>';
+        return H3_MGMT_Security::error();
     }
 }

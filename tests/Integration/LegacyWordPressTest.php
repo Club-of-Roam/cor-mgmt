@@ -239,13 +239,13 @@ final class LegacyWordPressTest extends TestCase
         self::assertSame('Synthetic city', get_user_meta($id, 'city', true));
     }
 
-    public function testTickerEmptyGatewayRequestReturns403WithoutWriting(): void
+    public function testTickerEmptyGatewayRequestReturns410WithoutWriting(): void
     {
         global $wpdb;
         ob_start();
         try { $GLOBALS['h3_mgmt_ticker']->ticker_incoming_interface(); $output = ob_get_contents(); }
         finally { ob_end_clean(); }
-        self::assertSame('403', $output);
+        self::assertSame('410', $output);
         self::assertSame('0', $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sms_ticker"));
     }
 
@@ -347,19 +347,24 @@ final class LegacyWordPressTest extends TestCase
         $id = $this->user();
         $this->team($id);
         wp_set_current_user($id);
-        $_GET = ['todo' => $action];
-        $_POST = $post;
+        $db = new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb);
+        (new \Cor\Mgmt\Infrastructure\WordPress\TickerImport($db))->start(true);
+        $kind = [1=>'text',100=>'comment',4=>'location',5=>'video'][$type];
+        $_POST = ['ticker_kind'=>$kind,'message'=>$post['message'] ?? $post['coordinates_informations'] ?? $post['video_message'] ?? '',
+            'media'=>$post['coordinates'] ?? $post['video'] ?? '', 'request_key'=>str_repeat('a',32)];
+        if ($kind === 'comment') {
+            $_POST['parent_id'] = (string) \Cor\Mgmt\WordPress\TickerBoundary::manager()->create($id,9,'text','Parent','',0,0,str_repeat('b',32));
+        }
         $this->postNonce('cor-mgmt-ticker-9');
-        if ($action === 'send_message_comment') { $wpdb->insert($wpdb->prefix . 'sms_ticker', ['id'=>123,'race_id'=>9,'type'=>1,'send_from'=>'U_'.$id,'msg'=>'Parent']); }
-        $html = do_shortcode('[h3-ticker-message race="9"]');
-        $row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}sms_ticker ORDER BY id DESC LIMIT 1", ARRAY_A);
-        self::assertIsArray($row);
-        self::assertSame('U_' . $id, $row['send_from']);
-        self::assertSame((string) $type, $row['type']);
-        self::assertSame($message, $row['msg']);
+        $saved = \Cor\Mgmt\WordPress\TickerBoundary::submit(9);
+        $row = \Cor\Mgmt\WordPress\TickerBoundary::manager()->post($saved);
+        self::assertSame('U_' . $id, $row['author_ref']);
+        self::assertSame($kind, $row['kind']);
+        self::assertSame($kind === 'text' ? 'Synthetic' : $message, $row['body']);
         self::assertSame('9', $row['race_id']);
-        if ($url !== null) { self::assertSame($url, $row['img_url']); }
-        self::assertStringContainsString('has been sent', $html);
+        if ($url !== null) { self::assertSame($kind === 'location' ? '52.0000000,13.0000000' : $url, $row['media_ref']); }
+        self::assertStringContainsString('Send message', do_shortcode('[h3-ticker-message race="9"]'));
+        self::assertSame('0', $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sms_ticker"));
     }
 
     public static function tickerPosts(): array
@@ -368,7 +373,7 @@ final class LegacyWordPressTest extends TestCase
             ['send_message', ['message' => '<b>Synthetic</b>'], 1, '&lt;b&gt;Synthetic&lt;/b&gt;', null],
             ['send_message_comment', ['message' => 'Comment', 'ticker_id' => 123], 100, 'Comment', null],
             ['coordinates', ['coordinates' => '52.0,13.0', 'coordinates_informations' => 'Location'], 4, 'Location', '52.0,13.0'],
-            ['send_video', ['video' => 'https://www.youtube.com/watch?v=synthetic', 'video_message' => 'Video'], 5, 'Video', 'synthetic'],
+            ['send_video', ['video' => 'https://www.youtube.com/watch?v=abcdefghijk', 'video_message' => 'Video'], 5, 'Video', 'abcdefghijk'],
         ];
     }
 

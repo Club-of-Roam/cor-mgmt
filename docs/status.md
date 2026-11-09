@@ -1,6 +1,6 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-08. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-09. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
 PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. Der fehlgeschlagene GitHub-Lauf wurde analysiert; für die Korrektur gibt es noch keinen entfernten Wiederholungslauf.
 
@@ -23,8 +23,8 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
 | 6 | neue Wertung und Historienvergleich umgesetzt; Abnahme offen | block-6-results.md; vollständiges Archiv, Bestandsvergleich und Browserabnahme bleiben offen |
 | 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestands-/Browserabnahme und nachgewiesene Altübernahme offen |
-| 8 | erste Vorlagenbasis umgesetzt; Versandumschaltung offen | block-8-templates.md; neue Eventkonfiguration noch ohne Laufzeitwirkung, Queue/Worker und Börse folgen |
-| 9 | offen | Ticker/Medien |
+| 8 | Kommunikation, Queue, Rundmails und Börse technisch umgesetzt | block-8-completion.md; Inhalts-/Bestands-/Anbieter- und Aufbewahrungsfreigaben bleiben zur Gesamtabnahme offen |
+| 9 | Webticker und Medien technisch integriert | block-9-ticker.md; eigenständige Einrichtung, kontrollierte Altübernahme, Moderation und stillgelegte SMS-Eingänge; Bestands-/Gesamtabnahme in Block 10 |
 | 10 | offen | Gesamtabnahme und geprüfter Produktionswechsel |
 
 Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist kein belegter GitHub-Lauf. WordPress-Referenzintegration ausgeführt; vollständige Modul-, Migrations- und Browserabnahme nicht erfolgt.
@@ -33,7 +33,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Block-3-Ergebnis und Grenzen in block-3-migration.md prüfen. Rennen-/Routenverwaltung gemäß block-4-events.md ist umgestellt. Teams/Profile aus Block 5 und die neue Wertung aus Block 6 sind umgestellt; Betterplace-Grundlage und offene Abnahmen aus Block 7 beachten; Reader-/Writer-Umschaltung und Archivschutz gegen die geprüften Zwischenstrukturen entwickeln. Keine Kopie automatisch aktivieren.
+3. Block 10 vorbereiten: Block-3-Grenzen, vollständigen Archivsnapshot, Bestandsmigrationen und alle Modulabnahmen zusammenführen. Kontrollierte Tickerübernahme und gesonderte Stilllegung alter direkter Eingänge gemäß block-9-ticker.md berücksichtigen. Keine Kopie automatisch aktivieren; echte Zustellung und Zahlungsautomatisierung bleiben gesondert freizugeben.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 
@@ -172,3 +172,20 @@ Unabhängig umsetzbare technische Arbeiten dieses Blocks sind erledigt. Ausdrüc
 
 
 Prüfabschluss des Rundmail-/Börsenpakets: isolierte Gesamtsuite auf PHP 8.2/8.3/8.4/8.5 bestanden, WordPress-Gesamtläufe unter 8.3/8.5 und betroffene 228er-Auswahl unter 8.2/8.4. Nach den letzten Ergänzungen sämtliche 31 Rundmail-/Börsen-/Stapelfälle mit je 277 Assertions auf allen vier Versionen erfolgreich. Vier HTTP-/Browser-/Tastatur-/axe-Szenarien einschließlich AJAX-Queueverarbeitung unter PHP 8.2/8.5 bestanden. 14 Node-Tests, ESLint, Qualitätsprüfungen und bytegleiche ZIP-Builds mit 295 Dateien geprüft. Zeitliche Grenzen und offene echte Abnahmen in verification.md. Geeigneter manueller Commit-Zwischenstand; englische Message mitliefern. Block 8 bleibt nur für die oben genannten Mitwirkungs-/Freigabepunkte offen.
+
+
+## Block 9 – Fachliche Festlegung (2026-11-09)
+
+SMS-Ticker laut Benutzer eingestellt. Der weiterhin benötigte Ticker einschließlich Verwaltung wird vollständig in cor-mgmt integriert; separates cor-ticker beim kontrollierten Wechsel ablösen. Historische Inhalte/IDs und Medien erhalten, keine automatische Löschung nach Tabellenname oder Nachrichtentyp. Alte SMS-/MMS-/Gateway-Eingänge gezielt stilllegen, keine neue Anbieteranbindung. Plan, Quellbefunde und technische Kriterien in [Block 9](block-9-ticker-plan.md), D-50.
+
+Fachliche und visuelle Prüfung aller Module gemeinsam in Block 10 gemäß D-51. Automatisierte Prüfungen bleiben laufend erforderlich. In diesem Schritt ausschließlich Dokumentation angepasst; kein Laufzeitcode, keine Nachbarplugins oder Anwendungsdaten geändert und keine Eingänge bereits technisch abgeschaltet. Dokumentationsprüfung ausgeführt; keine Laufzeitsuiten für diese Planänderung.
+
+## Block 9 – Webticker und Medien umgesetzt (2026-11-09)
+
+[Umsetzung und Übergangsvertrag](block-9-ticker.md): eigenständige native Eingaben, Kommentare, Bilder mit getrennten Drehkopien, Videos, Standorte, Karten und eventbezogene Moderation. Bestehende Shortcodes bleiben erhalten. Neue Schreibwege verwenden Objektberechtigungen, Nonces, Wiederholungsschutz, Transaktionen und ein Journal; Archive bleiben lesbar. SMS-/MMS-Eingänge sind stillgelegt.
+
+Eigenes additives Tickerschema mit ausdrücklicher Einrichtung und begrenzter, wiederaufnehmbarer Übernahme. Original-IDs und bytegetreue Rohdaten bleiben erhalten; zweite Prüfung vor Umschaltung. Historische Tabellen und Originalmedien werden nicht gelöscht. Kein Wechsel oder umfangreicher Import bei gewöhnlichen Seitenaufrufen. Die drei gesonderten cor-ticker-Dateien sind außerhalb des cor-mgmt-Pakets geändert und müssen beim Ausrollen separat berücksichtigt werden.
+
+Technische Umsetzung ohne weitere fachliche Mitwirkung abgeschlossen. Abschließende Fachsuite (350 Tests / 678 Assertions) und WordPress-Gesamtsuite (431 / 3.129) sowie Composer-Qualitätsprüfungen auf PHP 8.2/8.3/8.4/8.5 erfolgreich. Browser-, JavaScript- und Paketnachweise samt Grenzen stehen in [Prüfbelegen](verification.md). Keine Anwendungsdaten migriert, kein echter Versand und keine Git-Aktionen. Geeigneter Zwischenstand für einen manuellen Commit; englische Message mitliefern.
+
+Nächster Block: 10, gemeinsame Bestands-, Funktions-, Oberflächen- und Releaseabnahme. Dazu gehören die kontrollierte Übernahme einer frischen Bestandskopie, historische Sonderfälle, Theme-/Nachbarintegration, Übersetzungen, Leistung sowie Sicherung und Wiederherstellung. Eine Produktions- oder Releasefreigabe ist mit diesem technischen Abschluss nicht erteilt.

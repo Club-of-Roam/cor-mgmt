@@ -79,3 +79,8 @@ Ergänzung: [Spendenverwaltung und Übergangsvorbereitung](block-7-administratio
 ## Geplanter Übergang globaler Autoresponses
 
 Block 8 erhält eigenständige Vorlagen je Veranstaltung/Aktion/Sprache (D-44). Globale Originale bleiben erhalten. Zielveranstaltungen bei kontrollierter Übernahme ausdrücklich auswählen, Kopien unabhängig führen und individuell bearbeitete Zielvorlagen nicht automatisch überschreiben. Keine Zuordnung anhand des aktiven Rennens und kein Versand als Migrationsnebenwirkung. Details und Abnahmekriterien in [Block 8](block-8-communication-plan.md). Additives Vorlagenmodell und Kopierwerkzeug inzwischen implementiert; keine Anwendungskopie übernommen oder umgeschaltet. [Aktueller Umfang](block-8-templates.md).
+
+
+## Ergänzung Block 9 (2026-11-09)
+
+[Integrierter Webticker](block-9-ticker.md): additives Ticker-Modul 1.0.0, eigener Writer/Renderer, kontrollierte schrittweise Übernahme mit Original-IDs und Rohdatenvergleich. SMS-/MMS-/Gateway-Eingänge sind stillgelegt. Das Nebenplugin und direkte Dateien sind gesonderte Ausrolländerungen; keine automatische Anwendungsmigration. Historische Tabellen und Medien bleiben erhalten. Fachliche und visuelle Gesamtabnahme in Block 10.

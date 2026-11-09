@@ -35,7 +35,7 @@ Block 0 ist am 2026-11-02 als Analyse-/Referenz-/Testgrundlagenpaket abgeschloss
 | 6 Ergebnisse | Ergebnistabelle, Punkteberechnung, Eingabe und Ranglisten | Historie verglichen; Altfehler gesondert dokumentiert |
 | 7 Spenden | Zuerst fachliche Prüfung; danach bestätigte Adapter, Centbeträge und wiederholbare Bestätigungen | Fachentscheidung plus Erfolgs-/Fehler-/Wiederholungsfälle |
 | 8 Kommunikation/Börse | Autoresponses je Event/Aktion/Sprache, Empfänger, kontrollierter Versand und eigene Nachrichten | Parallele Events strikt getrennt; Rechte, Sprache und Empfänger stimmen; keine unbeabsichtigten Mehrfachsendungen |
-| 9 Ticker/Medien | Texte, Kommentare, Bilder, Videos, Karten, authentifizierte Eingänge und cor-ticker-Adapter | Historische/neue Inhalte; sichere Uploads/Eingänge |
+| 9 Ticker/Medien | Integrierter Webticker mit Texten, Kommentaren, Bildern, Videos, Karten und eigener Verwaltung; SMS-Strecke stilllegen | Historische/neue Inhalte erhalten; sichere Webeingänge/Uploads, Eigenbetrieb ohne cor-ticker |
 | 10 Gesamtabnahme | Eigenständiges ZIP, Standardtheme ohne Zusatzplugins, optionale Integrationen, Übersetzungen, Statistiken, Bedienung, Leistung und Release | Release-Kandidat mit geprüfter Wiederherstellung |
 
 Testgrundlage und CI beginnen in Block 0; nötige Infrastruktur aus Block 2 wird für Sicherheitskorrekturen vorgezogen. Fachmodule benötigen die geprüfte Migrationsbasis vor ihrer Datenumstellung. Alte Handler bleiben über Adapter erreichbar. Kein konkurrierender Schreibbetrieb zweier Plugin-Versionen.
@@ -78,3 +78,10 @@ Block 6 liefert normalisierte Ergebnisse für ausdrücklich eingerichtete Wertun
 ## Ergänzung Block 8: Autoresponses je Event
 
 D-44 verlangt unabhängig anlegbare und einstellbare Vorlagen pro Veranstaltung. Keine globale Auswahl über das aktive Rennen; Vorlage, Empfänger und Versandwarteschlange bleiben an die Veranstaltung des Auslösers gebunden. Explizite datenerhaltende Übernahme globaler Vorlagen und Tests mit zwei parallelen Events gehören zum Block. [Umsetzungsplan](block-8-communication-plan.md). Erstes Vorlagen-Teilpaket seit 2026-11-08 umgesetzt; [Umfang und Grenze](block-8-templates.md). Die [Queue-Grundlage](block-8-queue.md) ist ebenfalls umgesetzt. [Teamauslöser und Queueverwaltung](block-8-delivery.md) sind angebunden. Manueller Rundmailversand, Börse und Gesamtabnahme bleiben offen.
+
+
+## Ergänzung Block 9 und gemeinsame Abnahme (2026-11-09)
+
+SMS-Ticker laut Benutzer eingestellt. Der Webticker einschließlich benötigter cor-ticker-Verwaltung wird vollständig in cor-mgmt integriert; das separate Plugin wird beim kontrollierten Wechsel abgelöst. Historische SMS/MMS-Inhalte und gemeinsame Tickerdaten bleiben erhalten. Kein Wiederaufbau des SMS-Gateways; alte Eingänge ausdrücklich stilllegen. [Umsetzungsplan](block-9-ticker-plan.md), D-50.
+
+Fachliche und visuelle Abnahmen aller Blöcke werden auf Benutzerwunsch gemeinsam in Block 10 durchgeführt (D-51). Automatisierte Prüfungen und technische Datenerhaltungs-/Umschaltungsnachweise bleiben Bestandteil der laufenden Umsetzung.

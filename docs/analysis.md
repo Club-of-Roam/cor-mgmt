@@ -16,7 +16,7 @@ Prüfdatum: 2026-11-01. Untersuchter Quellstand: Git 9c2d1d6e6f03a29f56a3781397d
 | SEC-01 hoch | GET/POST-Einladungscode direkt im SQL: [handle_invitation](../includes/class-h3-mgmt-teams.php#L976) | Vorbereitete Abfragen, sichere Tokens; 1/5 |
 | SEC-02 hoch | Nonces erzeugt, keine Verifikation im untersuchten Plugin erkennbar: [Form](../templates/class-h3-mgmt-admin-form.php#L93), [Teamverwaltung](../admin/class-h3-mgmt-admin-teams.php) | Nonce plus aktions-/objektbezogene Rechte; 1 |
 | SEC-03 hoch | GET löst Löschung/Austritt aus: [Admin](../admin/class-h3-mgmt-admin-teams.php), [Dashboard](../includes/class-h3-mgmt-teams.php#L1649) | POST mit CSRF-Schutz; 1 |
-| SEC-04 hoch | Eingang ohne erkennbare Authentifizierung im Handler: [Ticker](../includes/class-h3-mgmt-ticker.php#L1433) | Authentifizierung, Größen-/Typprüfung, Duplikatschutz; 9, vorher isoliert halten |
+| SEC-04 hoch | Eingang ohne erkennbare Authentifizierung im Handler: [Ticker](../includes/class-h3-mgmt-ticker.php) | Authentifizierung, Größen-/Typprüfung, Duplikatschutz; 9, vorher isoliert halten |
 | SEC-05 hoch | [app.js](../js/app.js#L35) verwendet uploads/ticker_images/process.php; ausgelagerter Endpunkt verschiebt Upload ohne WP-/Bildprüfung | Geschützter Medienhandler; 1/9 |
 | SEC-06 hoch | Unpassende Ausgabebehandlung bei Börsennachrichten; Datenänderung nur anhand ID: [XChange](../includes/class-h3-mgmt-xchange.php) | Validierung, Escaping, Eigentumsbedingung; 1/8 |
 | PHP-01 mittel | Implizit nullable Parameter: [date_diff2](../includes/class-h3-mgmt-utilities.php#L73); deprecated Interpolation: [XChange](../includes/class-h3-mgmt-xchange.php) | Explizite Typen und moderne Interpolation; 2 |

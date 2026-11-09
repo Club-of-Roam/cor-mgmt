@@ -1157,7 +1157,7 @@ class H3_MGMT_Teams {
 			),
 			array (
 				'label'	=> _x( 'Mobile Phone', 'Team Profile Form', 'h3-mgmt' ),
-				'desc'	=> _x( 'Your mobile phone number. This information is important for the SMS/MMS-Liveticker and will not be visible publicly.', 'Team Profile Form', 'h3-mgmt' ),
+				'desc'	=> _x( 'Your mobile phone number for event organization. It will not be visible publicly.', 'Team Profile Form', 'h3-mgmt' ),
 				'id'	=> 'mobile',
 				'type'	=> 'text'
 			),

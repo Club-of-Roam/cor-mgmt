@@ -33,7 +33,7 @@ Die exakten 18 Capabilities liefert [extra_caps](../includes/class-h3-mgmt.php#L
 | Komponente | Beleg / Vertrag | Folgemaßnahme |
 |---|---|---|
 | cor-theme | profile-form.php prüft H3_MGMT_ABSPATH und bindet templates/frontend-form.php direkt ein; Theme übernimmt zusätzlich Anmeldung/Datenschutz/Layout | Eigene Formular-/Anmeldeoberfläche im Plugin, Adapter statt impliziter Pflicht; getrennte Themeänderungen dokumentieren |
-| cor-ticker | Gemeinsame Tabellen sms_ticker und sms_ticker_status | Daten-/ID-/Typvertrag erhalten; neue eigene Verwaltung und optionaler Adapter. Keine parallelen unkoordinierten Writer |
+| cor-ticker | Gemeinsame Tabellen sms_ticker und sms_ticker_status | Benötigte Webticker-/Verwaltungsfunktionen vollständig in cor-mgmt integrieren; IDs/Inhalte erhalten, altes Plugin beim Wechsel ablösen und SMS-Eingänge stilllegen (D-50). Keine parallelen unkoordinierten Writer |
 | js/app.js → uploads/ticker_images/process.php | HTTPS aus window.location.hostname, fester Uploadpfad; umgeht WP-Pluginrouter | Geschützter Medienendpunkt im Plugin, Uploadgröße/MIME/Eigentum prüfen; Aufrufer und alten Eingang getrennt migrieren |
 | Profile_Layer_Pics | Historischer ausgelagerter Endpunkt, aktuelle fachliche Verwendung nicht abschließend nachgewiesen | Nicht blind löschen; vor Medienumstellung Nutzung ermitteln |
 | Betterplace | Clientcookie/Token, Fundraising-ID aus URL, API-Rückgabe, submitted-Schritte; ältere Weiterleitung und donation_check zusätzlich vorhanden | Erst fachliche Zahlungsprüfung in 7; Fehler/Timeout/Bestätigung/Wiederholung simulieren, Historie behalten |
@@ -41,7 +41,7 @@ Die exakten 18 Capabilities liefert [extra_caps](../includes/class-h3-mgmt.php#L
 | WPML / Members / Avatar / ThemeMyLogin / Embed Privacy | Sprachkonstante, Capfilter, Avatarmetafeld, Loginshortcode, Kartenfilter | Optionale Adapter und plugininterne Fallbacks; Abwesenheit muss v2-Installation ermöglichen |
 | Leaflet / Imagick | Kartenfrontend bzw. bestehende Bildrotation | Bibliothek nicht ohne Grund ersetzen; Bildrotation optional und mit klarer Voraussetzungenprüfung umsetzen |
 
-Gateway-Payload und Nachrichtentypen sind im [Referenzkatalog](reference-catalog.md) beschrieben. Der leere Eingang und die lokale Nummernlogik sind getestet; der tatsächliche externe Gatewayvertrag ist in Block 9 zu verifizieren. Keine Produktionsanfragen für diese Referenzprüfung.
+Historische Gateway-Payloads und Nachrichtentypen sind im [Referenzkatalog](reference-catalog.md) beschrieben; bisherige Tests bleiben Referenz des Ausgangspunkts. Seit D-50 ist der SMS-Gatewaybetrieb eingestellt: Block 9 erhält die historischen Daten und legt alte Eingänge still, statt einen Anbieter wieder anzubinden. [Integrations- und Übergangsplan](block-9-ticker-plan.md).
 
 ## Historie und Übergang
 
@@ -72,3 +72,8 @@ Ergänzung: [Spendenverwaltung und Übergangsvorbereitung](block-7-administratio
 [Mailauslöser und Queueverwaltung](block-8-delivery.md) dokumentiert die atomare Anbindung. TeamBoundary erzeugt den TeamManager mit Ereignisempfänger und derselben Database-Instanz. Direkte eigene TeamManager-Konstruktionen müssen diese Anbindung ausdrücklich übernehmen. `notify()` führt nachträglich keine Aktion mehr aus; `auto_response()` ohne Event-/Fachtransaktion liefert false statt eines globalen Fallbacks. Bestehende manuelle `send()`-Aufrufer sind separat zu modernisieren. Homework-Bestätigungsformulare benötigen neben POST/Nonce einen eigenen `confirmation_request`-Wert mit 32 Hexzeichen, der bei Wiederholung desselben Formulars stabil bleibt.
 
 Teilnehmerlinks nutzen `admin-post.php` mit `action=cor_mgmt_team`, `race_id` und gegebenenfalls Einladungstoken. TeamPortal erzeugt die Adresse über WordPress; eigene Themes müssen keine neue Datei bereitstellen. Queueverwaltung nutzt `h3_mgmt_send_emails` und zusätzlich konkrete Eventrechte. Keine Änderungen an Theme, cor-ticker oder Upload-Endpunkten in diesem Paket.
+
+
+## Ergänzung Block 9 (2026-11-09)
+
+[Integrierter Webticker](block-9-ticker.md): additives Ticker-Modul 1.0.0, eigener Writer/Renderer, kontrollierte schrittweise Übernahme mit Original-IDs und Rohdatenvergleich. SMS-/MMS-/Gateway-Eingänge sind stillgelegt. Das Nebenplugin und direkte Dateien sind gesonderte Ausrolländerungen; keine automatische Anwendungsmigration. Historische Tabellen und Medien bleiben erhalten. Fachliche und visuelle Gesamtabnahme in Block 10.

@@ -6,3 +6,4 @@ parameters:
     scanFiles:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
         - includes/class-h3-mgmt-security.php
+        - includes/class-h3-mgmt-media.php

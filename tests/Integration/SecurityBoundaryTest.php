@@ -330,15 +330,15 @@ final class SecurityBoundaryTest extends TestCase
         self::assertWPError(\H3_MGMT_Maintenance::repair(9,true));
     }
 
-    public function testProtectedMaintenanceDryRunAndApplyAreScopedAndRepeatable(): void
+    public function testProtectedMaintenanceReportsButNeverRewritesHistoricalSenders(): void
     {
         global $wpdb;
         update_user_meta($this->member,'mobile','+4912345678');
         foreach ([9,10] as $race) { $wpdb->insert($wpdb->prefix.'sms_ticker',['send_from'=>'004912345678','race_id'=>$race,'msg'=>'Synthetic','type'=>1]); }
         $this->post('cor-mgmt-maintenance');
         self::assertSame(['proposed'=>1,'updated'=>0,'ambiguous'=>0],\H3_MGMT_Maintenance::repair(9));
-        self::assertSame(['proposed'=>1,'updated'=>1,'ambiguous'=>0],\H3_MGMT_Maintenance::repair(9,true));
-        self::assertSame(['proposed'=>0,'updated'=>0,'ambiguous'=>0],\H3_MGMT_Maintenance::repair(9,true));
+        self::assertWPError(\H3_MGMT_Maintenance::repair(9,true));
+        self::assertSame(['proposed'=>1,'updated'=>0,'ambiguous'=>0],\H3_MGMT_Maintenance::repair(9));
         self::assertSame('004912345678',$wpdb->get_var("SELECT send_from FROM {$wpdb->prefix}sms_ticker WHERE race_id=10"));
     }
 
@@ -349,13 +349,13 @@ final class SecurityBoundaryTest extends TestCase
         $_SERVER['HTTP_X_COR_TIMESTAMP']=(string)time();
         $_SERVER['HTTP_X_COR_REQUEST_ID']='synthetic-request';
         $_SERVER['HTTP_X_COR_SIGNATURE']='forged';
-        self::assertSame('403',$this->gateway());
+        self::assertSame('410',$this->gateway());
         $_SERVER['HTTP_X_COR_TIMESTAMP']=(string)(time()-600);
         $_SERVER['HTTP_X_COR_SIGNATURE']=hash_hmac('sha256',$_SERVER['HTTP_X_COR_TIMESTAMP']."\nsynthetic-request\n{}",COR_MGMT_TICKER_SECRET);
-        self::assertSame('403',$this->gateway());
+        self::assertSame('410',$this->gateway());
     }
 
-    public function testSignedGatewayMessageWorksOnceAndReplayCannotDuplicate(): void
+    public function testRetiredGatewayRejectsEvenCorrectSignaturesWithoutWriting(): void
     {
         global $wpdb;
         if (!defined('COR_MGMT_TICKER_SECRET')) { define('COR_MGMT_TICKER_SECRET',str_repeat('synthetic-test-secret-',3)); }
@@ -365,10 +365,9 @@ final class SecurityBoundaryTest extends TestCase
         $_SERVER['HTTP_X_COR_TIMESTAMP']=(string)time();
         $_SERVER['HTTP_X_COR_REQUEST_ID']='synthetic-valid-message';
         $_SERVER['HTTP_X_COR_SIGNATURE']=hash_hmac('sha256',$_SERVER['HTTP_X_COR_TIMESTAMP']."\nsynthetic-valid-message\n".$raw,COR_MGMT_TICKER_SECRET);
-        self::assertSame('OK',$this->gateway());
-        self::assertSame('409',$this->gateway());
-        self::assertSame('1',$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sms_ticker"));
-        self::assertSame('U_'.$this->member,$wpdb->get_var("SELECT send_from FROM {$wpdb->prefix}sms_ticker"));
+        self::assertSame('410',$this->gateway());
+        self::assertSame('410',$this->gateway());
+        self::assertSame('0',$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}sms_ticker"));
         self::assertStringNotContainsString('<script',(string)$wpdb->get_var("SELECT msg FROM {$wpdb->prefix}sms_ticker"));
     }
 
@@ -414,6 +413,7 @@ final class SecurityBoundaryTest extends TestCase
     public function testGatewayValidImageGetsRandomNameAndOwnershipMetadata(): void
     {
         global $wpdb;
+        (new \Cor\Mgmt\Infrastructure\WordPress\TickerImport(new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb)))->start(true);
         // Synthetic one-pixel PNG, never a copied user image.
         $bytes=base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNg+M/wHwAEAQH/cetH5QAAAABJRU5ErkJggg==');
         $url=\H3_MGMT_Media::gateway_image($bytes,9);
