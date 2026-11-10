@@ -6,7 +6,7 @@ use Cor\Mgmt\Infrastructure\WordPress\Schema\Catalogue;
 $definitions = Catalogue::legacy()+Catalogue::shadow();
 $version = Catalogue::STORAGE_VERSION;
 $filename = 'schema-3.0.0.sql';
-foreach (['participation' => 'ParticipationSchema','results' => 'ResultsSchema','donations' => 'DonationSchema','communication' => 'CommunicationSchema','mail-queue' => 'MailQueueSchema','broadcasts' => 'BroadcastSchema','exchange' => 'ExchangeSchema','ticker' => 'TickerSchema'] as $flag => $name) {
+foreach (['participation' => 'ParticipationSchema','results' => 'ResultsSchema','donations' => 'DonationSchema','communication' => 'CommunicationSchema','mail-queue' => 'MailQueueSchema','broadcasts' => 'BroadcastSchema','exchange' => 'ExchangeSchema','ticker' => 'TickerSchema','archive' => 'ArchiveSchema'] as $flag => $name) {
     if (in_array('--'.$flag, $argv, true)) {
         $class = 'Cor\\Mgmt\\Infrastructure\\WordPress\\Schema\\'.$name;
         $definitions = $class::definitions(); $version = $class::VERSION; $filename = 'schema-'.$flag.'-'.$version.'.sql';

@@ -39,7 +39,9 @@ Dieser Nachweis gilt für die additive Zwischenkopie und den separaten Tickerver
 | R-07 | Frische Produktionskopie, finale Matrix, Übersetzungen, Leistungs- und Paketabnahme | Reproduzierbares ZIP, protokollierte Gesamtprüfung und endgültig deklarierte Plattformunterstützung |
 | R-08 | Wechselplan und Rückweg nach neuen Schreibvorgängen abnehmen | Zuständigkeiten, Wartungsfenster, Sicherung und Wiederherstellung einschließlich neuer Token-/Journal-/Zahlungsdaten |
 
-R-01/R-02 sind aus früheren Blöcken übernommene Implementierungsarbeit, keine bloß noch ausstehende Bestätigung durch den Benutzer. Rennabschluss bleibt bis R-02 ausdrücklich gesperrt (`archive_not_ready`). Der Versionsheader bleibt bis erfüllter Releasekriterien unverändert.
+R-01/R-02 werden durch [Archiv und aktive Umschaltung](block-10-archive.md) technisch umgesetzt und geprüft: parallele modernisierte Fachtabellen, atomarer Namenswechsel, Snapshotveröffentlichung und geschützter Rückweg. Neue Rennabschlüsse laufen ausdrücklich über das Archivwerkzeug; gewöhnliche Phasenformulare dürfen den Snapshot nicht umgehen (`archive_not_ready`). Das ist keine Bestands-/Medien-/Releasefreigabe. R-03 bis R-08 sowie die gemeinsame Anzeige-/Integrationsabnahme bleiben offen. Der Versionsheader bleibt bis erfüllter Releasekriterien unverändert.
+
+Bestandsprobe vom 2026-11-10: 15 historische Rennen mit 29.454 Snapshotdatensätzen veröffentlicht, Wiederaufnahme nach tatsächlichem Namenswechsel und unveränderte Rückschaltung der 7.772 ursprünglichen Fachdatensätze nachgewiesen. 8.376 Medienverweise besitzen gesicherte Bildkopien, 78 Verweise sind nicht verfügbar und bleiben R-03. Es wurde eine vorhandene ältere Sicherung verwendet; die frische Produktionskopie für R-07 steht weiterhin aus. Vollständige Belege: [verification.md](verification.md).
 
 ## Gemeinsame fachliche und visuelle Abnahmeliste
 

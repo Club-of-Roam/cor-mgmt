@@ -77,7 +77,7 @@ final class ResponseTemplates
     {
         $this->allowed($race, $actor, 'edit');
         $context = $this->context($race, $actor);
-        if (!$context['writable']) {
+        if (!$context['writable'] || Archive::locked($this->db, $race)) {
             throw new CommunicationException('archive_locked');
         }
         return $context;

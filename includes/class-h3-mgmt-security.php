@@ -24,6 +24,14 @@ final class H3_MGMT_Security {
     }
 
     public static function post(string $action): bool {
+        global $wpdb;
+        if ($wpdb instanceof wpdb) {
+            try {
+                $db = new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb);
+                $runtime = \Cor\Mgmt\WordPress\Services::get();
+                if (!(new \Cor\Mgmt\Infrastructure\WordPress\Schema\Cutover($db, $runtime->clock, $runtime->random))->runtimeReady()) { return false; }
+            } catch (Throwable) { return false; }
+        }
         $nonce = $_POST['cor_mgmt_nonce'] ?? '';
         return ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && is_string($nonce)
             && (bool) wp_verify_nonce(wp_unslash($nonce), $action);
@@ -104,7 +112,8 @@ final class H3_MGMT_Security {
         if (!$race) { return false; }
         $json = $wpdb->get_var($wpdb->prepare("SELECT setting FROM {$wpdb->prefix}h3_mgmt_races WHERE id=%d", $race));
         $settings = json_decode((string) $json, true);
-        return (int) ($settings['status'] ?? -1) === 4;
+        return (int) ($settings['status'] ?? -1) === 4
+            || ($wpdb instanceof wpdb && \Cor\Mgmt\Infrastructure\WordPress\Archive::locked(new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb), $race));
     }
 
     /** Validate before adapting POST routing for legacy controllers. GET never becomes a write. */

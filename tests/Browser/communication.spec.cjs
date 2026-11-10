@@ -41,6 +41,25 @@ async function axe(page) {
   const results = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
   expect(results.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
 }
+
+test('archive tools are restricted, readable by keyboard and require maintenance confirmations', async ({ page, context }) => {
+  await identity(context, 'member');
+  expect((await page.goto(base + '/archives')).status()).toBe(403);
+  await expect(page.locator('[data-archive-form]')).toHaveCount(0);
+  await identity(context, 'admin');
+  await page.goto(base + '/archives');
+  await expect(page.getByRole('heading', {name: 'Archives and storage transition', exact: true})).toBeVisible();
+  await expect(page.locator('input[name="backup"]')).not.toBeChecked();
+  await expect(page.locator('input[name="quiesced"]')).not.toBeChecked();
+  let posts = 0;
+  page.on('request', request => { if (request.method() === 'POST') posts++; });
+  await page.getByRole('button', {name: 'Set up archive storage', exact: true}).click();
+  expect(posts).toBe(0);
+  await page.getByLabel('A verified backup is available.', {exact: true}).focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator('input[name="backup"]')).toBeChecked();
+  await axe(page);
+});
 test('preview, snapshot, queue and pause a campaign without sending', async ({ page, context }) => {
   await identity(context, 'admin');
   await page.goto(base + '/mail');

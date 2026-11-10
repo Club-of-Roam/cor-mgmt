@@ -76,7 +76,7 @@ final class MailQueueManagement
     {
         $this->allowed($race, $actor, 'edit');
         $context = $this->context($race, $actor, 1, $message);
-        if (!$context['writable']) {
+        if (!$context['writable'] || Archive::locked($this->db, $race)) {
             throw new CommunicationException('archive_locked');
         }
         if (!hash_equals((string) $context['revision'], $revision)) {

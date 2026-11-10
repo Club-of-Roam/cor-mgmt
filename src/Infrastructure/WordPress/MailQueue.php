@@ -144,6 +144,9 @@ final class MailQueue
 
     private function eventOpen(int $race): void
     {
+        if ($race > 0 && Archive::locked($this->db, $race)) {
+            throw new CommunicationException('archive_locked');
+        }
         if ($race === 0) {
             $this->manualReady();
             return;

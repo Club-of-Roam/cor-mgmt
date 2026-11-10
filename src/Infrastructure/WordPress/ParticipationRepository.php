@@ -35,6 +35,9 @@ final class ParticipationRepository implements ParticipationStore
     }
     public function find(string $type, int $id): array
     {
+        if ($this->writing && $type === 'race' && Archive::locked($this->db, $id)) {
+            throw new ParticipationException('archive_locked');
+        }
         return $this->db->rows($this->db->prepare('SELECT * FROM %i WHERE id=%d', $this->table($type), $id) . ($this->writing ? ' FOR UPDATE' : ''))[0] ?? [];
     }
     public function related(string $type, string $field, string $value): array

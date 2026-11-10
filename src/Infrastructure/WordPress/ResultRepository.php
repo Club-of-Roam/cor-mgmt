@@ -64,6 +64,9 @@ final class ResultRepository implements ResultStore
     }
     public function race(int $race): ResultContext
     {
+        if ($this->writing && Archive::locked($this->db, $race)) {
+            throw new ResultException('archive_locked');
+        }
         $row = $this->rows('h3_mgmt_races', 'id', $race)[0] ?? [];
         if (!$row) {
             throw new ResultException('missing_race');

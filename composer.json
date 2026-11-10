@@ -35,11 +35,12 @@
       "@php tools/export-schema.php --broadcasts --check",
       "@php tools/export-schema.php --exchange --check",
       "@php tools/export-schema.php --ticker --check",
+      "@php tools/export-schema.php --archive --check",
       "@analyse",
       "@lint:standards",
       "@lint:compatibility"
     ],
-    "test:js": "node --test tests/security-js.test.cjs tests/schema-js.test.cjs tests/broadcast-js.test.cjs",
+    "test:js": "node --test tests/security-js.test.cjs tests/schema-js.test.cjs tests/broadcast-js.test.cjs tests/archive-js.test.cjs",
     "analyse": "@php vendor/phpstan/phpstan/phpstan analyse --no-progress --memory-limit=512M",
     "lint:standards": "@php vendor/squizlabs/php_codesniffer/bin/phpcs -s",
     "lint:compatibility": "@php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcs-compatibility.xml.dist",

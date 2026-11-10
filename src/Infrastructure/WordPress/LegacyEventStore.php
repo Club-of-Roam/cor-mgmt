@@ -25,6 +25,9 @@ final class LegacyEventStore implements EventStore
     }
     public function find(string $type, int $id): array
     {
+        if ($this->editing && $type === 'race' && Archive::locked($this->db, $id)) {
+            throw new EventException('archived');
+        }
         return $this->db->rows($this->db->prepare('SELECT * FROM %i WHERE id=%d', $this->table($type), $id) . ($this->editing ? ' FOR UPDATE' : ''))[0] ?? [];
     }
     public function matching(string $type, string $field, int $value): array
@@ -50,6 +53,10 @@ final class LegacyEventStore implements EventStore
     public function write(string $type, array $old, array $values): int
     {
         $this->db->assertLock();
+        $race = $type === 'race' ? (int) ($old['id'] ?? 0) : (int) ($old['race_id'] ?? $values['race_id'] ?? 0);
+        if ($race > 0 && Archive::locked($this->db, $race)) {
+            throw new EventException('archived');
+        }
         $this->protectResults($type, $old, $values);
         $set = [];
         foreach ($values as $key => $value) {
@@ -72,6 +79,10 @@ final class LegacyEventStore implements EventStore
     public function remove(string $type, array $old): void
     {
         $this->db->assertLock();
+        $race = $type === 'race' ? (int) ($old['id'] ?? 0) : (int) ($old['race_id'] ?? 0);
+        if ($race > 0 && Archive::locked($this->db, $race)) {
+            throw new EventException('archived');
+        }
         $this->protectResults($type, $old, [], true);
         $this->db->execute($this->db->prepare('DELETE FROM %i WHERE ', $this->table($type)) . $this->predicate($old));
         if ($this->db->wpdb->rows_affected !== 1) {

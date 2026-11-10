@@ -16,6 +16,7 @@ Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheit
 
 | Dokument | Inhalt |
 |---|---|
+| [Archiv und aktive Umschaltung Block 10](docs/block-10-archive.md) | Geprüfte Snapshots, historische Anzeigen, parallele Fachtabellen, Wiederaufnahme und Rückweg |
 | [Gesamtabnahme Block 10](docs/block-10-acceptance.md) | ZIP-Lebenszyklus, Seiteneinrichtung, Übernahmeprobe, Releaseblocker und gemeinsame Abnahmeliste |
 | [Ticker und Medien Block 9](docs/block-9-ticker.md) | Native Webeingaben, Medien, Moderation, Installation und kontrollierte Übernahme |
 | [Plan Ticker und Medien Block 9](docs/block-9-ticker-plan.md) | Integrierter Webticker, Ablösung von cor-ticker, Stilllegung der SMS-Strecke und Datenerhalt |

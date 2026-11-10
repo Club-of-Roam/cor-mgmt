@@ -34,6 +34,14 @@ final class Ticker
     /** @return list<array<string,string|null>> */
     public function feed(int $race, int $team = 0, int $route = 0, int $page = 1, int $limit = 10, bool $moderation = false, int $actor = 0, int $parent = 0, string $kind = ''): array
     {
+        $archive = new Archive($this->db, $this->clock, new \Cor\Mgmt\Infrastructure\SecureRandom());
+        $snapshot = $archive->published($race);
+        if ($snapshot !== '') {
+            if ($moderation && !($this->access)($actor, $race, 'review')) {
+                throw new \RuntimeException('forbidden');
+            }
+            return $archive->tickerFeed($snapshot, $team, $route, $page, $limit, $parent, $kind, $moderation);
+        }
         if (!$this->native()) {
             if ($moderation) {
                 throw new \RuntimeException('ticker_transition_required');
@@ -199,6 +207,9 @@ final class Ticker
 
     private function authorize(int $actor, int $race, string $action): void
     {
+        if ($action !== 'review' && Archive::locked($this->db, $race)) {
+            throw new \RuntimeException('archive_locked');
+        }
         if ($actor < 1 || $race < 1 || !($this->access)($actor, $race, $action)) {
             throw new \RuntimeException('forbidden');
         }

@@ -1,6 +1,14 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-09. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-10. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+
+## Aktuelles Paket: Archiv und aktive Umschaltung
+
+Die [Archivumsetzung](block-10-archive.md) ergänzt unveränderliche rennbezogene Snapshots, lokale Bildkopien, eingefrorene öffentliche Anzeigen und den ausdrücklichen Abschluss neuer Rennen. Der unabhängige Plan `live-copy-v1` erstellt parallel modernisierte Fachtabellen, prüft alle Werte und schaltet sie gemeinsam um. Wiederaufnahme sowie ein Rückweg ohne neue Datenänderungen sind implementiert; Originaltabellen, Snapshots und Bilder werden nicht automatisch gelöscht. Der aktive Umschaltweg weist MySQL bis zur gesonderten DDL-/Wiederherstellungsprüfung ab.
+
+Das Paket bearbeitet die Implementierungsreste R-01/R-02 aus Block 10. Fachliche/visuelle Gesamtabnahme, historische Medienbefunde, frische Produktionskopie und Releasefreigabe bleiben offen. Es aktiviert keine vorhandene Anwendungsdatenbank. Tatsächlich ausgeführte Prüfungen und Bestandsproben: [verification.md](verification.md). Ältere, datierte Zwischenstände unten bleiben als Historie erhalten und sind keine aktuellen Einschränkungen dieses Pakets.
+
+Prüfabschluss: 350 isolierte Tests und 457 WordPress-Integrationstests je PHP 8.2/8.3/8.4/8.5; letzte Schlüsseloptimierung zusätzlich mit 13 gezielten Umschalttests je Version abgesichert. Composer-Qualität auf allen vier Versionen, 20 JavaScript-Fälle, acht Browser-/Tastatur-/axe-Szenarien auf 8.2/8.5 sowie reproduzierbares eigenständiges ZIP bestanden. Bestandsprobe mit 15 Archiven und verifiziertem Rückweg erfolgreich; 78 nicht verfügbare Medienverweise bleiben zur Abnahme offen. Geeigneter manueller Commit-Zeitpunkt; keine Git-Aktionen ausgeführt.
 
 PHP-Ziel: jeweils neueste stabile Version bei vollständiger Unterstützung ab 8.2. Matrix 8.2/8.3/8.4/8.5 in CI eingerichtet und mit isolierter sowie echter WordPress-Referenzsuite ausgeführt; Details in verification.md. GitHub-Lauf 42684774834 scheiterte in allen vier Jobs am fehlenden SERVER_NAME im CLI-Portaltest; Fixture und Regression sind korrigiert. Noch kein entfernter Wiederholungslauf nach dieser Korrektur.
 
@@ -18,14 +26,14 @@ Masterplan, Analyse, Referenzszenarien, Entscheidungen, Architektur, Migration, 
 | 0 | abgeschlossen: Referenz und Testgrundlage | Übergabe gemäß block-0-acceptance.md; keine Modul-/Releasefreigabe |
 | 1 | abgeschlossen: Sicherheitsbasis | Sicherheitsbasis und Integrationsverträge gemäß block-1-security.md |
 | 2 | technische Laufzeitbasis umgesetzt | Autoloading, Adapter, Lebenszyklus, Qualitätsprüfungen und Paketbau gemäß block-2-foundation.md; Releaseabnahme separat |
-| 3 | Installation und kontrollierte Zwischenmigration umgesetzt | Fachliche Umschaltung, kompletter Archivsnapshot und abschließende Modul-/Releaseabnahme noch offen; block-3-migration.md |
-| 4 | Verwaltungsumbau im Kompatibilitätsbetrieb umgesetzt | block-4-events.md; Teilnehmer-Kapazitätsvertrag, aktive Migration und vollständiges Archiv mit Folgeblöcken abnehmen |
+| 3 | Installation, Zwischenmigration und aktive Umschaltung implementiert | Abschlussprüfung und Grenzen gemäß block-10-archive.md; vollständige Bestands-/Releaseabnahme offen |
+| 4 | Verwaltungsumbau umgesetzt | block-4-events.md; aktive Migration und Archiv in Block 10 ergänzt; gemeinsame Bedienungsabnahme offen |
 | 5 | Fachumbau serverseitig geprüft | block-5-teams.md; Browser-/Medienabnahme noch offen |
-| 6 | neue Wertung und Historienvergleich umgesetzt; Abnahme offen | block-6-results.md; vollständiges Archiv, Bestandsvergleich und Browserabnahme bleiben offen |
+| 6 | neue Wertung, Historienvergleich und Archivprojektion umgesetzt | block-6-results.md / block-10-archive.md; fachlicher Bestandsvergleich und gemeinsame Anzeigeabnahme offen |
 | 7 | Betterplace-Grundlage umgesetzt; Freigabe offen | block-7-donations.md; Automatisierung, Anbieter-/Bestands-/Browserabnahme und nachgewiesene Altübernahme offen |
 | 8 | Kommunikation, Queue, Rundmails und Börse technisch umgesetzt | block-8-completion.md; Inhalts-/Bestands-/Anbieter- und Aufbewahrungsfreigaben bleiben zur Gesamtabnahme offen |
 | 9 | Webticker und Medien technisch integriert | block-9-ticker.md; eigenständige Einrichtung, kontrollierte Altübernahme, Moderation und stillgelegte SMS-Eingänge; Bestands-/Gesamtabnahme in Block 10 |
-| 10 | technische Gesamtabnahme begonnen | block-10-acceptance.md; ZIP-/Lebenszyklus- und Übernahmeprobe, Seiteneinrichtung; aktive Fachmigration/Archiv und gemeinsame Abnahme bleiben offen |
+| 10 | technische Gesamtabnahme einschließlich Archiv/Umschaltung umgesetzt | block-10-acceptance.md / block-10-archive.md; Medienbefunde, frische Produktionskopie, fachliche/visuelle Freigabe und Release bleiben offen |
 
 Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist kein belegter GitHub-Lauf. WordPress-Referenzintegration ausgeführt; vollständige Modul-, Migrations- und Browserabnahme nicht erfolgt.
 
@@ -33,7 +41,7 @@ Prüfergebnisse: [verification.md](verification.md). Workflow-Konfiguration ist 
 
 1. AGENTS.md und vorhandenen Fortschritt prüfen; Git-Aktionen nur mit ausdrücklicher Freigabe.
 2. composer install, composer check, composer test mit PHP >= 8.2.
-3. Block 10 vorbereiten: Block-3-Grenzen, vollständigen Archivsnapshot, Bestandsmigrationen und alle Modulabnahmen zusammenführen. Kontrollierte Tickerübernahme und gesonderte Stilllegung alter direkter Eingänge gemäß block-9-ticker.md berücksichtigen. Keine Kopie automatisch aktivieren; echte Zustellung und Zahlungsautomatisierung bleiben gesondert freizugeben.
+3. Block 10 abschließen: gemeinsame Modul-, Medien-, Anzeige- und Integrationsabnahme anhand block-10-acceptance.md, dann frische Produktionskopie und endgültigen Wechsel-/Wiederherstellungsplan prüfen. Kontrollierte Tickerübernahme und gesonderte Stilllegung alter direkter Eingänge gemäß block-9-ticker.md berücksichtigen. Keine Kopie automatisch aktivieren; echte Zustellung und Zahlungsautomatisierung bleiben gesondert freizugeben.
 4. Befunde in analysis.md priorisieren; Altfehler von erhaltenswerter Funktion trennen.
 5. Nach jedem Paket Status, Nachweise und Entscheidungen aktualisieren. Kein vorzeitiger Versionssprung.
 

@@ -120,6 +120,11 @@ final class TickerBoundary
     /** @return array<string,mixed> */
     private static function settings(int $race): array
     {
+        $frozen = ArchiveFrontend::frozen($race, 'race', $race);
+        if ($frozen !== null) {
+            $settings = json_decode($frozen['setting'] ?? '', true);
+            return is_array($settings) ? $settings : [];
+        }
         global $wpdb;
         $raw = $wpdb->get_var($wpdb->prepare('SELECT setting FROM %i WHERE id=%d', $wpdb->prefix . 'h3_mgmt_races', $race));
         $value = is_string($raw) ? json_decode($raw, true) : null;
@@ -129,7 +134,8 @@ final class TickerBoundary
     private static function notice(int $race, int $index, string $fallback = ''): string
     {
         global $wpdb, $h3_mgmt_utilities;
-        $raw = $wpdb->get_var($wpdb->prepare('SELECT information_text FROM %i WHERE id=%d', $wpdb->prefix . 'h3_mgmt_races', $race));
+        $frozen = ArchiveFrontend::frozen($race, 'race', $race);
+        $raw = $frozen !== null ? ($frozen['information_text'] ?? '') : $wpdb->get_var($wpdb->prepare('SELECT information_text FROM %i WHERE id=%d', $wpdb->prefix . 'h3_mgmt_races', $race));
         $texts = is_string($raw) ? json_decode($raw, true) : null;
         $language = $h3_mgmt_utilities->user_language();
         $value = is_array($texts) ? ($texts[$index . $language] ?? null) : null;
@@ -235,6 +241,10 @@ final class TickerBoundary
      */
     private static function teamContext(array $row): array
     {
+        $frozen = ArchiveFrontend::tickerContext($row);
+        if ($frozen !== null) {
+            return $frozen;
+        }
         global $wpdb;
         $team = (int) $row['team_id'];
         $actor = (int) $row['actor_id'];
@@ -255,8 +265,13 @@ final class TickerBoundary
         $race = (int) $row['race_id'];
         $author = __('Historical sender', 'h3-mgmt');
         if ((int) $row['actor_id'] > 0) {
-            $user = get_userdata((int) $row['actor_id']);
-            $author = $user ? (string) $user->display_name : __('Former participant', 'h3-mgmt');
+            $frozen = ArchiveFrontend::frozen($race, 'user', (int) $row['actor_id']);
+            if ($frozen !== null) {
+                $author = $frozen['display_name'] ?? __('Former participant', 'h3-mgmt');
+            } else {
+                $user = get_userdata((int) $row['actor_id']);
+                $author = $user ? (string) $user->display_name : __('Former participant', 'h3-mgmt');
+            }
         } elseif ((int) $row['team_id'] > 0) {
             $author = __('Team', 'h3-mgmt') . ' #' . $row['team_id'];
         }
@@ -272,7 +287,7 @@ final class TickerBoundary
         $media = $row['media_ref'] ?? '';
         $caption = $row['body'] ?? '';
         if ($row['kind'] === 'image') {
-            $url = self::imageUrl($media, $row['source_payload'] ?? '');
+            $url = ArchiveFrontend::frozenImage($race, $media) ?? self::imageUrl($media, $row['source_payload'] ?? '');
             if ($url !== '') {
                 echo '<img src="' . esc_url($url) . '" alt="' . esc_attr($caption !== '' ? $caption : __('Ticker image', 'h3-mgmt')) . '" loading="lazy" decoding="async">';
                 if ((int) $row['actor_id'] === get_current_user_id() && (int) $row['attachment_id'] > 0 && self::allowed(get_current_user_id(), $race, 'write')) {
@@ -363,7 +378,9 @@ final class TickerBoundary
                         echo '<input type="hidden" name="page_id" value="' . esc_attr((string) \H3_MGMT_Security::id($_GET['page_id'])) . '">';
                     }
                     echo '<label>' . esc_html__('Route', 'h3-mgmt') . '<select name="ticker_route"><option value="0">' . esc_html__('All routes', 'h3-mgmt') . '</option>';
-                    foreach ($wpdb->get_results($wpdb->prepare('SELECT id,name FROM %i WHERE race_id=%d ORDER BY id', $wpdb->prefix . 'h3_mgmt_routes', $race), 'ARRAY_A') as $item) {
+                    $snapshot = ArchiveBoundary::archive()->published($race);
+                    $routeRows = $snapshot !== '' ? ArchiveBoundary::archive()->all($snapshot, 'route') : $wpdb->get_results($wpdb->prepare('SELECT id,name FROM %i WHERE race_id=%d ORDER BY id', $wpdb->prefix . 'h3_mgmt_routes', $race), 'ARRAY_A');
+                    foreach ($routeRows as $item) {
                         echo '<option value="' . esc_attr((string) $item['id']) . '" ' . selected($route, (int) $item['id'], false) . '>' . esc_html($item['name']) . '</option>';
                     }
                     echo '</select></label><button>' . esc_html__('Filter', 'h3-mgmt') . '</button></form>';

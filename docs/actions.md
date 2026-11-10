@@ -18,10 +18,10 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [save_extra_profile_fields](../includes/class-h3-mgmt-profile.php#L144) | `POST:_wpnonce`, `POST:deleteme` |  |
 | [ranking_table](../includes/class-h3-mgmt-races.php#L910) | `GET:ranking_route` |  |
 | [post](../includes/class-h3-mgmt-security.php#L26) | `POST:cor_mgmt_nonce` |  |
-| [donation_nonce](../includes/class-h3-mgmt-security.php#L36) | `COOKIE:client_token` |  |
-| [donation_request](../includes/class-h3-mgmt-security.php#L41) | `COOKIE:client_token`, `GET:donation_client_reference` |  |
-| [admin_request](../includes/class-h3-mgmt-security.php#L111) | `GET:bulk`, `GET:id`, `GET:todo`, `POST:bulk`, `POST:id`, `POST:race_id`, `POST:route_id`, `POST:submitted`, `POST:team_id`, `POST:todo` |  |
-| [ranking_request](../includes/class-h3-mgmt-security.php#L231) | `POST:route`, `POST:stage` |  |
+| [donation_nonce](../includes/class-h3-mgmt-security.php#L44) | `COOKIE:client_token` |  |
+| [donation_request](../includes/class-h3-mgmt-security.php#L49) | `COOKIE:client_token`, `GET:donation_client_reference` |  |
+| [admin_request](../includes/class-h3-mgmt-security.php#L120) | `GET:bulk`, `GET:id`, `GET:todo`, `POST:bulk`, `POST:id`, `POST:race_id`, `POST:route_id`, `POST:submitted`, `POST:team_id`, `POST:todo` |  |
+| [ranking_request](../includes/class-h3-mgmt-security.php#L240) | `POST:route`, `POST:stage` |  |
 | [sponsoring_section_output](../includes/class-h3-mgmt-sponsors.php#L714) | `GET:type`, `POST:donation_client_reference` |  |
 | [add_values](../includes/class-h3-mgmt-sponsors.php#L1268) | `GET:id`, `POST:submitted` |  |
 | [donation_selector](../includes/class-h3-mgmt-sponsors.php#L1415) | `POST:donation`, `POST:thumbs` |  |
@@ -41,6 +41,9 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [save_dashboard](../includes/class-h3-mgmt-teams.php#L2408) | `POST:submitted` |  |
 | [table_order](../includes/class-h3-mgmt-utilities.php#L189) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L15) | `POST:address` |  |
+| [register](../src/WordPress/ArchiveBoundary.php#L28) | `POST:operation` |  |
+| [page](../src/WordPress/ArchiveBoundary.php#L121) | `GET:snapshot` |  |
+| [render](../src/WordPress/ArchiveFrontend.php#L89) | `GET:id`, `GET:ranking_route` |  |
 | [register](../src/WordPress/BroadcastAdmin.php#L16) | `GET:page` |  |
 | [compose](../src/WordPress/BroadcastAdmin.php#L144) | `GET:email`, `POST:mode` |  |
 | [page](../src/WordPress/BroadcastAdmin.php#L201) | `GET:campaign_id`, `GET:campaign_page`, `GET:recipient_page` |  |
@@ -76,10 +79,10 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [render](../src/WordPress/TeamFrontend.php#L80) | `GET:invitation`, `POST:invitation` |  |
 | [serve](../src/WordPress/TeamPortal.php#L25) | `GET:race_id` |  |
 | [race](../src/WordPress/TickerBoundary.php#L85) | `GET:ticker_race` |  |
-| [form](../src/WordPress/TickerBoundary.php#L183) | `POST:message` |  |
-| [feed](../src/WordPress/TickerBoundary.php#L334) | `GET:min`, `GET:page_id`, `GET:ticker_page`, `GET:ticker_route` |  |
-| [queryRace](../src/WordPress/TickerBoundary.php#L450) | `GET:race`, `POST:race` |  |
-| [page](../src/WordPress/TickerBoundary.php#L467) | `GET:ticker_page` |  |
+| [form](../src/WordPress/TickerBoundary.php#L189) | `POST:message` |  |
+| [feed](../src/WordPress/TickerBoundary.php#L349) | `GET:min`, `GET:page_id`, `GET:ticker_page`, `GET:ticker_route` |  |
+| [queryRace](../src/WordPress/TickerBoundary.php#L467) | `GET:race`, `POST:race` |  |
+| [page](../src/WordPress/TickerBoundary.php#L484) | `GET:ticker_page` |  |
 | [output](../templates/class-h3-mgmt-admin-form.php#L69) | `GET:page` |  |
 | [__construct](../templates/class-h3-mgmt-admin-table.php#L73) | `GET:order`, `GET:orderby` |  |
 | [output](../templates/class-h3-mgmt-admin-table.php#L122) | `GET:filter_name0`, `GET:order`, `GET:orderby`, `GET:page` |  |

@@ -352,23 +352,27 @@ final class EventManagementTest extends TestCase
 
     public function testMyisamSourceRequiresControlledReviewForMultiRecordChanges(): void
     {
+        global $wpdb;
         $other=new \wpdb((string)getenv('COR_TEST_DB_USER'),(string)getenv('COR_TEST_DB_PASSWORD'),(string)getenv('COR_TEST_DB_NAME'),(string)getenv('COR_TEST_DB_HOST'));
         $other->set_prefix('cor_event_engine_');
         $db=new Database($other);
         $editor=new EventEditor(new LegacyEventStore($db),static fn()=>true);
         $tables=[];
         try {
+            self::assertFalse($db->exists($other->options));
+            $db->execute($db->prepare('CREATE TABLE %i LIKE %i',$other->options,$wpdb->options));
+            $tables[]=$other->options;
             foreach(['race','route','stage','team'] as $type) {
                 $table=$db->table('h3_mgmt_'.$type.'s');
                 self::assertFalse($db->exists($table));
                 $db->execute($db->prepare("CREATE TABLE %i (id bigint PRIMARY KEY,name varchar(255),setting text,active int) ENGINE=MyISAM",$table));
                 $tables[]=$table;
             }
-            $db->execute($db->prepare('INSERT INTO %i (id,name,setting,active) VALUES (1,%s,%s,0)',$tables[0],'Keep','{"status":0}'));
+            $db->execute($db->prepare('INSERT INTO %i (id,name,setting,active) VALUES (1,%s,%s,0)',$db->table('h3_mgmt_races'),'Keep','{"status":0}'));
             $this->rejects('transactional_storage_required',fn()=>$editor->save('race',1,['active'=>'1'],$editor->revision('race',1)));
-            self::assertSame('0',$db->scalar($db->prepare('SELECT active FROM %i WHERE id=1',$tables[0])));
+            self::assertSame('0',$db->scalar($db->prepare('SELECT active FROM %i WHERE id=1',$db->table('h3_mgmt_races'))));
             $editor->save('race',1,['name'=>'Safe single-record update'],$editor->revision('race',1));
-            self::assertSame('Safe single-record update',$db->scalar($db->prepare('SELECT name FROM %i WHERE id=1',$tables[0])));
+            self::assertSame('Safe single-record update',$db->scalar($db->prepare('SELECT name FROM %i WHERE id=1',$db->table('h3_mgmt_races'))));
         } finally {
             foreach(array_reverse($tables) as $table) {$db->execute($db->prepare('DROP TABLE %i',$table));}
             $other->close();

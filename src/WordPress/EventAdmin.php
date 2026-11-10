@@ -190,7 +190,7 @@ final class EventAdmin
             'stale_record' => __('This record or its race changed. Reload before saving; your changes were not applied.', 'h3-mgmt'),
             'capacity_below_occupancy' => __('The capacity is below the number of complete teams. Existing assignments will remain. Confirm to save.', 'h3-mgmt'),
             'starting_points_have_assignments' => __('Teams already have assignments. Changing starting points will not move or remove them. Confirm to save.', 'h3-mgmt'),
-            'archive_not_ready' => __('Race completion requires the full archive snapshot, which is not available yet.', 'h3-mgmt'),
+            'archive_not_ready' => __('Prepare and verify the race snapshot under Tools > Archives and storage transition, then publish its completion there.', 'h3-mgmt'),
             'archived' => __('Archived races cannot be changed.', 'h3-mgmt'),
             'field_locked', 'structure_locked', 'change_phase_separately' => __('This change is locked in the current race phase. Change the phase separately if required.', 'h3-mgmt'),
             'dependent_records', 'active_race' => __('This record is still in use and cannot be removed.', 'h3-mgmt'),

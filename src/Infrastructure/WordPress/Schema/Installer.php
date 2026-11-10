@@ -72,6 +72,12 @@ final class Installer
             $this->create(TickerSchema::definitions(), 'cor_mgmt_ticker_install', false, false);
         });
     }
+    public function archive(): void
+    {
+        $this->db->locked(function (): void {
+            $this->create(ArchiveSchema::definitions(), 'cor_mgmt_archive_install', false, false);
+        });
+    }
     public function pendingFresh(): bool
     {
         $raw = $this->db->option('cor_mgmt_fresh_install');

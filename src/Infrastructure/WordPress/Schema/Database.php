@@ -107,7 +107,7 @@ final class Database
      * @param callable():T $operation
      * @return T
      */
-    public function locked(callable $operation): mixed
+    public function locked(callable $operation, bool $maintenance = false): mixed
     {
         if ($this->lockName !== null) {
             throw new MigrationException('nested_migration_lock');
@@ -119,6 +119,16 @@ final class Database
         $this->lockName = $name;
         $this->lockConnection = $this->scalar('SELECT CONNECTION_ID()');
         try {
+            if (!$maintenance) {
+                $rawState = $this->option('cor_mgmt_live_transition');
+                $state = json_decode($rawState ?? '', true);
+                if ($rawState !== null && (!is_array($state) || !in_array($state['state'] ?? '', ['active','rolled_back','abandoned'], true))) {
+                    throw new MigrationException('maintenance_in_progress');
+                }
+                if ($rawState !== null && !(new Cutover($this, new \Cor\Mgmt\Infrastructure\SystemClock(), new \Cor\Mgmt\Infrastructure\SecureRandom()))->runtimeReady()) {
+                    throw new MigrationException('runtime_generation_requires_review');
+                }
+            }
             return $operation();
         } finally {
             $this->lockName = null;

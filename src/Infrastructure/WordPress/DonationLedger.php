@@ -46,6 +46,9 @@ final class DonationLedger
     /** @return array<string,mixed> */
     private function rules(int $race): array
     {
+        if ($this->writing && Archive::locked($this->db, $race)) {
+            throw new DonationException('archive_locked');
+        }
         $raw = $this->db->scalar($this->db->prepare('SELECT setting FROM %i WHERE id=%d', $this->db->table('h3_mgmt_races'), $race) . ($this->writing ? ' FOR UPDATE' : ''));
         $rules = json_decode($raw ?? '', true);
         if (!is_array($rules) || !in_array($rules['status'] ?? null, [0,1,2,3,'0','1','2','3'], true) || !in_array($rules['donation'] ?? null, [1,'1'], true)) {

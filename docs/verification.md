@@ -1,5 +1,41 @@
 # Prüfbelege
 
+## Block 10: Archiv und aktive Speicherumschaltung – 2026-11-10
+
+Umsetzung und Bedienvertrag: [Archiv und Umschaltung](block-10-archive.md). Pluginheader 1.2.10 und die bisherigen neun SQL-Installationspläne sind gegenüber dem vorherigen Paket bytegleich. Unabhängiges Archivschema 1.0.0 und Umschaltplan `live-copy-v1` ergänzt. Keine Git-Aktionen oder Freigabe einer Anwendungs-/Produktionsdatenbank.
+
+| Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |
+|---|---|---|---|---|
+| Isolierte Gesamtsuite | 350 Tests / 678 Assertions | 350 / 678 | 350 / 678 | 350 / 678 |
+| WordPress-Gesamtsuite vor abschließender Schlüsseloptimierung | 457 Tests / 3.339 Assertions | 457 / 3.339 | 457 / 3.339 | 457 / 3.339 |
+| Abschließender Composer-Qualitätslauf | bestanden | bestanden | bestanden | bestanden |
+| HTTP-/Browser-/Tastatur-/axe-Szenarien | 8 bestanden | nicht ausgeführt | nicht ausgeführt | 8 bestanden |
+| Abschließendes ZIP mit Standardtheme | bestanden | nicht ausgeführt | nicht ausgeführt | bestanden |
+
+Die Gesamtsuite wurde nach Ergänzung des Optionsschemas im isolierten MyISAM-Verwaltungstest wiederholt; der ursprüngliche Fehler war ein unvollständiger Testaufbau, kein aufgehobener Wartungsschutz. Die zuletzt ergänzten Archivanzeigen wurden zusätzlich mit 19 Archiv-/Umschaltfällen und 161 Assertions auf allen vier PHP-Versionen geprüft. Nach der letzten Optimierung der Rückwegprüfung bestehen auf allen vier Versionen zusätzlich 13 gezielte Umschalttests / 86 Assertions einschließlich des neuen Batchgrenzenfalls. Der Gesamtlauf oben wird nicht rückwirkend als neuer Lauf mit diesem Stand ausgewiesen.
+
+20 JavaScript-Fälle und ESLint bestanden. Darin sechs neue Fälle für Bestätigungen, Nonce/POST/Identität, gleiche Herkunft, begrenzte Verarbeitung, Stop, fehlerhafte Antworten und fehlende automatische Veröffentlichung. Das zusätzliche Browserszenario prüft Zugriffsschutz, Tastaturbedienung, Bestätigungen und Barrierefreiheit der neuen Archivwerkzeuge.
+
+Abschließende Qualitätsläufe: Syntaxprüfung über 204 PHP-Dateien, PHPStan, PSR-/WordPress-Regeln, PHPCompatibility, zehn Schema-Referenzen und Dokumentationsprüfung über 39 Markdown-Dateien / 23 Shortcodes bestanden. Inventar mit 140 Quellen und 83 Request-Methoden regeneriert. Keine neuen Werkzeugabhängigkeiten erforderlich.
+
+Das abschließende ZIP ist mit zwei getrennten Builds bytegleich: 318 Dateien, keine Entwicklungsabhängigkeiten oder privaten Artefakte; SHA-256 `da0e1c5b25cb3bc91e69236c5f56d71b63e83aab053b89a19025c3fb24f637b8`. Produktionsloader und enthaltene Klassen geprüft; Laufzeitdateien mit den aktuellen Quellen verglichen. Dieses Paket besteht auf PHP 8.2/8.5 Aktivierung, Standardtheme, fünf Seitenrollen, wiederholte Einrichtung, vollständige öffentliche Ausgabe im Unterordner, Deaktivierung, Reaktivierung und datenerhaltende Deinstallation/Neuinstallation.
+
+### Bestandsprobe und Rückweg
+
+Manuelle Probe mit einer vorhandenen Sicherung vom 2026-11-01 auf einer getrennten Übernahmekopie, keine frische Produktionskopie und keine automatisierte Übernahme privater Testfixtures. Kein Mailversand, keine Zahlungen und keine produktiven Writer.
+
+- Neun Fachquellen mit 7.772 Datensätzen; 15 Phase-3-Rennen. Native Tickerübernahme bereits zuvor verifiziert.
+- 15 Snapshots mit 29.454 Datensätzen unabhängig verglichen; Namen/Profile, Ergebnisse, Spenden und Tickerdaten erfasst. Keine Punkte-Neuberechnung.
+- Für 8.376 Medienverweise eine geprüfte lokale Bildkopie gesichert; 78 Verweise `unavailable`. Verweise sind keine Anzahl unterschiedlicher Bilddateien. Fehlende Medien bleiben ausdrücklich R-03 und werden nicht durch stillen Rückgriff auf veränderliche Originale verdeckt.
+- Parallele Fachtabellen vollständig kopiert/geprüft, gemeinsame Umbenennung ausgeführt. Tatsächliche Unterbrechung nach dem Namenswechsel über `recover` fortgesetzt; alle 15 Archivzeiger und Phase 4 sowie gültige Laufzeitgeneration nachgewiesen.
+- Rückschaltung vor neuen Datenänderungen ausgeführt. Quellenfingerabdruck nach Rückschaltung exakt gleich dem Ausgangsfingerabdruck; Originaltabellen, alte Punkte und IDs erhalten. Snapshots, kopierte Bilder und vorbereitete Tabellen behalten.
+
+Die große Probe zeigte zwei Laufzeitprobleme: korrelierte Kontenzuordnung per `IN(UNION...)` und wiederholte Sortierung/Offset-Scans bei der Rückwegprüfung. Die Teilnehmermenge wird nun einmal materialisiert; die Fingerabdruckprüfung verwendet qualifizierte Primärschlüssel und exakte Schlüsselfortsetzung in Batches. Zahlen werden ohne Fließkomma-Vergleich fortgesetzt; zusammengesetzte Textschlüssel behalten ihren Zeichensatz und ihre Kollation. Die erfolgreiche Wiederaufnahme/Rückschaltung oben wurde mit dieser Optimierung ausgeführt.
+
+### Offene Abnahme
+
+Gemeinsame fachliche/visuelle Abnahme, Theme-Direktabfragen, fehlende Medien, Anbieter-/Versandfreigaben, frische Produktionskopie und endgültiger Wechselplan bleiben offen. MySQL wird vom aktiven Namenswechsel bis zu einer eigenen DDL-/Wiederherstellungsprüfung abgewiesen. Kein grüner entfernter GitHub-Wiederholungslauf behauptet. Die folgenden datierten Abschnitte dokumentieren frühere Zwischenstände.
+
 ## Block 10: Installations- und Übernahmeprüfung – 2026-11-09
 
 | Prüfung | PHP 8.2.35 | PHP 8.3.36 | PHP 8.4.27 | PHP 8.5.12 |

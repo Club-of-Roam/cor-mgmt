@@ -1,5 +1,7 @@
 # Datenmodell und Migration
 
+Aktuelle Ergänzung 2026-11-10: [Archiv und aktive Umschaltung](block-10-archive.md) ergänzen die unten beschriebene Zwischenkopie. Unabhängiges Archivschema, vollständige parallele Fachtabellen, abschließender Datenvergleich, gemeinsame Umbenennung und geschützter Rückweg sind implementiert. Die vollständige Bestands-/Releaseabnahme bleibt offen.
+
 Ausgangsbefund: 2026-11-01, lesende SELECT/SHOW-Prüfung. Umsetzung Stand 2026-11-03: [Erstinstallation und kontrollierte Zwischenmigration](block-3-migration.md), [ausführbare Schema-Referenz](schema-3.0.0.sql). Keine vorhandenen Anwendungsdaten migriert; die fachliche Umschaltung und vollständige Archivabnahme bleiben offen.
 
 ## Ist-Modell

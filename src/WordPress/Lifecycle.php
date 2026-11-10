@@ -38,6 +38,7 @@ final class Lifecycle
         CommunicationReport::register();
         TeamPortal::register();
         SitePages::register();
+        ArchiveBoundary::register();
         ProfileAvatar::register();
         ResultBoundary::register();
         register_activation_hook($plugin, [self::class, 'activationHook']);
@@ -93,6 +94,7 @@ final class Lifecycle
             $installer->broadcasts();
             $installer->exchange();
             $installer->ticker();
+            $installer->archive();
             if (!$database->exists($database->table('sms_ticker'))) {
                 (new \Cor\Mgmt\Infrastructure\WordPress\TickerImport($database))->start(true);
             }
@@ -118,6 +120,14 @@ final class Lifecycle
         $database = new Database($wpdb);
         $storage = $database->option('cor_mgmt_storage_version');
         $generation = $database->option('cor_mgmt_active_generation');
+        try {
+            $runtime = Services::get();
+            if (!(new \Cor\Mgmt\Infrastructure\WordPress\Schema\Cutover($database, $runtime->clock, $runtime->random))->runtimeReady()) {
+                return false;
+            }
+        } catch (\Throwable) {
+            return false;
+        }
         return ($storage === null || $storage === Catalogue::STORAGE_VERSION) && ($generation === null || $generation === '')
             && !self::prerequisiteErrors() && !(new Installer(new Database($wpdb)))->pendingFresh()
             && (new SchemaInspector($wpdb))->status() === InstallationStatus::Ready;
@@ -126,7 +136,7 @@ final class Lifecycle
     public static function notice(): void
     {
         global $wpdb;
-        if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\MailQueueSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\BroadcastSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ExchangeSchema::ready(new Database($wpdb)))) {
+        if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\MailQueueSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\BroadcastSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ExchangeSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ArchiveSchema::ready(new Database($wpdb)))) {
             return;
         }
         echo '<div class="notice notice-warning"><p>' . esc_html__('cor-mgmt requires setup or a controlled schema review. Open Tools > cor-mgmt system status.', 'h3-mgmt') . '</p></div>';

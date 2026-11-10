@@ -1,5 +1,7 @@
 # Block 3: Installation und kontrollierte Datenübernahme
 
+Nachtrag 2026-11-10: Der folgende Stand dokumentiert die ursprüngliche Zwischenmigration. Den anschließenden aktiven Namenswechsel und vollständige rennbezogene Snapshots implementiert [Block 10: Archiv und Umschaltung](block-10-archive.md). Dessen Prüfbelege und offene Releasegrenzen gelten zusätzlich; die alten Installationspläne werden nicht rückwirkend verändert.
+
 Stand 2026-11-03. Implementiert und mit synthetischen Daten geprüft: Erstinstallation, lesende Vorprüfung, explizite Migration in getrennte Tabellen, Journal, Wiederaufnahme und Datenvergleich. Keine vorhandenen Anwendungsdaten migriert. Noch keine Umschaltung des laufenden Plugins und keine vollständige Archivfreigabe.
 
 ## Versionen und ausführbare Definition

@@ -124,6 +124,7 @@ if ($path === '/board') { echo \Cor\Mgmt\WordPress\ExchangeBoundary::shortcode()
 elseif ($path === '/ticker') { echo '<h1>Web ticker</h1>' . \Cor\Mgmt\WordPress\TickerBoundary::form(['race'=>880090]) . \Cor\Mgmt\WordPress\TickerBoundary::feed(['race'=>880090]); }
 elseif ($path === '/ticker-map') { echo '<h1>Event positions</h1><link rel="stylesheet" href="/assets/leaflet.css"><style>.cor-ticker-map{height:500px}</style>' . \Cor\Mgmt\WordPress\TickerBoundary::feed(['race'=>880090,'max'=>100],true); }
 elseif ($path === '/ticker-admin' || $page === 'cor-mgmt-ticker') { $_GET['race']='880090'; \Cor\Mgmt\WordPress\TickerBoundary::page(); }
+elseif ($path === '/archives') { \Cor\Mgmt\WordPress\ArchiveBoundary::page(); }
 elseif ($page === 'cor-mgmt-exchange' || $path === '/moderation') { \Cor\Mgmt\WordPress\ExchangeBoundary::page(); }
 elseif ($page === 'cor-mgmt-communication-report' || $path === '/report') { \Cor\Mgmt\WordPress\CommunicationReport::page(); }
 else { \Cor\Mgmt\WordPress\BroadcastAdmin::page(); }

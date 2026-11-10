@@ -2,7 +2,7 @@
 
 Checkliste für Block 10; noch kein Release oder Deployment freigegeben.
 
-Aktueller technischer Stand, ausgeführte Übernahme-/Wiederherstellungsprobe, gemeinsame Abnahmeliste und ausdrücklich offene Releaseblocker: [Block 10](block-10-acceptance.md). Insbesondere sind aktive Fachumschaltung und vollständiges Archiv weiterhin Implementierungsarbeit; eine erfolgreiche Zwischenkopie allein genügt nicht zur Veröffentlichung.
+Aktueller technischer Stand, ausgeführte Übernahme-/Wiederherstellungsprobe, gemeinsame Abnahmeliste und ausdrücklich offene Releaseblocker: [Block 10](block-10-acceptance.md). [Aktive Fachumschaltung und Archiv](block-10-archive.md) sind implementiert; ihre technische Prüfung ersetzt weder die frische Produktionskopie noch die vollständige fachliche und visuelle Freigabe.
 
 ## Vorbedingungen
 

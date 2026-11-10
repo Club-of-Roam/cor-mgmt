@@ -103,6 +103,9 @@ final class DonationAdministration
     /** @param array<string,string|null> $row */
     private function writable(array $row, string $revision): void
     {
+        if (Archive::locked($this->db, (int) $row['race_id'])) {
+            throw new DonationException('archive_locked');
+        }
         if (!hash_equals($this->revision($row), $revision)) {
             throw new DonationException('stale_donation');
         }
