@@ -1,5 +1,37 @@
 # Prüfbelege
 
+## Gemeinsame Abnahme: kompakte Tickerbilder – 2026-11-11
+
+Benutzer bestätigt Stop und Fortsetzen; AB-I01-B05 geschlossen. Sichtprobe zeigt übernommene Text-/Bildbeiträge. Befund AB-I01-B06: Bilder in der Verwaltung beanspruchen zu viel Platz. Moderationsbilder erhalten eine proportionale Vorschau mit maximal 360 × 280 Pixeln und begrenzter Containerbreite. Kleine Bilder werden nicht vergrößert; Bild und Textlink öffnen volle Größe im neuen Tab mit `noopener noreferrer`. CSS-Assetversion erhöht. Originalmedien und Übernahme unverändert; gemeinsame Nachprüfung der Vorschau offen.
+
+Neuer Playwright-Browserfall mit synthetischen Bildern bestanden: Querformat, Hochformat, kleines Bild, Proportionen, Größenbegrenzung und fehlender horizontaler Überlauf bei 1.000/320 Pixeln Ansichtsbreite sowie Tastaturzugriff auf den Vollgrößenlink. ESLint bestanden, nachdem Browser-Globals im Test ausdrücklich deklariert wurden. `composer check` und `composer test` bestehen auf PHP 8.2/8.3/8.4/8.5 mit jeweils 350 Tests / 678 Assertions. Inventar regeneriert; abschließende Dokumentationsprüfung bestanden. Keine neue WordPress-Integrationssuite oder Paketprüfung, keine Wiederholung der unveränderten JavaScript-Logiktests; keine Datenbankaktionen durch den Agenten und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: Tickerübernahme abgeschlossen – 2026-11-11
+
+Benutzer bestätigt Abschluss über die automatische Fortsetzung: `state=native`, `count=16115`, `verified=16115`, `cursor=max=17851`, `issues=559` und sichtbare Abschlussmeldung. Damit ist der Kopier-/Prüfdurchlauf abgeschlossen und nativer Speicher aktiv. Das ist kein Nachweis fehlerfreier historischer Medien oder vollständiger fachlicher Tickerabnahme. 559 Hinweiszählungen sind keine Anzahl verlorener Beiträge; konkrete Kategorien und Inhalte bleiben zu prüfen. Gemeinsame Nachprüfung von Stop/Wiederaufnahme noch nicht ausdrücklich bestätigt. Nächster Schritt: Eventfilter und übernommene Darstellung gemeinsam prüfen.
+
+Nur Dokumentation aktualisiert; Dokumentationsprüfung bestanden. Keine neuen Laufzeit-, Integrations-, Browser- oder Pakettests ausgeführt. Keine Datenbankaktionen durch den Agenten und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: automatische Tickerfortsetzung – 2026-11-11
+
+AB-I01-B05 ergänzt die ausdrücklich gestartete automatische Fortsetzung eines bereits laufenden Tickerimports. Sie verwendet dieselbe geschützte POST-Aktion wie der Einzel-Schritt und ändert weder Kopierlogik noch Datenbankschema. Eine Anfrage nach der anderen; Kopie wechselt in Verifikation. Stop wartet auf den aktuellen Schritt. Fehler, unerwartete Seiten, Weiterleitungen, geänderte Quellidentität oder fehlender Fortschritt stoppen ohne automatische Wiederholung. Bei unklarem Ausgang muss der gespeicherte Stand nach erneutem Öffnen geprüft werden. Kopieranzeige nennt Quell-IDs; Verifikationsanzeige zählt tatsächlich geprüfte Datensätze. Einzelaktionen bleiben ohne JavaScript verfügbar.
+
+28 JavaScript-Tests bestanden. Vier zusätzliche Regressionstests decken expliziten Start, Nonce/POST/gleiche Herkunft, Übergang Kopie/Verifikation, Stop ohne Abbruch der laufenden Anfrage, Mehrfachklickschutz, Fehler ohne Wiederholung und ungültige/geänderte Zustände ab. Zwei neue Playwright-Browserfälle mit ausschließlich synthetischen Antwortseiten bestanden: tatsächliche Formularübermittlung/HTML-Auswertung bis zum Abschluss sowie Stop/Wiederaufnahme. Diese Browserfälle verbinden sich nicht mit einer WordPress-Datenbank und sind kein neuer WordPress-Integrationsnachweis. Inventar regeneriert. Gemeinsame Bedienprüfung am laufenden Übernahmestand offen; bisheriger Benutzerstand `copy`, Cursor 500, 16.115 Quelldatensätze, 15 Hinweise.
+
+`composer check` und `composer test` auf PHP 8.2/8.3/8.4/8.5 bestanden, jeweils 350 Tests / 678 Assertions. ESLint einschließlich der neuen Browserfälle bestanden; abschließende Dokumentationsprüfung bestanden. Keine Anwendungsdatenbankaktionen durch den Agenten, keine neue Übernahmeprobe, kein neues ZIP und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: Tickereinrichtung und Rückmeldung – 2026-11-11
+
+Benutzerscreenshot bestätigt erfolgreiche Einrichtung der Tickertabellen; Übernahmezustand zuletzt `pending`. Keine historische Übernahme durch den Agenten gestartet. AB-I01-B04 erfasst die fehlende Warteanzeige und unauffällige Erfolgsmeldung. Korrektur: Spinner, Live-Status und Mehrfachklickschutz bei nativer Formularübermittlung; der Aktionswert wird trotz gesperrter Buttons erhalten. Erfolgreiche Tabelleneinrichtung wird als hervorgehobene Meldung mit ausdrücklicher Abgrenzung zur Übernahme bestätigt. Benutzer bestätigt erneute Durchführung und gute Rückmeldung; AB-I01-B04 geschlossen. Erneute reine Quellprüfung der bekannten Nachbar-/Upload-Eingänge bestätigt weiterhin stillgelegte Platzhalter; keine Änderung dieser Dateien. Nächster gemeinsamer Schritt: kontrollierten Tickerübernahmestart anleiten und Zustand prüfen.
+
+24 JavaScript-Tests und ESLint bestanden; zwei neue Regressionstests prüfen Warteanzeige, korrekte POST-Aktion, Mehrfachklickschutz und Verwendung außerhalb der Tickerseite. Inventar regeneriert. Ein erster PHP-8.2-Qualitätslauf wurde durch einen Schreibfehler im gemeinsamen PHPStan-Cache gestoppt; abschließende Wiederholung mit getrennten temporären Verzeichnissen auf allen vier Versionen erfolgreich. `composer check` und `composer test` bestehen auf PHP 8.2/8.3/8.4/8.5, jeweils 350 Tests / 678 Assertions. Keine neue WordPress-Integrationssuite, automatisierte Browser- oder ZIP-Prüfung für diese Oberflächenkorrektur. Keine Datenbankaktionen durch den Agenten und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: übrige Zusatzspeicher – 2026-11-11
+
+Benutzer bestätigt die erfolgreiche Einrichtung der fünf übrigen Zusatzspeicher für Spenden, Event-Autoresponses, Mailqueue, Rundmails und Börsen-Audit. Alle Einrichtungsbuttons verschwunden, Warteanzeige funktioniert. Damit sind die sieben angebotenen Zusatzspeicher im gemeinsamen sichtbaren Ablauf eingerichtet. Fachliche Modulabnahme, Tickerübernahme und Archivumschaltung werden dadurch nicht als bestanden ausgewiesen. Nächster Schritt ist die Sichtprüfung der Tickerwerkzeuge; siehe [Abnahmeprotokoll](block-10-acceptance.md).
+
+Nur Dokumentation geändert; Dokumentationsprüfung bestanden. Keine erneuten Laufzeit-, Integrations-, Browser- oder Pakettests erforderlich bzw. ausgeführt. Keine Datenbankaktionen durch den Agenten und keine Git-Aktionen.
+
 ## Gemeinsame Abnahme: Warteanzeige und Moduleinrichtung – 2026-11-11
 
 AB-I01-B03 ist geschlossen: Der Benutzer bestätigt die sichtbare Warteanzeige und erfolgreiche Einrichtung des Ergebnisspeichers. Zuvor wurde die Einrichtung des Team-/Einladungsspeichers bestätigt. Die übrigen fünf Speicher-Einrichtungen und die fachlichen Modulabläufe bleiben offen; siehe [Abnahmeprotokoll](block-10-acceptance.md).

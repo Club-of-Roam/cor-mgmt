@@ -131,7 +131,7 @@
     "src/WordPress/TeamBoundary.php": "447ab06aa45bd5bab39a7d6a624d1341fcd8e169c7b82619d9513a284e81c70d",
     "src/WordPress/TeamFrontend.php": "1818a5902e9d4ae8a01b3199aa365f43dbccfed6ed8b62da08b565c8b3ac06d1",
     "src/WordPress/TeamPortal.php": "cf9bdaeb89eba9b05e4690b84561591c153891e6b3b68bcfaf5ca71ab86b6de8",
-    "src/WordPress/TickerBoundary.php": "cb2f04b6a03585e580a32dc129efce90342313b38deec7826fdefac55af4b96a",
+    "src/WordPress/TickerBoundary.php": "36b834c42b4c7c886cfa68abe0c0c77443f67c3564dca8364f1650077346d4eb",
     "templates/admin-custom-fields.php": "274ffcc1413d2d14bb40baa52cb1211008d2022993cfdc344b4c8b70c143d4d5",
     "templates/admin-profile.php": "46c14eafd1b131259b8ad1847522394053e48240275a8e5af81645d5cda19659",
     "templates/class-h3-mgmt-admin-form.php": "1518a77d556894ffcbd80e3c8ed505c3160cf62b0253b50df43f83dc92d15bf0",
@@ -1104,7 +1104,7 @@
     {
       "file": "src/WordPress/TickerBoundary.php",
       "method": "race",
-      "line": 85,
+      "line": 86,
       "fields": [
         "GET:ticker_race"
       ],
@@ -1113,7 +1113,7 @@
     {
       "file": "src/WordPress/TickerBoundary.php",
       "method": "form",
-      "line": 189,
+      "line": 190,
       "fields": [
         "POST:message"
       ],
@@ -1122,7 +1122,7 @@
     {
       "file": "src/WordPress/TickerBoundary.php",
       "method": "feed",
-      "line": 349,
+      "line": 356,
       "fields": [
         "GET:min",
         "GET:page_id",
@@ -1134,7 +1134,7 @@
     {
       "file": "src/WordPress/TickerBoundary.php",
       "method": "queryRace",
-      "line": 467,
+      "line": 474,
       "fields": [
         "GET:race",
         "POST:race"
@@ -1144,7 +1144,7 @@
     {
       "file": "src/WordPress/TickerBoundary.php",
       "method": "page",
-      "line": 484,
+      "line": 491,
       "fields": [
         "GET:ticker_page"
       ],

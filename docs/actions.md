@@ -78,11 +78,11 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
 | [render](../src/WordPress/TeamFrontend.php#L80) | `GET:invitation`, `POST:invitation` |  |
 | [serve](../src/WordPress/TeamPortal.php#L25) | `GET:race_id` |  |
-| [race](../src/WordPress/TickerBoundary.php#L85) | `GET:ticker_race` |  |
-| [form](../src/WordPress/TickerBoundary.php#L189) | `POST:message` |  |
-| [feed](../src/WordPress/TickerBoundary.php#L349) | `GET:min`, `GET:page_id`, `GET:ticker_page`, `GET:ticker_route` |  |
-| [queryRace](../src/WordPress/TickerBoundary.php#L467) | `GET:race`, `POST:race` |  |
-| [page](../src/WordPress/TickerBoundary.php#L484) | `GET:ticker_page` |  |
+| [race](../src/WordPress/TickerBoundary.php#L86) | `GET:ticker_race` |  |
+| [form](../src/WordPress/TickerBoundary.php#L190) | `POST:message` |  |
+| [feed](../src/WordPress/TickerBoundary.php#L356) | `GET:min`, `GET:page_id`, `GET:ticker_page`, `GET:ticker_route` |  |
+| [queryRace](../src/WordPress/TickerBoundary.php#L474) | `GET:race`, `POST:race` |  |
+| [page](../src/WordPress/TickerBoundary.php#L491) | `GET:ticker_page` |  |
 | [output](../templates/class-h3-mgmt-admin-form.php#L69) | `GET:page` |  |
 | [__construct](../templates/class-h3-mgmt-admin-table.php#L73) | `GET:order`, `GET:orderby` |  |
 | [output](../templates/class-h3-mgmt-admin-table.php#L122) | `GET:filter_name0`, `GET:order`, `GET:orderby`, `GET:page` |  |

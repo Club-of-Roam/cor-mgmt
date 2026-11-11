@@ -30,6 +30,7 @@ final class TickerBoundary
         add_action('admin_enqueue_scripts', static function (string $hook): void {
             if ($hook === 'tools_page_cor-mgmt-ticker') {
                 self::assets();
+                wp_enqueue_script('cor-mgmt-ticker-tools', plugins_url('js/cor-mgmt-ticker-tools.js', dirname(__DIR__, 2) . '/h3-management.php'), [], '2', true);
             }
         });
         add_action('admin_menu', static function (): void {
@@ -96,7 +97,7 @@ final class TickerBoundary
     {
         $plugin = dirname(__DIR__, 2) . '/h3-management.php';
         wp_enqueue_script('cor-mgmt-ticker', plugins_url('js/cor-mgmt-ticker.js', $plugin), [], '1', true);
-        wp_enqueue_style('cor-mgmt-ticker', plugins_url('css/cor-mgmt-ticker.css', $plugin), [], '1');
+        wp_enqueue_style('cor-mgmt-ticker', plugins_url('css/cor-mgmt-ticker.css', $plugin), [], '2');
         wp_enqueue_style('cor-mgmt-leaflet', plugins_url('lib/leaflet/leaflet.css', $plugin), [], '1.9.4');
     }
 
@@ -275,7 +276,7 @@ final class TickerBoundary
         } elseif ((int) $row['team_id'] > 0) {
             $author = __('Team', 'h3-mgmt') . ' #' . $row['team_id'];
         }
-        echo '<article id="ticker-' . esc_attr((string) $id) . '" class="cor-ticker-post"><h3>' . esc_html($author) . ' · #' . esc_html((string) $id) . '</h3>';
+        echo '<article id="ticker-' . esc_attr((string) $id) . '" class="cor-ticker-post' . ($moderation ? ' cor-ticker-post--moderation' : '') . '"><h3>' . esc_html($author) . ' · #' . esc_html((string) $id) . '</h3>';
         $context = self::teamContext($row);
         if ($context) {
             echo '<p>' . esc_html($context['team_name'] ?? '') . ' · ' . esc_html($context['route_name'] ?? '') . '</p>';
@@ -289,7 +290,13 @@ final class TickerBoundary
         if ($row['kind'] === 'image') {
             $url = ArchiveFrontend::frozenImage($race, $media) ?? self::imageUrl($media, $row['source_payload'] ?? '');
             if ($url !== '') {
+                if ($moderation) {
+                    echo '<a class="cor-ticker-image-link" href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer">';
+                }
                 echo '<img src="' . esc_url($url) . '" alt="' . esc_attr($caption !== '' ? $caption : __('Ticker image', 'h3-mgmt')) . '" loading="lazy" decoding="async">';
+                if ($moderation) {
+                    echo '<span>' . esc_html__('Open full-size image', 'h3-mgmt') . '</span></a>';
+                }
                 if ((int) $row['actor_id'] === get_current_user_id() && (int) $row['attachment_id'] > 0 && self::allowed(get_current_user_id(), $race, 'write')) {
                     echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cor_mgmt_ticker"><input type="hidden" name="ticker_kind" value="rotate"><input type="hidden" name="race" value="' . esc_attr((string) $race) . '"><input type="hidden" name="post_id" value="' . esc_attr((string) $id) . '"><input type="hidden" name="revision" value="' . esc_attr($row['revision'] ?? '') . '"><input type="hidden" name="request_key" value="' . esc_attr(self::key()) . '">';
                     wp_nonce_field('cor-mgmt-ticker-' . $race, 'cor_mgmt_nonce', false);
@@ -515,16 +522,28 @@ final class TickerBoundary
                 } else {
                     throw new \RuntimeException('forbidden');
                 }
-                echo '<p role="status">' . esc_html__('Ticker operation completed.', 'h3-mgmt') . '</p>';
+                $message = $action === 'setup'
+                    ? __('Ticker tables are ready. Historical transfer has not been started by this action.', 'h3-mgmt')
+                    : __('Ticker operation completed.', 'h3-mgmt');
+                echo '<div class="notice notice-success" data-ticker-success><p role="status">' . esc_html($message) . '</p></div>';
             }
             if (current_user_can('manage_options')) {
-                echo '<h2>' . esc_html__('Setup and historical transfer', 'h3-mgmt') . '</h2><p>' . esc_html__('Stop all old ticker writers before starting. Historical tables and media are retained. Each step copies or verifies at most 100 records. New submissions remain paused until verification completes.', 'h3-mgmt') . '</p><pre>' . esc_html(wp_json_encode($import->status()) ?: '') . '</pre>';
-                echo '<form method="post">';
+                echo '<h2>' . esc_html__('Setup and historical transfer', 'h3-mgmt') . '</h2><p>' . esc_html__('Stop all old ticker writers before starting. Historical tables and media are retained. Each step copies or verifies at most 100 records. New submissions remain paused until verification completes.', 'h3-mgmt') . '</p><pre data-ticker-state>' . esc_html(wp_json_encode($import->status()) ?: '') . '</pre>';
+                echo '<form method="post" data-ticker-tools data-busy-text="' . esc_attr__('Please wait, processing...', 'h3-mgmt') . '"';
+                foreach (['copy' => __('Copying: last source ID', 'h3-mgmt'), 'verify' => __('Verifying records', 'h3-mgmt'), 'issues' => __('Notices', 'h3-mgmt'), 'stopped' => __('Paused. Resume automatic processing to continue.', 'h3-mgmt'), 'stopping' => __('Stopping after the current step...', 'h3-mgmt'), 'complete' => __('Transfer and verification complete. Reload this page to view the ticker.', 'h3-mgmt'), 'error' => __('Processing stopped. Reload the page to check the saved state before resuming.', 'h3-mgmt')] as $key => $label) {
+                    echo ' data-' . esc_attr($key) . '-text="' . esc_attr($label) . '"';
+                }
+                echo '>';
+                echo '<p data-progress role="status" aria-live="polite" hidden><span class="spinner is-active" style="float:none;vertical-align:middle;margin:0 8px 0 0" aria-hidden="true"></span><strong data-progress-text></strong></p>';
+                echo '<p data-transfer-meter hidden><progress data-transfer-progress></progress></p>';
                 wp_nonce_field('cor-mgmt-ticker-admin', 'cor_mgmt_nonce', false);
                 echo '<p><label><input type="checkbox" name="writers_stopped" value="1">' . esc_html__('I have stopped all old writers and retired the direct SMS/MMS endpoints. Starting deactivates the old cor-ticker plugin.', 'h3-mgmt') . '</label></p>';
                 foreach (['setup' => __('Set up ticker tables', 'h3-mgmt'), 'start' => __('Start controlled transfer', 'h3-mgmt'), 'step' => __('Process next transfer step', 'h3-mgmt')] as $action => $label) {
                     echo '<button name="ticker_action" value="' . esc_attr($action) . '">' . esc_html($label) . '</button> ';
                 }
+                echo '<button type="button" data-transfer-auto hidden>' . esc_html__('Resume automatic processing', 'h3-mgmt') . '</button> ';
+                echo '<button type="button" data-transfer-stop hidden>' . esc_html__('Stop after current step', 'h3-mgmt') . '</button>';
+                echo '<p>' . esc_html__('Automatic processing continues an already started transfer, one step at a time. Keep this page open. Stop waits for the current step; saved progress is retained. During copying, source IDs are shown, not a count of copied records.', 'h3-mgmt') . '</p>';
                 echo '</form>';
             }
             echo '<form method="get"><input type="hidden" name="page" value="cor-mgmt-ticker"><label>' . esc_html__('Event', 'h3-mgmt') . '<select name="race">';
@@ -547,7 +566,7 @@ final class TickerBoundary
             }
         } catch (\Throwable $error) {
             Services::get()->logger->error('ticker_admin_rejected', $error);
-            echo '<p role="alert">' . esc_html(self::problem($error)) . '</p>';
+            echo '<p role="alert" data-ticker-error>' . esc_html(self::problem($error)) . '</p>';
         }
         echo '</div>';
     }

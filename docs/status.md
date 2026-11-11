@@ -2,9 +2,13 @@
 
 Stand 2026-11-11. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
-Gemeinsame Abnahme begonnen: Systemstatus und Event-Seitenauswahl anhand der Benutzerrückmeldung sichtbar. Team-/Einladungs- und Ergebnisspeicher erfolgreich eingerichtet. Ergänzte Warteanzeige vom Benutzer sichtbar und erfolgreich nachgeprüft (AB-I01-B03 geschlossen). Nächste gemeinsame Aktion sind die fünf übrigen Speicher-Einrichtungen. Veraltete Aussage zur nicht verfügbaren Archivumschaltung korrigiert und das getrennte Werkzeug verlinkt. WPML-Kompatibilität bleibt eigener offener Integrationsbefund. Fallstatus und Nachprüfungen: [Abnahmeprotokoll](block-10-acceptance.md).
+Gemeinsame Abnahme begonnen: Alle sieben Zusatzspeicher und Tickertabellen eingerichtet; Warte-/Erfolgshinweise nachgeprüft (AB-I01-B03/B04 geschlossen). Benutzer bestätigt abgeschlossene Tickerübernahme sowie Stop/Fortsetzen (AB-I01-B05 geschlossen): `native`, 16.115 von 16.115 Datensätzen geprüft, 559 Hinweise. Sichtprobe zeigt übernommene Text-/Bildbeiträge. Zu große Verwaltungsbilder durch kompakte proportionale Vorschau mit Vollgrößenlink korrigiert (AB-I01-B06); gemeinsame Nachprüfung offen. Hinweise noch inhaltlich auswerten. WPML-Kompatibilität bleibt eigener offener Integrationsbefund. Fallstatus und Nachprüfungen: [Abnahmeprotokoll](block-10-acceptance.md).
 
 ## Aktuelles Paket: Archiv und aktive Umschaltung
+
+Gemeinsame Tickerübernahme abgeschlossen: Benutzer meldet `native`, 16.115 Quelldatensätze und ebenso viele geprüfte Datensätze, Cursor/höchster Quellschlüssel 17.851, 559 Hinweise sowie sichtbare Abschlussmeldung. Originaltabellen bleiben erhalten. Hinweise sind Zählungen, keine Zahl verlorener Beiträge; Kategorien und betroffene Inhalte noch prüfen. Abschluss allein gibt weder historische Medien noch sämtliche Tickerfunktionen frei.
+
+Ticker-Einrichtung ebenfalls vom Benutzer bestätigt. Befund AB-I01-B04: fehlende Warteanzeige und unauffällige Erfolgsmeldung durch Spinner, Live-Status, Mehrfachklickschutz und eindeutige Einrichtungsbestätigung korrigiert. Benutzer bestätigt erfolgreiche Nachprüfung; Befund geschlossen. Der Übernahmestart und erste Kopierfortschritt sind separat im Abnahmeprotokoll nachgewiesen.
 
 Die [Archivumsetzung](block-10-archive.md) ergänzt unveränderliche rennbezogene Snapshots, lokale Bildkopien, eingefrorene öffentliche Anzeigen und den ausdrücklichen Abschluss neuer Rennen. Der unabhängige Plan `live-copy-v1` erstellt parallel modernisierte Fachtabellen, prüft alle Werte und schaltet sie gemeinsam um. Wiederaufnahme sowie ein Rückweg ohne neue Datenänderungen sind implementiert; Originaltabellen, Snapshots und Bilder werden nicht automatisch gelöscht. Der aktive Umschaltweg weist MySQL bis zur gesonderten DDL-/Wiederherstellungsprüfung ab.
 

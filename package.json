@@ -6,7 +6,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test tests/security-js.test.cjs tests/schema-js.test.cjs tests/broadcast-js.test.cjs tests/archive-js.test.cjs",
+    "test": "node --test tests/security-js.test.cjs tests/schema-js.test.cjs tests/broadcast-js.test.cjs tests/archive-js.test.cjs tests/ticker-tools-js.test.cjs",
     "lint": "eslint js/*.js playwright.config.cjs tests/Browser/*.cjs tests/broadcast-js.test.cjs tests/archive-js.test.cjs --ignore-pattern js/isotope.pkgd.min.js",
     "test:browser": "playwright test"
   },
