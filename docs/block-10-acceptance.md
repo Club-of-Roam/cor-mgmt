@@ -1,6 +1,6 @@
 # Block 10: Gesamtabnahme und Releasevorbereitung
 
-Stand 2026-11-09. Technische Abnahme begonnen; kein Releasekandidat und kein Produktionswechsel. Die gemeinsame fachliche und visuelle Abnahme erfolgt anschließend gemäß D-51.
+Stand 2026-11-11. Technische Teilnachweise vorhanden; gemeinsame fachliche und visuelle Abnahme gemäß D-51 begonnen. Noch keine abschließende Benutzerfreigabe, kein Releasekandidat und kein Produktionswechsel.
 
 ## Bereits ausgeführte technische Arbeit
 
@@ -45,7 +45,7 @@ Bestandsprobe vom 2026-11-10: 15 historische Rennen mit 29.454 Snapshotdatensät
 
 ## Gemeinsame fachliche und visuelle Abnahmeliste
 
-Die folgende Liste ist vorbereitet, noch nicht durch den Benutzer abgenommen. Automatisierte Teilnachweise ersetzen diese gemeinsame Prüfung nicht.
+Die folgende Liste wird gemeinsam in ihrer Reihenfolge bearbeitet. Noch kein Bereich ist durch den Benutzer abgenommen. Automatisierte Teilnachweise ersetzen diese gemeinsame Prüfung nicht. Rückmeldungen werden mit Fall-ID, Soll/Ist, Befund und Nachprüfung protokolliert; eine Korrektur allein gilt nicht als bestandene Wiederholungsprüfung.
 
 | Bereich | Gemeinsam prüfen |
 |---|---|
@@ -62,6 +62,31 @@ Die folgende Liste ist vorbereitet, noch nicht durch den Benutzer abgenommen. Au
 | Ticker und Medien | Texte, Kommentare, Bilder/Drehkopie, Video-/Kartenfreigabe, Standorte, Routenebenen, Moderation und historische Inhalte |
 | Darstellung | Admin-Tabellen, Formulare, Mobilansicht, Tastatur, Screenreader und Übersetzungen über alle Module |
 | Betrieb | Keine unerwarteten Weiterleitungen, Mails oder produktiven Schnittstellen; keine Warnungen/Fatal Errors; getrennte Änderungsliste für Nachbarplugins/Endpunkte |
+
+## Gemeinsame Prüfung 1: Installation und Einstieg
+
+Begonnen 2026-11-10. Zunächst nur Anmeldung und Status-/Einrichtungsansichten prüfen. Die folgenden Einrichtungsschritte werden danach einzeln angeleitet. Bestehende Veranstaltungen und Seiten sind keine Wegwerf-Testdaten. Sicherungsbestätigungen, Tabellenumschaltung, Archivveröffentlichung, echter Versand und Zahlungsaufrufe gehören nicht zu dieser ersten Sichtprüfung.
+
+| Fall | Handlung | Erwartetes Ergebnis | Gemeinsamer Status |
+|---|---|---|---|
+| AB-I01 | Als Administrator anmelden, **Werkzeuge → cor-mgmt system status** öffnen | Anmeldung und Statusseite ohne kritischen Fehler; erkannter Bestand, Voraussetzungen und gegebenenfalls fehlende Einrichtung verständlich angezeigt | Sichtnachweis erhalten; Hinweistext korrigiert, Nachsicht offen |
+| AB-I02 | **Werkzeuge → Event pages** öffnen | Ansicht erreichbar; Auswahl über Event-ID erklärt. Bei fehlender Grundinstallation verständlicher Verweis auf den Systemstatus. Öffnen allein legt keine Seiten an | Sichtnachweis erhalten: Event-ID und Auswahl sichtbar; Zuordnung noch ungeprüft |
+| AB-I03 | Anschließend eine eigene Abnahmeveranstaltung auswählen bzw. im gemeinsamen nächsten Schritt anlegen | Eindeutige ID und Zuordnung; historische Veranstaltungen unverändert. Bei fertiger Grundinstallation fünf Seitenrollen mit passenden Eventshortcodes sichtbar | Offen |
+| AB-I04 | Für die Abnahmeveranstaltung einen Seitenentwurf anlegen, in WordPress prüfen und dieselbe Einrichtungsaktion wiederholen | Entwurf enthält passenden Shortcode; keine automatische Veröffentlichung, keine Duplikate und kein Überschreiben bearbeiteter Seiten | Offen |
+| AB-I05 | Eine eigene vorhandene Testseite zuordnen; zusätzlich falsche Eventzuordnung prüfen | Passende Seite wird zugeordnet, Inhalt bleibt unverändert. Falscher bzw. fehlender Eventshortcode wird verständlich zurückgewiesen | Offen |
+| AB-I06 | Geprüfte Testseite ausdrücklich veröffentlichen und angemeldet sowie als Gast öffnen | Erwartete Ausgabe mit klarer Anmeldung bzw. Eingabe; richtige Veranstaltungszuordnung, keine ungewollten Weiterleitungen oder kritischen Fehler. Darstellung auch mit dem verwendeten Theme gemeinsam bewerten | Offen |
+
+Aktueller gemeinsamer Schritt: **AB-I01 Einrichtung fortsetzen**, anschließend AB-I03. Team-/Einladungs- und Ergebnisspeicher sowie die neue Warteanzeige wurden vom Benutzer erfolgreich geprüft. Nun Spenden-, Event-Autoresponse-, Mailqueue-, Rundmail- und Börsen-Auditspeicher nacheinander einrichten. Das ergänzt eigene Modultabellen; es schaltet weder die Fachtabellen um noch veröffentlicht es Archive. Ticker-/Archiveinrichtung und Seitenzuordnung werden anschließend gesondert angeleitet. Keine Zugangsdaten oder personenbezogenen Bildschirmdaten in das Abnahmeprotokoll übernehmen.
+
+| Fall/Befund | Beobachtung | Nachbesserung / Nachprüfung | Ergebnis / Freigabe |
+|---|---|---|---|
+| AB-I01 / AB-I02, Rückmeldung 2026-11-11 | Beide geschützten Ansichten in Screenshots sichtbar. Bestandsschema erkannt, keine Migration ausgeführt; sieben zusätzliche Moduleinrichtungen angeboten. Event-ID-Feld und Auswahl sichtbar. Ticker meldet erforderliche Einrichtung/Bestandsübernahme | Modulaufbau einzeln prüfen, danach eigene Abnahmeveranstaltung auswählen | Sichtprüfung teilweise nachgewiesen; Einrichtung und Seitenzuordnung offen |
+| AB-I01-B01, 2026-11-11 | Veralteter Text behauptet, aktive Umschaltung und eingefrorene Archive seien noch nicht verfügbar | Systemstatus erklärt jetzt die getrennten Werkzeuge und verlinkt deren Verwaltungsseite. Nachsicht nach Neuladen ausstehend | Korrigiert; Benutzer-Nachprüfung offen |
+| AB-I01-B02, 2026-11-11 | Warnhinweis: bestehendes WPML 3.1.5 wegen PHP-8-Inkompatibilität vom Laden ausgeschlossen; Übersetzungsdaten bleiben erhalten | Optionale Sprachintegration und passende WPML-Version separat im Rahmen der Website-/Sprachabnahme klären. Keine automatische Reaktivierung der inkompatiblen Version | Offener Integrationsbefund; keine Freigabe mehrsprachiger Abläufe |
+| AB-I01: Team-/Einladungsspeicher, 2026-11-11 | Benutzer bestätigt automatisches Neuladen und verschwundenen Einrichtungsbutton | Sichtbarer Einrichtungsablauf erfolgreich; keine daraus abgeleitete Freigabe sämtlicher Teilnahmefunktionen | Einrichtungsschritt im gemeinsamen Ablauf bestanden |
+| AB-I01-B03, 2026-11-11 | Während der Einrichtung werden Schaltflächen grau; verständliche Warte-/Fortschrittsmeldung fehlt | Spinner und Live-Status oberhalb der Aktionen, Wartebeschriftung am aktiven Button, Abschluss-/Fehlerhinweise ergänzt. Sperre bis Neuladen beibehalten; bei Fehler vorherige Schaltflächenzustände wiederherstellen. Assetversion erhöht. Benutzer bestätigt sichtbare Warteanzeige bei erfolgreicher Ergebniseinrichtung | Korrigiert und im gemeinsamen Ablauf nachgeprüft; Befund geschlossen |
+| AB-I01: Ergebnisspeicher, 2026-11-11 | Benutzer bestätigt sichtbare Warteanzeige und erfolgreiche Einrichtung | Sichtbarer Einrichtungsablauf erfolgreich; Wertungseinrichtung und Ergebnisfunktionen bleiben eigene Abnahmefälle | Einrichtungsschritt im gemeinsamen Ablauf bestanden |
+| AB-I01: technische Vorprüfung, 2026-11-10 | Startseite und vorhandene Anmeldeseite antworten mit HTTP 200; Anmeldeformular vorhanden, kein erkennbarer kritischer Fehler im Antworttext. Gastaufruf der Administration leitet auf die Anmeldeseite um. Bestehende Theme-My-Login-Integration erkannt | Tatsächliche Anmeldung und geschützte Status-/Einrichtungsansichten gemeinsam prüfen; daraus noch keine Freigabe des Anmeldeablaufs ableiten | Teilnachweis; gemeinsame Abnahme offen |
 
 ## Nachbarintegration und Ausrollen
 

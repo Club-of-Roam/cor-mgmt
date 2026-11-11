@@ -20,7 +20,7 @@ final class SchemaTools
         add_action('wp_ajax_cor_mgmt_schema', [self::class,'request']);
         add_action('admin_enqueue_scripts', static function (string $hook): void {
             if ($hook === 'tools_page_cor-mgmt-system') {
-                wp_enqueue_script('cor-mgmt-schema', plugins_url('js/h3-mgmt-schema.js', dirname(__DIR__, 2) . '/h3-management.php'), [], '1', true);
+                wp_enqueue_script('cor-mgmt-schema', plugins_url('js/h3-mgmt-schema.js', dirname(__DIR__, 2) . '/h3-management.php'), [], '1.1', true);
             }
         });
     }
@@ -128,7 +128,8 @@ final class SchemaTools
         } catch (MigrationException) {
         /* Unrecognized target storage is reported by explicit preflight. */
         }
-        echo '<section id="cor-mgmt-schema" data-url="' . esc_url(admin_url('admin-ajax.php')) . '" data-nonce="' . esc_attr(wp_create_nonce('cor-mgmt-schema')) . '">';
+        echo '<section id="cor-mgmt-schema" data-url="' . esc_url(admin_url('admin-ajax.php')) . '" data-nonce="' . esc_attr(wp_create_nonce('cor-mgmt-schema')) . '" data-busy-text="' . esc_attr__('Please wait, processing...', 'h3-mgmt') . '" data-reload-text="' . esc_attr__('Processing complete. Reloading the page...', 'h3-mgmt') . '" data-complete-text="' . esc_attr__('Processing complete.', 'h3-mgmt') . '" data-error-text="' . esc_attr__('Processing failed. Please review the message below.', 'h3-mgmt') . '">';
+        echo '<p data-progress role="status" aria-live="polite" hidden><span data-spinner class="spinner is-active" style="float:none;vertical-align:middle;margin:0 8px 0 0" aria-hidden="true"></span><strong data-progress-text></strong></p>';
         if ($status === InstallationStatus::Ready && !\Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready($db)) {
             echo '<p><button type="button" class="button button-primary" data-operation="participation-setup">' . esc_html__('Set up team and invitation storage', 'h3-mgmt') . '</button></p>';
         }
@@ -153,7 +154,8 @@ final class SchemaTools
             echo '<p><button type="button" class="button" data-operation="donation-audit">' . esc_html__('Review donation storage (read only)', 'h3-mgmt') . '</button></p>';
         }
         echo '<h2>' . esc_html__('Database setup and migration', 'h3-mgmt') . '</h2>';
-        echo '<p>' . esc_html__('Migration prepares a separate verified copy. Current data is retained. Switching to that copy and publishing frozen archives are not available yet.', 'h3-mgmt') . '</p>';
+        echo '<p>' . esc_html__('Migration prepares a separate verified copy and retains current data. Active storage switching and frozen race archives are managed separately in the archive tools.', 'h3-mgmt') . '</p>';
+        echo '<p><a class="button" href="' . esc_url(admin_url('tools.php?page=cor-mgmt-archives')) . '">' . esc_html__('Open archive and storage transition tools', 'h3-mgmt') . '</a></p>';
         if ($status === InstallationStatus::Fresh || (new Installer($db))->pendingFresh()) {
             echo '<p><button type="button" class="button button-primary" data-operation="install">' . esc_html__('Set up plugin tables', 'h3-mgmt') . '</button></p>';
         } elseif ($status === InstallationStatus::Ready) {

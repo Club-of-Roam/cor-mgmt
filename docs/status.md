@@ -1,6 +1,8 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-10. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-11. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+
+Gemeinsame Abnahme begonnen: Systemstatus und Event-Seitenauswahl anhand der Benutzerrückmeldung sichtbar. Team-/Einladungs- und Ergebnisspeicher erfolgreich eingerichtet. Ergänzte Warteanzeige vom Benutzer sichtbar und erfolgreich nachgeprüft (AB-I01-B03 geschlossen). Nächste gemeinsame Aktion sind die fünf übrigen Speicher-Einrichtungen. Veraltete Aussage zur nicht verfügbaren Archivumschaltung korrigiert und das getrennte Werkzeug verlinkt. WPML-Kompatibilität bleibt eigener offener Integrationsbefund. Fallstatus und Nachprüfungen: [Abnahmeprotokoll](block-10-acceptance.md).
 
 ## Aktuelles Paket: Archiv und aktive Umschaltung
 

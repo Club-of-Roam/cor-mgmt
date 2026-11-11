@@ -3,6 +3,16 @@
     const panel = document.querySelector('#cor-mgmt-schema');
     if (!panel) return;
     const output = panel.querySelector('[data-report]');
+    const progress = panel.querySelector('[data-progress]');
+    const progressText = panel.querySelector('[data-progress-text]');
+    const spinner = panel.querySelector('[data-spinner]');
+    const report = (message, processing) => {
+        if (progress && progressText) {
+            progress.hidden = false;
+            progressText.textContent = message;
+        }
+        if (spinner) spinner.hidden = !processing;
+    };
     let fingerprint = '';
     let busy = false;
     const request = async (operation, run = '') => {
@@ -26,19 +36,39 @@
         const button = event.target.closest('button[data-operation]');
         if (!button || busy) return;
         busy = true;
-        panel.querySelectorAll('button').forEach(item => { item.disabled = true; });
+        let reloading = false;
+        const controls = Array.from(panel.querySelectorAll('button'), item => ({item, disabled: item.disabled}));
+        const label = button.textContent;
+        const waiting = panel.dataset.busyText || 'Please wait, processing...';
+        controls.forEach(({item}) => { item.disabled = true; });
+        button.textContent = waiting;
+        output.textContent = '';
+        output.setAttribute('aria-busy', 'true');
+        report(waiting, true);
         try {
             let result = await request(button.dataset.operation, button.dataset.run || '');
             if (result.fingerprint) fingerprint = result.fingerprint;
-            if (result.reload) { window.location.reload(); return; }
+            if (result.reload) {
+                reloading = true;
+                report(panel.dataset.reloadText || 'Processing complete. Reloading the page...', true);
+                window.location.reload();
+                return;
+            }
             while (result.run_id && result.state === 'running') {
                 result = await request('step', result.run_id);
             }
+            report(panel.dataset.completeText || 'Processing complete.', false);
         } catch (error) {
+            reloading = false;
             output.textContent = error.message;
+            report(panel.dataset.errorText || 'Processing failed. Please review the message below.', false);
         } finally {
-            busy = false;
-            panel.querySelectorAll('button').forEach(item => { item.disabled = false; });
+            if (!reloading) {
+                busy = false;
+                controls.forEach(({item, disabled}) => { item.disabled = disabled; });
+                button.textContent = label;
+                output.setAttribute('aria-busy', 'false');
+            }
         }
     });
 })();

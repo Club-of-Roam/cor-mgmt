@@ -1,5 +1,19 @@
 # Prüfbelege
 
+## Gemeinsame Abnahme: Warteanzeige und Moduleinrichtung – 2026-11-11
+
+AB-I01-B03 ist geschlossen: Der Benutzer bestätigt die sichtbare Warteanzeige und erfolgreiche Einrichtung des Ergebnisspeichers. Zuvor wurde die Einrichtung des Team-/Einladungsspeichers bestätigt. Die übrigen fünf Speicher-Einrichtungen und die fachlichen Modulabläufe bleiben offen; siehe [Abnahmeprotokoll](block-10-acceptance.md).
+
+Die Statusseite zeigt während der Verarbeitung einen Spinner, einen Live-Status und eine Wartebeschriftung. Aktionen bleiben bis zum Neuladen gesperrt; Fehler stellen die vorherigen Schaltflächenzustände wieder her. Die Assetversion wurde erhöht. Datenbankwriter und Migrationslogik bleiben unverändert.
+
+`composer check` und `composer test` bestehen auf PHP 8.2/8.3/8.4/8.5 mit jeweils 350 isolierten Tests / 678 Assertions. Alle 22 JavaScript-Tests und ESLint bestehen; zwei neue Regressionstests prüfen die unmittelbare Warteanzeige, Mehrfachklickschutz und Wiederherstellung nach Netzwerkfehlern. Nach der abschließenden Textanpassung bestehen zusätzlich alle fünf gezielten Schema-JavaScript-Tests. Inventar regeneriert. Keine neue WordPress-Integrationssuite, automatisierte Browserprüfung oder ZIP-Prüfung für diese Oberflächenkorrektur; der sichtbare Erfolgsablauf wurde gemeinsam im Browser geprüft. Keine Datenbankeinrichtung durch den Agenten und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: Einstieg und Hinweistext – 2026-11-11
+
+Benutzerrückmeldung zu AB-I01/AB-I02 anhand von Screenshots erfasst: Systemstatus und Event-ID-Auswahl erreichbar; erkannter Altbestand und noch ausstehende Moduleinrichtungen sichtbar. WPML-Kompatibilität als gesonderten Integrationsbefund festgehalten. Der veraltete Hinweis zur noch nicht verfügbaren aktiven Umschaltung ist korrigiert; der Systemstatus verlinkt nun die getrennten Archiv-/Umschaltwerkzeuge. Benutzer-Nachsicht und tatsächliche Moduleinrichtung bleiben offen; siehe [Abnahmeprotokoll](block-10-acceptance.md).
+
+Für diese Änderung bestehen `composer check` und `composer test` auf PHP 8.2/8.3/8.4/8.5, jeweils 350 isolierte Tests / 678 Assertions. Inventar regeneriert, Dokumentationsprüfung bestanden. Datenbankwriter und Migrationslogik unverändert; keine neue Integrations-/Browser- oder ZIP-Prüfung in diesem Paket. Keine Datenbankeinrichtung oder Migration durch den Agenten und keine Git-Aktionen.
+
 ## Block 10: Archiv und aktive Speicherumschaltung – 2026-11-10
 
 Umsetzung und Bedienvertrag: [Archiv und Umschaltung](block-10-archive.md). Pluginheader 1.2.10 und die bisherigen neun SQL-Installationspläne sind gegenüber dem vorherigen Paket bytegleich. Unabhängiges Archivschema 1.0.0 und Umschaltplan `live-copy-v1` ergänzt. Keine Git-Aktionen oder Freigabe einer Anwendungs-/Produktionsdatenbank.

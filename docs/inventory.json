@@ -124,7 +124,7 @@
     "src/WordPress/ProfileAvatar.php": "38a400102fd08abcd41e541b04de4310f4353c209bcae403187879ce90e01e3d",
     "src/WordPress/ResultBoundary.php": "432f6ed86f44420c118a4db0de1ba1ba21aaccc614c9edd268b05e8e69a32ecd",
     "src/WordPress/ResultFrontend.php": "6fa77975fe3734ee97f90f18216ddc8e63cc373fdc78570638f7683bf8c0cc6f",
-    "src/WordPress/SchemaTools.php": "706c517695aa18de704643dd0720c17e29d221866c2248a9fe1bbe71ba1d3b25",
+    "src/WordPress/SchemaTools.php": "959070f114b7c7597064473ad709c2b6a7b1e86f6f0e14fec6d3b527b2a959d2",
     "src/WordPress/Services.php": "8e37ba4167038976f4b9cc62150f193dde32a03f3f11505da2d663be9ed2b9ea",
     "src/WordPress/SitePages.php": "43132d4dd37c8db0800194ba7d8b103f6b230ecdb37bc490fcce4e5a1f1d74c4",
     "src/WordPress/TeamAdmin.php": "23873f233536e60b166c8152c440cf7ee516ff520b461400ecbe88c987dabac0",
