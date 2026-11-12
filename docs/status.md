@@ -1,10 +1,14 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-11. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Stand 2026-11-12. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
 Gemeinsame Abnahme begonnen: Alle sieben Zusatzspeicher und Tickertabellen eingerichtet; Warte-/Erfolgshinweise nachgeprüft (AB-I01-B03/B04 geschlossen). Benutzer bestätigt abgeschlossene Tickerübernahme sowie Stop/Fortsetzen (AB-I01-B05 geschlossen): `native`, 16.115 von 16.115 Datensätzen geprüft, 559 Hinweise. Sichtprobe zeigt übernommene Text-/Bildbeiträge. Zu große Verwaltungsbilder durch kompakte proportionale Vorschau mit Vollgrößenlink korrigiert (AB-I01-B06); gemeinsame Nachprüfung offen. Hinweise noch inhaltlich auswerten. WPML-Kompatibilität bleibt eigener offener Integrationsbefund. Fallstatus und Nachprüfungen: [Abnahmeprotokoll](block-10-acceptance.md).
 
 ## Aktuelles Paket: Archiv und aktive Umschaltung
+
+Vorrang vor der Abnahmeveranstaltung: fehlender Archivspeicher und ungenauer Hinweis (AB-I01-B08). Screenshot der Archivwerkzeuge bestätigt am 2026-11-12 die bisherige Vermischung mit Wartungsbestätigungen. Reine Einrichtung jetzt separat unter Systemstatus ergänzt, Archivseite verlinkt diesen Weg und Hinweis benennt fehlenden Archivspeicher. Bestehende Archiv-/Umschaltbefehle behalten ihre Bestätigungen. Nächste gemeinsame Aktion: Set up archive storage im Systemstatus prüfen. Keine Archivveröffentlichung oder Tabellenumschaltung freigegeben.
+
+Tickerhinweise lesend eingeordnet: 559 Hinweise betreffen 531 Beiträge. Darunter 42 nicht aufgelöste Bildverweise und 10 unklare Video-/Standortverweise; übrige Kategorien betreffen historische Zeitwerte, Absender und Beziehungen. Vollständige Aufteilung in verification.md. Keine Datenreparatur oder Löschung; Einzelfallprüfung AB-I01-B07 offen. Nächster gemeinsamer Schritt ist AB-I03: eigene Abnahmeveranstaltung vorbereiten, anschließend Seiten zuordnen.
 
 Gemeinsame Tickerübernahme abgeschlossen: Benutzer meldet `native`, 16.115 Quelldatensätze und ebenso viele geprüfte Datensätze, Cursor/höchster Quellschlüssel 17.851, 559 Hinweise sowie sichtbare Abschlussmeldung. Originaltabellen bleiben erhalten. Hinweise sind Zählungen, keine Zahl verlorener Beiträge; Kategorien und betroffene Inhalte noch prüfen. Abschluss allein gibt weder historische Medien noch sämtliche Tickerfunktionen frei.
 

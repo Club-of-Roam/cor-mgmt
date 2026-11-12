@@ -40,7 +40,7 @@ final class SchemaTools
             wp_send_json_error(['code' => 'requirements'], 400);
         }
         $operation = $_POST['operation'] ?? null;
-        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','donation-setup','communication-setup','mail-queue-setup','broadcast-setup','exchange-setup','donation-audit','preflight','start','step','abandon'], true)) {
+        if (!is_string($operation) || !in_array($operation, ['install','participation-setup','results-setup','donation-setup','communication-setup','mail-queue-setup','broadcast-setup','exchange-setup','archive-setup','donation-audit','preflight','start','step','abandon'], true)) {
             wp_send_json_error(['code' => 'invalid_operation'], 400);
         }
         if (in_array($operation, ['start','step'], true) && (($_POST['backup'] ?? '') !== '1' || ($_POST['quiesced'] ?? '') !== '1')) {
@@ -75,6 +75,9 @@ final class SchemaTools
                 $data = ['reload' => true];
             } elseif ($operation === 'exchange-setup') {
                 (new Installer($db))->exchange();
+                $data = ['reload' => true];
+            } elseif ($operation === 'archive-setup') {
+                (new Installer($db))->archive();
                 $data = ['reload' => true];
             } elseif ($operation === 'donation-audit') {
                 $data = \Cor\Mgmt\Infrastructure\WordPress\DonationAudit::report($db);
@@ -151,6 +154,10 @@ final class SchemaTools
             }
         }
         if ($status === InstallationStatus::Ready) {
+            if (!\Cor\Mgmt\Infrastructure\WordPress\Schema\ArchiveSchema::ready($db)) {
+                echo '<p><button type="button" class="button button-primary" data-operation="archive-setup">' . esc_html__('Set up archive storage', 'h3-mgmt') . '</button></p>';
+                echo '<p>' . esc_html__('Creates archive storage only. No race is frozen, no historical data is copied and no active tables are switched.', 'h3-mgmt') . '</p>';
+            }
             echo '<p><button type="button" class="button" data-operation="donation-audit">' . esc_html__('Review donation storage (read only)', 'h3-mgmt') . '</button></p>';
         }
         echo '<h2>' . esc_html__('Database setup and migration', 'h3-mgmt') . '</h2>';

@@ -39,6 +39,7 @@ final class SchemaToolsTest extends TestCase {
     }
     public static function invalidRequests(): array {
         return [
+            ['GET',true,'valid','archive-setup','post_required'],['POST',false,'valid','archive-setup','forbidden'],['POST',true,'wrong','archive-setup','invalid_nonce'],
             ['GET',true,'valid','mail-queue-setup','post_required'],['POST',false,'valid','mail-queue-setup','forbidden'],['POST',true,'wrong','mail-queue-setup','invalid_nonce'],
             ['GET',true,'valid','communication-setup','post_required'],['POST',false,'valid','communication-setup','forbidden'],['POST',true,'wrong','communication-setup','invalid_nonce'],
             ['GET',true,'valid','donation-setup','post_required'],['POST',false,'valid','donation-setup','forbidden'],['POST',true,'wrong','donation-setup','invalid_nonce'],
@@ -56,6 +57,63 @@ final class SchemaToolsTest extends TestCase {
         global $wpdb;$before=$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_donation_history");
         $_POST['operation']='donation-audit';$result=$this->request();self::assertTrue($result['success']);self::assertTrue($result['data']['read_only']);
         self::assertSame('unresolved_without_source_provenance',$result['data']['historical_units']);self::assertArrayNotHasKey('session_hash',$result['data']);self::assertSame($before,$wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_donation_history"));
+    }
+    public function testArchiveSetupIsSeparateRepeatableAndDoesNotStartMaintenance(): void {
+        global $wpdb;
+        $db = new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb);
+        $manifest = $db->option('cor_mgmt_archive_install');
+        self::assertNotNull($manifest);
+        $tables = array_keys(\Cor\Mgmt\Infrastructure\WordPress\Schema\Catalogue::legacy()
+            + \Cor\Mgmt\Infrastructure\WordPress\Schema\ArchiveSchema::definitions());
+        $counts = static function () use ($db, $tables): array {
+            $result = [];
+            foreach ($tables as $table) {
+                $result[$table] = $db->scalar($db->prepare('SELECT COUNT(*) FROM %i', $db->table($table)));
+            }
+            return $result;
+        };
+        $before = $counts();
+        $generation = $db->option('cor_mgmt_runtime_generation');
+        try {
+            $db->execute($db->prepare('DELETE FROM %i WHERE option_name=%s', $wpdb->options, 'cor_mgmt_archive_install'));
+            ob_start();
+            \Cor\Mgmt\WordPress\Lifecycle::notice();
+            $notice = ob_get_clean();
+            self::assertStringContainsString('Archive storage requires setup', $notice);
+            ob_start();
+            SchemaTools::render(\Cor\Mgmt\Domain\InstallationStatus::Ready);
+            $html = ob_get_clean();
+            self::assertStringContainsString('data-operation="archive-setup"', $html);
+            self::assertLessThan(strpos($html, 'data-backup'), strpos($html, 'data-operation="archive-setup"'));
+            ob_start();
+            \Cor\Mgmt\WordPress\ArchiveBoundary::page();
+            $html = ob_get_clean();
+            self::assertStringContainsString('Open system status for archive storage setup', $html);
+            self::assertStringNotContainsString('value="archive-setup"', $html);
+            $_POST = ['nonce' => wp_create_nonce('cor-mgmt-schema'), 'operation' => 'archive-setup'];
+            $collision = $this->request();
+            self::assertFalse($collision['success']);
+            self::assertSame('table_name_collision', $collision['data']['code']);
+            // Restore ownership after checking the missing-manifest presentation.
+            // Existing tables without their owner manifest must not be adopted.
+            $db->setOption('cor_mgmt_archive_install', $manifest);
+            for ($attempt = 0; $attempt < 2; $attempt++) {
+                $_POST = ['nonce' => wp_create_nonce('cor-mgmt-schema'), 'operation' => 'archive-setup'];
+                $result = $this->request();
+                self::assertTrue($result['success']);
+                self::assertTrue($result['data']['reload']);
+                self::assertTrue(\Cor\Mgmt\Infrastructure\WordPress\Schema\ArchiveSchema::ready($db));
+                self::assertSame($before, $counts());
+                self::assertSame($generation, $db->option('cor_mgmt_runtime_generation'));
+            }
+            ob_start();
+            SchemaTools::render(\Cor\Mgmt\Domain\InstallationStatus::Ready);
+            $html = ob_get_clean();
+            self::assertStringNotContainsString('data-operation="archive-setup"', $html);
+        } finally {
+            if ($manifest !== null) { $db->setOption('cor_mgmt_archive_install', $manifest); }
+            else { $db->execute($db->prepare('DELETE FROM %i WHERE option_name=%s', $wpdb->options, 'cor_mgmt_archive_install')); }
+        }
     }
     public function testCommunicationSetupIsExplicitAndRepeatable(): void {
         $_POST=['nonce'=>wp_create_nonce('cor-mgmt-schema'),'operation'=>'communication-setup'];self::assertTrue($this->request()['success']);self::assertTrue($this->request()['success']);

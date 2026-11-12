@@ -139,7 +139,11 @@ final class Lifecycle
         if (!current_user_can('manage_options') || (self::ready() && \Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ResultsSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\DonationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\CommunicationSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\MailQueueSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\BroadcastSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ExchangeSchema::ready(new Database($wpdb)) && \Cor\Mgmt\Infrastructure\WordPress\Schema\ArchiveSchema::ready(new Database($wpdb)))) {
             return;
         }
-        echo '<div class="notice notice-warning"><p>' . esc_html__('cor-mgmt requires setup or a controlled schema review. Open Tools > cor-mgmt system status.', 'h3-mgmt') . '</p></div>';
+        if (!\Cor\Mgmt\Infrastructure\WordPress\Schema\ArchiveSchema::ready(new Database($wpdb))) {
+            echo '<div class="notice notice-warning"><p><a href="' . esc_url(admin_url('tools.php?page=cor-mgmt-system')) . '">' . esc_html__('Archive storage requires setup. Open cor-mgmt system status to create the missing storage. This does not start an archive or switch active tables.', 'h3-mgmt') . '</a></p></div>';
+        } else {
+            echo '<div class="notice notice-warning"><p>' . esc_html__('cor-mgmt requires setup or a controlled schema review. Open Tools > cor-mgmt system status.', 'h3-mgmt') . '</p></div>';
+        }
     }
 
     private static function statusMessage(InstallationStatus $status): string

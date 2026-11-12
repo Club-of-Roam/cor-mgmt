@@ -1,5 +1,40 @@
 # Prüfbelege
 
+## Gemeinsame Abnahme: getrennte Archivspeichereinrichtung – 2026-11-12
+
+Screenshot bestätigt AB-I01-B08: Reine Archivspeichereinrichtung war im selben Formular wie Archivierung/Umschaltung an Wartungsbestätigungen gebunden. Neue `archive-setup`-Aktion am vorhandenen Schema-Endpunkt verwendet Administratorrecht, POST, Schema-Nonce und bestehende Voraussetzungskontrolle. Sie ruft ausschließlich den wiederholbaren Archiv-Installer auf und bestätigt Neuladen. Systemstatus bietet den fehlenden Speicher mit bestehender Warteanzeige an; Archivseite verlinkt diesen getrennten Weg. Der globale Hinweis benennt fehlenden Archivspeicher konkret. Bestehende Archiv-/Umschaltbefehle einschließlich des bisherigen administrativen Setup-POST behalten unverändert Sicherungs-/Stillstandsbestätigungen.
+
+`composer check` und `composer test` bestehen auf PHP 8.2/8.3/8.4/8.5 mit jeweils 350 Tests / 678 Assertions. Inventar regeneriert. Neue Integrationstests prüfen GET/Gast/falsche Nonce, wiederholte Einrichtung ohne Wartungsbestätigungen, unveränderte Zeilenzahlen der Fach-/Archivtabellen, unveränderte Laufzeitgeneration sowie gezielten Hinweis und getrennte Oberfläche. Ein erster Integrationsversuch wurde durch einen Absturz des separaten MariaDB-Testprozesses bei einer Schemaabfrage unterbrochen; Wiederholung auf einer frisch initialisierten synthetischen Testdatenbank. Dort bestehen auf allen vier Versionen die 21 Archiv-/Umschaltfälle; der neue Einrichtungsfall scheiterte zunächst an seinem unvollständigen Testaufbau: Nach absichtlichem Entfernen des Besitzermanifests für die Anzeigeprüfung darf der Installer vorhandene Tabellen nicht übernehmen. Testaufbau korrigiert, Kollision ausdrücklich als erwartete Abweisung ergänzt; Laufzeitcode und Kollisionsschutz unverändert. Kein erfolgreicher gemeinsamer 59-Fälle-Lauf mit dem korrigierten Testaufbau behauptet. Keine Verbindung dieser Testläufe zur Anwendungsdatenbank.
+
+Abschließend bestehen alle 38 Schema-Verwaltungsfälle / 144 Assertions auf PHP 8.2/8.3/8.4/8.5 mit korrigiertem Testaufbau. Dokumentationsprüfung bestanden. Gemeinsame Einrichtung und Nachprüfung des verschwundenen Hinweises offen. Keine neue automatische Browser- oder ZIP-Prüfung; unveränderte JavaScript-Logiktests nicht wiederholt. Keine Einrichtung oder Datenänderung in der Anwendungsdatenbank durch den Agenten und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: verbleibender Einrichtungshinweis – 2026-11-11
+
+Benutzer meldet weiterhin den allgemeinen Einrichtungshinweis. Quellprüfung von Lifecycle::notice bestätigt: Zusätzlich zu den sieben Zusatzspeichern wird ArchiveSchema::ready verlangt. Lesende Bestandsprüfung in schreibgeschützter Transaktion bestätigt fehlendes Archiv-Installationsmanifest und null von drei erwarteten Archivtabellen. Damit ist mindestens eine konkrete Auslösebedingung nachgewiesen; die erfolgreiche Tickerübernahme ersetzt die Archivspeichereinrichtung nicht. Keine Tabellen oder Optionen geändert.
+
+AB-I01-B08 erfasst den ungenauen Hinweis und den noch offenen Einrichtungsschritt. Archivwerkzeug zunächst gemeinsam sichten: Sein bisheriges Formular verlangt Sicherung und Writerstillstand auch bei der reinen Speichereinrichtung. Diese Bestätigungen dürfen nicht nur zum Entfernen einer Warnung gesetzt werden. Keine Freigabe eines Archivabschlusses oder einer aktiven Tabellenumschaltung. Nächster Schritt vor AB-I03: Archivwerkzeug und Voraussetzungen prüfen.
+
+Nur Dokumentation geändert; Dokumentationsprüfung bestanden. Keine neuen Laufzeit-/Integrations-/Browser-/Pakettests, keine Datenänderungen und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: Tickerhinweise eingeordnet – 2026-11-11
+
+Manuelle lesende Bestandsprüfung in einer ausdrücklich schreibgeschützten Datenbanktransaktion, ohne WordPress-Start oder automatisierte Tests gegen Anwendungsdaten. Nur Hinweis-Codes und aggregierte Zählungen ausgegeben; keine personenbezogenen Inhalte übernommen. 16.115 Tickerbeiträge, davon 531 mit mindestens einem Hinweis; insgesamt 559 Hinweise. Die Summe stimmt mit dem vom Benutzer gemeldeten Abschluss überein.
+
+| Hinweis | Anzahl | Bedeutung |
+|---|---:|---|
+| `unknown_timestamp` | 222 | Historischer Zeitwert nicht als unterstützter Unix-Zeitstempel erkennbar |
+| `historical_author` | 132 | Absenderkennung entspricht nicht dem unterstützten Benutzer-/Team-ID-Format |
+| `former_participant` | 58 | Referenziertes Benutzerkonto nicht vorhanden |
+| `unresolved_image` | 42 | Bildverweis kann nicht als zulässige vorhandene Bilddatei aufgelöst werden |
+| `unknown_parent` | 40 | Kommentar ohne erkennbare übergeordnete Beitrags-ID |
+| `orphan_team` | 31 | Referenziertes Team fehlt oder passt nicht zum Event |
+| `orphan_event` | 24 | Eventzuordnung fehlt oder verweist auf keinen vorhandenen Eventdatensatz |
+| `unknown_media_reference` | 10 | Video-/Standortverweis entspricht keinem unterstützten Format |
+
+Ein Beitrag kann mehrere Hinweise tragen. Insbesondere 42 nicht aufgelöste Bilder sind kein Nachweis, dass alle 42 Originaldateien verloren sind; Pfade, Dateibestand und Sicherheitsprüfung müssen getrennt untersucht werden. Keine geratene Reparatur, keine Löschung und keine Gleichsetzung mit den Medienzählungen der früheren Archivprobe. Kategorien gemäß [Content](../src/Domain/Ticker/Content.php) und [TickerImport](../src/Infrastructure/WordPress/TickerImport.php). Inhaltliche Einzelfallprüfung bleibt offen (AB-I01-B07 / R-03).
+
+Nur Dokumentation geändert; Dokumentationsprüfung bestanden. Keine neuen Laufzeit-, Integrations-, Browser- oder Pakettests ausgeführt. Datenbankverbindung nach Rollback beendet; keine Daten geändert und keine Git-Aktionen.
+
 ## Gemeinsame Abnahme: kompakte Tickerbilder – 2026-11-11
 
 Benutzer bestätigt Stop und Fortsetzen; AB-I01-B05 geschlossen. Sichtprobe zeigt übernommene Text-/Bildbeiträge. Befund AB-I01-B06: Bilder in der Verwaltung beanspruchen zu viel Platz. Moderationsbilder erhalten eine proportionale Vorschau mit maximal 360 × 280 Pixeln und begrenzter Containerbreite. Kleine Bilder werden nicht vergrößert; Bild und Textlink öffnen volle Größe im neuen Tab mit `noopener noreferrer`. CSS-Assetversion erhöht. Originalmedien und Übernahme unverändert; gemeinsame Nachprüfung der Vorschau offen.

@@ -125,7 +125,7 @@ final class ArchiveBoundary
         }
         wp_enqueue_script('cor-mgmt-archive', plugins_url('js/cor-mgmt-archive.js', dirname(__DIR__, 2) . '/h3-management.php'), [], '1', true);
         $id = is_string($_GET['snapshot'] ?? null) && preg_match('/^[a-f0-9]{32}$/D', $_GET['snapshot']) ? $_GET['snapshot'] : '';
-        echo '<div class="wrap"><h1>' . esc_html__('Archives and storage transition', 'h3-mgmt') . '</h1><p>' . esc_html__('Stop every source writer and keep a restorable backup before proceeding. Snapshot creation freezes event changes. Account credentials are not copied into public archive views. Existing tables and original images are retained.', 'h3-mgmt') . '</p>';
+        echo '<div class="wrap"><h1>' . esc_html__('Archives and storage transition', 'h3-mgmt') . '</h1>';
         try {
             global $wpdb;
             $db = new Database($wpdb);
@@ -150,10 +150,14 @@ final class ArchiveBoundary
         } catch (\Throwable) {
             echo '<p role="alert">' . esc_html__('Storage status needs review. No repair or cleanup runs automatically.', 'h3-mgmt') . '</p>';
         }
+        echo '<h2>' . esc_html__('Archive storage setup', 'h3-mgmt') . '</h2>';
+        echo '<p>' . esc_html__('Set up archive storage separately on the system status page. This does not freeze races, copy historical data or switch active tables.', 'h3-mgmt') . '</p>';
+        echo '<p><a class="button" href="' . esc_url(admin_url('tools.php?page=cor-mgmt-system')) . '">' . esc_html__('Open system status for archive storage setup', 'h3-mgmt') . '</a></p>';
+        echo '<h2>' . esc_html__('Archive preparation and publication', 'h3-mgmt') . '</h2>';
+        echo '<p>' . esc_html__('Stop every source writer and keep a restorable backup before proceeding. Snapshot creation freezes event changes. Account credentials are not copied into public archive views. Existing tables and original images are retained.', 'h3-mgmt') . '</p>';
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" data-archive-form data-endpoint="' . esc_url(admin_url('admin-ajax.php')) . '"><input type="hidden" name="action" value="cor_mgmt_archive"><input type="hidden" name="snapshot" value="' . esc_attr($id) . '">';
         wp_nonce_field('cor-mgmt-archives', 'cor_mgmt_nonce');
         echo '<p><label><input type="checkbox" name="backup" value="1" required> ' . esc_html__('A verified backup is available.', 'h3-mgmt') . '</label></p><p><label><input type="checkbox" name="quiesced" value="1" required> ' . esc_html__('All source writers are stopped.', 'h3-mgmt') . '</label></p>';
-        echo '<p><button class="button" name="operation" value="archive-setup">' . esc_html__('Set up archive storage', 'h3-mgmt') . '</button></p>';
         echo '<p><label>' . esc_html__('Event ID', 'h3-mgmt') . ' <input type="number" min="1" name="race"></label> <button class="button" name="operation" value="archive-start-completion">' . esc_html__('Prepare new race completion', 'h3-mgmt') . '</button> <button class="button" name="operation" value="archive-start-migration">' . esc_html__('Prepare historical migration archive', 'h3-mgmt') . '</button></p>';
         if ($id !== '') {
             echo '<p><button class="button" name="operation" value="archive-step">' . esc_html__('Process one archive step', 'h3-mgmt') . '</button> <button class="button" type="button" data-archive-run="archive-step">' . esc_html__('Process archive until verified', 'h3-mgmt') . '</button> <button class="button" name="operation" value="archive-complete">' . esc_html__('Publish verified race completion', 'h3-mgmt') . '</button> <button class="button" name="operation" value="archive-abandon">' . esc_html__('Abandon unfinished snapshot without deleting it', 'h3-mgmt') . '</button></p>';

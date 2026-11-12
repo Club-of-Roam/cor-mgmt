@@ -1,6 +1,6 @@
 # Block 10: Archiv und aktive Speicherumschaltung
 
-Stand 2026-11-10. Technische Umsetzung; keine Produktions- oder Releasefreigabe. Aktuelle Prüfbelege stehen in [verification.md](verification.md).
+Stand 2026-11-12. Technische Umsetzung; keine Produktions- oder Releasefreigabe. Aktuelle Prüfbelege stehen in [verification.md](verification.md).
 
 ## Umfang
 
@@ -12,7 +12,9 @@ Stand 2026-11-10. Technische Umsetzung; keine Produktions- oder Releasefreigabe.
 
 ## Bedienung und Voraussetzungen
 
-Unter **Werkzeuge → Archives and storage transition** sind Einrichtung, Snapshotverarbeitung und Speicherumschaltung getrennt erreichbar. Jeder Befehl benötigt Administratorrechte, POST, Nonce sowie eine ausdrückliche Bestätigung für vorhandene Sicherung und gestoppte Quellwriter. Alte Plugins, Direktendpunkte, Hintergrundjobs, Konto-/Profiländerungen und andere Datenbankschreiber müssen für die Übernahme pausieren. Der gemeinsame Pluginlock ersetzt keine Sperre fremder Programme.
+Die reine Archivspeichereinrichtung erfolgt wie die übrigen Zusatzspeicher unter **Werkzeuge → cor-mgmt system status** über **Set up archive storage**. Dafür gelten Administratorrecht, POST und Nonce; die Einrichtung ist wiederholbar und startet weder Snapshot noch Kopie oder Tabellenumschaltung. Sie benötigt keine Bestätigung eines vollständigen Writerstillstands. Die Archivseite verlinkt diesen getrennten Einrichtungsweg, und ein fehlender Archivspeicher wird im allgemeinen Einrichtungshinweis konkret benannt.
+
+Unter **Werkzeuge → Archives and storage transition** bleiben Snapshotverarbeitung und Speicherumschaltung erreichbar. Diese Befehle benötigen zusätzlich die ausdrücklichen Bestätigungen für vorhandene Sicherung und gestoppte Quellwriter. Auch der bisherige administrative POST-Befehl `archive-setup` behält für Aufrufkompatibilität seine bisherigen Bestätigungen; der getrennte Einrichtungsweg verwendet den geschützten Schema-Endpunkt. Alte Plugins, Direktendpunkte, Hintergrundjobs, Konto-/Profiländerungen und andere Datenbankschreiber müssen für die Übernahme pausieren. Der gemeinsame Pluginlock ersetzt keine Sperre fremder Programme.
 
 Eine Seitenansicht startet keine Kopie. Jeder Verarbeitungsschritt ist begrenzt; die Browserverarbeitung muss ausdrücklich gestartet werden und endet vor Veröffentlichung bzw. Umschaltung. Stop wartet den laufenden Schritt ab. Fehler werden nicht automatisch wiederholt. Journal und Oberfläche erlauben die ausdrückliche Wiederaufnahme. Ein abgebrochener, unveröffentlichter Lauf kann ohne Löschen seiner Daten aufgegeben werden.
 
