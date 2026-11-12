@@ -1,5 +1,13 @@
 # Prüfbelege
 
+## GitHub-Browsertest nach Verlagerung der Archiveinrichtung – 2026-11-12
+
+[GitHub-Lauf 43259956081](https://github.com/Club-of-Roam/cor-mgmt/actions/runs/43259956081) über die Jobschritte und Protokolle geprüft. PHP 8.3/8.4 erfolgreich. PHP 8.2/8.5 bestehen ebenfalls Qualität, isolierte Tests und WordPress-Integration (350 Tests / 697 Assertions sowie 468 Tests / 3.450 Assertions), scheitern anschließend am gleichen Browsertest. Nur diese beiden Matrixjobs führen Browserprüfungen aus; daraus folgt kein PHP-spezifischer Laufzeitfehler.
+
+Bestätigte Ursache: `tests/Browser/communication.spec.cjs` sucht auf der Archivseite den inzwischen in den Systemstatus verlagerten Button „Set up archive storage“ und erreicht dabei das Zeitlimit. Je Job bestehen zwölf andere Browserfälle. Der Test prüft jetzt die tatsächlich vorhandene Aktion „Prepare new race completion“, einschließlich ausbleibender POST-Anfrage ohne Sicherungsbestätigung und erneut ohne Bestätigung gestoppter Writer. Event-ID ist dabei ausgefüllt, damit nicht ein anderes Feld die Übertragung blockiert. Beide Bestätigungen bleiben per Tastatur erreichbar; Rollenprüfung und axe-Prüfung bleiben erhalten. Kein Test wird übersprungen und kein Zeitlimit erhöht. Plugin-Laufzeitcode unverändert.
+
+Erneute vollständige Browserprüfung unter PHP 8.2/8.5 bestanden: jeweils 13 Szenarien einschließlich Tastatur-/axe-Prüfungen. ESLint und abschließende Dokumentationsprüfung bestanden. Keine erneute PHP-Qualitäts-/Integrationsmatrix für diese reine Browsertestkorrektur; deren erfolgreiche GitHub-Ergebnisse oben sind vom neuen Browsernachweis getrennt. Ausschließlich synthetische Daten verwendet; Testdatenbank nach Abschluss beendet. Kein entfernter Wiederholungslauf gestartet, kein Commit oder Push. Der nächste GitHub-Lauf muss die Korrektur dort noch bestätigen. Gemeinsamer Abnahmeschritt AB-I04 unabhängig davon durch den Benutzer bestätigt: Entwurf, Eventshortcode und Wiederverwendung derselben Seiten-ID bestanden.
+
 ## Gemeinsame Abnahme: Seitenverwaltung in Event-Einstellungen – 2026-11-12
 
 Auf Benutzerwunsch die separate Tools-Seite entfernt. Seitenverwaltung wird außerhalb des Event-Speicherformulars in den Event-Einstellungen angezeigt; alte Werkzeuglinks leiten dorthin. Hinweise bei Neuanlage und nach erstem Speichern ergänzt. Sechs Rollen einschließlich Spendenseite, verständliche Überschriften und Entwurfstitel, Seitenauswahl mit Titel-/ID-Suche und explizite Erfolgsmeldung nach Zuordnung. Bisherige interne Teamübersichts-/Spendenlinks bleiben bis zur Veröffentlichung eines passenden Ersatzes erhalten; aktive Linkausgaben verwenden dieselbe Zuordnung. Historische Zahlungsrückleitungen bleiben unverändert und werden nicht aktiviert.

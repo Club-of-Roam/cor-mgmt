@@ -49,15 +49,25 @@ test('archive tools are restricted, readable by keyboard and require maintenance
   await identity(context, 'admin');
   await page.goto(base + '/archives');
   await expect(page.getByRole('heading', {name: 'Archives and storage transition', exact: true})).toBeVisible();
+  await expect(page.getByRole('button', {name: 'Set up archive storage', exact: true})).toHaveCount(0);
   await expect(page.locator('input[name="backup"]')).not.toBeChecked();
   await expect(page.locator('input[name="quiesced"]')).not.toBeChecked();
+  await page.getByRole('spinbutton', {name: 'Event ID', exact: true}).fill('880090');
   let posts = 0;
   page.on('request', request => { if (request.method() === 'POST') posts++; });
-  await page.getByRole('button', {name: 'Set up archive storage', exact: true}).click();
+  const prepare = page.getByRole('button', {name: 'Prepare new race completion', exact: true});
+  await prepare.click();
   expect(posts).toBe(0);
+  expect(await page.locator('input[name="backup"]').evaluate(input => input.validity.valueMissing)).toBe(true);
   await page.getByLabel('A verified backup is available.', {exact: true}).focus();
   await page.keyboard.press('Space');
   await expect(page.locator('input[name="backup"]')).toBeChecked();
+  await prepare.click();
+  expect(posts).toBe(0);
+  expect(await page.locator('input[name="quiesced"]').evaluate(input => input.validity.valueMissing)).toBe(true);
+  await page.getByLabel('All source writers are stopped.', {exact: true}).focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator('input[name="quiesced"]')).toBeChecked();
   await axe(page);
 });
 test('preview, snapshot, queue and pause a campaign without sending', async ({ page, context }) => {
