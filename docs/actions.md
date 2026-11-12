@@ -6,8 +6,8 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 |---|---|---|
 | [autoresponses_edit](../admin/class-h3-mgmt-admin-emails.php#L35) | `GET:tab`, `GET:todo`, `POST:submitted` |  |
 | [control](../admin/class-h3-mgmt-admin-races.php#L30) | `GET:id`, `GET:todo`, `POST:submitted` |  |
-| [edit](../admin/class-h3-mgmt-admin-races.php#L80) | `POST:cor_event_revision`, `POST:submitted` |  |
-| [fields](../admin/class-h3-mgmt-admin-races.php#L106) | `POST:submitted` |  |
+| [edit](../admin/class-h3-mgmt-admin-races.php#L83) | `POST:cor_event_revision`, `POST:submitted` |  |
+| [fields](../admin/class-h3-mgmt-admin-races.php#L109) | `POST:submitted` |  |
 | [sponsors_control](../admin/class-h3-mgmt-admin-sponsors.php#L23) | `GET:bulk`, `GET:id`, `GET:method`, `GET:todo`, `POST:accound_id`, `POST:address_additional`, `POST:bank_id`, `POST:bank_name`, `POST:city`, `POST:country`, `POST:debit_confirmation`, `POST:display_name`, `POST:donation`, `POST:email`, `POST:first_name`, `POST:language`, `POST:last_name`, `POST:message`, `POST:method`, `POST:owner_link`, `POST:owner_pic`, `POST:paid`, `POST:race_id`, `POST:receipt`, `POST:street`, `POST:team_id`, `POST:type`, `POST:var_show`, `POST:zip_code` | `bulk-delete`, `bulk-hide`, `bulk-paid`, `bulk-show`, `bulk-unpaid`, `delete`, `hide`, `paid`, `save`, `show`, `unpaid` |
 | [sponsors_list](../admin/class-h3-mgmt-admin-sponsors.php#L486) | `GET:order`, `GET:orderby` |  |
 | [add_values](../admin/class-h3-mgmt-admin-sponsors.php#L897) | `GET:id`, `POST:submitted` |  |
@@ -65,9 +65,9 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [control](../src/WordPress/ResultFrontend.php#L13) | `GET:cor_result_route`, `GET:stage`, `POST:submitted` |  |
 | [table](../src/WordPress/ResultFrontend.php#L112) | `GET:ranking_route` |  |
 | [request](../src/WordPress/SchemaTools.php#L27) | `POST:backup`, `POST:fingerprint`, `POST:nonce`, `POST:operation`, `POST:quiesced`, `POST:run_id` |  |
-| [register](../src/WordPress/SitePages.php#L21) | `POST:race_id` |  |
-| [submit](../src/WordPress/SitePages.php#L89) | `POST:cor_mgmt_nonce`, `POST:kind`, `POST:page_id`, `POST:page_operation`, `POST:race_id` |  |
-| [page](../src/WordPress/SitePages.php#L151) | `GET:race_id` |  |
+| [register](../src/WordPress/SitePages.php#L22) | `GET:page`, `GET:race_id`, `POST:race_id` |  |
+| [submit](../src/WordPress/SitePages.php#L145) | `POST:cor_mgmt_nonce`, `POST:kind`, `POST:page_id`, `POST:page_operation`, `POST:race_id` |  |
+| [render](../src/WordPress/SitePages.php#L230) | `GET:cor_pages_saved` |  |
 | [control](../src/WordPress/TeamAdmin.php#L13) | `GET:bulk`, `GET:id`, `GET:todo` |  |
 | [save](../src/WordPress/TeamAdmin.php#L51) | `FILES:team_pic`, `POST:route_id` |  |
 | [form](../src/WordPress/TeamAdmin.php#L97) | `GET:race_id`, `POST:race_id` |  |

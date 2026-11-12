@@ -49,6 +49,9 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
                         return;
                     }
                     $messages[] = ['type' => 'message', 'message' => __('Changes saved.', 'h3-mgmt')];
+                    if ($type === 'race' && !$id && current_user_can('manage_options')) {
+                        echo '<div class="notice notice-info"><p><a href="' . esc_url(\Cor\Mgmt\WordPress\SitePages::settingsUrl((int) $result['id'])) . '">' . esc_html__('Next: create or select the event pages in the event settings.', 'h3-mgmt') . '</a></p></div>';
+                    }
                     unset($_POST['submitted']);
                 } catch (\Throwable $error) {
                     $reason = \Cor\Mgmt\WordPress\EventAdmin::errorCode($error);

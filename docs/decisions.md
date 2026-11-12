@@ -1,6 +1,10 @@
 # Entscheidungen
 
-Stand 2026-11-02.
+## Seiteneinrichtung beim Event (Benutzervorgabe 2026-11-12)
+
+Seitenverwaltung ausschließlich in den Event-Einstellungen anbieten, einschließlich aller fünf Phasen und Archiv. Den bisherigen Tools-Eintrag entfernen; bei Eventneuanlage und nach dem ersten Speichern auf die Seiteneinrichtung hinweisen. Seiten per Titel-/ID-Auswahl und Suche zuordnen oder wiederverwendbare Entwürfe mit passendem Shortcode erzeugen. Klare Rollenüberschriften verwenden. Bisherige interne Teamübersichts-/Spendenlinks bleiben bis zum veröffentlichten Ersatz erhalten; historische Zahlungsabläufe werden dadurch nicht aktiviert. Seitenzuordnung ist eine Präsentationseinstellung und entsperrt keine eingefrorenen Renndaten. Umsetzung und offene gemeinsame Prüfung: [Gesamtabnahme](block-10-acceptance.md).
+
+Stand 2026-11-12.
 
 | ID | Status | Entscheidung |
 |---|---|---|

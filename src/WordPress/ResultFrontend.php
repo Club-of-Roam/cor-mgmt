@@ -201,9 +201,9 @@ final class ResultFrontend
         foreach ($ranked as $row) {
             $id = $row['id'];
             $name = esc_html($names[$id]);
-            $link = $context->rules()['team_overview_link'] ?? '';
-            if (is_string($link) && $link !== '') {
-                $name = '<a href="' . esc_url(add_query_arg('id', $id, home_url($link))) . '">' . $name . '</a>';
+            $link = SitePages::url($race, 'teams');
+            if ($link !== '') {
+                $name = '<a href="' . esc_url(add_query_arg('id', $id, $link)) . '">' . $name . '</a>';
             }
             $html .= '<tr><th scope="row">' . $name . '<br><small>' . wp_kses_post((string) $h3_mgmt_teams->mate_name_string($id, ' &amp; ', false)) . '</small></th><td>' . esc_html((string) $row['position']) . '</td><td>' . esc_html((string) $routePositions[$id]) . '</td><td>' . esc_html((string) $row['points']) . '</td>';
             if ($showStages) {

@@ -2124,7 +2124,7 @@ class H3_MGMT_Teams {
 		}else{
 			$output .= '<p>' .
 				'<a class="sponsors-link" title="' . _x( 'Become this team&apos;s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) . '" ' .
-					'href="'. get_site_url() . $race_setting['donation_link_link'] . '?id=' . $team_id . '&type=sponsor">' .
+					'href="'. esc_url(\Cor\Mgmt\WordPress\SitePages::link((int) $this->get_team_race($team_id), 'donations', ['id' => (int) $team_id, 'type' => 'sponsor'])) . '">' .
 						_x( 'Become this team\'s TeamSponsor!', 'Team Profile', 'h3-mgmt' ) .
 						'</a></p>';
 		}
@@ -2232,7 +2232,7 @@ class H3_MGMT_Teams {
 
 		$output .= '<br /><a title="' .
 				_x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) .
-			'" href="' . get_site_url() . $race_setting['team_overview_link'] . '?id=' . $team_id . '">' .
+			'" href="' . esc_url(\Cor\Mgmt\WordPress\SitePages::link((int) $this->get_team_race($team_id), 'teams', ['id' => (int) $team_id])) . '">' .
 			'&rarr; ' . _x( 'view TeamProfile', 'Team', 'h3-mgmt' ) .
 			'</a></p>';
 

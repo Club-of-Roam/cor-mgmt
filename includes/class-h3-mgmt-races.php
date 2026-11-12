@@ -1092,7 +1092,7 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 						$flip_val = $flipper ? '1' : '2';
 				$output          .= '<tr class="trow-alt-' . $flip_val . '">' .
 				'<th class="first_tac" style="border: none;"><span style="border-bottom: 2px solid #' . $this->get_route_color( $team['route_id'] ) . ';">' .
-						'<a class="ranking_link" style="color:black;" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="' . get_site_url() . $race_setting['team_overview_link'] . __( '?id=', 'h3-mgmt' ) . $team['id'] . '">' .
+						'<a class="ranking_link" style="color:black;" title="' . __( 'View TeamProfile', 'h3-mgmt' ) . '" href="' . esc_url(\Cor\Mgmt\WordPress\SitePages::link((int) $race, 'teams', ['id' => (int) $team['id']])) . '">' .
 							$team['team_name'] .
 						'</a>' .
 					'</span>' .

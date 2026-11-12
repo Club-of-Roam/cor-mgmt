@@ -1,5 +1,17 @@
 # Prüfbelege
 
+## Gemeinsame Abnahme: Seitenverwaltung in Event-Einstellungen – 2026-11-12
+
+Auf Benutzerwunsch die separate Tools-Seite entfernt. Seitenverwaltung wird außerhalb des Event-Speicherformulars in den Event-Einstellungen angezeigt; alte Werkzeuglinks leiten dorthin. Hinweise bei Neuanlage und nach erstem Speichern ergänzt. Sechs Rollen einschließlich Spendenseite, verständliche Überschriften und Entwurfstitel, Seitenauswahl mit Titel-/ID-Suche und explizite Erfolgsmeldung nach Zuordnung. Bisherige interne Teamübersichts-/Spendenlinks bleiben bis zur Veröffentlichung eines passenden Ersatzes erhalten; aktive Linkausgaben verwenden dieselbe Zuordnung. Historische Zahlungsrückleitungen bleiben unverändert und werden nicht aktiviert.
+
+Synthetisch geprüft: alle fünf Phasen einschließlich Archiv, unveränderte Renndaten bei Zuordnung, keine verschachtelten Formulare, fehlende Seitenwahl, Rechte/Nonce/POST, fremde Eventshortcodes, nur passende Auswahlkandidaten, wiederholbare Entwürfe, Erhalt bearbeiteter Titel/Inhalte und Eigentumsmetadaten, veröffentlichte/passwortfreie Ziele, Fallback alter Links, Ablehnung fremder Hosts und korrekte Queryparameter bei einfachen Permalinks.
+
+- PHP 8.2/8.3/8.4/8.5: jeweils 350 isolierte Tests / 697 Assertions bestanden. Gezielt 141 WordPress-Integrationstests / 962 Assertions bestanden; nach Ergänzung der Auswahl-/Spendenseitenfälle zusätzlich jeweils 43 Seiten-/Legacy-Integrationstests / 408 Assertions bestanden. Diese gezielten Läufe sind keine neue vollständige Integrationssuite.
+- ESLint, 28 JavaScript-Tests und zwei Playwright-Szenarien bestanden. Browsersuche prüft Titel, IDs, Umlaute, leere Treffer, keine automatische Auswahl oder Suchanfragen, native Auswahl ohne JavaScript und getrennte Entwurfserstellung. Erster Browserstart scheiterte am fehlenden Standard-Browser; Wiederholung mit vorhandenem unterstütztem Browser bestanden.
+- `composer check` auf PHP 8.2/8.3/8.4/8.5 abschließend bestanden: Syntax, Dokumentation, Schemaexporte, PHPStan, Coding Standards und PHPCompatibility. Zwischenläufe meldeten eine überflüssige String-Typprüfung, Format-/Übersetzerkommentare und ein nach weiteren Änderungen veraltetes Inventar; korrigiert bzw. regeneriert. PHP 8.2 erreichte im ersten Analyselauf zusätzlich das Composer-Zeitlimit; abschließender Lauf mit ausreichendem Zeitlimit erfolgreich.
+
+Inventar regeneriert: 140 Quelldateien, 23 Shortcodes, 83 requestbezogene Methoden. Testdatenbank nach den Integrationsläufen beendet. Keine Tests gegen Anwendungsdaten, kein neuer Paket-/ZIP-Abnahmelauf und keine Git-Aktionen. Gemeinsame Sichtprüfung UI-02 bis UI-04 sowie AB-I03/04 bleibt offen; UI-01 (Bildauswahl über Mediathek) weiterhin nur vorgemerkt.
+
 ## Gemeinsame Abnahme: Veranstaltung angelegt und Zusatzpunkte beschriftet – 2026-11-12
 
 Benutzer bestätigt „Changes saved“. Manuelle lesende Prüfung bestätigt genau einen Datensatz mit dem vorgeschlagenen Namen: Event-ID 27, Phase 0, nicht aktiv. AB-I03 ist damit bei der Anlage weitergekommen; Seitenauswahl und Folgeszenarien bleiben offen. Ursprünglicher Speicherfehler AB-I01-B09 nicht mehr reproduziert, Ursache weiterhin nicht nachgewiesen. Die verbesserte Diagnose wird nicht als belegte Ursachenkorrektur ausgegeben.

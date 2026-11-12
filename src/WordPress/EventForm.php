@@ -40,6 +40,9 @@ final class EventForm
         }
         echo '</form>';
         if ($type === 'race') {
+            if (current_user_can('manage_options')) {
+                SitePages::render($id);
+            }
             ResultBoundary::enableForm($id);
         }
         echo '</div>';
@@ -48,6 +51,9 @@ final class EventForm
     private static function field(string $resource, array $field, bool $editable): void
     {
         $key = self::text($field['id'] ?? '');
+        if ($resource === 'race' && in_array($key, ['team_overview_link', 'donation_link_link'], true)) {
+            return;
+        }
         $label = self::text($field['label'] ?? '') ?: $key;
         $value = self::text($field['value'] ?? '');
         $type = self::text($field['type'] ?? 'text');

@@ -47,7 +47,9 @@ final class SitePagesTest extends TestCase
         $fallback=TeamPortal::url(880081);self::assertStringContainsString('admin-post.php',$fallback);
         $id=SitePages::submit();$this->posts[]=$id;
         self::assertSame('draft',get_post_status($id));self::assertSame(SitePages::content(880081,'team'),get_post($id)->post_content);
-        self::assertSame($id,SitePages::submit());self::assertSame($fallback,TeamPortal::url(880081));
+        self::assertSame('Event 880081: Team Dashboard', get_post($id)->post_title);
+        wp_update_post(['ID' => $id, 'post_title' => 'Reviewed title']);
+        self::assertSame($id,SitePages::submit());self::assertSame('Reviewed title', get_post($id)->post_title);self::assertSame($fallback,TeamPortal::url(880081));
         wp_update_post(['ID'=>$id,'post_status'=>'publish']);self::assertSame(get_permalink($id),TeamPortal::url(880081));
         wp_update_post(['ID'=>$id,'post_password'=>'protected']);self::assertSame($fallback,TeamPortal::url(880081));
         wp_update_post(['ID'=>$id,'post_password'=>'','post_content'=>'Changed by editor']);
@@ -78,9 +80,23 @@ final class SitePagesTest extends TestCase
     }
     public function testReadOnlySetupScreenDoesNotCreatePagesOrOptions(): void
     {
+        $matching = wp_insert_post(['post_type' => 'page', 'post_status' => 'draft', 'post_title' => 'Matching page', 'post_content' => SitePages::content(880081, 'team')]);
+        $wrong = wp_insert_post(['post_type' => 'page', 'post_status' => 'draft', 'post_title' => 'Other event page', 'post_content' => SitePages::content(880082, 'team')]);
+        $this->posts[] = $matching; $this->posts[] = $wrong;
         $_GET=['race_id'=>'880081'];$count=wp_count_posts('page')->draft;
-        ob_start();try{SitePages::page();$html=ob_get_contents();}finally{ob_end_clean();}
+        ob_start();try{SitePages::render(880081);$html=ob_get_contents();}finally{ob_end_clean();}
         self::assertStringContainsString('Create or reuse draft',$html);self::assertStringContainsString('race=&quot;880081&quot;',$html);
+        self::assertStringContainsString('data-search-picker', $html);
+        self::assertStringContainsString('Matching page', $html);
+        self::assertStringNotContainsString('Other event page', $html);
+        $document = new \DOMDocument();
+        $document->loadHTML('<meta charset="utf-8">' . $html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($document);
+        self::assertSame(6, $xpath->query('//form[input[@name="kind"] and not(.//select[@name="page_id"])]')->length);
+        self::assertSame(6, $xpath->query('//form//select[@name="page_id" and @required]')->length);
+        foreach (['Team Dashboard', 'Teams Overview', 'Results and Rankings', 'Live Ticker', 'Ticker Map', 'Donations'] as $label) {
+            self::assertStringContainsString('<h3>' . $label . '</h3>', $html);
+        }
         self::assertSame($count,wp_count_posts('page')->draft);self::assertFalse(get_option('cor_mgmt_pages_880081'));
     }
     public function testFreshEventAndMissingEventHaveSafeLegacyTextSlots(): void
@@ -92,5 +108,78 @@ final class SitePagesTest extends TestCase
             self::assertSame(array_fill(1,27,''),$h3_mgmt_races->get_race_information_text(880082));
             self::assertSame([],$h3_mgmt_races->get_race_setting(880082));
         }finally{restore_error_handler();}
+    }
+    public function testEmptyAssignmentIsRejectedWithoutCreatingPagesAndExplainsTheRequiredId(): void
+    {
+        $count = wp_count_posts('page')->draft;
+        $_POST['page_operation'] = 'assign';
+        $_POST['page_id'] = '';
+        $this->rejects('invalid_page_reference');
+        self::assertSame($count, wp_count_posts('page')->draft);
+        self::assertFalse(get_option('cor_mgmt_pages_880081'));
+        self::assertStringContainsString('existing WordPress page', SitePages::problem(new \RuntimeException('invalid_page_reference')));
+        self::assertStringContainsString('Create or reuse draft', SitePages::problem(new \RuntimeException('invalid_page_reference')));
+        self::assertStringNotContainsString('private SQL', SitePages::problem(new \RuntimeException('private SQL')));
+    }
+    public function testPageManagementIsIndependentOfAllFivePhasesAndPreservesRaceData(): void
+    {
+        global $wpdb;
+        foreach (range(0, 4) as $phase) {
+            $settings = json_encode(['status' => $phase, 'team_overview_link' => '/original-teams/']);
+            $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => $settings], ['id' => 880081]);
+            $id = SitePages::submit();
+            $this->posts[] = $id;
+            ob_start();
+            try { SitePages::render(880081); $html = ob_get_contents(); } finally { ob_end_clean(); }
+            self::assertStringContainsString('Create or reuse draft', $html);
+            self::assertSame($settings, $wpdb->get_var("SELECT setting FROM {$wpdb->prefix}h3_mgmt_races WHERE id=880081"));
+            self::assertSame('draft', get_post_status($id));
+        }
+        self::assertCount(1, array_unique($this->posts));
+        self::assertStringContainsString('page=h3-mgmt-races', SitePages::settingsUrl(880081));
+        self::assertStringContainsString('id=880081#cor-mgmt-event-pages', SitePages::settingsUrl(880081));
+        self::assertStringNotContainsString('todo=', SitePages::settingsUrl(0));
+    }
+    public function testLegacyLinksRemainUntilPublishedReplacementAndPlainPermalinksKeepArguments(): void
+    {
+        global $wpdb;
+        $legacy = site_url('/original-teams/');
+        $settings = json_encode(['status' => 1, 'team_overview_link' => '/original-teams/', 'donation_link_link' => '/donations/']);
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => $settings], ['id' => 880081]);
+        self::assertSame($legacy, SitePages::url(880081, 'teams'));
+        self::assertSame(site_url('/donations/'), SitePages::url(880081, 'donations'));
+        $_POST['kind'] = 'donations';
+        $donationPage = SitePages::submit(); $this->posts[] = $donationPage;
+        self::assertSame('Event 880081: Donations', get_post($donationPage)->post_title);
+        self::assertSame('[h3-sponsoring-form race="880081"]', get_post($donationPage)->post_content);
+        self::assertSame(site_url('/donations/'), SitePages::url(880081, 'donations'));
+        $_POST['kind'] = 'teams';
+        $id = SitePages::submit(); $this->posts[] = $id;
+        self::assertSame($legacy, SitePages::url(880081, 'teams'));
+        wp_update_post(['ID' => $id, 'post_status' => 'publish']);
+        self::assertSame(get_permalink($id), SitePages::url(880081, 'teams'));
+        parse_str((string) wp_parse_url(SitePages::link(880081, 'teams', ['id' => 42]), PHP_URL_QUERY), $query);
+        self::assertSame('42', $query['id']);
+        if (str_contains(get_permalink($id), 'page_id=')) { self::assertSame((string) $id, $query['page_id']); }
+        self::assertSame($settings, $wpdb->get_var("SELECT setting FROM {$wpdb->prefix}h3_mgmt_races WHERE id=880081"));
+        foreach (['https://external.invalid/teams/', '//external.invalid/teams/', 'javascript:alert(1)', 'https://user:password@example.invalid/'] as $invalid) {
+            $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => json_encode(['status' => 1, 'donation_link_link' => $invalid])], ['id' => 880081]);
+            self::assertSame('', SitePages::url(880081, 'donations'));
+        }
+    }
+    public function testNewEventGuidanceAndEmbeddedFormsDoNotReintroduceLegacyUrlFields(): void
+    {
+        $sections = [['fields' => [['id' => 'team_overview_link'], ['id' => 'donation_link_link'], ['id' => 'name']]]];
+        ob_start();
+        try { \Cor\Mgmt\WordPress\EventForm::render('race', 0, $sections, 'New event', '', false); $html = ob_get_contents(); } finally { ob_end_clean(); }
+        self::assertStringContainsString('Save the new event first', $html);
+        self::assertStringNotContainsString('name="team_overview_link"', $html);
+        self::assertStringNotContainsString('name="donation_link_link"', $html);
+        ob_start();
+        try { \Cor\Mgmt\WordPress\EventForm::render('race', 880081, $sections, 'Event', '', false); $html = ob_get_contents(); } finally { ob_end_clean(); }
+        $document = new \DOMDocument();
+        $document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        self::assertSame(0, (new \DOMXPath($document))->query('//form//form')->length);
+        self::assertStringContainsString('id="cor-mgmt-event-pages"', $html);
     }
 }

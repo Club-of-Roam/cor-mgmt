@@ -379,7 +379,7 @@ if ( !class_exists( 'H3_MGMT_Sponsors' ) ) :
 				if ( empty( $sponsors_query ) ) {
 					$sponsors['owner_pic']  = H3_MGMT_RELPATH . 'img/owner-pic.png';
 					$sponsors['owner_link'] = '<p class="owner-link"><a title="' . _x( 'Become this team&apos;s TeamOwner!', 'Team Profile', 'h3-mgmt' ) . '" ' .
-					                          'href="' . get_site_url() . $race_setting['donation_link_link'] . '?id=' . $team_id . '&type=owner">' .
+					                          'href="' . esc_url(\Cor\Mgmt\WordPress\SitePages::link((int) $race_id, 'donations', ['id' => (int) $team_id, 'type' => 'owner'])) . '">' .
 					                          _x( 'No Owner yet.', 'Team Profile', 'h3-mgmt' ) . '<br />' .
 					                          _x( 'Become this team&apos;s TeamOwner!', 'Team Profile', 'h3-mgmt' ) .
 					                          '</a></p>';
@@ -1788,7 +1788,7 @@ html;
 						str_replace( '%thumbs%',
 							$thumbs,
 							str_replace( '%team%',
-								'<a class="cursive-link" title="' . _x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) . '" href="' . get_home_url() . $race_setting['team_overview_link'] . '?id=' . $sponsors_query[ $i ]['team_id'] . '">' . $h3_mgmt_teams->get_team_name( $sponsors_query[ $i ]['team_id'] ) . '</a>',
+								'<a class="cursive-link" title="' . _x( 'Check the TeamProfile ...', 'Team', 'h3-mgmt' ) . '" href="' . esc_url(\Cor\Mgmt\WordPress\SitePages::link((int) $sponsors_query[$i]['race_id'], 'teams', ['id' => (int) $sponsors_query[$i]['team_id']])) . '">' . $h3_mgmt_teams->get_team_name( $sponsors_query[ $i ]['team_id'] ) . '</a>',
 								_x( '%donor% sponsored %team% with %thumbs% Euros', 'Recent Activity Stream', 'h3-mgmt' ) ) ) );
 					$output .= '</p></div>';
 				}
