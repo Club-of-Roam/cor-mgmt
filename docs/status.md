@@ -6,7 +6,9 @@ Gemeinsame Abnahme begonnen: Alle sieben Zusatzspeicher und Tickertabellen einge
 
 ## Aktuelles Paket: Archiv und aktive Umschaltung
 
-Vorrang vor der Abnahmeveranstaltung: fehlender Archivspeicher und ungenauer Hinweis (AB-I01-B08). Screenshot der Archivwerkzeuge bestätigt am 2026-11-12 die bisherige Vermischung mit Wartungsbestätigungen. Reine Einrichtung jetzt separat unter Systemstatus ergänzt, Archivseite verlinkt diesen Weg und Hinweis benennt fehlenden Archivspeicher. Bestehende Archiv-/Umschaltbefehle behalten ihre Bestätigungen. Nächste gemeinsame Aktion: Set up archive storage im Systemstatus prüfen. Keine Archivveröffentlichung oder Tabellenumschaltung freigegeben.
+AB-I03: Benutzer bestätigt erfolgreiche Neuanlage im erneuten Versuch. Lesend nachgewiesen: genau eine Abnahmeveranstaltung mit ID 27, Phase 0, nicht aktiv. Erster Speicherfehler nicht mehr reproduziert; ursprünglicher Auslöser nicht nachgewiesen (AB-I01-B09). Unverständliches Zusatzpunktefeld auf Wunsch als „Fixed extra points per stage“ beschriftet (AB-I01-B10). Nächster Schritt: Veranstaltungsseiten für Event 27 auswählen und Entwurf prüfen. Zusätzlicher Wunsch UI-01 (Bildauswahl über WordPress-Mediathek) steht getrennt in [improvements.md](improvements.md).
+
+Archivspeicher am 2026-11-12 über den getrennten Systemstatus-Button eingerichtet; Benutzer bestätigt erfolgreiche Durchführung und Nachprüfung. AB-I01-B08 geschlossen. Bestehende Archiv-/Umschaltbefehle behalten ihre Bestätigungen; keine Archivveröffentlichung oder Tabellenumschaltung freigegeben. Nächste gemeinsame Aktion: AB-I03, eigene Abnahmeveranstaltung unter Events / Races → Add new vorbereiten.
 
 Tickerhinweise lesend eingeordnet: 559 Hinweise betreffen 531 Beiträge. Darunter 42 nicht aufgelöste Bildverweise und 10 unklare Video-/Standortverweise; übrige Kategorien betreffen historische Zeitwerte, Absender und Beziehungen. Vollständige Aufteilung in verification.md. Keine Datenreparatur oder Löschung; Einzelfallprüfung AB-I01-B07 offen. Nächster gemeinsamer Schritt ist AB-I03: eigene Abnahmeveranstaltung vorbereiten, anschließend Seiten zuordnen.
 

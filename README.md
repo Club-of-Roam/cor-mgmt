@@ -16,6 +16,7 @@ Block 0 (Referenz) und Block 1 (Sicherheitsbasis) sind umgesetzt. Die Sicherheit
 
 | Dokument | Inhalt |
 |---|---|
+| [Verbesserungsliste](docs/improvements.md) | Zusätzliche Bedienwünsche aus der gemeinsamen Abnahme |
 | [Archiv und aktive Umschaltung Block 10](docs/block-10-archive.md) | Geprüfte Snapshots, historische Anzeigen, parallele Fachtabellen, Wiederaufnahme und Rückweg |
 | [Gesamtabnahme Block 10](docs/block-10-acceptance.md) | ZIP-Lebenszyklus, Seiteneinrichtung, Übernahmeprobe, Releaseblocker und gemeinsame Abnahmeliste |
 | [Ticker und Medien Block 9](docs/block-9-ticker.md) | Native Webeingaben, Medien, Moderation, Installation und kontrollierte Übernahme |

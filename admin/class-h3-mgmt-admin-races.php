@@ -51,8 +51,8 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
                     $messages[] = ['type' => 'message', 'message' => __('Changes saved.', 'h3-mgmt')];
                     unset($_POST['submitted']);
                 } catch (\Throwable $error) {
-                    $reason = $error instanceof \Cor\Mgmt\Application\Events\EventException ? $error->reason : 'database_error';
-                    echo '<div class="notice notice-error"><p>' . esc_html(\Cor\Mgmt\WordPress\EventAdmin::message($reason)) . '</p></div>';
+                    $reason = \Cor\Mgmt\WordPress\EventAdmin::errorCode($error);
+                    echo '<div class="notice notice-error"><p>' . esc_html(\Cor\Mgmt\WordPress\EventAdmin::message($reason)) . ' <code>' . esc_html($reason) . '</code></p></div>';
                     if ($todo === 'save' && $reason !== 'stale_record') {
                         try { $this->edit($type, $id ?: null); } catch (\Throwable $ignored) { /* The record may have disappeared. */ }
                         return;
@@ -290,9 +290,9 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 						),
 						array(
 							'type'  => 'text',
-							'label' => __( 'The amount of the field', 'h3-mgmt' ),
+							'label' => __( 'Fixed extra points per stage', 'h3-mgmt' ),
 							'id'    => 'extra_point_amount',
-							'desc'  => __( 'Enter the amount of extra points they could give the teams each route in the ranking.', 'h3-mgmt' ),
+							'desc'  => __( 'Enter the fixed number of extra points that can be awarded for a stage.', 'h3-mgmt' ),
 						),
 						array(
 							'type'    => 'radio',

@@ -3,7 +3,7 @@
   "scope": "Static legacy PHP; no request execution",
   "sources": {
     "admin/class-h3-mgmt-admin-emails.php": "38be685ddc63f0d3698336d5a9a7254d9204d88abc23e8fbd2e06e99540aa6be",
-    "admin/class-h3-mgmt-admin-races.php": "65f074b69ef38b2a8591970fb1625f4be36470dedc477aa1edc04dc29d7f9deb",
+    "admin/class-h3-mgmt-admin-races.php": "472ddb3180ca9361c399dcfc9f60be12afdcfb925c4684abd4ce43a2c082484b",
     "admin/class-h3-mgmt-admin-sponsors.php": "d6a9c751b30338c43a65cf3b42f4d0c7ec98d8d80813a07a2bcde7f311377d47",
     "admin/class-h3-mgmt-admin-statistics.php": "d39dde134a8ca710160bd18b937d9e8a42f5d8c99eac3e973b34e62fa0239960",
     "admin/class-h3-mgmt-admin-teams.php": "d83692f2e15bb2bbf216efb7e3c05c07f5f904552e5d4b508f65296d6c5913d8",
@@ -115,7 +115,7 @@
     "src/WordPress/CommunicationReport.php": "42a2b7f14a83b06d053b86077aa2dbe512f4e068a780af4c33596355c95f001b",
     "src/WordPress/DonationAdmin.php": "b814f2e56ef5a2a759951d617bc48f32744077af1bb577ebb9d6c0ccd6275e31",
     "src/WordPress/DonationFrontend.php": "c51a41c365f5ee6a89c0c27d4fad25e879abe86602b7e5f5f5cb498310266df2",
-    "src/WordPress/EventAdmin.php": "eb86a6cc5cc1f458e7d2e5f84a9a5910774135d52ed818abc7f456b765e7e27e",
+    "src/WordPress/EventAdmin.php": "d3924be466c480f130a927eab4f88556603bf73be746ac99c151d55b521899a7",
     "src/WordPress/EventForm.php": "509d2c44f92da0d772f9ef5e2813c8137a7f9e2fd9e11285cbaf09df9607bf57",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
     "src/WordPress/ExchangeBoundary.php": "1c519b999336432dcc3c9f333e50c16f55c166558ae8453bf385593eecd17025",

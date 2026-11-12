@@ -62,6 +62,63 @@ final class EventManagementTest extends TestCase
         catch(EventException $error) { self::assertSame($reason,$error->reason); }
     }
     public static function phases(): array { return [[0],[1],[2],[3],[4]]; }
+    public function testNewRaceCanBeSavedFromTheCompleteRenderedForm(): void
+    {
+        require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin-races.php';
+        ob_start();
+        try { (new \H3_MGMT_Admin_Races())->edit('race', null); $html = ob_get_contents(); }
+        finally { ob_end_clean(); }
+        $document = new \DOMDocument();
+        $document->loadHTML('<meta charset="utf-8">' . $html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($document);
+        $input = [];
+        foreach ($xpath->query('(//form)[1]//input[@name and not(@disabled)]') as $control) {
+            if (in_array($control->getAttribute('type'), ['file', 'submit'], true)) { continue; }
+            $input[$control->getAttribute('name')] = $control->getAttribute('value');
+        }
+        foreach ($xpath->query('(//form)[1]//textarea[@name and not(@disabled)]') as $control) {
+            $input[$control->getAttribute('name')] = $control->textContent;
+        }
+        foreach ($xpath->query('(//form)[1]//select[@name and not(@disabled)]') as $control) {
+            $options = $control->getElementsByTagName('option');
+            $choice = $options->item(0);
+            foreach ($options as $option) {
+                if ($option->hasAttribute('selected')) { $choice = $option; break; }
+            }
+            if ($choice !== null) { $input[$control->getAttribute('name')] = $choice->getAttribute('value'); }
+        }
+        $_POST = array_replace($input, ['name' => 'Synthetic acceptance event', 'active' => '0', 'status' => '0',
+            'startingpoint' => '1', 'start_route_id' => '0', 'num_teammember_min' => '2', 'num_teammember' => '3', 'extra_point_amount' => '0']);
+        $_GET = ['page' => 'h3-mgmt-races', 'todo' => 'save', 'id' => ''];
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $result = EventAdmin::mutate('race', 0, 'save');
+        $saved = EventEditor::flatten($this->store->find('race', $result['id']));
+        self::assertSame('Synthetic acceptance event', $saved['name']);
+        self::assertSame('0', $saved['status']);
+        self::assertSame('0', $saved['active']);
+        self::assertSame('0', $saved['start']);
+        self::assertSame('0', $saved['end']);
+        self::assertSame([], $GLOBALS['cor_test_mail']);
+    }
+    public function testSaveErrorExplainsInvalidNumbersAndRetainsEnteredFields(): void
+    {
+        require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin-races.php';
+        $_POST = ['cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-admin-races'), 'submitted' => 'y',
+            'name' => 'Synthetic unsaved event', 'extra_point_amount' => '', 'status' => '0'];
+        $_GET = ['page' => 'h3-mgmt-races', 'todo' => 'save', 'id' => ''];
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        ob_start();
+        try { (new \H3_MGMT_Admin_Races())->races_control(); $html = ob_get_contents(); }
+        finally { ob_end_clean(); }
+        self::assertStringContainsString('Enter whole numbers', $html);
+        self::assertStringContainsString('<code>invalid_number</code>', $html);
+        self::assertStringContainsString('value="Synthetic unsaved event"', $html);
+        global $wpdb;
+        self::assertSame('0', $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}h3_mgmt_races WHERE name=%s", 'Synthetic unsaved event')));
+        self::assertSame('unexpected_error', EventAdmin::errorCode(new \RuntimeException('private SQL and credentials')));
+        self::assertSame('unexpected_error', EventAdmin::errorCode(new \Cor\Mgmt\Application\Migration\MigrationException('SELECT private_data FROM secret_table')));
+        self::assertSame('database_query_failed', EventAdmin::errorCode(new \Cor\Mgmt\Application\Migration\MigrationException('database_query_failed')));
+    }
     #[DataProvider('phases')]
     public function testParticipationRequirementsFollowEveryCurrentPhase(int $phase): void
     {

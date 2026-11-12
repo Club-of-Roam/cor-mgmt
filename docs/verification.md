@@ -1,5 +1,31 @@
 # Prüfbelege
 
+## Gemeinsame Abnahme: Veranstaltung angelegt und Zusatzpunkte beschriftet – 2026-11-12
+
+Benutzer bestätigt „Changes saved“. Manuelle lesende Prüfung bestätigt genau einen Datensatz mit dem vorgeschlagenen Namen: Event-ID 27, Phase 0, nicht aktiv. AB-I03 ist damit bei der Anlage weitergekommen; Seitenauswahl und Folgeszenarien bleiben offen. Ursprünglicher Speicherfehler AB-I01-B09 nicht mehr reproduziert, Ursache weiterhin nicht nachgewiesen. Die verbesserte Diagnose wird nicht als belegte Ursachenkorrektur ausgegeben.
+
+AB-I01-B10: Auf Benutzerwunsch die englische Feldbezeichnung „The amount of the field“ durch „Fixed extra points per stage“ ersetzt. Hilfetext präzisiert; `extra_point_amount`, Validierung und Berechnung unverändert. Inventar regeneriert. `composer check` und `composer test` bestehen auf PHP 8.2/8.3/8.4/8.5, jeweils 350 Tests / 678 Assertions; abschließende Dokumentationsprüfung bestanden. Keine zusätzlichen Testfälle für die reine Beschriftungsänderung; gemeinsame Nachsicht offen. Keine neuen Integrations-/Browser-/Pakettests, keine Datenänderungen durch den Agenten und keine Git-Aktionen.
+
+## Gemeinsame Abnahme: Veranstaltungs-Speicherfehler eingrenzen – 2026-11-12
+
+AB-I01-B09: Benutzer meldet allgemeine Fehlermeldung bei Veranstaltungsneuanlage. Manuelle lesende Bestandsprüfung bestätigt keinen Datensatz mit dem vorgeschlagenen Namen. Der erste synthetische Versuch scheiterte am fehlenden expliziten Laden der alten Administrationsklasse; Testaufbau und Pufferbereinigung korrigiert. Der vollständige, aus gerenderten Eingabefeldern erzeugte POST mit den vorgeschlagenen Werten besteht anschließend. Tatsächlicher Auslöser des Benutzerfehlers dadurch nicht nachgewiesen.
+
+Diagnose verbessert: EventAdmin erklärt bisher verdeckte Zahlen-, Namens-, URL-, Berechtigungs- und Speicherzustandsfehler. Controller zeigt einen auf einfache Bezeichner begrenzten Fehlercode; rohe Exceptiontexte, SQL, Pfade und Zugangsdaten werden nicht ausgegeben. Neue Regression prüft die bisher allgemeine Meldung bei leerem Zahlenfeld, erhaltene Formulareingaben, fehlende Anlage bei Ablehnung und Unterdrückung beliebiger Fehlertexte. Keine Lockerung der Validierung oder automatische Datenreparatur.
+
+Auf PHP 8.2/8.3/8.4/8.5 bestehen jeweils 45 Event-Integrationstests / 193 Assertions einschließlich des vollständigen Formularpfads und der verbesserten Fehleranzeige. `composer check` und `composer test` bestehen auf denselben Versionen mit jeweils 350 isolierten Tests / 678 Assertions. Inventar regeneriert; abschließende Dokumentationsprüfung bestanden. Tatsächliche Benutzerneuanlage weiterhin offen; erneuter Versuch mit Fehlercode angefordert. Keine Schreibtests gegen Anwendungsdaten; nur synthetische Daten in getrennter Testdatenbank, Testprozess anschließend beendet. Keine neue Browser-/ZIP-Prüfung und keine Git-Aktionen. UI-01 separat in [Verbesserungsliste](improvements.md) aufgenommen.
+
+## Gemeinsame Abnahme: Veranstaltungsformular erreichbar – 2026-11-12
+
+Benutzerscreenshot zeigt das Neuanlageformular. Vollständige Feldliste und Validierung aus Quellcode gelesen; keine weiteren Gesamtscreenshots erforderlich. Vorgeschlagene Ausgangswerte für AB-I03: Name „Abnahme cor-mgmt 2.0“, nicht aktiv, Phase 0, mehrere Startpunkte erlaubt, noch kein Startpunkt gewählt, Teamgröße 2 bis 3, feste Zusatzpunkthöhe 0. Optionale URLs, Termine und Texte zunächst leer; Termine werden vom bestehenden Adapter als nicht gesetzt normalisiert. Veranstaltung noch nicht als angelegt bestätigt.
+
+Zusätzliche manuelle lesende Prüfung der Tabellen-Engines: Rennen, Routen, Etappen, Teams, Mitgliedschaften und Spenden verwenden InnoDB; alte Einladungen weiterhin MyISAM. Keine Engine-Konvertierung oder Datenänderung ausgeführt. Bei späterer Einladungs-/Teilnahmeabnahme den kontrollierten Übergang prüfen; die Einrichtung der neuen Modultabellen ist keine automatische Konvertierung des Altbestands. Nur Dokumentation geändert; Dokumentationsprüfung bestanden. Keine neuen automatisierten Laufzeitprüfungen oder Git-Aktionen.
+
+## Gemeinsame Abnahme: Archivspeichereinrichtung bestätigt – 2026-11-12
+
+Benutzer bestätigt erfolgreiche Durchführung des getrennten Einrichtungsbuttons und Nachprüfung. AB-I01-B08 geschlossen. Dies bestätigt den sichtbaren Einrichtungsablauf; keine daraus abgeleitete Archivveröffentlichung, Fachtabellenumschaltung oder vollständige Installations-/Releaseabnahme. Weiter mit AB-I03: eigene Abnahmeveranstaltung vorbereiten.
+
+Nur Dokumentation aktualisiert; Dokumentationsprüfung bestanden. Keine neuen Laufzeit-/Integrations-/Browser-/Pakettests und keine Datenbankaktionen durch den Agenten. Keine Git-Aktionen.
+
 ## Gemeinsame Abnahme: getrennte Archivspeichereinrichtung – 2026-11-12
 
 Screenshot bestätigt AB-I01-B08: Reine Archivspeichereinrichtung war im selben Formular wie Archivierung/Umschaltung an Wartungsbestätigungen gebunden. Neue `archive-setup`-Aktion am vorhandenen Schema-Endpunkt verwendet Administratorrecht, POST, Schema-Nonce und bestehende Voraussetzungskontrolle. Sie ruft ausschließlich den wiederholbaren Archiv-Installer auf und bestätigt Neuladen. Systemstatus bietet den fehlenden Speicher mit bestehender Warteanzeige an; Archivseite verlinkt diesen getrennten Weg. Der globale Hinweis benennt fehlenden Archivspeicher konkret. Bestehende Archiv-/Umschaltbefehle einschließlich des bisherigen administrativen Setup-POST behalten unverändert Sicherungs-/Stillstandsbestätigungen.

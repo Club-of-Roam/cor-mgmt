@@ -184,6 +184,12 @@ final class EventAdmin
         }
         return $data;
     }
+    public static function errorCode(\Throwable $error): string
+    {
+        $code = $error instanceof EventException ? $error->reason
+            : ($error instanceof \Cor\Mgmt\Application\Migration\MigrationException ? $error->getMessage() : 'unexpected_error');
+        return preg_match('/^[a-z_]{1,64}$/D', $code) ? $code : 'unexpected_error';
+    }
     public static function message(string $code): string
     {
         return match ($code) {
@@ -199,6 +205,15 @@ final class EventAdmin
             'duplicate_stage_number' => __('That stage number is already used on this route.', 'h3-mgmt'),
             'transactional_storage_required' => __('This operation requires transactional tables. Run the controlled database review first.', 'h3-mgmt'),
             'invalid_account' => __('Check the route account, its email address and matching passwords.', 'h3-mgmt'),
+            'invalid_number' => __('Enter whole numbers in the numeric fields. Numeric values must not be empty or negative.', 'h3-mgmt'),
+            'invalid_name' => __('Enter a name or destination with 1 to 250 characters.', 'h3-mgmt'),
+            'invalid_url' => __('Check the link fields and enter valid web addresses.', 'h3-mgmt'),
+            'invalid_phase', 'create_in_phase_zero' => __('Create the event in the phase before registration opens.', 'h3-mgmt'),
+            'not_permitted' => __('Your account is not allowed to change this event or record.', 'h3-mgmt'),
+            'invalid_settings', 'invalid_information' => __('The stored event settings or information texts require review. Existing data is retained.', 'h3-mgmt'),
+            'migration_locked', 'nested_migration_lock' => __('Another operation is using the plugin data. Wait for it to finish, then reload before trying again.', 'h3-mgmt'),
+            'maintenance_in_progress', 'runtime_generation_requires_review' => __('The storage transition requires review before changes can be saved. Open the archive and storage transition tools.', 'h3-mgmt'),
+            'database_query_failed' => __('The database rejected this change. Review the system status before trying again.', 'h3-mgmt'),
             default => __('The change could not be saved. Check the fields, permissions and system status.', 'h3-mgmt'),
         };
     }
