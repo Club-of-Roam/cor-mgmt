@@ -1,5 +1,13 @@
 # Prüfbelege
 
+## Kontrollierte Umstellung der Kontotabellen – 2026-11-13
+
+Nach ausdrücklicher Benutzerfreigabe beide betroffenen WordPress-Kontotabellen von MyISAM auf InnoDB umgestellt. Keine Änderung von Zeichensätzen, Spalten, Indizes oder fachlichen Werten. Vorprüfung fand keine Trigger oder Fremdschlüssel. Website während der Operation im Wartungsmodus, kooperierende Pluginwriter zusätzlich per Datenbanksperre ausgeschlossen; Ursprungstabellen während Sicherung und Ausgangsvergleich lesegesperrt.
+
+Geschützte SQL-Sicherung außerhalb des Webverzeichnisses erzeugt (14.714.769 Bytes) und SHA-256 nach dem Schreiben erneut geprüft. Sicherung zuerst in getrennte Prüftabellen wiederhergestellt, sämtliche Werte und Strukturen verglichen und dort die InnoDB-Konvertierung erfolgreich erprobt. Erst danach Originaltabellen einzeln umgestellt und erneut unabhängig verglichen. Benutzer: 10.134 Datensätze; Benutzermetadaten: 176.793 Datensätze. Je Tabelle gleiche Zeilenzahl, identischer deterministischer SHA-256 über alle Werte in Primärschlüsselreihenfolge einschließlich NULL, unveränderte Spalten-/Indexdefinitionen und identische normalisierte CREATE-Struktur abgesehen von der Engine. Damit auch IDs, Passwort-Hashes und Profilwerte unverändert. Keine Benutzerinhalte oder Sicherungsdateien im Repository.
+
+Prüftabellen und temporäre Client-Zugangsdaten entfernt; Sicherung und Operationsjournal bleiben geschützt erhalten. Eigene Wartungssperre aufgehoben. Startseite und Gast-Dashboard danach HTTP 200 ohne kritische Fehlermeldung; Anmeldelink sichtbar. Diese Aufrufe waren lesende Erreichbarkeitsproben, keine automatisierte Fachprüfung gegen Anwendungsdaten. Keine neuen PHPUnit-/Browserläufe für die reine Betriebsumstellung. Phasenwechsel und angemeldetes Teamgründungsformular noch gemeinsam nachprüfen; keine Phase durch das Betriebswerkzeug geändert. Dokumentationsprüfung bestanden; keine Git-Aktionen.
+
 ## Phasenwechsel mit nichttransaktionalen WordPress-Kontotabellen – 2026-11-13
 
 Benutzer meldet unexpected_error beim Öffnen der Anmeldung. Lesend bestätigt: WordPress-Benutzer- und Benutzermetadatentabellen verwenden MyISAM, während die betroffenen Event-/Teamtabellen bereits InnoDB verwenden. EventAdmin ruft beim Phasenwechsel den Teilnehmerabgleich auf. ParticipationRepository weist nichttransaktionale Kontotabellen absichtlich ab; EventAdmin erkannte ParticipationException bisher jedoch nicht und zeigte nur unexpected_error. Ausnahmezuordnung und ausdrücklicher InnoDB-Hinweis ergänzt. Keine Bestandsdaten oder Tabellen-Engines verändert.

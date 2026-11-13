@@ -64,6 +64,8 @@ Diese Prüfungen werden als Integrations-, Paket- und Browserprüfungen umgesetz
 
 ## Teilnahme-Modul ab Block 5
 
+Transaktionale Teilnahmeänderungen setzen InnoDB auch für die beteiligten WordPress-Benutzer- und Benutzermetadatentabellen voraus. Ein eingerichteter Einladungsspeicher allein genügt nicht. Ältere MyISAM-Kontotabellen kontrolliert mit aktueller Sicherung, gestoppten Writern, Wiederherstellungsprobe und Daten-/Strukturvergleich umstellen; keine automatische Engine-Änderung bei Aktivierung, Seitenaufruf oder Phasenwechsel. Dabei nur die Engine ändern, Konten, Passwort-Hashes, Zeichensätze, Spalten und Indizes erhalten. AB-R03-B01 dokumentiert die geprüfte Grenze und eine durchgeführte Umstellung; eine allgemeine automatische Bestandsmigration wird daraus nicht abgeleitet.
+
 Aktivierung richtet zusätzlich das Teilnahme-Modul 1.0.0 ein. Bereits aktive Installationen bieten dafür eine geschützte Aktion im Systemstatus an. Der Aufbau ergänzt ausschließlich Token-/Historientabellen, prüft Eigentum und exakte Struktur und ist wiederaufnehmbar. Keine automatischen Änderungen vorhandener Tabellenengines. Bei fehlender Einrichtung bleiben neue Teamwriter gesperrt; gewöhnliche Seitenaufrufe erzeugen keine Tabellen. Der übergeordnete Release-/Archivvertrag gilt weiter. Details: [Block 5](block-5-teams.md).
 
 
