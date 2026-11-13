@@ -27,7 +27,7 @@ final class EventForm
             if (!is_array($section['fields'] ?? null)) {
                 continue;
             }
-            echo '<details open><summary><strong>' . esc_html(self::text($section['title'] ?? '')) . '</strong></summary><table class="form-table"><tbody>';
+            echo '<details' . ($type === 'race' && $id > 0 ? '' : ' open') . '><summary><strong>' . esc_html(self::text($section['title'] ?? '')) . '</strong></summary><table class="form-table"><tbody>';
             foreach ($section['fields'] as $field) {
                 if (is_array($field)) {
                     self::field($type, $field, $editable);

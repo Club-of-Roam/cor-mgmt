@@ -169,17 +169,22 @@ final class SitePagesTest extends TestCase
     }
     public function testNewEventGuidanceAndEmbeddedFormsDoNotReintroduceLegacyUrlFields(): void
     {
-        $sections = [['fields' => [['id' => 'team_overview_link'], ['id' => 'donation_link_link'], ['id' => 'name']]]];
+        $sections = [['title' => 'Event', 'fields' => [['id' => 'team_overview_link'], ['id' => 'donation_link_link'], ['id' => 'name']]], ['title' => 'Settings', 'fields' => []]];
         ob_start();
         try { \Cor\Mgmt\WordPress\EventForm::render('race', 0, $sections, 'New event', '', false); $html = ob_get_contents(); } finally { ob_end_clean(); }
         self::assertStringContainsString('Save the new event first', $html);
         self::assertStringNotContainsString('name="team_overview_link"', $html);
         self::assertStringNotContainsString('name="donation_link_link"', $html);
+        $newDocument = new \DOMDocument();
+        $newDocument->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        self::assertSame(2, (new \DOMXPath($newDocument))->query('//details[@open]')->length);
         ob_start();
         try { \Cor\Mgmt\WordPress\EventForm::render('race', 880081, $sections, 'Event', '', false); $html = ob_get_contents(); } finally { ob_end_clean(); }
         $document = new \DOMDocument();
         $document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
         self::assertSame(0, (new \DOMXPath($document))->query('//form//form')->length);
+        self::assertSame(2, (new \DOMXPath($document))->query('//details')->length);
+        self::assertSame(0, (new \DOMXPath($document))->query('//details[@open]')->length);
         self::assertStringContainsString('id="cor-mgmt-event-pages"', $html);
     }
 }

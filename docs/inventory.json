@@ -117,7 +117,7 @@
     "src/WordPress/DonationAdmin.php": "b814f2e56ef5a2a759951d617bc48f32744077af1bb577ebb9d6c0ccd6275e31",
     "src/WordPress/DonationFrontend.php": "50fac23bcf03d899526f66240d899b0251b2f55ada5429116a8e38094b0bc2b8",
     "src/WordPress/EventAdmin.php": "caa4563f1c19f200276757320f7ba77ffc3ce8c8501b46364f29d61c55119339",
-    "src/WordPress/EventForm.php": "57a40f7f5d456e485302a2828d0372f3946f5b5d7a473cbf53191e6634592630",
+    "src/WordPress/EventForm.php": "9b404672537fa5e5c4f9efaea7ca1b8549a31654fd7bcfaa86e5bd261904b3df",
     "src/WordPress/EventList.php": "ebb5ca3c433661bcb495cb2b369b2c391f3b19067626fb43e6a25200ee6f9c6b",
     "src/WordPress/EventPageView.php": "1856c90ca72a972bd7cbdda2158496ab7ec9843f9a246e119328b698b913ba94",
     "src/WordPress/ExchangeBoundary.php": "1c519b999336432dcc3c9f333e50c16f55c166558ae8453bf385593eecd17025",

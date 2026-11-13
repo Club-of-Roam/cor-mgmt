@@ -1,5 +1,9 @@
 # Prüfbelege
 
+## Eingeklappte Bereiche bestehender Events – 2026-11-13
+
+UI-15: EventForm gibt bei vorhandenen Events kein open-Attribut an den nativen details-Bereichen aus. Neuanlage bleibt geöffnet, Routen und Etappen behalten ihre Darstellung. Keine JavaScript-Zustandsspeicherung, keine Änderung an Formularwerten, Speicheraktionen oder Phasenregeln. Vorhandene WordPress-Renderprüfung kontrolliert zwei aufgeklappte Bereiche bei Neuanlage und zwei geschlossene Bereiche beim vorhandenen Event; Seiteneinrichtung bleibt außerhalb des Hauptformulars erreichbar. Auf PHP 8.2/8.3/8.4/8.5 jeweils 59 Event-/Seitenintegrationstests / 408 Assertions, 350 isolierte Tests / 697 Assertions und composer check bestanden. Inventar regeneriert, Dokumentation geprüft und synthetische Datenbank beendet. Keine erneute vollständige Integrationssuite oder Browserprüfung für diese reine Änderung des nativen Aufklappzustands. Keine Prüfung gegen Anwendungsdatenbank und keine Git-Aktionen. Gemeinsame Sichtprüfung offen.
+
 ## Kontrollierte Umstellung der Kontotabellen – 2026-11-13
 
 Nach ausdrücklicher Benutzerfreigabe beide betroffenen WordPress-Kontotabellen von MyISAM auf InnoDB umgestellt. Keine Änderung von Zeichensätzen, Spalten, Indizes oder fachlichen Werten. Vorprüfung fand keine Trigger oder Fremdschlüssel. Website während der Operation im Wartungsmodus, kooperierende Pluginwriter zusätzlich per Datenbanksperre ausgeschlossen; Ursprungstabellen während Sicherung und Ausgangsvergleich lesegesperrt.
