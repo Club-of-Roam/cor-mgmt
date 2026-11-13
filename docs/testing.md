@@ -1,5 +1,11 @@
 # Teststrategie
 
+## Bestandsannahmen und Grenzen
+
+Grüne synthetische Tests bestätigen die geprüften Fälle, keine vollständige Freigabe beliebiger übernommener Datenbanken. Neben dem eingerichteten InnoDB-Referenzbestand werden ab AB-R03-B01 auch gemischte Tabellen-Engines geprüft: transaktionale Fachtabellen mit nichttransaktionaler WordPress-Benutzer- bzw. Benutzermetadatentabelle. Erwartet sind ein erklärter Abbruch, unveränderte Daten und geschlossene Transaktionen, anschließend Erfolg nach kontrollierter Umstellung der synthetischen Tabelle. Abnahmebefunde erhalten Regressionen und dokumentierte Voraussetzungen; reale Kontotabellen werden für Tests weder umgebaut noch beschrieben.
+
+Offener Abnahmepunkt: Die Teilnahmevoraussetzungen des Speichers vor Beginn der Teilnehmerabläufe sichtbar prüfen. Ein erfolgreich eingerichteter Zusatzspeicher allein bestätigt nicht die Engine aller beteiligten Bestands-/WordPress-Tabellen. Einzelne Speichermeldungen ersetzen keinen vollständigen Bereitschaftsnachweis.
+
 ## Ausführbare Referenzprüfungen
 
 PHPUnit-Referenztests prüfen die bestehende Platz-/Punktetabelle, Telefonnummern-Normalisierung sowie Teamfreigabe, Pflichtfelder, Einladungsgrenzen und Routenauswahl. Klassen werden ohne Konstruktor verwendet; kein WordPress-Bootstrap, keine Datenbank, keine Netzwerk-/Mailzugriffe. Nur synthetische Eingaben. Das belegt keine Sicherheit oder Vollkompatibilität des übrigen Plugins.

@@ -86,7 +86,7 @@ final class EventEditor
             $values = array_intersect_key($input, EventPolicy::fields($type));
             if ($old === [] && $type === 'race') {
                 $values += ['name' => '', 'start' => '0', 'end' => '0', 'logo_url' => '', 'active' => '0', 'status' => '0',
-                    'information_text' => '{}', 'num_teammember_min' => '2', 'num_teammember' => '3',
+                    'information_text' => json_encode(\Cor\Mgmt\Domain\EventTextDefaults::all(), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE), 'num_teammember_min' => '2', 'num_teammember' => '3',
                     'startingpoint' => '1', 'start_route_id' => '0', 'liveticker' => '0', 'liveticker_front' => '0', 'donation' => '0',
                     'dis_shirt_size' => '0', 'dis_mobile_inf' => '0', 'dis_waiver' => '0', 'dis_fee' => '0'];
             }
@@ -158,7 +158,7 @@ final class EventEditor
             }
             $this->validate($type, $next, $changed);
             $warnings = [];
-            if ($type === 'route' && isset($changed['max_teams'])) {
+            if ($type === 'route' && $id > 0 && isset($changed['max_teams'])) {
                 $occupied = count(array_filter($this->store->matching('team', 'route_id', $id), static fn (array $row): bool => $row['complete'] === '1'));
                 $warnings = EventPolicy::capacityWarnings((int) $changed['max_teams'], $occupied);
             }

@@ -40,12 +40,14 @@ final class TeamFrontend
     public static function dashboard(int $race): string
     {
         if (!is_user_logged_in()) {
+            $event = TeamBoundary::repository()->find('race', $race);
+            $heading = trim((string) ($event['name'] ?? '')) ?: __('Team Dashboard', 'h3-mgmt');
             $redirect = TeamPortal::url($race);
             $code = is_string($_GET['invitation'] ?? null) ? wp_unslash($_GET['invitation']) : '';
             if (preg_match('/^(?:v2-[a-f0-9]{64}|[0-9]{1,19})$/D', $code)) {
                 $redirect = add_query_arg('invitation', $code, $redirect);
             }
-            return '<p><a href="' . esc_url(wp_login_url($redirect)) . '">' . esc_html__('Log in to manage your team.', 'h3-mgmt') . '</a></p>';
+            return '<section class="cor-team-dashboard"><h2>' . esc_html($heading) . '</h2><h3>' . esc_html__('Team Dashboard', 'h3-mgmt') . '</h3><p><a href="' . esc_url(wp_login_url($redirect)) . '">' . esc_html__('Log in to manage your team.', 'h3-mgmt') . '</a></p></section>';
         }
         $message = '';
         try {
@@ -112,7 +114,7 @@ final class TeamFrontend
                 $message = TeamBoundary::message($error);
             }
         }
-        echo '<section class="cor-team-dashboard"><h2>' . esc_html((string) $race['name']) . '</h2><p>' . esc_html(EventList::phaseLabel($phase->value)) . '</p>';
+        echo '<section class="cor-team-dashboard"><h2>' . esc_html((string) $race['name']) . '</h2><h3>' . esc_html__('Team Dashboard', 'h3-mgmt') . '</h3><p>' . esc_html(EventList::phaseLabel($phase->value)) . '</p>';
         if ($message !== '') {
             echo '<p role="status">' . esc_html($message) . '</p>';
         }

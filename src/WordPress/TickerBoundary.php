@@ -447,7 +447,7 @@ final class TickerBoundary
                 }
                 self::pagination($page, count($rows), $limit, false);
                 if (!$rows) {
-                    echo '<p>' . esc_html__('No messages sent yet.', 'h3-mgmt') . '</p>';
+                    echo '<p>' . esc_html($map ? __('No locations have been shared yet.', 'h3-mgmt') : __('No messages sent yet.', 'h3-mgmt')) . '</p>';
                 }
             }
         } catch (\Throwable $error) {

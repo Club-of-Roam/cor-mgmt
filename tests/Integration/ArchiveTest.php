@@ -63,10 +63,13 @@ final class ArchiveTest extends TestCase
         $id=$this->ready();$this->archive->complete($id);self::assertSame('sealed',$this->archive->run($id)['state']);self::assertSame($id,$this->archive->published(880191));
         $url=$this->archive->imageUrl($id,$this->url);self::assertStringContainsString('/cor-mgmt-archive/',$url);$original=hash_file('sha256',$this->image);
         wp_update_user(['ID'=>$this->user,'display_name'=>'Changed participant']);update_user_meta($this->user,'city','Changed city');
+        $this->db->execute($this->db->prepare("UPDATE %i SET name='Changed live event' WHERE id=880191",$this->db->table('h3_mgmt_races')));
         $this->db->execute($this->db->prepare("UPDATE %i SET team_name='Changed team',total_points=1 WHERE id=880193",$this->db->table('h3_mgmt_teams')));
         $this->db->execute($this->db->prepare("UPDATE %i SET body='Changed post' WHERE race_id=880191",$this->db->table('cor_mgmt_ticker_posts')));
         file_put_contents($this->image,'Changed source file');
         $html=do_shortcode('[h3-teams race="880191"] [h3-ranking-table race="880191"] [h3-liveticker race="880191"]');
+        self::assertSame(3, substr_count($html, '<h2>Frozen event</h2>'));
+        self::assertStringNotContainsString('Changed live event', $html);
         foreach(['Frozen team','Frozen participant','Frozen city','321','Frozen post'] as $text){self::assertStringContainsString($text,$html);}
         foreach(['Changed team','Changed participant','Changed city','Changed post'] as $text){self::assertStringNotContainsString($text,$html);}
         self::assertSame($url,$this->archive->imageUrl($id,$this->url));self::assertNotSame($original,hash_file('sha256',$this->image));

@@ -42,6 +42,17 @@ final class ResultManagementTest extends TestCase
         global $wpdb;$error=$wpdb->last_error;$wpdb->query('ROLLBACK');wp_cache_flush();wp_set_current_user(0);[$_GET,$_POST,$_SERVER]=$this->saved;
         self::assertSame('',$error);self::assertSame([],$GLOBALS['cor_test_mail']);
     }
+    public function testStartedModernRankingWithoutEligibleTeamsExplainsItsEmptyState(): void
+    {
+        global $wpdb;
+        ResultBoundary::manager()->enable(900);
+        $this->phase(3);
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_teams', ['complete' => 0], ['race_id' => 900]);
+        $html = do_shortcode('[h3-ranking-table race="900"]');
+        self::assertStringContainsString('<h2>Synthetic results</h2><h3>Results and Rankings</h3>', $html);
+        self::assertStringContainsString('No results are available yet.', $html);
+        self::assertStringNotContainsString('<table', $html);
+    }
     private function phase(int $phase): void
     {
         global $wpdb;$row=ResultBoundary::repository()->race(900);$rules=$row->rules();$rules['status']=$phase;

@@ -31,7 +31,8 @@ final class DonationFrontend
             $rules = json_decode($db->scalar($db->prepare('SELECT setting FROM %i WHERE id=%d', $db->table('h3_mgmt_races'), $race)) ?? '', true);
             if (is_array($rules) && !in_array($rules['donation'] ?? null, [1,'1'], true)) {
                 $texts = $h3_mgmt_races->get_race_information_text($race);
-                return \H3_MGMT_Security::html(is_string($texts[24] ?? null) ? $texts[24] : '');
+                $notice = is_string($texts[24] ?? null) ? $texts[24] : '';
+                return trim(wp_strip_all_tags($notice)) !== '' ? \H3_MGMT_Security::html($notice) : '<p>' . esc_html__('Donations are currently disabled for this event.', 'h3-mgmt') . '</p>';
             }
             if (!is_array($rules) || !in_array($rules['status'] ?? null, [0,1,2,3,'0','1','2','3'], true) || !DonationSchema::ready($db)) {
                 throw new DonationException('donations_closed');

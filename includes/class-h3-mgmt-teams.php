@@ -1907,21 +1907,26 @@ class H3_MGMT_Teams {
 			$race_id = $h3_mgmt_races->get_active_race();
 		}
 		
+        $race_id = H3_MGMT_Security::id($race_id);
+
 		$information_text = $h3_mgmt_races->get_race_information_text( $race_id );
 		
 		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
 		
-		//if registration still isn't open return error message
-		if( $race_setting['status'] == 0 ){
-			$output .= '<p class="message" style="text-align: center;">' .
-						stripcslashes( $information_text[25] ) .
-						'</p>';
-			$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
-			return $output;	
-		}
-		
-		if( isset( $_GET['id'] ) && $this->team_exists( $_GET['id'] ) ) {
-			return $this->team_profile( $_GET['id'], $max );
+        if (!isset($race_setting['status']) || !in_array((string) $race_setting['status'], ['0', '1', '2', '3', '4'], true)) {
+            return '<p>' . esc_html__('The event phase requires review.', 'h3-mgmt') . '</p>';
+        }
+        if ((int) $race_setting['status'] === 0) {
+            $notice = (string) ($information_text[25] ?? '');
+            if (trim(wp_strip_all_tags($notice)) === '') {
+                $notice = __('Team registration has not opened yet. Teams will appear here once registration opens and they meet the participation requirements.', 'h3-mgmt');
+            }
+            return '<p class="message">' . wp_kses_post(stripcslashes($notice)) . '</p>';
+        }
+
+		$team_id = H3_MGMT_Security::id($_GET['id'] ?? 0);
+		if( $team_id && $this->team_exists($team_id) && (int) $this->get_team_race($team_id) === $race_id ) {
+			return $this->team_profile($team_id, $max);
 		}
 
 		return $this->team_overview( $race_id );
@@ -2271,6 +2276,10 @@ class H3_MGMT_Teams {
 			return do_shortcode( "[h3-ticker-message race=$race_id comment_get=false]" );
 		}
 		
+        if ($teams === []) {
+            return '<p>' . esc_html__('No teams meet the participation requirements yet.', 'h3-mgmt') . '</p>';
+        }
+
 		foreach( $teams as $team ) {
 			$team['team_pic'] = $h3_mgmt_utilities->pic_resize( $team['team_pic'], 150 ); //test rausnehmen
 			$mates_html = '';
@@ -2347,7 +2356,7 @@ class H3_MGMT_Teams {
 		$output = '<div class="isotope-wrap"><h2 style="width: 100%; text-align: left;" class="isotope-heading">' .
 				__( 'Jump to TeamProfile', 'h3-mgmt' ) .
 			'</h2>' .
-			'<select class="team-selector" style="display:inline-block;margin-right:1.4em; width:auto; font-size: 1.5em;">';
+			'<select class="team-selector" aria-label="' . esc_attr__('Select team', 'h3-mgmt') . '" style="display:inline-block;margin-right:1.4em; width:auto; font-size: 1.5em;">';
 		$options = $this->select_options( array(
 			'please_select' => true,
 			'exclude_with_owner' => false,

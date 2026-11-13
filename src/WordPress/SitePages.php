@@ -204,7 +204,13 @@ final class SitePages
         });
     }
 
-    private static function label(string $kind): string
+    public static function kind(string $tag): ?string
+    {
+        $kind = array_search($tag, self::TAGS, true);
+        return is_string($kind) ? $kind : null;
+    }
+
+    public static function label(string $kind): string
     {
         return match ($kind) {
             'team' => __('Team Dashboard', 'h3-mgmt'),

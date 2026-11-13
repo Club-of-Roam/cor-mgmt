@@ -371,7 +371,9 @@ final class TickerTest extends TestCase
         try {
             self::assertStringContainsString('No messages sent yet.', do_shortcode('[h3-liveticker race="9909"]'));
             self::assertStringContainsString('submissions are disabled', do_shortcode('[h3-ticker-message race="999999"]'));
-            self::assertStringContainsString('display is disabled', do_shortcode('[h3-liveticker race="999999"]'));
+            $unknownEvent = do_shortcode('[h3-liveticker race="999999"]');
+            self::assertStringContainsString('<h2>Event</h2><h3>Live Ticker</h3>', $unknownEvent);
+            self::assertStringContainsString('This event is unavailable.', $unknownEvent);
         } finally {
             restore_error_handler();
         }

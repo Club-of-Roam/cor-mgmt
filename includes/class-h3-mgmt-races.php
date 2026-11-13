@@ -942,13 +942,13 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 
 			$race_setting = $h3_mgmt_races->get_race_setting( $race );
 			//if registration still isn't open return error message
-			if ( $race_setting['status'] < 3 ) {
-				$output = '<p class="message" style="text-align: center;">' .
-							stripcslashes( $information_text[26] ) .
-						'</p>';
-				$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
-				return $output;
-			}
+            if ($race_setting['status'] < 3) {
+                $notice = (string) ($information_text[26] ?? '');
+                if (trim(strip_tags($notice)) === '') {
+                    $notice = __('The race has not started yet. Results will appear here after the start.', 'h3-mgmt');
+                }
+                return '<p class="message">' . stripcslashes($notice) . '</p>';
+            }
 
 			if ( isset( $_GET['ranking_route'] ) && $race === $this->get_route_parent( $_GET['ranking_route'] ) ) {
 				$parent      = $_GET['ranking_route'];
@@ -983,6 +983,10 @@ if ( ! class_exists( 'H3_MGMT_Races' ) ) :
 					'parent_type'        => $parent_type,
 				)
 			);
+
+            if ($teams === []) {
+                return '<p>' . __('No results are available yet.', 'h3-mgmt') . '</p>';
+            }
 
 			if ( $top === 0 ) {
 				$max = count( $teams );

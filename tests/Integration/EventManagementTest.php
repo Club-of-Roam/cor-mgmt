@@ -87,7 +87,10 @@ final class EventManagementTest extends TestCase
             }
             if ($choice !== null) { $input[$control->getAttribute('name')] = $choice->getAttribute('value'); }
         }
+        $defaults = \Cor\Mgmt\Domain\EventTextDefaults::all();
+        foreach ($defaults as $key => $value) { self::assertSame($value, $input[$key], $key); }
         $_POST = array_replace($input, ['name' => 'Synthetic acceptance event', 'active' => '0', 'status' => '0',
+            '25en' => 'Edited registration notice', '24de' => '',
             'startingpoint' => '1', 'start_route_id' => '0', 'num_teammember_min' => '2', 'num_teammember' => '3', 'extra_point_amount' => '0']);
         $_GET = ['page' => 'h3-mgmt-races', 'todo' => 'save', 'id' => ''];
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -98,7 +101,26 @@ final class EventManagementTest extends TestCase
         self::assertSame('0', $saved['active']);
         self::assertSame('0', $saved['start']);
         self::assertSame('0', $saved['end']);
+        $texts = json_decode($saved['information_text'], true);
+        self::assertSame('Edited registration notice', $texts['25en']);
+        self::assertSame('', $texts['24de']);
+        self::assertSame($defaults['26en'], $texts['26en']);
+        self::assertSame($defaults['26de'], $texts['26de']);
         self::assertSame([], $GLOBALS['cor_test_mail']);
+    }
+    public function testNewEventDefaultsCanBeReplacedByOlderEventTextsWithoutChangingTheSource(): void
+    {
+        $source = $this->store->find('race', 1)['information_text'];
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_GET = ['page' => 'h3-mgmt-races', 'todo' => 'save'];
+        $_POST = ['name' => 'Copied texts event', 'race_id_inf' => '1', 'cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-admin-races')];
+        $result = EventAdmin::mutate('race', 0, 'save');
+        $texts = json_decode($this->store->find('race', $result['id'])['information_text'], true);
+        self::assertSame(json_decode($source, true), $texts);
+        self::assertArrayNotHasKey('25en', $texts);
+        self::assertSame($source, $this->store->find('race', 1)['information_text']);
+        $direct = $this->editor->save('race', 0, ['name' => 'Direct creation defaults'], '');
+        self::assertSame(\Cor\Mgmt\Domain\EventTextDefaults::all(), json_decode($this->store->find('race', $direct['id'])['information_text'], true));
     }
     public function testSaveErrorExplainsInvalidNumbersAndRetainsEnteredFields(): void
     {
@@ -190,6 +212,23 @@ final class EventManagementTest extends TestCase
         $this->save('race',1,['name'=>'Changed elsewhere']);
         $this->rejects('stale_record',fn()=>$this->editor->save('race',1,['name'=>'Lost update'],$revision));
         self::assertSame('Changed elsewhere',$this->store->find('race',1)['name']);
+    }
+    public function testNewRouteDoesNotCountUnassignedTeamsAsOccupancy(): void
+    {
+        global $wpdb;
+        foreach ([1, 1, 2] as $index => $race) {
+            $wpdb->insert($wpdb->prefix . 'h3_mgmt_teams', ['id' => 50 + $index, 'race_id' => $race, 'route_id' => 0, 'complete' => 1, 'team_name' => 'Unassigned synthetic team']);
+        }
+        $before = $this->store->matching('team', 'route_id', 0);
+        $result = $this->save('route', 0, ['race_id' => '1', 'name' => 'New empty route', 'max_teams' => '1', 'color_code' => '005a9c', 'user_id' => '0']);
+        self::assertFalse($result['confirmation_required']);
+        self::assertSame([], $result['warnings']);
+        self::assertGreaterThan(0, $result['id']);
+        $route = $this->store->find('route', $result['id']);
+        self::assertSame('1', $route['race_id']);
+        self::assertSame('1', $route['max_teams']);
+        self::assertSame([], $this->store->matching('team', 'route_id', $result['id']));
+        self::assertSame($before, $this->store->matching('team', 'route_id', 0));
     }
     public function testCapacityReductionRequiresConfirmationAndRetainsAllAssignments(): void
     {
@@ -407,6 +446,50 @@ final class EventManagementTest extends TestCase
         self::assertSame('1000000000',$this->store->find('race',1)['end']);
     }
 
+    public static function nonTransactionalAccounts(): array { return [['users'], ['usermeta']]; }
+    #[DataProvider('nonTransactionalAccounts')]
+    public function testPhaseChangeWithMyisamAccountsExplainsFailureAndRollsBack(string $accountTable): void
+    {
+        global $wpdb;
+        $other = new \wpdb((string) getenv('COR_TEST_DB_USER'), (string) getenv('COR_TEST_DB_PASSWORD'), (string) getenv('COR_TEST_DB_NAME'), (string) getenv('COR_TEST_DB_HOST'));
+        $other->set_prefix('cor_event_accounts_');
+        $db = new Database($other);
+        $tables = [];
+        try {
+            $suffixes = ['options', 'users', 'usermeta', 'h3_mgmt_races', 'h3_mgmt_routes', 'h3_mgmt_stages', 'h3_mgmt_teams', 'h3_mgmt_teammates',
+                ...array_keys(\Cor\Mgmt\Infrastructure\WordPress\Schema\ParticipationSchema::definitions())];
+            foreach ($suffixes as $suffix) {
+                $target = $db->table($suffix);
+                self::assertFalse($db->exists($target));
+                $db->execute($db->prepare('CREATE TABLE %i LIKE %i', $target, $wpdb->prefix . $suffix));
+                $tables[] = $target;
+            }
+            $db->setOption('cor_mgmt_participation_install', (string) (new Database($wpdb))->option('cor_mgmt_participation_install'));
+            $db->execute($db->prepare('ALTER TABLE %i ENGINE=MyISAM', $db->table($accountTable)));
+            $db->execute($db->prepare('INSERT INTO %i (id,name,setting) VALUES (1,%s,%s)', $db->table('h3_mgmt_races'), 'Synthetic engine check', '{"status":0}'));
+            $store = new LegacyEventStore($db);
+            $manager = new \Cor\Mgmt\Application\Teams\TeamManager(new \Cor\Mgmt\Infrastructure\WordPress\ParticipationRepository($db), new \Cor\Mgmt\Infrastructure\SystemClock(), new \Cor\Mgmt\Infrastructure\SecureRandom(), static fn (): bool => true);
+            $editor = new EventEditor($store, static fn (): bool => true, null, $manager->reconcileRace(...));
+            $before = $store->find('race', 1);
+            try {
+                $editor->save('race', 1, ['status' => '1'], $editor->revision('race', 1));
+                self::fail('Nontransactional accounts must prevent the phase change.');
+            } catch (\Cor\Mgmt\Application\Teams\ParticipationException $error) {
+                self::assertSame('transactional_storage_required', EventAdmin::errorCode($error));
+                self::assertStringContainsString('InnoDB', EventAdmin::message(EventAdmin::errorCode($error)));
+                self::assertStringNotContainsString('unexpected_error', EventAdmin::message(EventAdmin::errorCode($error)));
+            }
+            self::assertSame($before, $store->find('race', 1));
+            self::assertSame('0', $db->scalar('SELECT @@in_transaction'));
+            $db->execute($db->prepare('ALTER TABLE %i ENGINE=InnoDB', $db->table($accountTable)));
+            $result = $editor->save('race', 1, ['status' => '1'], $editor->revision('race', 1));
+            self::assertFalse($result['confirmation_required']);
+            self::assertSame('1', EventEditor::flatten($store->find('race', 1))['status']);
+        } finally {
+            foreach (array_reverse($tables) as $table) { $db->execute($db->prepare('DROP TABLE IF EXISTS %i', $table)); }
+            $other->close();
+        }
+    }
     public function testMyisamSourceRequiresControlledReviewForMultiRecordChanges(): void
     {
         global $wpdb;

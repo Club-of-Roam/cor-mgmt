@@ -38,6 +38,7 @@ final class Lifecycle
         CommunicationReport::register();
         TeamPortal::register();
         SitePages::register();
+        EventPageView::register();
         ArchiveBoundary::register();
         ProfileAvatar::register();
         ResultBoundary::register();

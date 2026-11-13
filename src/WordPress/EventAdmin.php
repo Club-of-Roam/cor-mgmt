@@ -100,7 +100,7 @@ final class EventAdmin
             $db = new Database($wpdb);
             $store = new LegacyEventStore($db);
             $row = $id ? $store->find('race', $id) : [];
-            $information = self::information($row['information_text'] ?? '{}');
+            $information = $id ? self::information($row['information_text'] ?? '{}') : \Cor\Mgmt\Domain\EventTextDefaults::all();
             $changed = false;
             foreach ($input as $key => $value) {
                 if (preg_match('/^(?:[1-9]|[1-3][0-9])(?:en|de)$/D', $key)) {
@@ -186,13 +186,15 @@ final class EventAdmin
     }
     public static function errorCode(\Throwable $error): string
     {
-        $code = $error instanceof EventException ? $error->reason
+        $code = $error instanceof EventException || $error instanceof \Cor\Mgmt\Application\Teams\ParticipationException ? $error->reason
             : ($error instanceof \Cor\Mgmt\Application\Migration\MigrationException ? $error->getMessage() : 'unexpected_error');
         return preg_match('/^[a-z_]{1,64}$/D', $code) ? $code : 'unexpected_error';
     }
     public static function message(string $code): string
     {
         return match ($code) {
+            'transactional_storage_required' => __('Participant changes require InnoDB tables, including WordPress users and user metadata. A controlled storage review is required before saving.', 'h3-mgmt'),
+            'participation_setup_required' => __('Team and invitation storage requires setup. Open Tools > cor-mgmt system status.', 'h3-mgmt'),
             'stale_record' => __('This record or its race changed. Reload before saving; your changes were not applied.', 'h3-mgmt'),
             'capacity_below_occupancy' => __('The capacity is below the number of complete teams. Existing assignments will remain. Confirm to save.', 'h3-mgmt'),
             'starting_points_have_assignments' => __('Teams already have assignments. Changing starting points will not move or remove them. Confirm to save.', 'h3-mgmt'),

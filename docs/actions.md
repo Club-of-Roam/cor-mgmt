@@ -36,9 +36,9 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [route_section](../includes/class-h3-mgmt-teams.php#L1456) | `POST:route_id`, `POST:submitted` |  |
 | [team_homework](../includes/class-h3-mgmt-teams.php#L1563) | `GET:todo`, `POST:todo` |  |
 | [display_teams](../includes/class-h3-mgmt-teams.php#L1894) | `GET:id` |  |
-| [team_overview](../includes/class-h3-mgmt-teams.php#L2250) | `GET:todo` |  |
-| [validate_submit](../includes/class-h3-mgmt-teams.php#L2377) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
-| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2408) | `POST:submitted` |  |
+| [team_overview](../includes/class-h3-mgmt-teams.php#L2255) | `GET:todo` |  |
+| [validate_submit](../includes/class-h3-mgmt-teams.php#L2386) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
+| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2417) | `POST:submitted` |  |
 | [table_order](../includes/class-h3-mgmt-utilities.php#L189) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L15) | `POST:address` |  |
 | [register](../src/WordPress/ArchiveBoundary.php#L28) | `POST:operation` |  |
@@ -67,7 +67,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [request](../src/WordPress/SchemaTools.php#L27) | `POST:backup`, `POST:fingerprint`, `POST:nonce`, `POST:operation`, `POST:quiesced`, `POST:run_id` |  |
 | [register](../src/WordPress/SitePages.php#L22) | `GET:page`, `GET:race_id`, `POST:race_id` |  |
 | [submit](../src/WordPress/SitePages.php#L145) | `POST:cor_mgmt_nonce`, `POST:kind`, `POST:page_id`, `POST:page_operation`, `POST:race_id` |  |
-| [render](../src/WordPress/SitePages.php#L230) | `GET:cor_pages_saved` |  |
+| [render](../src/WordPress/SitePages.php#L236) | `GET:cor_pages_saved` |  |
 | [control](../src/WordPress/TeamAdmin.php#L13) | `GET:bulk`, `GET:id`, `GET:todo` |  |
 | [save](../src/WordPress/TeamAdmin.php#L51) | `FILES:team_pic`, `POST:route_id` |  |
 | [form](../src/WordPress/TeamAdmin.php#L97) | `GET:race_id`, `POST:race_id` |  |
@@ -76,7 +76,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [emails](../src/WordPress/TeamBoundary.php#L111) | `POST:invitations` |  |
 | [save](../src/WordPress/TeamBoundary.php#L136) | `FILES:team_pic`, `POST:route_id` |  |
 | [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
-| [render](../src/WordPress/TeamFrontend.php#L80) | `GET:invitation`, `POST:invitation` |  |
+| [render](../src/WordPress/TeamFrontend.php#L82) | `GET:invitation`, `POST:invitation` |  |
 | [serve](../src/WordPress/TeamPortal.php#L25) | `GET:race_id` |  |
 | [race](../src/WordPress/TickerBoundary.php#L86) | `GET:ticker_race` |  |
 | [form](../src/WordPress/TickerBoundary.php#L190) | `POST:message` |  |

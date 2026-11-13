@@ -125,6 +125,11 @@ elseif ($path === '/ticker') { echo '<h1>Web ticker</h1>' . \Cor\Mgmt\WordPress\
 elseif ($path === '/ticker-map') { echo '<h1>Event positions</h1><link rel="stylesheet" href="/assets/leaflet.css"><style>.cor-ticker-map{height:500px}</style>' . \Cor\Mgmt\WordPress\TickerBoundary::feed(['race'=>880090,'max'=>100],true); }
 elseif ($path === '/ticker-admin' || $page === 'cor-mgmt-ticker') { $_GET['race']='880090'; \Cor\Mgmt\WordPress\TickerBoundary::page(); }
 elseif ($path === '/archives') { \Cor\Mgmt\WordPress\ArchiveBoundary::page(); }
+elseif ($path === '/event-page') {
+    $kind = is_string($_GET['kind'] ?? null) ? $_GET['kind'] : '';
+    if (!in_array($kind, ['team', 'teams', 'results', 'ticker', 'map', 'donations'], true)) { http_response_code(404); exit; }
+    echo '<h1>Event page preview</h1>' . do_shortcode(\Cor\Mgmt\WordPress\SitePages::content(880090, $kind));
+}
 elseif ($page === 'cor-mgmt-exchange' || $path === '/moderation') { \Cor\Mgmt\WordPress\ExchangeBoundary::page(); }
 elseif ($page === 'cor-mgmt-communication-report' || $path === '/report') { \Cor\Mgmt\WordPress\CommunicationReport::page(); }
 else { \Cor\Mgmt\WordPress\BroadcastAdmin::page(); }

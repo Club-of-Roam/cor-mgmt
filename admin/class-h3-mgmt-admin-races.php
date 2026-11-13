@@ -1198,7 +1198,7 @@ if ( ! class_exists( 'H3_MGMT_Admin_Races' ) ) :
 			}
 
 
-            $data = [];
+            $data = $type === 'race' && !$id ? \Cor\Mgmt\Domain\EventTextDefaults::all() : [];
             if (is_numeric($id)) {
                 $repository = new \Cor\Mgmt\Infrastructure\WordPress\LegacyEventStore(new \Cor\Mgmt\Infrastructure\WordPress\Schema\Database($wpdb));
                 $row = $repository->find($type, (int) $id);

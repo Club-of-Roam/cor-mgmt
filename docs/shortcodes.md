@@ -10,7 +10,7 @@ Generiert mit `python tools/build-inventory.py`. Statische Registrierung und Sta
 | `h3-list-sponsors` | [sponsors_overview](../includes/class-h3-mgmt-sponsors.php#L1810) | 'type' => 'sponsor', 'delimiter' => ', ', 'race' => 'all', |
 | `h3-liveticker` | [the_ticker](../includes/class-h3-mgmt-ticker.php#L201) | keine direkten Defaults |
 | `h3-mate-xchange` | [xchange_control](../includes/class-h3-mgmt-xchange.php#L30) | keine direkten Defaults |
-| `h3-rand-team` | [random_team_info](../includes/class-h3-mgmt-teams.php#L2156) | 'event' => 0, 'race' => 0 |
+| `h3-rand-team` | [random_team_info](../includes/class-h3-mgmt-teams.php#L2161) | 'event' => 0, 'race' => 0 |
 | `h3-ranking-table` | [ranking_table](../includes/class-h3-mgmt-races.php#L910) | 'top' => 0, 'route' => 'all', 'race' => 1, 'show_title' => 0, 'show_stages' => 1, 'show_nav' => 1, |
 | `h3-recent-sponsors` | [recent_sponsors](../includes/class-h3-mgmt-sponsors.php#L1740) | 'number' => 3, 'race' => 'all', |
 | `h3-sponsoring-form` | [new_sponsoring_handler](../includes/class-h3-mgmt-sponsors.php#L692) | keine direkten Defaults |

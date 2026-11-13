@@ -1,5 +1,11 @@
 # Entscheidungen
 
+## Event-Seiten und Standardtexte (Benutzervorgabe 2026-11-12)
+
+Alle sechs Event-Seiten zeigen automatisch den Eventnamen und eine zweite Überschrift für die Seitenrolle. Fehlende Daten bzw. noch nicht freigegebene Funktionen dürfen keine unverständliche leere Seite ergeben. Bestehende eigene Hinweise weiter verwenden; bei leeren Hinweisen sinnvolle Standards ausgeben. Gemeinsame Abnahmeszenarien und automatisierte Integrations-/Browserprüfungen ergänzen.
+
+Bei Eventneuanlage die bestehenden Informationstextfelder mit bearbeitbaren deutschen und englischen Standardtexten vorbelegen und speichern. Der vorhandene Import aus einem älteren Event ersetzt diese Texte ausdrücklich. Bestehende Events werden nicht nachträglich befüllt; bewusst leere Werte bleiben gespeichert und erhalten nur bei der Anzeige einen Fallback. Individuelle Profilfragen und Antwortoptionen erhalten keine erfundenen Standardfragen. Generische Hinweise ersetzen keine veranstaltungsspezifischen Haftungs- oder Zahlungsinformationen.
+
 ## Seiteneinrichtung beim Event (Benutzervorgabe 2026-11-12)
 
 Seitenverwaltung ausschließlich in den Event-Einstellungen anbieten, einschließlich aller fünf Phasen und Archiv. Den bisherigen Tools-Eintrag entfernen; bei Eventneuanlage und nach dem ersten Speichern auf die Seiteneinrichtung hinweisen. Seiten per Titel-/ID-Auswahl und Suche zuordnen oder wiederverwendbare Entwürfe mit passendem Shortcode erzeugen. Klare Rollenüberschriften verwenden. Bisherige interne Teamübersichts-/Spendenlinks bleiben bis zum veröffentlichten Ersatz erhalten; historische Zahlungsabläufe werden dadurch nicht aktiviert. Seitenzuordnung ist eine Präsentationseinstellung und entsperrt keine eingefrorenen Renndaten. Umsetzung und offene gemeinsame Prüfung: [Gesamtabnahme](block-10-acceptance.md).

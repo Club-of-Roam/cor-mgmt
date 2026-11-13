@@ -42,6 +42,24 @@ async function axe(page) {
   expect(results.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
 }
 
+for (const actor of ['guest', 'member']) {
+  test(`all event pages show the event and page headings for ${actor}`, async ({ page, context }) => {
+    await identity(context, actor);
+    const roles = {team: 'Team Dashboard', teams: 'Teams Overview', results: 'Results and Rankings', ticker: 'Live Ticker', map: 'Ticker Map', donations: 'Donations'};
+    for (const [kind, heading] of Object.entries(roles)) {
+      const response = await page.goto(base + '/event-page?kind=' + kind);
+      expect(response.status()).toBe(200);
+      await expect(page.getByRole('heading', {name: 'Synthetic browser ticker', exact: true})).toHaveCount(1);
+      await expect(page.getByRole('heading', {name: heading, level: 3, exact: true})).toHaveCount(1);
+      await expect(page.locator('main')).not.toContainText(/Fatal error|Warning:|Undefined variable/);
+      if (kind === 'team' && actor === 'guest') await expect(page.getByRole('link', {name: 'Log in to manage your team.', exact: true})).toBeVisible();
+      if (kind === 'results') await expect(page.getByText('The race has not started yet. Results will appear here after the start.', {exact: true})).toBeVisible();
+      if (kind === 'donations') await expect(page.getByText('Donations are currently disabled for this event.', {exact: true})).toBeVisible();
+      await axe(page);
+    }
+  });
+}
+
 test('archive tools are restricted, readable by keyboard and require maintenance confirmations', async ({ page, context }) => {
   await identity(context, 'member');
   expect((await page.goto(base + '/archives')).status()).toBe(403);

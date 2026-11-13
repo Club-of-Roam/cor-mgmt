@@ -181,6 +181,9 @@ final class ResultFrontend
             $ranked = array_slice($ranked, 0, $limit);
         }
         $title = $route ? $routes[$route] : __('All routes', 'h3-mgmt');
+        if ($ranked === []) {
+            return '<p>' . esc_html__('No results are available yet.', 'h3-mgmt') . '</p>';
+        }
         $html = (int) ($attributes['show_title'] ?? 0) === 1 ? '<h3>' . esc_html($title) . '</h3>' : '';
         if ((int) ($attributes['show_nav'] ?? 1) === 1) {
             $html .= '<nav aria-label="' . esc_attr__('Ranking routes', 'h3-mgmt') . '"><ul><li><a href="' . esc_url(remove_query_arg('ranking_route')) . '">' . esc_html__('All routes', 'h3-mgmt') . '</a></li>';

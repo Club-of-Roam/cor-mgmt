@@ -189,6 +189,23 @@ final class TeamManagementTest extends TestCase
         wp_set_current_user(0);$_GET=['invitation'=>'v2-'.str_repeat('a',64)];
         self::assertStringContainsString('invitation%3Dv2-',TeamFrontend::dashboard(2));
     }
+    public function testGuestDashboardKeepsEscapedEventHeadingWithoutParticipantDataOrForms(): void
+    {
+        global $wpdb;
+        $this->team();
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['name' => 'Summer <em>event</em> & friends'], ['id' => 2]);
+        wp_set_current_user(0);
+        $_GET = ['invitation' => 'v2-' . str_repeat('a', 64)];
+        $html = TeamFrontend::dashboard(2);
+        self::assertStringContainsString('<section class="cor-team-dashboard"><h2>Summer &lt;em&gt;event&lt;/em&gt; &amp; friends</h2>', $html);
+        self::assertStringContainsString('Log in to manage your team.', $html);
+        self::assertStringContainsString('invitation%3Dv2-', $html);
+        self::assertStringNotContainsString('<form', $html);
+        self::assertStringNotContainsString('Keep team', $html);
+        self::assertStringNotContainsString(get_userdata($this->one)->user_email, $html);
+        self::assertSame([], $GLOBALS['cor_test_mail']);
+        self::assertStringContainsString('<h2>Team Dashboard</h2>', TeamFrontend::dashboard(999999));
+    }
     public function testForeignActorCannotLeaveOrReadOrCancelInvitations(): void
     {
         $this->team();
