@@ -34,11 +34,11 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [primary_user_section](../includes/class-h3-mgmt-teams.php#L1241) | `POST:submitted` |  |
 | [invitations_section](../includes/class-h3-mgmt-teams.php#L1344) | `POST:form_submitted` |  |
 | [route_section](../includes/class-h3-mgmt-teams.php#L1456) | `POST:route_id`, `POST:submitted` |  |
-| [team_homework](../includes/class-h3-mgmt-teams.php#L1563) | `GET:todo`, `POST:todo` |  |
-| [display_teams](../includes/class-h3-mgmt-teams.php#L1894) | `GET:id` |  |
-| [team_overview](../includes/class-h3-mgmt-teams.php#L2255) | `GET:todo` |  |
-| [validate_submit](../includes/class-h3-mgmt-teams.php#L2386) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
-| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2417) | `POST:submitted` |  |
+| [team_homework](../includes/class-h3-mgmt-teams.php#L1532) | `GET:todo`, `POST:todo` |  |
+| [display_teams](../includes/class-h3-mgmt-teams.php#L1863) | `GET:id` |  |
+| [team_overview](../includes/class-h3-mgmt-teams.php#L2224) | `GET:todo` |  |
+| [validate_submit](../includes/class-h3-mgmt-teams.php#L2355) | `POST:address`, `POST:first_name`, `POST:last_name`, `POST:team_name` |  |
+| [save_dashboard](../includes/class-h3-mgmt-teams.php#L2386) | `POST:submitted` |  |
 | [table_order](../includes/class-h3-mgmt-utilities.php#L189) | `GET:order`, `GET:orderby` |  |
 | [insertUpdateDeleteMessage](../includes/class-h3-mgmt-xchange.php#L15) | `POST:address` |  |
 | [register](../src/WordPress/ArchiveBoundary.php#L28) | `POST:operation` |  |
@@ -76,7 +76,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [emails](../src/WordPress/TeamBoundary.php#L111) | `POST:invitations` |  |
 | [save](../src/WordPress/TeamBoundary.php#L136) | `FILES:team_pic`, `POST:route_id` |  |
 | [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
-| [render](../src/WordPress/TeamFrontend.php#L82) | `GET:invitation`, `POST:invitation` |  |
+| [render](../src/WordPress/TeamFrontend.php#L92) | `GET:invitation`, `POST:cor_profile_only`, `POST:invitation`, `POST:submitted`, `POST:todo` |  |
 | [serve](../src/WordPress/TeamPortal.php#L25) | `GET:race_id` |  |
 | [race](../src/WordPress/TickerBoundary.php#L86) | `GET:ticker_race` |  |
 | [form](../src/WordPress/TickerBoundary.php#L190) | `POST:message` |  |

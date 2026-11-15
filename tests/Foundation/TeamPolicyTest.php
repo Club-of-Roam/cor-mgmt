@@ -24,6 +24,22 @@ final class TeamPolicyTest extends TestCase
         self::assertFalse(TeamPolicy::allows('confirm',RacePhase::Started,true));
         foreach(['create','membership','route','profile','name','content'] as $action){self::assertFalse(TeamPolicy::allows($action,RacePhase::Archived,true));}
     }
+    public function testRequirementsExplainOnlyEnabledChecksAndActualTeamSize(): void
+    {
+        $settings = ['num_teammember_min' => '2', 'num_teammember' => '3'];
+        $members = [['user_id' => '10', 'paid' => '0', 'waiver' => '1']];
+        $profiles = [10 => ['shirt_size' => '0', 'public_mobile_inf' => 'no']];
+        $report = TeamPolicy::requirements($settings, $members, $profiles);
+        self::assertSame(1, $report['count']); self::assertFalse($report['size_met']);
+        self::assertSame(['paid' => false, 'waiver' => true, 'shirt_size' => false, 'public_mobile_inf' => true], $report['members'][0]['requirements']);
+        self::assertFalse($report['eligible']);
+        $report = TeamPolicy::requirements($settings + ['dis_fee' => '1', 'dis_shirt_size' => '1'], $members, $profiles);
+        self::assertSame(['waiver' => true, 'public_mobile_inf' => true], $report['members'][0]['requirements']);
+        self::assertFalse($report['eligible']);
+        self::assertFalse(TeamPolicy::requirements($settings, [$members[0], $members[0]], $profiles)['membership_valid']);
+        self::assertFalse(TeamPolicy::requirements($settings, $members, [])['membership_valid']);
+        self::assertFalse(TeamPolicy::requirements(['num_teammember_min' => '3', 'num_teammember' => '2'], $members, $profiles)['configuration_valid']);
+    }
     public function testEligibilityHonorsMinimumMaximumAndActualMembers(): void
     {
         $settings=['num_teammember_min'=>'1','num_teammember'=>'2','dis_shirt_size'=>'1','dis_mobile_inf'=>'1'];

@@ -1,10 +1,23 @@
 # Arbeitsstatus und Übergabe
 
-Stand 2026-11-13. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
+Nachtrag UI-20, 2026-11-15: Benutzer wünscht die bisherige Homework-Checkliste integriert rechts neben den Team-Einstellungen. Zweispaltiges responsives Dashboard mit Eventtexten, eigenen/übrigen Aufgaben und durchgestrichenen erledigten Aufgaben umgesetzt. Persönliches Profil bleibt separat unter beiden Spalten eingeklappt. Alte kombinierte Dashboard-/Homework-Einbettung delegiert ohne doppelte Ausgabe. Automatisierte Nachweise in verification.md; gemeinsame Sichtprüfung und Einladungsabnahme AB-T02 weiterhin offen. Dieser Wunsch ersetzt die vorangegangene Anordnung der Voraussetzungen oberhalb des Teamformulars.
+
+
+Stand 2026-11-15. Ziel 2.0.0; laufender Code 1.2.10 / Schema 2.8.
 
 Gemeinsame Abnahme begonnen: Alle sieben Zusatzspeicher und Tickertabellen eingerichtet; Warte-/Erfolgshinweise nachgeprüft (AB-I01-B03/B04 geschlossen). Benutzer bestätigt abgeschlossene Tickerübernahme sowie Stop/Fortsetzen (AB-I01-B05 geschlossen): `native`, 16.115 von 16.115 Datensätzen geprüft, 559 Hinweise. Sichtprobe zeigt übernommene Text-/Bildbeiträge. Zu große Verwaltungsbilder durch kompakte proportionale Vorschau mit Vollgrößenlink korrigiert (AB-I01-B06); gemeinsame Nachprüfung offen. Hinweise noch inhaltlich auswerten. WPML-Kompatibilität bleibt eigener offener Integrationsbefund. Fallstatus und Nachprüfungen: [Abnahmeprotokoll](block-10-acceptance.md).
 
 ## Aktuelles Paket: Archiv und aktive Umschaltung
+
+Aktuell AB-T02-B01/UI-19, 2026-11-15: Benutzer bestätigt fortbestehendes Team, eigene Mitgliedschaft und unvollständigen Status; konkrete Voraussetzungen und Einladungserstellung waren unklar. Gemeinsame Anordnung überarbeitet: lesende Anforderungsliste aus derselben Domainregel wie Freigabe, eigener Einladungs-POST mit Nonce/Revision/Selbstberechtigung, offene Einladungen oben, eigenes persönliches Profil ganz unten. Keine Profil-/Teamänderung beim Einladen; Einladungen reservieren keine Plätze; nur vollständige, zugeordnete Teams belegen Routenplätze. Alte kombinierte Speichergrenze für Gründung/Beitritt bleibt kompatibel. Auf PHP 8.2/8.3/8.4/8.5 jeweils 154 gezielte Integrationsfälle, 351 isolierte Tests und composer check bestanden; je zwölf Browser-/axe-Fälle auf 8.2/8.5 sowie ESLint ebenfalls erfolgreich. Benutzernachprüfung noch offen. Versand bleibt kontrolliert und deaktiviert; Einladungserstellung bestätigt keine Zustellung. UI-16 bleibt für vollständige CSS-Neugestaltung offen.
+
+Neueste Rückmeldung AB-T01, 2026-11-15: Benutzer bestätigt erfolgreiche Teamgründung nach erneutem Versuch im Frontend. Dauerhafte Anzeige nach erneutem Seitenaufruf, Mitgliedschaft, Vollständigkeitsstatus und ausbleibende Doppelanlage noch gesondert prüfen. Keine Bestätigung des ursprünglichen Fehlercodes oder einer manuellen Fehlerfallprüfung; UI-18 deshalb nicht vollständig abgenommen.
+
+Aktuell AB-T01-B01/UI-18: Benutzer meldet fehlgeschlagene Teamgründung mit allgemeinem Text ohne Fehlerdarstellung. Rote alert-Rückmeldung mit konkreten Validierungstexten, sicherem Code, Pflichtfeldmarkierung und Erhalt authentifizierter Texteingaben ergänzt; Erfolg als eigener status. Vor-/Nachname sind laut bestehender Fachregel bei Gründung/Beitritt erforderlich, waren bisher nicht gekennzeichnet. Das ist noch kein Nachweis für die Ursache des Einzelversuchs; erneuter Benutzer-Versuch mit konkreter Meldung angefragt. Auf PHP 8.2/8.3/8.4/8.5 jeweils 123 gezielte Integrationsfälle, 350 isolierte Tests und composer check bestanden; neuer Browser-/axe-Fall auf 8.2/8.5 und ESLint ebenfalls erfolgreich. UI-17 (Namen statt IDs in Tabellen) zusätzlich nur vorgemerkt; Dashboard-Gesamtgestaltung UI-16 weiter zurückgestellt.
+
+Nächster gemeinsamer Schritt AB-T01: Im geladenen Dashboard für Event 27 Team Abnahme-Team mit Beschreibung Funktionstest und Spendenziel 0 anlegen, vorhandene eigene Profilwerte beibehalten, noch kein Bild oder Einladung. Anschließend Erfolg und Bestand nach erneutem Seitenaufruf prüfen. Bisher nur geladene Dashboard-Seite bestätigt; Teamgründung und konkrete Formularfelder noch nicht bestätigt.
+
+Neueste Rückmeldung: Team Dashboard wird nach dem Phasenwechsel geladen. Benutzer wünscht grundlegende CSS-Überarbeitung zu einem späteren Zeitpunkt (UI-16, nur vorgemerkt). Konkrete Anzeige des Teamgründungsformulars noch nicht gesondert bestätigt; noch keine Teamgründung abgenommen.
 
 Aktuell UI-15: Auf Benutzerwunsch alle aufklappbaren Einstellungsbereiche bestehender Events standardmäßig geschlossen. Eventneuanlage bleibt aufgeklappt, Routen-/Etappenformulare unverändert. Vorhandene Renderprüfung um beide Zustände ergänzt; auf PHP 8.2/8.3/8.4/8.5 jeweils 59 gezielte Integrationstests, 350 isolierte Tests und composer check bestanden. Gemeinsame Sichtprüfung offen. AB-R03 wartet weiterhin auf die Anzeige des Teamgründungsformulars; erfolgreicher Phasenwechsel bereits bestätigt.
 

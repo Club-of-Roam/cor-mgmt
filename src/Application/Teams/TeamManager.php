@@ -395,6 +395,33 @@ final class TeamManager
             $pending[$key] = true;
         }
     }
+    /**
+     * @param list<string> $emails
+     * @return array<string,mixed>
+     */
+    public function inviteMembers(int $raceId, int $user, array $emails, string $revision): array
+    {
+        $this->events = [];
+        return $this->atomic(function () use ($raceId, $user, $emails, $revision): array {
+            $race = $this->race($raceId);
+            $this->permit('invite', $race);
+            if (!$user || !($this->authorize)('self', $user) || !$this->store->find('user', $user)) {
+                throw new ParticipationException('not_permitted');
+            }
+            $team = $this->owned($raceId, $user);
+            if (!$team) {
+                throw new ParticipationException('missing_team');
+            }
+            if ($revision === '' || !hash_equals($this->revision($raceId, (int) $team['id']), $revision)) {
+                throw new ParticipationException('stale_record');
+            }
+            if ($emails === []) {
+                throw new ParticipationException('invalid_email');
+            }
+            $this->invite($race, (int) $team['id'], $emails, $user);
+            return ['team' => (int) $team['id'], 'events' => $this->events];
+        });
+    }
     /** @param array<string,string|null> $row */
     private function history(string $kind, array $row, int $race, int $team): void
     {

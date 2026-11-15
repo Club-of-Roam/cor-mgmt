@@ -86,7 +86,7 @@ wp_localize_script('h3-mgmt-app', 'corMgmtMedia', ['url'=>admin_url('admin-ajax.
 	wp_register_style( 'h3-mgmt-donation-counter-style', H3_MGMT_RELPATH . 'css/h3-mgmt-counter.css', [], '1.2' );
 	wp_register_style( 'h3-mgmt-sponsoring', H3_MGMT_RELPATH . 'css/h3-mgmt-sponsoring.css', [], '1.3' );
 	wp_register_style( 'h3-mgmt-stages', H3_MGMT_RELPATH . 'css/h3-mgmt-stages.css', [], '1.2' );
-	wp_register_style( 'h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', [], '1.1.2' );
+	wp_register_style( 'h3-mgmt-teams', H3_MGMT_RELPATH . 'css/h3-mgmt-teams.css', [], '1.1.5' );
 	wp_register_style( 'h3-mgmt-ticker', H3_MGMT_RELPATH . 'css/h3-mgmt-ticker.css', [], '1.1.3' );
 	wp_register_style( 'h3-mgmt-xchange', H3_MGMT_RELPATH . 'css/h3-mgmt-xchange.css', [], '1.1' );
 	wp_register_style( 'h3-mgmt-ranking', H3_MGMT_RELPATH . 'css/h3-mgmt-ranking.css', [], '1.2' );
@@ -150,11 +150,11 @@ function h3_mgmt_admin_enqueue() {
 		'jquery-ui-datepicker'
 	], '1.1.1', true );
 	wp_register_script( 'custom-field-instances', H3_MGMT_RELPATH . 'js/repeatable-custom-fields.js', [ 'jquery-core' ], '1.1.2', true );
-	wp_register_script( 'h3-mgmt-admin-sponsors', H3_MGMT_RELPATH . 'js/h3-mgmt-admin-sponsors.js', [ 'jquery-core' ], '1.1.5', true );
+	wp_register_script( 'h3-mgmt-admin-sponsors', H3_MGMT_RELPATH . 'js/h3-mgmt-admin-sponsors.js', [ 'jquery-core' ], '1.1.4', true );
 
 	/* register styles */
 	wp_register_style( 'jquery-ui-custom', H3_MGMT_RELPATH . 'css/jquery-ui-custom.css', [], '1.1' );
-	wp_register_style( 'h3-mgmt-admin-style', H3_MGMT_RELPATH . 'css/h3-mgmt-admin.css', [], '1.1.5' );
+	wp_register_style( 'h3-mgmt-admin-style', H3_MGMT_RELPATH . 'css/h3-mgmt-admin.css', [], '1.1.4' );
 
 	/* enqueue custom scripts */
 	wp_enqueue_script( 'h3-mgmt-admin' );

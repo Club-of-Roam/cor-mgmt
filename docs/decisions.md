@@ -1,5 +1,13 @@
 # Entscheidungen
 
+## Zweispaltiges Team Dashboard mit bisheriger Homework-Anzeige (2026-11-15)
+
+Auf Benutzerwunsch ersetzt die bisherige Homework-Aufteilung die neue Liste je Person: eigene und übrige Mitglieder getrennt, aktivierte Eventvoraussetzungen und bearbeitbare Eventtexte verwenden, erledigte Aufgaben durchstreichen. Links Team-Einstellungen einschließlich eigenständiger Einladungsformulare, rechts Homework, persönliches Profil darunter weiterhin separat und aufklappbar. Mobile Darstellung untereinander. Bestehende Fachregeln, schreibfreie Anforderungsauswertung und Sperre ab Rennstart bleiben verbindlich; eine erstellte Einladung bedeutet keine vollständige Mitgliedschaft oder Mailzustellung. Der kombinierte Legacy-Shortcode delegiert an dasselbe Dashboard, damit keine doppelte Checkliste entsteht.
+
+## Team Dashboard: Team zuerst, persönliches Profil separat (2026-11-15)
+
+Benutzer verlangt konkrete fehlende Teilnahmevoraussetzungen und einen auffindbaren Einladungsbereich vor den persönlichen Angaben. Anforderungsanzeige und Freigabe nutzen eine gemeinsame Domainauswertung; deaktivierte Prüfungen werden nicht als Pflicht angezeigt. Ab Rennstart nur eingefrorenen Teilnahmezustand erklären, keine Freigabe durch Leser neu berechnen. Einladungen erhalten einen eigenen authentifizierten POST mit Event-/Teamrevision; das persönliche Profil wird bei bestehenden Teams separat am Ende gespeichert. Gründung/Beitritt behalten die atomare gemeinsame Anlage benötigter Profilwerte. Einladungserstellung bleibt ohne Platzreservierung und bis Anmeldeschluss möglich, auch bei vollem Team; Versand und Zustellungsbestätigung sind davon getrennt. Vollständige CSS-Neugestaltung weiterhin zurückgestellt.
+
 ## Event-Seiten und Standardtexte (Benutzervorgabe 2026-11-12)
 
 Alle sechs Event-Seiten zeigen automatisch den Eventnamen und eine zweite Überschrift für die Seitenrolle. Fehlende Daten bzw. noch nicht freigegebene Funktionen dürfen keine unverständliche leere Seite ergeben. Bestehende eigene Hinweise weiter verwenden; bei leeren Hinweisen sinnvolle Standards ausgeben. Gemeinsame Abnahmeszenarien und automatisierte Integrations-/Browserprüfungen ergänzen.

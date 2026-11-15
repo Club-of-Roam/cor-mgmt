@@ -205,7 +205,7 @@ final class H3_MGMT_Security {
         $allowed['legend'] = ['class'=>true];
         $allowed['form'] = ['id'=>true,'name'=>true,'method'=>true,'action'=>true,'enctype'=>true,'class'=>true,'accept-charset'=>true];
         foreach (['input','button','select','option','textarea','label'] as $tag) {
-            $allowed[$tag] = array_fill_keys(['type','id','name','value','class','for','form','checked','selected','disabled','readonly','multiple','required','min','max','step','maxlength','size','rows','cols','title','accept','data-confirm','aria-describedby','aria-label'], true);
+            $allowed[$tag] = array_fill_keys(['type','id','name','value','class','for','form','checked','selected','disabled','readonly','multiple','required','min','max','step','maxlength','size','rows','cols','title','accept','data-confirm','aria-describedby','aria-label','aria-invalid'], true);
         }
         return wp_kses($html, $allowed);
     }

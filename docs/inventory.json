@@ -15,15 +15,15 @@
     "includes/class-h3-mgmt-media.php": "2db8d718e8d70be69ff1f74c583f9bfda5f1b3a584d9ddf96782196d6e6d2800",
     "includes/class-h3-mgmt-profile.php": "2e672efdc41a3dee9b1cb6b026765435d8c845669e4331d514c1b38ac71bea12",
     "includes/class-h3-mgmt-races.php": "7adb9d386cabc484256b69549c0a7ad51da014e4f56703f76387ca78f4d99317",
-    "includes/class-h3-mgmt-security.php": "ab1885115476c254b4fda3cdc5dd50ed03c887de815a2b4d153bf3c8d62d4424",
+    "includes/class-h3-mgmt-security.php": "a578853685864233a3eb4dc233d8e07641eedc5673f7dbbec621524fc7f4978f",
     "includes/class-h3-mgmt-sponsors.php": "1cad035767c0c3e876d54c25cdd7725fee088431ca3c7578ec995304408420ac",
-    "includes/class-h3-mgmt-teams.php": "4e7587959c89f92408a9492c4da472bca33b790569604f4c1bc97eab65602a39",
+    "includes/class-h3-mgmt-teams.php": "a806e90c647ff49a0f01fe3d1f6e9caf54590cc2919ae487dd4cd4b87fe784d4",
     "includes/class-h3-mgmt-ticker.php": "2ff7d33e49ba9975caaa6dc431e678b7bd16e9b422ad84e517d63b41a39b68d7",
     "includes/class-h3-mgmt-utilities.php": "1cc3ca890d3e7803e1729724ffcdc34bb12cfa7a68e5c556f8e6f0e0667210d5",
     "includes/class-h3-mgmt-xchange.php": "cd18eda1fb946face5ca6b623809a52ca90afe04536b3f50fbe2a4cb6111669c",
     "includes/class-h3-mgmt.php": "1263837604a973c02e30670569789957734fc5757961432d628c9d4e36782bd3",
     "models/class-h3-mgmt-race.php": "31654bfb4034db208c2c94b08e87b34c404bb87892b3a0c01ffdcb6808bd14d8",
-    "runtime/legacy.php": "17880efcfa2be4873485913692df4e065ce29d743c252030174319dc5b7ed13c",
+    "runtime/legacy.php": "dfd123b1fc07fc9bd52631d7bf85d859db0742e8893aaee6df7b95aaeef3beab",
     "src/Application/Communication/CommunicationException.php": "b56ded537f6f026aa19eab7bd09f07168b337cd5b0cc9a7b7afa8e1cf8f8b429",
     "src/Application/Contracts/Clock.php": "4bd680629568a85104e127bf5eb8000636ed3e09c35671dbcc3f78efac25e31f",
     "src/Application/Contracts/HttpClient.php": "32894f9cd79de7e6e15d2f0bd62b864d30a0637b50639df93f39fb70e42a1041",
@@ -49,7 +49,7 @@
     "src/Application/Runtime.php": "0f795993484b79f49c198078476cb9bd5a6230a7f7f7f77752b644e277156cf3",
     "src/Application/Teams/ParticipationException.php": "3b57dbfe6a5a9314fc080d5a18e4eb24b0a2f30d215362ba9e0a1b7196b30866",
     "src/Application/Teams/ParticipationStore.php": "2cb7bd2c4328651ad96f72a6bf3b42c61b22b9262d879ab5d0122f5251198e35",
-    "src/Application/Teams/TeamManager.php": "e245fdd34fedc5a91ed9f880e0e4784fb74d56a0cbfd1874a2374a62d8b2153e",
+    "src/Application/Teams/TeamManager.php": "6ddfe71f711343bce3490a33ab62e6e1c0d64f3daac74ee93f55348237cd3986",
     "src/Application/TransportException.php": "cae0577e846a60a3497362143db67f3cf8eb1c6c80b05b8c53564c101d7aa9e3",
     "src/Domain/AutoResponseTemplate.php": "31bd6bc2d94363138850e0beade6774f800da18c4b8b8cac25d1a6b1daf72d06",
     "src/Domain/BetterplaceEvent.php": "b61080106a8d7e1ab949b566930d5fa2239bae2cfedc3df3850bb1f9d8353e7f",
@@ -63,7 +63,7 @@
     "src/Domain/MessageText.php": "b0f8251290b97d713a6f3639ed48bd5cddce324b5f4fbe58fcd4504d0c6b19d4",
     "src/Domain/RacePhase.php": "34f39e0ea16dc989a54dc301d33adab208e3e9185405ac9336ab6130f79a9406",
     "src/Domain/Scoring.php": "75d0c1ada3301dc151f8cb8217dfa86cdbd82d2497e6998d1751aa6e778391c7",
-    "src/Domain/TeamPolicy.php": "839fc359f428fb5abdd3d6786d50e63d196edb0edecb97225621442c0183458d",
+    "src/Domain/TeamPolicy.php": "30cfcee8a1e68972bf0bc1362caa18053f53f56905665b7728fb28b180996f89",
     "src/Domain/Ticker/Content.php": "0516aaabd34be736fd2c015b00addbb50450fe03712ce2f57c6d457e7c8056f5",
     "src/Infrastructure/Betterplace/PublicOpinions.php": "1d207fa613d3510f62234ace0a2f87e66615e150019f02790a503946c9a4f47c",
     "src/Infrastructure/SecureRandom.php": "e57a39674e2a9e5c1a6fe29997762d87030c020599a840c8d82d5cb9ad94320c",
@@ -130,9 +130,10 @@
     "src/WordPress/Services.php": "8e37ba4167038976f4b9cc62150f193dde32a03f3f11505da2d663be9ed2b9ea",
     "src/WordPress/SitePages.php": "a7322f70e4d6d07ac4f93e9497fa01f227f7d6939fd13e2f13da296e2e6f4a15",
     "src/WordPress/TeamAdmin.php": "23873f233536e60b166c8152c440cf7ee516ff520b461400ecbe88c987dabac0",
-    "src/WordPress/TeamBoundary.php": "447ab06aa45bd5bab39a7d6a624d1341fcd8e169c7b82619d9513a284e81c70d",
-    "src/WordPress/TeamFrontend.php": "61eabaa2128e84bb06fdbc76c40a9e6db79aafb78d07b9e31efecf25d9aad6c7",
+    "src/WordPress/TeamBoundary.php": "a7516c38c7f4cd4b88ec252015c51012904c91f0e1f7c94da3f61cbab6a00c28",
+    "src/WordPress/TeamFrontend.php": "c49fd8b526206e81157f491fc6253e75fe3529b4ccdf8beded4986ccdec63090",
     "src/WordPress/TeamPortal.php": "cf9bdaeb89eba9b05e4690b84561591c153891e6b3b68bcfaf5ca71ab86b6de8",
+    "src/WordPress/TeamRequirementsView.php": "34d4093b3e0f42d008a124de22de1dc6569c0a17e0bf4ba6402db0ae17cb79eb",
     "src/WordPress/TickerBoundary.php": "cccd5ca697cb64afbacb3bba4d5807ffe827b3676e8894699fb121c7268ecac7",
     "templates/admin-custom-fields.php": "274ffcc1413d2d14bb40baa52cb1211008d2022993cfdc344b4c8b70c143d4d5",
     "templates/admin-profile.php": "46c14eafd1b131259b8ad1847522394053e48240275a8e5af81645d5cda19659",
@@ -192,7 +193,7 @@
       "tag": "h3-rand-team",
       "handler": "random_team_info",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 2161,
+      "line": 2130,
       "defaults_source": "'event' => 0, 'race' => 0"
     },
     {
@@ -241,7 +242,7 @@
       "tag": "h3-team-dashboard",
       "handler": "team_dashboard_control",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1540,
+      "line": 1509,
       "defaults_source": "'event' => 1, 'race' => 0"
     },
     {
@@ -249,20 +250,20 @@
       "handler": "team_dashboard_homework_control",
       "file": "includes/class-h3-mgmt-teams.php",
       "line": 1496,
-      "defaults_source": "'event' => 1, 'race' => 0"
+      "defaults_source": null
     },
     {
       "tag": "h3-team-homework",
       "handler": "team_homework",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1563,
+      "line": 1532,
       "defaults_source": "'event' => 0, 'race' => 0"
     },
     {
       "tag": "h3-teams",
       "handler": "display_teams",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1894,
+      "line": 1863,
       "defaults_source": "'event' => 0, 'race' => 0, 'max' => 10"
     },
     {
@@ -304,7 +305,7 @@
       "tag": "h3-user-panel-link",
       "handler": "user_panel_link",
       "file": "includes/class-h3-mgmt-teams.php",
-      "line": 1857,
+      "line": 1826,
       "defaults_source": "'event' => 0, 'race' => 0"
     }
   ],
@@ -655,7 +656,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_homework",
-      "line": 1563,
+      "line": 1532,
       "fields": [
         "GET:todo",
         "POST:todo"
@@ -665,7 +666,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "display_teams",
-      "line": 1894,
+      "line": 1863,
       "fields": [
         "GET:id"
       ],
@@ -674,7 +675,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "team_overview",
-      "line": 2255,
+      "line": 2224,
       "fields": [
         "GET:todo"
       ],
@@ -683,7 +684,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "validate_submit",
-      "line": 2386,
+      "line": 2355,
       "fields": [
         "POST:address",
         "POST:first_name",
@@ -695,7 +696,7 @@
     {
       "file": "includes/class-h3-mgmt-teams.php",
       "method": "save_dashboard",
-      "line": 2417,
+      "line": 2386,
       "fields": [
         "POST:submitted"
       ],
@@ -1089,10 +1090,13 @@
     {
       "file": "src/WordPress/TeamFrontend.php",
       "method": "render",
-      "line": 82,
+      "line": 92,
       "fields": [
         "GET:invitation",
-        "POST:invitation"
+        "POST:cor_profile_only",
+        "POST:invitation",
+        "POST:submitted",
+        "POST:todo"
       ],
       "case_labels": []
     },

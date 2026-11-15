@@ -60,6 +60,66 @@ for (const actor of ['guest', 'member']) {
   });
 }
 
+test('dashboard save errors are visible, specific and retain the draft', async ({ page, context }) => {
+  await identity(context, 'member');
+  await page.goto(base + '/event-page?kind=team');
+  await page.locator('[name="description"]').fill('Retain this synthetic draft');
+  await page.locator('[name="donation_goal"]').fill('-1');
+  await page.getByRole('button', {name: 'Save team changes', exact: true}).click();
+  const alert = page.getByRole('alert');
+  await expect(alert).toBeVisible();
+  await expect(alert).toContainText('Changes not saved.');
+  await expect(alert).toContainText('non-negative whole euro amount');
+  await expect(alert).toContainText('invalid_donation_goal');
+  await expect(alert).toHaveCSS('border-left-width', '5px');
+  await expect(alert).toHaveCSS('background-color', 'rgb(255, 241, 241)');
+  await expect(page.locator('[name="description"]')).toHaveValue('Retain this synthetic draft');
+  await expect(page.locator('[name="donation_goal"]')).toHaveValue('-1');
+  await expect(page.locator('[name="donation_goal"]')).toHaveAttribute('aria-invalid', 'true');
+  await axe(page);
+});
+
+test('team invitations and requirements precede a separately saved personal profile', async ({ page, context }) => {
+  await identity(context, 'member');
+  await page.goto(base + '/event-page?kind=team');
+  await expect(page.getByRole('heading', {name: 'Homework Assignments', exact: true})).toBeVisible();
+  const settings = page.locator('.cor-team-settings');
+  const homework = page.locator('.cor-team-requirements');
+  await page.setViewportSize({width: 1280, height: 900});
+  let left = await settings.boundingBox(), right = await homework.boundingBox();
+  expect(right.x).toBeGreaterThan(left.x + left.width);
+  expect(Math.abs(right.y - left.y)).toBeLessThan(5);
+  await page.setViewportSize({width: 390, height: 844});
+  left = await settings.boundingBox(); right = await homework.boundingBox();
+  expect(right.y).toBeGreaterThan(left.y + left.height);
+  expect(await page.locator('html').evaluate(element => element.scrollWidth)).toBeLessThanOrEqual(390);
+  await axe(page);
+  await page.setViewportSize({width: 1280, height: 900});
+  const invitations = page.locator('.cor-team-invitations');
+  const profile = page.locator('#cor-personal-profile');
+  await expect(invitations.getByText('No pending invitations.', {exact: true})).toBeVisible();
+  await expect(profile).not.toHaveAttribute('open');
+  await profile.locator('summary').click();
+  const city = page.locator('[name="city"]');
+  const originalCity = await city.inputValue();
+  await city.fill('Unsaved personal draft');
+  await invitations.locator('[name="invitations"]').fill('browser-invitation@example.invalid');
+  await invitations.getByRole('button', {name: 'Create invitations', exact: true}).click();
+  await expect(page.getByRole('status')).toContainText('Invitations created.');
+  await expect(invitations).toContainText('browser-invitation@example.invalid');
+  await expect(city).toHaveValue(originalCity);
+  await expect(profile).not.toHaveAttribute('open');
+  await axe(page);
+  await profile.locator('summary').click();
+  await axe(page);
+  await city.fill('Saved personal profile');
+  await profile.getByRole('button', {name: 'Save personal profile', exact: true}).click();
+  await expect(page.getByRole('status')).toContainText('Your profile has been saved.');
+  await expect(profile).toHaveAttribute('open');
+  await expect(city).toHaveValue('Saved personal profile');
+  await expect(invitations).toContainText('browser-invitation@example.invalid');
+});
+
 test('archive tools are restricted, readable by keyboard and require maintenance confirmations', async ({ page, context }) => {
   await identity(context, 'member');
   expect((await page.goto(base + '/archives')).status()).toBe(403);

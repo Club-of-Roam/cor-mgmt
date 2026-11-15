@@ -43,6 +43,13 @@ if (!$server) {
     $db->execute($db->prepare('DELETE FROM %i WHERE race_id=880090', $db->table('cor_mgmt_ticker_posts')));
     $attachments=$db->rows($db->prepare("SELECT post_id FROM %i WHERE meta_key='_cor_mgmt_race' AND meta_value='880090'", $wpdb->postmeta));
     foreach ($attachments as $attachment) { wp_delete_attachment((int)$attachment['post_id'],true); }
+    $teamMessages=$db->rows($db->prepare('SELECT id FROM %i WHERE race_id=880090', $db->table('cor_mgmt_mail_queue')));
+    foreach ($teamMessages as $message) {
+        $db->execute($db->prepare('DELETE FROM %i WHERE message_id=%d', $db->table('cor_mgmt_mail_history'), (int)$message['id']));
+    }
+    $db->execute($db->prepare('DELETE FROM %i WHERE race_id=880090', $db->table('cor_mgmt_mail_queue')));
+    $db->execute($db->prepare('DELETE FROM %i WHERE race_id=880090', $db->table('cor_mgmt_communication_history')));
+    foreach ([880042,880043] as $teamId) { $db->execute($db->prepare('DELETE FROM %i WHERE team_id=%d', $db->table('cor_mgmt_invitation_tokens'), $teamId)); }
     $db->execute($db->prepare('DELETE FROM %i WHERE team_id=880042', $db->table('h3_mgmt_teammates')));
     $db->execute($db->prepare('DELETE FROM %i WHERE team_id=880043', $db->table('h3_mgmt_teammates')));
     $db->execute($db->prepare('DELETE FROM %i WHERE id=880042 AND race_id=880090', $db->table('h3_mgmt_teams')));
@@ -88,6 +95,9 @@ if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/ticker.
 if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/ticker.css') {
     header('Content-Type: text/css; charset=UTF-8'); readfile(dirname(__DIR__) . '/css/cor-mgmt-ticker.css'); exit;
 }
+if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/teams.css') {
+    header('Content-Type: text/css; charset=UTF-8'); readfile(dirname(__DIR__) . '/css/h3-mgmt-teams.css'); exit;
+}
 $assetPath=parse_url($_SERVER['REQUEST_URI'] ?? '/',PHP_URL_PATH);
 $leafletAssets=['/assets/leaflet.js'=>'leaflet.js','/assets/leaflet.css'=>'leaflet.css','/assets/images/marker-icon.png'=>'images/marker-icon.png','/assets/images/marker-icon-2x.png'=>'images/marker-icon-2x.png','/assets/images/marker-shadow.png'=>'images/marker-shadow.png','/assets/images/layers.png'=>'images/layers.png','/assets/images/layers-2x.png'=>'images/layers-2x.png'];
 if (is_string($assetPath) && isset($leafletAssets[$assetPath])) {
@@ -126,6 +136,7 @@ elseif ($path === '/ticker-map') { echo '<h1>Event positions</h1><link rel="styl
 elseif ($path === '/ticker-admin' || $page === 'cor-mgmt-ticker') { $_GET['race']='880090'; \Cor\Mgmt\WordPress\TickerBoundary::page(); }
 elseif ($path === '/archives') { \Cor\Mgmt\WordPress\ArchiveBoundary::page(); }
 elseif ($path === '/event-page') {
+    echo '<link rel="stylesheet" href="/assets/teams.css">';
     $kind = is_string($_GET['kind'] ?? null) ? $_GET['kind'] : '';
     if (!in_array($kind, ['team', 'teams', 'results', 'ticker', 'map', 'donations'], true)) { http_response_code(404); exit; }
     echo '<h1>Event page preview</h1>' . do_shortcode(\Cor\Mgmt\WordPress\SitePages::content(880090, $kind));

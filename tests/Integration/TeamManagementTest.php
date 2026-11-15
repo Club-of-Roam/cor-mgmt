@@ -180,6 +180,138 @@ final class TeamManagementTest extends TestCase
         $this->rejected('stale_record',fn()=>$manager->save(2,$this->one,['description'=>'Old'],[],'',[],null,$revision));
         $this->rejected('not_permitted',fn()=>$manager->save(2,$this->two,['description'=>'Foreign'],[]));
     }
+    public function testFailedCreationShowsRequiredNamesAndPreservesDraftWithoutWriting(): void
+    {
+        global $wpdb;
+        update_user_meta($this->one, 'first_name', ''); update_user_meta($this->one, 'last_name', '');
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = ['submitted' => '1', 'cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-team-2'), 'team_name' => 'Synthetic draft <b>team</b>', 'description' => 'Keep my draft', 'donation_goal' => '0', 'first_name' => '', 'last_name' => '', 'city' => 'Unsaved city'];
+        $html = do_shortcode('[h3-team-dashboard race="2"]');
+        self::assertStringContainsString('cor-team-feedback--error', $html);
+        self::assertStringContainsString('role="alert"', $html);
+        self::assertStringContainsString('Enter your first and last name', $html);
+        self::assertStringContainsString('<code>required_names</code>', $html);
+        self::assertStringContainsString('value="Synthetic draft &lt;b&gt;team&lt;/b&gt;"', $html);
+        self::assertStringContainsString('Keep my draft', $html);
+        self::assertStringContainsString('value="Unsaved city"', $html);
+        $document = new \DOMDocument(); $document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($document);
+        self::assertSame(2, $xpath->query('//input[(@name="first_name" or @name="last_name") and @required and @aria-invalid="true"]')->length);
+        self::assertSame('0', $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}h3_mgmt_teams WHERE race_id=2"));
+        self::assertSame('', get_user_meta($this->one, 'city', true));
+        self::assertSame([], $GLOBALS['cor_test_mail']);
+        $_POST['first_name'] = 'Synthetic'; $_POST['last_name'] = 'Participant';
+        $html = TeamFrontend::dashboard(2);
+        self::assertStringContainsString('cor-team-feedback--success', $html);
+        self::assertStringContainsString('role="status"', $html);
+        self::assertStringContainsString('Changes saved.', $html);
+        self::assertStringNotContainsString('role="alert"', $html);
+        self::assertSame('1', $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}h3_mgmt_teams WHERE race_id=2"));
+    }
+    public function testInvalidProfileDateRetainsInputsAndUnknownErrorsDoNotLeakDetails(): void
+    {
+        $this->team(); $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = ['submitted' => '1', 'cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-team-2'), 'birthday' => '2026-02-30', 'description' => 'Keep failed edit'];
+        $html = TeamFrontend::dashboard(2);
+        self::assertStringContainsString('<code>invalid_birthday</code>', $html);
+        self::assertStringContainsString('value="2026-02-30" aria-invalid="true"', $html);
+        self::assertStringContainsString('Keep failed edit', $html);
+        $secret = new \RuntimeException('private SQL password and personal values');
+        self::assertSame('unexpected_error', TeamBoundary::errorCode($secret));
+        self::assertStringNotContainsString('private SQL', TeamBoundary::message($secret));
+        self::assertSame('unexpected_error', TeamBoundary::errorCode(new \Cor\Mgmt\Application\Migration\MigrationException('SELECT private_data FROM secret_table')));
+        self::assertSame('database_query_failed', TeamBoundary::errorCode(new \Cor\Mgmt\Application\Migration\MigrationException('database_query_failed')));
+        $template = new \Cor\Mgmt\Application\Communication\CommunicationException('active_event_template_required');
+        self::assertSame('active_event_template_required', TeamBoundary::errorCode($template));
+        self::assertStringContainsString('Confirmation messages are not configured', TeamBoundary::message($template));
+    }
+    public function testDashboardExplainsRequirementsAndSeparatesTeamInvitationAndPersonalForms(): void
+    {
+        global $wpdb;
+        $this->team(2, 40, $this->one, 0);
+        $settings = json_decode($this->repo->find('race', 2)['setting'], true);
+        $settings['num_teammember_min'] = 2; $settings['num_teammember'] = 3;
+        $settings['dis_fee'] = $settings['dis_waiver'] = $settings['dis_shirt_size'] = $settings['dis_mobile_inf'] = 0;
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => wp_json_encode($settings)], ['id' => 2]);
+        update_user_meta($this->one, 'shirt_size', '0'); update_user_meta($this->one, 'public_mobile_inf', '0');
+        $before = $this->repo->find('team', 40);
+        $html = do_shortcode('[h3-team-dashboard race="2"]');
+        self::assertStringContainsString('Team members: 1. Required: 2 to 3.', $html);
+        self::assertStringContainsString('Select your shirt size in your personal profile.', $html);
+        self::assertStringContainsString('Read the liability waiver', $html);
+        self::assertStringContainsString('No pending invitations.', $html);
+        $document = new \DOMDocument(); $document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING); $xpath = new \DOMXPath($document);
+        self::assertSame(0, $xpath->query('//form//form')->length);
+        self::assertSame(1, $xpath->query('//div[@class="cor-team-columns"]/div[@class="cor-team-settings"]//input[@name="team_name"]')->length);
+        self::assertSame(2, $xpath->query('//div[@class="cor-team-columns"]/section[@class="cor-team-requirements"]//ul[contains(@class,"homework-list")]')->length);
+        self::assertSame(0, $xpath->query('//div[@class="cor-team-columns"]//details[@id="cor-personal-profile"]')->length);
+        self::assertStringContainsString('to-do-done', $html);
+        self::assertStringContainsString('to-do-do', $html);
+        self::assertSame(1, substr_count(do_shortcode('[h3-team-dashboard-homework race="2"]'), 'Homework Assignments'));
+
+        self::assertSame(1, $xpath->query('//form[input[@name="todo" and @value="invite"]]//textarea[@name="invitations"]')->length);
+        self::assertSame(0, $xpath->query('//form[input[@name="todo" and @value="invite"]]//input[@name="first_name" or @name="team_name"]')->length);
+        self::assertSame(0, $xpath->query('//form[.//input[@name="team_name"]]//input[@name="first_name"]')->length);
+        self::assertSame(1, $xpath->query('//details[@id="cor-personal-profile" and not(@open)]//input[@name="first_name"]')->length);
+        self::assertLessThan(strpos($html, 'name="team_name"'), strpos($html, 'class="cor-team-invitations"'));
+        self::assertGreaterThan(strpos($html, 'name="team_name"'), strpos($html, 'id="cor-personal-profile"'));
+        self::assertSame($before, $this->repo->find('team', 40));
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = ['submitted' => '1', 'cor_profile_only' => '1', 'cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-team-2'), 'city' => 'Personal edit', 'team_name' => 'Do not overwrite team'];
+        $html = TeamFrontend::dashboard(2);
+        self::assertStringContainsString('Your profile has been saved.', $html);
+        self::assertSame('Personal edit', get_user_meta($this->one, 'city', true));
+        self::assertSame($before['team_name'], $this->repo->find('team', 40)['team_name']);
+    }
+    public function testHomeworkKeepsEventTextsOwnAndOtherTasksAndDisabledRules(): void
+    {
+        global $wpdb;
+        $this->team(2, 40, $this->one, 0);
+        $wpdb->insert($wpdb->prefix . 'h3_mgmt_teammates', ['id' => 300, 'team_id' => 40, 'user_id' => $this->two, 'paid' => 0, 'waiver' => 1]);
+        $settings = json_decode($this->repo->find('race', 2)['setting'], true);
+        $settings['dis_fee'] = 0;
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => wp_json_encode($settings), 'information_text' => wp_json_encode([
+            '28en' => '<strong>Own fee</strong><script>bad()</script>', '29en' => 'Other fees', '34en' => 'Disabled waiver',
+        ])], ['id' => 2]);
+        $before = $this->repo->find('team', 40);
+        $html = do_shortcode('[h3-team-dashboard race="2"]');
+        self::assertStringContainsString('to-do-done"><strong>Own fee</strong>', $html);
+        self::assertStringContainsString('to-do-do">Other fees', $html);
+        self::assertStringNotContainsString('<script>', $html);
+        self::assertStringNotContainsString('Disabled waiver', $html);
+        self::assertSame($before, $this->repo->find('team', 40));
+        $settings['status'] = 3;
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => wp_json_encode($settings)], ['id' => 2]);
+        $html = do_shortcode('[h3-team-dashboard race="2"]');
+        self::assertStringContainsString('Participation status was fixed at race start', $html);
+        self::assertStringNotContainsString('Own fee', $html);
+    }
+    public function testDedicatedInvitationsIgnoreProfileAndTeamEditsAndRemainIdempotentWhenFull(): void
+    {
+        global $wpdb;
+        $this->team(2, 40, $this->one, 0);
+        $settings = json_decode($this->repo->find('race', 2)['setting'], true); $settings['num_teammember'] = 1;
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => wp_json_encode($settings)], ['id' => 2]);
+        $before = $this->repo->find('team', 40); $profile = $this->repo->profile($this->one);
+        $revision = TeamBoundary::manager()->revision(2, 40);
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $input = ['todo' => 'invite', 'submitted' => '1', 'cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-team-2'), 'cor_team_revision' => $revision,
+            'invitations' => 'synthetic-invite@example.invalid', 'team_name' => 'Ignore this edit', 'city' => 'Ignore this edit', 'birthday' => 'invalid'];
+        $_POST = $input; $html = do_shortcode('[h3-team-dashboard race="2"]');
+        self::assertStringContainsString('Invitations created.', $html);
+        self::assertStringContainsString('synthetic-invite@example.invalid', $html);
+        self::assertSame($before, $this->repo->find('team', 40)); self::assertSame($profile, $this->repo->profile($this->one));
+        self::assertCount(1, $this->repo->related('token', 'team_id', '40')); self::assertSame([], $GLOBALS['cor_test_mail']);
+        $_POST = $input; self::assertStringContainsString('already have pending invitations', TeamFrontend::dashboard(2));
+        self::assertCount(1, $this->repo->related('token', 'team_id', '40'));
+        $_POST['cor_mgmt_nonce'] = 'invalid'; self::assertStringContainsString('<code>not_permitted</code>', TeamFrontend::dashboard(2));
+        $_POST = $input; $_POST['cor_team_revision'] = str_repeat('0', 64); self::assertStringContainsString('<code>stale_record</code>', TeamFrontend::dashboard(2));
+        $_POST = $input; $_POST['invitations'] = ''; self::assertStringContainsString('<code>invalid_email</code>', TeamFrontend::dashboard(2));
+        $_POST = $input; wp_set_current_user($this->two); $_POST['cor_mgmt_nonce'] = wp_create_nonce('cor-mgmt-team-2'); self::assertStringContainsString('<code>missing_team</code>', TeamFrontend::dashboard(2));
+        wp_set_current_user($this->one); $_POST = $input; $settings['status'] = 2; $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => wp_json_encode($settings)], ['id' => 2]);
+        self::assertStringContainsString('<code>phase_locked</code>', TeamFrontend::dashboard(2));
+        self::assertCount(1, $this->repo->related('token', 'team_id', '40'));
+    }
     public function testProfileBoundaryValidatesBeforeWritingAndParticipantFormUsesNativeControls(): void
     {
         $this->team();$_SERVER['REQUEST_METHOD']='POST';$_POST=['cor_mgmt_nonce'=>wp_create_nonce('cor-mgmt-team-2'),'birthday'=>'2026-02-30','city'=>'Do not save'];

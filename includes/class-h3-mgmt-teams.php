@@ -1493,42 +1493,11 @@ class H3_MGMT_Teams {
 	 * @access public
 	 * @see constructor
 	 */
-	public function team_dashboard_homework_control( $atts = '' ) {
-		extract( shortcode_atts( array(
-			'event' => 1,
-			'race' => 0
-		), $atts ) );
-		
-		global $current_user, $h3_mgmt_races, $wpdb, $information_text;
-		
-		$race_id = $race;
-		
-		if( $race == 'active'){
-			$race_id = $h3_mgmt_races->get_active_race();
-		}
-		
-		$information_text = $h3_mgmt_races->get_race_information_text( $race_id );
-		
-		$race_setting = $h3_mgmt_races->get_race_setting( $race_id );
-		//if registration still isn't open return error message
-		if( $race_setting['status'] == 0 ){
-			$output .= '<p class="message" style="text-align: center;">' .
-						stripcslashes( $information_text[22] ) .
-						'</p>';
-			$output .= '<br><br><br><br><br><br><br><br><br><br><br><br>';
-			return $output;	
-		}else{
-			$output .= 	'<div style=" width: 47%; float: left; ">';
-			$output .= do_shortcode( '[h3-team-dashboard race="' . $race_id . '"]' );
-			$output .= 	'</div>';
-			$output .=	'<div style=" width: 47%; float: right; ">';
-			$output .= do_shortcode( '[h3-team-homework race="' . $race_id . '"]' );
-	
-			return $output;
-		}
-		
-	}
-	
+    public function team_dashboard_homework_control($atts = '') {
+        // The native dashboard includes homework and keeps the legacy shortcode usable.
+        return $this->team_dashboard_control($atts);
+    }
+
 	/**
 	 * Team Dashboard controller,
 	 * wordpress shortcode

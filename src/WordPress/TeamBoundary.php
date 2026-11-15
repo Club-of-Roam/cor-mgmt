@@ -189,10 +189,32 @@ final class TeamBoundary
     {
         // Compatibility hook: TeamManager has already persisted notifications before commit.
     }
+    public static function errorCode(\Throwable $error): string
+    {
+        $code = $error instanceof ParticipationException || $error instanceof \Cor\Mgmt\Application\Communication\CommunicationException ? $error->reason
+            : ($error instanceof \Cor\Mgmt\Application\Migration\MigrationException ? $error->getMessage() : 'unexpected_error');
+        return preg_match('/^[a-z_]{1,64}$/D', $code) ? $code : 'unexpected_error';
+    }
     public static function message(\Throwable $error): string
     {
-        $reason = $error instanceof ParticipationException ? $error->reason : '';
+        $reason = self::errorCode($error);
         return match ($reason) {
+            'required_names' => __('Enter your first and last name under Your profile before creating or joining a team.', 'h3-mgmt'),
+            'invalid_team_name' => __('Enter a team name with 1 to 255 characters.', 'h3-mgmt'),
+            'invalid_donation_goal' => __('Enter the donation goal as a non-negative whole euro amount.', 'h3-mgmt'),
+            'invalid_email' => __('Check the invitation email addresses. Enter one valid address per line.', 'h3-mgmt'),
+            'missing_team' => __('Join or create a team for this event before inviting teammates.', 'h3-mgmt'),
+            'invalid_invitations', 'invitation_batch_too_large' => __('Enter at least one valid email address and no more than 100 addresses at a time.', 'h3-mgmt'),
+            'invalid_birthday' => __('Enter a valid date of birth that is not in the future.', 'h3-mgmt'),
+            'invalid_shirt' => __('Select a shirt size from the available options.', 'h3-mgmt'),
+            'invalid_mobile_choice' => __('Choose whether to share your details with the mobile partner.', 'h3-mgmt'),
+            'invalid_upload' => __('The team picture could not be accepted. Choose a supported image and try again.', 'h3-mgmt'),
+            'not_permitted' => __('Your session or permissions could not be verified. Reload the page and try again.', 'h3-mgmt'),
+            'database_query_failed' => __('The database rejected this change. Contact the event organizers with the error code; do not submit repeatedly.', 'h3-mgmt'),
+            'active_event_template_required' => __('Confirmation messages are not configured for this event. Contact the event organizers; your changes were not saved.', 'h3-mgmt'),
+            'mail_queue_setup_required', 'communication_setup_required' => __('Event communication requires setup. Contact the event organizers with the error code.', 'h3-mgmt'),
+            'archive_locked', 'archived' => __('This event is being archived or is already archived. Changes are not available.', 'h3-mgmt'),
+            'incomplete_team' => __('Your team must meet the participation requirements before choosing a route.', 'h3-mgmt'),
             'phase_locked' => __('This action is not available in the current race phase.', 'h3-mgmt'),
             'team_full' => __('This team has no free member places.', 'h3-mgmt'),
             'route_full' => __('This route has no free team places.', 'h3-mgmt'),
