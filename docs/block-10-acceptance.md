@@ -1,5 +1,8 @@
 # Block 10: Gesamtabnahme und Releasevorbereitung
 
+AB-T02, 2026-11-16: Widerruf mit Meldung „Invitation revoked.“ vom Benutzer bestätigt. „Pending invitations“ soll unverändert bleiben. Ergänzung UI-21: offene Einladung erneut über Resend invitation anfordern; verständliche Meldung „Invitation resend requested.“, weiterhin genau ein offener Eintrag. Wiederholter identischer POST darf keine zusätzliche Nachricht erzeugen. Code muss gültig bleiben, Annahme und Widerruf weiterhin funktionieren. Neuer Button und gesamter Resend-Ablauf noch gemeinsam nachprüfen; echter Mailversand bleibt separat abzunehmen.
+
+
 AB-T02, Benutzerrückmeldung 2026-11-16: Zweispaltige Ansicht gefällt; Einladungserstellung mit Erfolgsmeldung und Rückmeldung bei erneut eingegebener bereits offener Adresse bestätigt. Keine vollständige Annahme-/Widerrufs-/Versandabnahme. Technischen Erklärungstext aus Teilnehmeransicht entfernt und Anlegebestätigung auf „Invitations saved.“ gekürzt. Für „sent“ bleibt ein tatsächlicher Versandnachweis erforderlich.
 
 

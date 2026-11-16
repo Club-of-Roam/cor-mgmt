@@ -1,5 +1,8 @@
 # Arbeitsstatus und Übergabe
 
+Nachtrag 2026-11-16, UI-21 / AB-T02: Benutzer bestätigt Widerruf und behält die Überschrift Pending invitations bei. Verpflichtende Ergänzung Resend invitation bei jeder offenen Einladung implementiert. Authentifizierter eigener POST mit Nonce, Teamrevision und Anfrageschlüssel; nur eigene offene Einladungen in der offenen Anmeldung. Code und Mitgliedsplätze bleiben unverändert. Wiederholung derselben Anfrage ist idempotent, weitere Anfragen derselben Einladung innerhalb einer Minute werden verständlich abgewiesen. Bereits wartende Nachrichten werden wiederverwendet, sonst neue kontrollierte Versandanforderung. Teilnehmermeldung „Invitation resend requested.“ bestätigt keinen ausgeführten Versand. Gemeinsame Nachprüfung offen.
+
+
 Nachtrag 2026-11-16, AB-T02: Benutzer bestätigt die zweispaltige Dashboard-Anzeige, erfolgreiche Einladungserstellung und verständliche Rückmeldung bei erneuter Einladung derselben Adresse. Technischen Versandhinweis auf Wunsch aus dem Teilnehmerbereich entfernt; Erfolg heißt „Invitations saved.“, die bestätigte Rückmeldung zu bereits offenen Einladungen bleibt unverändert. Kein automatisches Aktivieren des Versands und keine unbestätigte Sent-Meldung. Widerruf, Annahme und tatsächlicher Versand bleiben gesondert abzunehmen.
 
 

@@ -76,7 +76,7 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [emails](../src/WordPress/TeamBoundary.php#L111) | `POST:invitations` |  |
 | [save](../src/WordPress/TeamBoundary.php#L136) | `FILES:team_pic`, `POST:route_id` |  |
 | [dashboard](../src/WordPress/TeamFrontend.php#L40) | `GET:invitation`, `POST:submitted`, `POST:todo` |  |
-| [render](../src/WordPress/TeamFrontend.php#L92) | `GET:invitation`, `POST:cor_profile_only`, `POST:invitation`, `POST:submitted`, `POST:todo` |  |
+| [render](../src/WordPress/TeamFrontend.php#L98) | `GET:invitation`, `POST:cor_profile_only`, `POST:invitation`, `POST:submitted`, `POST:todo` |  |
 | [serve](../src/WordPress/TeamPortal.php#L25) | `GET:race_id` |  |
 | [race](../src/WordPress/TickerBoundary.php#L86) | `GET:ticker_race` |  |
 | [form](../src/WordPress/TickerBoundary.php#L190) | `POST:message` |  |

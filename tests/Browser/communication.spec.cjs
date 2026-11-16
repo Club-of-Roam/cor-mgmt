@@ -107,6 +107,9 @@ test('team invitations and requirements precede a separately saved personal prof
   await invitations.getByRole('button', {name: 'Create invitations', exact: true}).click();
   await expect(page.getByRole('status')).toContainText('Invitations saved.');
   await expect(invitations).toContainText('browser-invitation@example.invalid');
+  await invitations.getByRole('button', {name: 'Resend invitation', exact: true}).click();
+  await expect(page.getByRole('status')).toContainText('Invitation resend requested.');
+  await expect(invitations.getByRole('button', {name: 'Resend invitation', exact: true})).toHaveCount(1);
   await expect(city).toHaveValue(originalCity);
   await expect(profile).not.toHaveAttribute('open');
   await axe(page);

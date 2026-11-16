@@ -31,6 +31,14 @@ final class TeamNotifications
             $team = $repo->find('team', (int) ($event['team'] ?? 0));
             $race = $repo->find('race', (int) ($team['race_id'] ?? 0));
             $action = $event['action'] ?? '';
+            if ($action === 'invitation-resend') {
+                $source = $this->resendSource((int) ($race['id'] ?? 0), $event);
+                if ($source['waiting']) {
+                    continue;
+                }
+                $event['code'] = $source['code'];
+                $action = 'invitation';
+            }
             if (!$race || !in_array($action, ['team-creation','invitation','joined','publishable'], true)) {
                 throw new CommunicationException('invalid_team_notification');
             }
@@ -78,5 +86,28 @@ final class TeamNotifications
                 $queue->enqueueWithinTransaction(new MailRequest((int) $race['id'], $occurrence, $mailAction, $recipient['user_email'] ?? '', $member['language'] ?: 'und', $values));
             }
         }
+    }
+    /**
+     * @param array<string,mixed> $event
+     * @return array{code:string,waiting:bool}
+     */
+    private function resendSource(int $race, array $event): array
+    {
+        $code = (string) ($event['code'] ?? '');
+        $hash = $code !== '' ? hash('sha256', $code) : (string) ($event['token_hash'] ?? '');
+        $rows = $this->db->rows($this->db->prepare("SELECT context,status FROM %i WHERE race_id=%d AND action='invitation' AND LOWER(recipient)=LOWER(%s) AND SHA2(JSON_UNQUOTE(JSON_EXTRACT(CONVERT(context USING utf8mb4),'$.code')),256)=%s ORDER BY id DESC", $this->db->table('cor_mgmt_mail_queue'), $race, (string) ($event['email'] ?? ''), $hash));
+        if ($code === '') {
+            $values = json_decode($rows[0]['context'] ?? '', true);
+            if (!is_array($values) || !is_string($values['code'] ?? null) || !preg_match('/^v2-[a-f0-9]{64}$/D', $values['code']) || !hash_equals($hash, hash('sha256', $values['code']))) {
+                throw new CommunicationException('invitation_resend_unavailable');
+            }
+            $code = $values['code'];
+        }
+        foreach ($rows as $row) {
+            if (in_array($row['status'], ['pending', 'blocked', 'sending'], true)) {
+                return ['code' => $code, 'waiting' => true];
+            }
+        }
+        return ['code' => $code, 'waiting' => false];
     }
 }

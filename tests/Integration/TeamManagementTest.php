@@ -286,6 +286,39 @@ final class TeamManagementTest extends TestCase
         self::assertStringContainsString('Participation status was fixed at race start', $html);
         self::assertStringNotContainsString('Own fee', $html);
     }
+    public function testResendInvitationFrontendRejectsForgeryAndKeepsFormsIndependent(): void
+    {
+        global $wpdb;
+        $this->team(2, 40, $this->one, 0);
+        $manager = TeamBoundary::manager();
+        $manager->inviteMembers(2, $this->one, ['resend@example.invalid'], $manager->revision(2, 40));
+        $original = $this->repo->related('token', 'team_id', '40');
+        $html = do_shortcode('[h3-team-dashboard race="2"]');
+        self::assertStringContainsString('Resend invitation', $html);
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $request = ['todo' => 'resend-invitation', 'invitation_email' => 'resend@example.invalid', 'invitation_request' => str_repeat('a', 32), 'cor_team_revision' => $manager->revision(2, 40), 'cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-team-2'), 'team_name' => 'Ignore resend edits'];
+        $_POST = $request;
+        self::assertStringContainsString('Invitation resend requested.', TeamFrontend::dashboard(2));
+        $_POST = $request;
+        self::assertStringContainsString('Invitation resend requested.', TeamFrontend::dashboard(2));
+        self::assertSame($original, $this->repo->related('token', 'team_id', '40'));
+        self::assertSame('Keep team', $this->repo->find('team', 40)['team_name']);
+        $_POST['cor_mgmt_nonce'] = 'invalid';
+        self::assertStringContainsString('<code>not_permitted</code>', TeamFrontend::dashboard(2));
+        $_POST = $request; $_POST['invitation_request'] = str_repeat('b', 32); $_POST['cor_team_revision'] = 'stale';
+        self::assertStringContainsString('<code>stale_record</code>', TeamFrontend::dashboard(2));
+        $_POST = $request; $_POST['invitation_email'] = 'foreign@example.invalid';
+        self::assertStringContainsString('<code>invalid_invitation</code>', TeamFrontend::dashboard(2));
+        wp_set_current_user($this->two); $_POST = $request; $_POST['cor_mgmt_nonce'] = wp_create_nonce('cor-mgmt-team-2');
+        self::assertStringContainsString('<code>invalid_invitation</code>', TeamFrontend::dashboard(2));
+        wp_set_current_user($this->one);
+        $settings = json_decode($this->repo->find('race', 2)['setting'], true); $settings['status'] = 2;
+        $wpdb->update($wpdb->prefix . 'h3_mgmt_races', ['setting' => wp_json_encode($settings)], ['id' => 2]);
+        $_POST = $request;
+        self::assertStringContainsString('<code>phase_locked</code>', TeamFrontend::dashboard(2));
+        $_POST = []; self::assertStringNotContainsString('Resend invitation', TeamFrontend::dashboard(2));
+        self::assertSame($original, $this->repo->related('token', 'team_id', '40'));
+    }
     public function testDedicatedInvitationsIgnoreProfileAndTeamEditsAndRemainIdempotentWhenFull(): void
     {
         global $wpdb;

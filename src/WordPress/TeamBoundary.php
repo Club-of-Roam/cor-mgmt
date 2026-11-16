@@ -218,6 +218,8 @@ final class TeamBoundary
             'phase_locked' => __('This action is not available in the current race phase.', 'h3-mgmt'),
             'team_full' => __('This team has no free member places.', 'h3-mgmt'),
             'route_full' => __('This route has no free team places.', 'h3-mgmt'),
+            'invitation_resend_too_soon' => __('Please wait a minute before resending this invitation again.', 'h3-mgmt'),
+            'invitation_resend_unavailable' => __('This invitation could not be resent. Contact the event organizers.', 'h3-mgmt'),
             'invalid_invitation' => __('This invitation is invalid, consumed or revoked.', 'h3-mgmt'),
             'stale_record' => __('The team or race changed. Reload before saving.', 'h3-mgmt'),
             'participation_setup_required', 'transactional_storage_required' => __('Participation requires database setup. Open Tools > cor-mgmt system status.', 'h3-mgmt'),

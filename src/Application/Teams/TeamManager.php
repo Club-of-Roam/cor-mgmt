@@ -458,6 +458,66 @@ final class TeamManager
             return ['team' => (int) $team['id'],'events' => $this->events];
         });
     }
+    /** @return array<string,mixed> */
+    public function resendInvitation(int $raceId, int $user, string $email, string $request, string $revision): array
+    {
+        return $this->atomic(function () use ($raceId, $user, $email, $request, $revision): array {
+            $race = $this->race($raceId);
+            $this->permit('invite', $race);
+            if (!$user || !($this->authorize)('self', $user) || !preg_match('/^[a-f0-9]{32}$/D', $request)) {
+                throw new ParticipationException('not_permitted');
+            }
+            $team = $this->owned($raceId, $user);
+            if (!$team || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                throw new ParticipationException('invalid_invitation');
+            }
+            if ($revision === '' || !hash_equals($this->revision($raceId, (int) $team['id']), $revision)) {
+                throw new ParticipationException('stale_record');
+            }
+            $invitation = $this->pendingCode((int) $team['id'], $email);
+            $recent = false;
+            foreach ($this->store->related('history', 'team_id', (string) $team['id']) as $entry) {
+                if ($entry['kind'] !== 'invitation_resend_request') {
+                    continue;
+                }
+                $payload = json_decode($entry['payload'] ?? '', true);
+                if (!is_array($payload)) {
+                    continue;
+                }
+                if (($payload['request'] ?? '') === bin2hex($request)) {
+                    if (($payload['token_hash'] ?? '') !== bin2hex($invitation['hash'])) {
+                        throw new ParticipationException('not_permitted');
+                    }
+                    return ['events' => []];
+                }
+                if (($payload['token_hash'] ?? '') === bin2hex($invitation['hash']) && (int) $entry['created_at'] > $this->clock->now() - 60) {
+                    $recent = true;
+                }
+            }
+            if ($recent) {
+                throw new ParticipationException('invitation_resend_too_soon');
+            }
+            $this->history('invitation_resend_request', ['request' => $request, 'token_hash' => $invitation['hash']], $raceId, (int) $team['id']);
+            return ['events' => [['action' => 'invitation-resend', 'team' => (int) $team['id'], 'user' => $user, 'email' => $email, 'token_hash' => $invitation['hash'], 'code' => $invitation['code']]]];
+        });
+    }
+    /** @return array{hash:string,code:string} */
+    private function pendingCode(int $team, string $email): array
+    {
+        foreach ($this->store->related('invitation', 'team_id', (string) $team) as $legacy) {
+            $hash = hash('sha256', 'legacy:' . $legacy['code']);
+            $markers = $this->store->related('token', 'token_hash', $hash);
+            if (strcasecmp((string) $legacy['email'], $email) === 0 && ($markers === [] || ($markers[0]['consumed_at'] === null && $markers[0]['revoked_at'] === null))) {
+                return ['hash' => $hash, 'code' => (string) $legacy['code']];
+            }
+        }
+        foreach ($this->store->related('token', 'team_id', (string) $team) as $token) {
+            if (strcasecmp((string) $token['email'], $email) === 0 && $token['consumed_at'] === null && $token['revoked_at'] === null) {
+                return ['hash' => (string) $token['token_hash'], 'code' => ''];
+            }
+        }
+        throw new ParticipationException('invalid_invitation');
+    }
     /** @return list<array{email:string,legacy:bool}> */
     public function pending(int $race, int $user): array
     {

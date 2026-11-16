@@ -81,6 +81,106 @@ final class CommunicationDeliveryTest extends TestCase
     {
         $this->templates();$this->create(951,['invitee@example.invalid']);$row=$this->rows()[1];$values=json_decode($row['context'],true);$manager=$this->manager();$this->mutate($manager,'enable');self::assertSame('sent',$this->mutate($manager,'send',(int)$row['id']));self::assertSame('invitee@example.invalid',$this->transport->calls[0][0]);wp_set_current_user($this->users['two']);TeamBoundary::manager()->save(951,$this->users['two'],[],['language'=>'de'],$values['code']);self::assertCount(6,$this->rows());self::assertSame('sent',$this->rows()[1]['status']);
     }
+    public function testInvitationResendRetainsCodeAndCoalescesPendingMessages(): void
+    {
+        $this->templates();
+        $result = $this->create(951, ['invitee@example.invalid']);
+        $team = $result['team'];
+        $member = $this->users['one'];
+        $service = TeamBoundary::manager();
+        $revision = $service->revision(951, $team);
+        $original = $this->rows()[1];
+        $values = json_decode($original['context'], true);
+        $service->resendInvitation(951, $member, 'invitee@example.invalid', str_repeat('a', 32), $revision);
+        $service->resendInvitation(951, $member, 'invitee@example.invalid', str_repeat('a', 32), $revision);
+        self::assertCount(2, $this->rows());
+        self::assertCount(1, $service->pending(951, $member));
+        try {
+            $service->resendInvitation(951, $member, 'invitee@example.invalid', str_repeat('b', 32), $revision);
+            self::fail('Expected cooldown');
+        } catch (\Cor\Mgmt\Application\Teams\ParticipationException $error) {
+            self::assertSame('invitation_resend_too_soon', $error->reason);
+        }
+        $queue = $this->manager();
+        $this->mutate($queue, 'enable');
+        self::assertSame('sent', $this->mutate($queue, 'send', (int) $original['id']));
+        $this->db->execute($this->db->prepare("UPDATE %i SET created_at=1 WHERE race_id=951 AND kind='invitation_resend_request'", $this->db->table('cor_mgmt_membership_history')));
+        $service->resendInvitation(951, $member, 'invitee@example.invalid', str_repeat('b', 32), $revision);
+        $service->resendInvitation(951, $member, 'invitee@example.invalid', str_repeat('b', 32), $revision);
+        self::assertCount(3, $this->rows());
+        $resent = $this->rows()[2];
+        self::assertSame('invitation', $resent['action']);
+        self::assertSame($values['code'], json_decode($resent['context'], true)['code']);
+        self::assertSame('sent', $this->mutate($queue, 'send', (int) $resent['id']));
+        self::assertCount(2, $this->transport->calls);
+        self::assertCount(1, $service->pending(951, $member));
+        self::assertSame((string) $team, $service->invitation($values['code'], 951)['team_id']);
+        $service->cancelInvitation(951, $member, 'invitee@example.invalid');
+        try {
+            $service->resendInvitation(951, $member, 'invitee@example.invalid', str_repeat('c', 32), $revision);
+            self::fail('Revoked invitation must not be resent');
+        } catch (\Cor\Mgmt\Application\Teams\ParticipationException $error) {
+            self::assertSame('invalid_invitation', $error->reason);
+        }
+        self::assertCount(3, $this->rows());
+    }
+    public function testResentInvitationCanBeAcceptedAndCannotBeResentAfterwards(): void
+    {
+        $this->templates();
+        $result = $this->create(951, ['invitee@example.invalid']);
+        $service = TeamBoundary::manager();
+        $revision = $service->revision(951, $result['team']);
+        $original = $this->rows()[1];
+        $code = json_decode($original['context'], true)['code'];
+        $queue = $this->manager(); $this->mutate($queue, 'enable');
+        self::assertSame('sent', $this->mutate($queue, 'send', (int) $original['id']));
+        $service->resendInvitation(951, $this->users['one'], 'invitee@example.invalid', str_repeat('a', 32), $revision);
+        wp_set_current_user($this->users['two']);
+        TeamBoundary::manager()->save(951, $this->users['two'], [], ['language' => 'de'], $code);
+        wp_set_current_user($this->users['one']);
+        $before = count($this->rows());
+        try {
+            $service->resendInvitation(951, $this->users['one'], 'invitee@example.invalid', str_repeat('b', 32), $service->revision(951, $result['team']));
+            self::fail('Consumed invitation must not be resent');
+        } catch (\Cor\Mgmt\Application\Teams\ParticipationException $error) {
+            self::assertSame('invalid_invitation', $error->reason);
+        }
+        self::assertSame($before, count($this->rows()));
+        self::assertSame([], $service->pending(951, $this->users['one']));
+    }
+    public function testResendAfterFailedDeliveryDoesNotBypassTransportGate(): void
+    {
+        $this->templates();
+        $result = $this->create(951, ['invitee@example.invalid']);
+        $original = $this->rows()[1];
+        $this->db->execute($this->db->prepare("UPDATE %i SET status='failed' WHERE id=%d", $this->db->table('cor_mgmt_mail_queue'), (int) $original['id']));
+        $service = TeamBoundary::manager();
+        $service->resendInvitation(951, $this->users['one'], 'invitee@example.invalid', str_repeat('a', 32), $service->revision(951, $result['team']));
+        $resent = $this->rows()[2];
+        self::assertSame('pending', $resent['status']);
+        $queue = $this->manager(false);
+        $this->rejected('mail_delivery_disabled', fn () => $this->mutate($queue, 'send', (int) $resent['id']));
+        self::assertSame([], $this->transport->calls);
+        self::assertCount(1, $service->pending(951, $this->users['one']));
+    }
+    public function testLegacyInvitationResendAndMissingNativeSourceAreControlled(): void
+    {
+        global $wpdb;
+        $this->templates();
+        $result = $this->create();
+        $team = $result['team'];
+        $wpdb->insert($this->db->table('h3_mgmt_invitations'), ['team_id' => $team, 'email' => 'legacy@example.invalid', 'code' => '123456789']);
+        $service = TeamBoundary::manager();
+        $revision = $service->revision(951, $team);
+        $service->resendInvitation(951, $this->users['one'], 'legacy@example.invalid', str_repeat('a', 32), $revision);
+        self::assertSame('123456789', json_decode($this->rows()[1]['context'], true)['code']);
+        self::assertSame((string) $team, $service->invitation('123456789', 951)['team_id']);
+        $this->db->execute($this->db->prepare('INSERT INTO %i (token_hash,team_id,email,created_at) VALUES (%s,%d,%s,1)', $this->db->table('cor_mgmt_invitation_tokens'), hash('sha256', 'v2-' . str_repeat('f', 64)), $team, 'missing@example.invalid'));
+        $history = $this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE race_id=951', $this->db->table('cor_mgmt_membership_history')));
+        $this->rejected('invitation_resend_unavailable', fn () => $service->resendInvitation(951, $this->users['one'], 'missing@example.invalid', str_repeat('b', 32), $revision));
+        self::assertSame($history, $this->db->scalar($this->db->prepare('SELECT COUNT(*) FROM %i WHERE race_id=951', $this->db->table('cor_mgmt_membership_history'))));
+        self::assertCount(2, $this->rows());
+    }
     public function testManagerSendsOnlyReviewedMessageAndRejectsReplay():void
     {
         $this->templates();$this->create(951,['invitee@example.invalid']);$manager=$this->manager();$this->mutate($manager,'enable');$revision=$manager->context(951,$this->users['admin'])['revision'];$id=(int)$this->rows()[0]['id'];self::assertSame('sent',$manager->mutate(951,$this->users['admin'],$revision,'send',$id));self::assertCount(1,$this->transport->calls);self::assertSame('pending',$this->rows()[1]['status']);self::assertStringContainsString('From: Tramprennen <no-reply@tramprennen.org>',$this->transport->calls[0][3]);$this->rejected('stale_mail_queue',fn()=>$manager->mutate(951,$this->users['admin'],$revision,'send',$id));self::assertCount(1,$this->transport->calls);

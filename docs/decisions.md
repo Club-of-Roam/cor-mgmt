@@ -1,5 +1,10 @@
 # Entscheidungen
 
+## Erneuter Einladungsversand im Team Dashboard (2026-11-16)
+
+Benutzer verlangt Resend invitation zusätzlich zum bestätigten Widerruf; Pending invitations bleibt bestehen. Resend erhält den vorhandenen Code und erzeugt keine zweite Einladung. Nur Teammitglieder mit gültiger eigener Sitzung dürfen während der offenen Anmeldung eine offene eigene Einladung erneut anfordern. Widerrufene und angenommene Einladungen bleiben ungültig. Idempotenter Anfrageschlüssel, Teamrevision und eine Minute Wartezeit pro Einladung schützen gegen Mehrfachklicks. Wartende oder gerade verarbeitete Nachrichten nicht duplizieren. Andernfalls erneute Nachricht mit aktuellem Eventtemplate über bestehenden kontrollierten Versandpfad vorbereiten. Native Codes nur aus der geschützten ursprünglichen Versandvorbereitung wiederverwenden; bei fehlender Quelle sicher abbrechen. Historische Codes aus dem erhaltenen Einladungsbestand unterstützen. Kein neuer Klartextspeicher für Codes, kein Versand bei GET und keine Umgehung der Versandfreigabe.
+
+
 ## Teilnehmermeldungen bei Einladungen (2026-11-16)
 
 Keine technischen Erklärungen zu Versandverarbeitung im Teilnehmerbereich. Erfolgreiches Anlegen wird knapp als „Invitations saved.“ bestätigt; vorhandene offene Einladungen behalten ihre verständliche eigene Meldung. „Sent“ darf nur auf nachgewiesenem Versand beruhen. Einladungserstellung allein und eine deaktivierte Versandfreigabe rechtfertigen keine Versandbestätigung; Zustellung ins Postfach wird auch durch Transportannahme nicht garantiert.
