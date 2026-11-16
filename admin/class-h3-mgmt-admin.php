@@ -146,14 +146,6 @@ if ( ! class_exists( 'H3_MGMT_Admin' ) ) :
 				'h3-mgmt-emails',
 				array( &$h3_mgmt_admin_emails, 'mail_form' )
 			);
-			add_submenu_page(
-				'h3-mgmt-emails',
-				__( 'Auto Responses', 'h3-mgmt' ),
-				__( 'Auto Responses', 'h3-mgmt' ),
-				'h3_mgmt_edit_autoresponses',
-				'h3-mgmt-emails-autoresponses',
-				array( &$h3_mgmt_admin_emails, 'autoresponses_edit' )
-			);
 
 			/* Statisticcs */
 			add_menu_page(
@@ -192,7 +184,8 @@ if ( ! class_exists( 'H3_MGMT_Admin' ) ) :
 		 * @access public
 		 */
 		public function __construct() {
-			add_action( 'admin_menu', array( &$this, 'display_admin_menu' ) );
+			// Parent menus must exist before native subpages register their WordPress hooks.
+			add_action( 'admin_menu', array( &$this, 'display_admin_menu' ), 5 );
 		}
 
 	} // class

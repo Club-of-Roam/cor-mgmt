@@ -62,6 +62,37 @@ final class EventManagementTest extends TestCase
         catch(EventException $error) { self::assertSame($reason,$error->reason); }
     }
     public static function phases(): array { return [[0],[1],[2],[3],[4]]; }
+    public function testCreationSeedsIndependentTemplatesAndUpdatesDoNotResetThem(): void
+    {
+        $result = $this->save('race', 0, ['name' => 'Synthetic default messages']);
+        $race = $result['id'];
+        $manager = \Cor\Mgmt\WordPress\CommunicationAdmin::manager();
+        self::assertCount(14, $manager->context($race, $this->admin)['templates']);
+        $manager->save($race, $this->admin, new \Cor\Mgmt\Domain\AutoResponseTemplate('invitation', 'en', false, 'Custom', 'Custom text'), $manager->context($race, $this->admin)['revision']);
+        $this->save('race', $race, ['name' => 'Renamed event']);
+        self::assertSame('Custom', $manager->resolve($race, 'invitation', 'en')->subject);
+        self::assertFalse($manager->resolve($race, 'invitation', 'en')->enabled);
+        self::assertNull($manager->resolve(1, 'invitation', 'en'));
+        self::assertSame([], $GLOBALS['cor_test_mail']);
+    }
+    public function testTemplateFailureRollsBackEventCreation(): void
+    {
+        $filter = static function (string $sql): string {
+            if (str_starts_with($sql, 'INSERT INTO') && str_contains($sql, 'cor_mgmt_communication_history') && str_contains($sql, 'plugin-defaults-v1')) { throw new \RuntimeException('seed_failure'); }
+            return $sql;
+        };
+        global $wpdb;
+        $before = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_response_templates");
+        add_filter('query', $filter);
+        try {
+            try { $this->save('race', 0, ['name' => 'Synthetic rolled back messages']); self::fail('Expected failure'); }
+            catch (\RuntimeException $error) { self::assertSame('seed_failure', $error->getMessage()); }
+        } finally { remove_filter('query', $filter); }
+        global $wpdb;
+        self::assertSame('0', $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}h3_mgmt_races WHERE name='Synthetic rolled back messages'"));
+        self::assertSame($before, $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cor_mgmt_response_templates"));
+        self::assertSame([], $GLOBALS['cor_test_mail']);
+    }
     public function testNewRaceCanBeSavedFromTheCompleteRenderedForm(): void
     {
         require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin-races.php';

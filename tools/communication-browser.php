@@ -34,6 +34,9 @@ if (!$server) {
         $wpdb->insert($db->table('h3_mgmt_routes'), ['id'=>880008,'race_id'=>880090,'name'=>'Synthetic route B','color_code'=>'005a9c']);
         $wpdb->insert($db->table('h3_mgmt_teams'), ['id'=>880043,'race_id'=>880090,'route_id'=>880008,'complete'=>1,'team_name'=>'Other synthetic ticker team']);
         $wpdb->insert($db->table('h3_mgmt_teammates'), ['team_id'=>880043,'user_id'=>$ids['other'],'paid'=>1,'waiver'=>1]);
+        if ($db->scalar($db->prepare('SELECT id FROM %i WHERE id=880091', $db->table('h3_mgmt_races'))) !== null) { throw new RuntimeException('Response browser source is already in use.'); }
+        $wpdb->insert($db->table('h3_mgmt_races'), ['id'=>880091,'name'=>'Synthetic template source','setting'=>'{"status":1}']);
+        $wpdb->insert($db->table('cor_mgmt_response_templates'), ['race_id'=>880091,'action'=>'invitation','language'=>'en','enabled'=>1,'subject'=>'Copied invitation for %event_name%','message'=>"Join %team_name%:\n%link%",'revision'=>1,'updated_at'=>1]);
         echo json_encode($ids, JSON_THROW_ON_ERROR);
         exit;
     }
@@ -48,7 +51,10 @@ if (!$server) {
         $db->execute($db->prepare('DELETE FROM %i WHERE message_id=%d', $db->table('cor_mgmt_mail_history'), (int)$message['id']));
     }
     $db->execute($db->prepare('DELETE FROM %i WHERE race_id=880090', $db->table('cor_mgmt_mail_queue')));
-    $db->execute($db->prepare('DELETE FROM %i WHERE race_id=880090', $db->table('cor_mgmt_communication_history')));
+    foreach (['cor_mgmt_response_templates','cor_mgmt_communication_history'] as $suffix) {
+        $db->execute($db->prepare('DELETE FROM %i WHERE race_id IN (880090,880091)', $db->table($suffix)));
+    }
+    $db->execute($db->prepare('DELETE FROM %i WHERE id=880091', $db->table('h3_mgmt_races')));
     foreach ([880042,880043] as $teamId) { $db->execute($db->prepare('DELETE FROM %i WHERE team_id=%d', $db->table('cor_mgmt_invitation_tokens'), $teamId)); }
     $db->execute($db->prepare('DELETE FROM %i WHERE team_id=880042', $db->table('h3_mgmt_teammates')));
     $db->execute($db->prepare('DELETE FROM %i WHERE team_id=880043', $db->table('h3_mgmt_teammates')));
@@ -134,6 +140,7 @@ if ($path === '/board') { echo \Cor\Mgmt\WordPress\ExchangeBoundary::shortcode()
 elseif ($path === '/ticker') { echo '<h1>Web ticker</h1>' . \Cor\Mgmt\WordPress\TickerBoundary::form(['race'=>880090]) . \Cor\Mgmt\WordPress\TickerBoundary::feed(['race'=>880090]); }
 elseif ($path === '/ticker-map') { echo '<h1>Event positions</h1><link rel="stylesheet" href="/assets/leaflet.css"><style>.cor-ticker-map{height:500px}</style>' . \Cor\Mgmt\WordPress\TickerBoundary::feed(['race'=>880090,'max'=>100],true); }
 elseif ($path === '/ticker-admin' || $page === 'cor-mgmt-ticker') { $_GET['race']='880090'; \Cor\Mgmt\WordPress\TickerBoundary::page(); }
+elseif ($path === '/responses' || $page === 'cor-mgmt-responses') { \Cor\Mgmt\WordPress\CommunicationAdmin::page(); }
 elseif ($path === '/archives') { \Cor\Mgmt\WordPress\ArchiveBoundary::page(); }
 elseif ($path === '/event-page') {
     echo '<link rel="stylesheet" href="/assets/teams.css">';

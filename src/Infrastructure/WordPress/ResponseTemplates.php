@@ -108,6 +108,45 @@ final class ResponseTemplates
             return ['status' => 'saved'];
         });
     }
+    /** Seed in the caller's event-creation transaction; no DDL or mail dispatch.
+     * @return array<string,string>
+     */
+    public function seedDefaultsWithinTransaction(int $race, int $actor): array
+    {
+        $this->db->assertLock();
+        if ($this->db->scalar('SELECT @@in_transaction') !== '1') {
+            throw new CommunicationException('transaction_required');
+        }
+        $context = $this->writable($race, $actor);
+        foreach (CommunicationSchema::definitions() as $suffix => $definition) {
+            (new Inspector($this->db))->verify($this->db->table($suffix), $definition);
+        }
+        $existing = [];
+        foreach ($context['templates'] as $row) {
+            $existing[$row['action'] . ':' . $row['language']] = true;
+        }
+        $created = [];
+        foreach (\Cor\Mgmt\Domain\AutoResponseDefaults::all() as $template) {
+            if (!isset($existing[$template->action . ':' . $template->language])) {
+                $this->put($race, $template, 1, false);
+                $created[] = [$template->action, $template->language];
+            }
+        }
+        if ($created) {
+            $this->journal($race, $actor, 'templates_copied', ['source' => 'plugin-defaults-v1', 'created' => $created]);
+        }
+        return ['created' => (string) count($created)];
+    }
+    /** @return array<string,string> */
+    public function addDefaults(int $race, int $actor, string $revision): array
+    {
+        return $this->atomic(function () use ($race, $actor, $revision): array {
+            if (!hash_equals($this->writable($race, $actor)['revision'], $revision)) {
+                throw new CommunicationException('stale_templates');
+            }
+            return $this->seedDefaultsWithinTransaction($race, $actor);
+        });
+    }
     private function put(int $race, AutoResponseTemplate $template, int $revision, bool $exists): void
     {
         $this->db->assertLock();
@@ -118,7 +157,7 @@ final class ResponseTemplates
         }
     }
     /** @return array{fingerprint:string,rows:list<array{action:string,language:string,status:string,enabled:bool,subject:string,message:string}>,issues:list<string>} */
-    public function previewTransfer(int $target, int $source, int $actor): array
+    public function previewTransfer(int $target, int $source, int $actor, bool $replace = false): array
     {
         $context = $this->writable($target, $actor);
         if ($source === $target || $source < 0) {
@@ -140,7 +179,7 @@ final class ResponseTemplates
         }
         $existing = [];
         foreach ($context['templates'] as $row) {
-            $existing[($row['action'] ?? '') . ':' . ($row['language'] ?? '')] = true;
+            $existing[($row['action'] ?? '') . ':' . ($row['language'] ?? '')] = $row;
         }
         $rows = [];
         $issues = [];
@@ -157,18 +196,18 @@ final class ResponseTemplates
                 if ($counts[$key] !== 1) {
                     throw new CommunicationException('duplicate_source_template');
                 }
-                $rows[] = ['action' => $action, 'language' => $template->language, 'status' => isset($existing[$key]) ? 'keep_existing' : 'create', 'enabled' => $template->enabled, 'subject' => $template->subject, 'message' => $template->message];
+                $rows[] = ['action' => $action, 'language' => $template->language, 'status' => isset($existing[$key]) ? ($replace ? 'replace' : 'keep_existing') : 'create', 'enabled' => $template->enabled, 'subject' => $template->subject, 'message' => $template->message];
             } catch (CommunicationException $error) {
                 $issues[] = $action . ':' . $language . ':' . $error->reason;
             }
         }
-        return ['fingerprint' => hash('sha256', json_encode([$target,$source,$context['revision'],$sourceRevision,$originals], JSON_THROW_ON_ERROR)), 'rows' => $rows, 'issues' => $issues];
+        return ['fingerprint' => hash('sha256', json_encode([$target,$source,$replace,$context['revision'],$sourceRevision,$originals], JSON_THROW_ON_ERROR)), 'rows' => $rows, 'issues' => $issues];
     }
     /** @return array<string,string> */
-    public function transfer(int $target, int $source, int $actor, string $fingerprint): array
+    public function transfer(int $target, int $source, int $actor, string $fingerprint, bool $replace = false): array
     {
-        return $this->atomic(function () use ($target, $source, $actor, $fingerprint): array {
-            $preview = $this->previewTransfer($target, $source, $actor);
+        return $this->atomic(function () use ($target, $source, $actor, $fingerprint, $replace): array {
+            $preview = $this->previewTransfer($target, $source, $actor, $replace);
             if (!hash_equals($preview['fingerprint'], $fingerprint)) {
                 throw new CommunicationException('stale_transfer');
             }
@@ -176,16 +215,31 @@ final class ResponseTemplates
                 throw new CommunicationException('source_review_required');
             }
             $created = [];
+            $replaced = [];
+            $old = [];
+            foreach ($this->context($target, $actor)['templates'] as $row) {
+                $old[$row['action'] . ':' . $row['language']] = $row;
+            }
             foreach ($preview['rows'] as $row) {
                 if ($row['status'] === 'create') {
                     $this->put($target, new AutoResponseTemplate($row['action'], $row['language'], $row['enabled'], $row['subject'], $row['message']), 1, false);
                     $created[] = $row;
+                } elseif ($row['status'] === 'replace') {
+                    $before = $old[$row['action'] . ':' . $row['language']];
+                    if ($before['enabled'] === (string) (int) $row['enabled'] && $before['subject'] === $row['subject'] && $before['message'] === $row['message']) {
+                        continue;
+                    }
+                    if ((int) $before['revision'] >= PHP_INT_MAX) {
+                        throw new CommunicationException('revision_exhausted');
+                    }
+                    $this->put($target, new AutoResponseTemplate($row['action'], $row['language'], $row['enabled'], $row['subject'], $row['message']), (int) $before['revision'] + 1, true);
+                    $replaced[] = ['old' => $before, 'new' => $row];
                 }
             }
-            if ($created) {
-                $this->journal($target, $actor, 'templates_copied', ['source' => $source, 'fingerprint' => $fingerprint, 'created' => $created]);
+            if ($created || $replaced) {
+                $this->journal($target, $actor, 'templates_copied', ['source' => $source, 'fingerprint' => $fingerprint, 'created' => $created, 'replaced' => $replaced]);
             }
-            return ['created' => (string) count($created)];
+            return ['created' => (string) count($created), 'replaced' => (string) count($replaced)];
         });
     }
     /** @param array<string,mixed> $payload */

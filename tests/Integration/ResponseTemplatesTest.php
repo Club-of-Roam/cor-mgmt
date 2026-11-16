@@ -40,6 +40,86 @@ final class ResponseTemplatesTest extends TestCase
     {
         self::assertSame(1,$GLOBALS['wpdb']->insert($this->db->table('h3_mgmt_auto_responses'),$values+['action'=>'team-creation','language'=>'en','switch'=>1,'subject'=>'Old %team_name%','message'=>'Hello %name%']));
     }
+    public function testDefaultsFillMissingTemplatesOnlyAndRequireCurrentRevisionAndRights(): void
+    {
+        $this->save(301, 'Keep custom text', false);
+        $revision = $this->templates->context(301, 42)['revision'];
+        $this->rejected('forbidden', fn () => $this->templates->addDefaults(301, 99, $revision));
+        self::assertSame('13', $this->templates->addDefaults(301, 42, $revision)['created']);
+        $this->rejected('stale_templates', fn () => $this->templates->addDefaults(301, 42, $revision));
+        self::assertSame('Keep custom text', $this->templates->resolve(301, 'team-creation', 'en')->subject);
+        self::assertFalse($this->templates->resolve(301, 'team-creation', 'en')->enabled);
+        self::assertStringContainsString('%link%', $this->templates->resolve(301, 'invitation', 'de')->message);
+        self::assertCount(14, $this->templates->context(301, 42)['templates']);
+        $before = $this->templates->context(301, 42);
+        self::assertSame('0', $this->templates->addDefaults(301, 42, $before['revision'])['created']);
+        self::assertSame($before, $this->templates->context(301, 42));
+        self::assertSame([], $this->templates->context(302, 42)['templates']);
+        $GLOBALS['wpdb']->update($this->db->table('h3_mgmt_races'), ['setting' => '{"status":4}'], ['id' => 301]);
+        $this->rejected('archive_locked', fn () => $this->templates->addDefaults(301, 42, $before['revision']));
+    }
+    public function testEventCopyReplacesOnlyAfterPreviewAndKeepsSourceAndUnmatchedTemplates(): void
+    {
+        $this->save(301, 'Source text', false);
+        $this->templates->addDefaults(302, 42, $this->templates->context(302, 42)['revision']);
+        $source = $this->templates->context(301, 42);
+        $safe = $this->templates->previewTransfer(302, 301, 42);
+        self::assertSame('keep_existing', $safe['rows'][0]['status']);
+        self::assertSame('0', $this->templates->transfer(302, 301, 42, $safe['fingerprint'])['replaced']);
+        $this->rejected('stale_transfer', fn () => $this->templates->transfer(302, 301, 42, $safe['fingerprint'], true));
+        $preview = $this->templates->previewTransfer(302, 301, 42, true);
+        self::assertSame('replace', $preview['rows'][0]['status']);
+        self::assertSame('1', $this->templates->transfer(302, 301, 42, $preview['fingerprint'], true)['replaced']);
+        self::assertSame('Source text', $this->templates->resolve(302, 'team-creation', 'en')->subject);
+        self::assertFalse($this->templates->resolve(302, 'team-creation', 'en')->enabled);
+        self::assertCount(14, $this->templates->context(302, 42)['templates']);
+        self::assertSame($source, $this->templates->context(301, 42));
+        $row = $this->db->rows($this->db->prepare('SELECT payload FROM %i WHERE race_id=302 ORDER BY id DESC LIMIT 1', $this->db->table('cor_mgmt_communication_history')))[0];
+        $payload = json_decode($row['payload'], true);
+        self::assertNotSame('Source text', $payload['replaced'][0]['old']['subject']);
+        self::assertSame('Source text', $payload['replaced'][0]['new']['subject']);
+        $again = $this->templates->previewTransfer(302, 301, 42, true);
+        $before = $this->templates->context(302, 42);
+        self::assertSame('0', $this->templates->transfer(302, 301, 42, $again['fingerprint'], true)['replaced']);
+        self::assertSame($before, $this->templates->context(302, 42));
+    }
+    public function testReplacementJournalFailureRestoresOriginalTemplates(): void
+    {
+        $this->save(301, 'Source');
+        $this->save(302, 'Original target');
+        $preview = $this->templates->previewTransfer(302, 301, 42, true);
+        $before = $this->templates->context(302, 42);
+        $filter = function (string $sql): string {
+            if (str_starts_with($sql, 'INSERT INTO `' . $this->db->table('cor_mgmt_communication_history') . '`')) { throw new \RuntimeException('injected_failure'); }
+            return $sql;
+        };
+        add_filter('query', $filter);
+        try {
+            try { $this->templates->transfer(302, 301, 42, $preview['fingerprint'], true); self::fail('Expected failure'); }
+            catch (\RuntimeException $error) { self::assertSame('injected_failure', $error->getMessage()); }
+        } finally { remove_filter('query', $filter); }
+        self::assertSame($before, $this->templates->context(302, 42));
+    }
+    public function testLanguageSelectorRetainsExistingVariantsAndGlobalSourcesAreNotOffered(): void
+    {
+        $this->save(301, 'Variante', true, 'de-DE');
+        $admin = wp_insert_user(['user_login' => 'synthetic_languages_admin', 'user_email' => 'languages@example.invalid', 'user_pass' => 'synthetic', 'role' => 'administrator']);
+        wp_set_current_user($admin);
+        $_GET = ['race_id' => '301', 'language' => 'de_de'];
+        ob_start();
+        try { CommunicationAdmin::page(); $html = ob_get_contents(); } finally { ob_end_clean(); }
+        $document = new \DOMDocument();
+        $document->loadHTML('<meta charset="utf-8">' . $html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($document);
+        self::assertSame(1, $xpath->query('//select[@name="language"]/option[@value="de"]')->length);
+        self::assertSame(1, $xpath->query('//select[@name="language"]/option[@value="en"]')->length);
+        self::assertSame(1, $xpath->query('//select[@name="language"]/option[@value="de_de" and @selected]')->length);
+        self::assertSame(0, $xpath->query('//input[@name="language" and not(@type="hidden")]')->length);
+        self::assertSame(0, $xpath->query('//select[@name="source_id"]/option[@value="0"]')->length);
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = ['cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-responses'), 'race_id' => '301', 'response_operation' => 'transfer', 'source_id' => '0'];
+        $this->rejected('invalid_source', fn () => CommunicationAdmin::submit());
+    }
     public function testEventsHaveIndependentTemplatesAndSwitchesDespiteActiveRaceChanges():void
     {
         $this->save(301,'Event A');$this->save(302,'Event B',false);$GLOBALS['wpdb']->update($this->db->table('h3_mgmt_races'),['active'=>0],['id'=>301]);$GLOBALS['wpdb']->update($this->db->table('h3_mgmt_races'),['active'=>1],['id'=>302]);

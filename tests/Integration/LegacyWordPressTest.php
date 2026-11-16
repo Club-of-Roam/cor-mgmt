@@ -283,10 +283,98 @@ final class LegacyWordPressTest extends TestCase
             self::assertSame('h3_mgmt_view_teams', $bySlug['h3-mgmt-teams']);
             self::assertSame('h3_mgmt_send_emails', $bySlug['h3-mgmt-emails']);
             self::assertSame('h3-mgmt-view-statistics', $bySlug['h3-mgmt-statistics']);
-            self::assertSame('h3_mgmt_edit_autoresponses', $submenu['h3-mgmt-emails'][1][1]);
+            self::assertNotContains('h3-mgmt-emails-autoresponses', array_column($submenu['h3-mgmt-emails'], 2));
         } finally {
             $menu = $savedMenu;
             $submenu = $savedSubmenu;
+        }
+    }
+
+    public function testNativeSubmenusRenderRegisteredAdminRoutesAfterParents(): void
+    {
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        foreach (['', '-emails', '-races', '-sponsors', '-teams', '-statistics'] as $suffix) {
+            require_once dirname(__DIR__, 2) . '/admin/class-h3-mgmt-admin' . $suffix . '.php';
+        }
+        $keys = ['menu', 'submenu', 'admin_page_hooks', '_parent_pages', '_registered_pages', '_wp_real_parent_file', '_wp_menu_nopriv', '_wp_submenu_nopriv', 'parent_file', 'submenu_file', 'plugin_page', 'pagenow', 'self', 'typenow', 'h3_mgmt_admin_emails', 'h3_mgmt_admin_races', 'h3_mgmt_admin_sponsors', 'h3_mgmt_admin_teams', 'h3_mgmt_admin_statistics'];
+        $saved = [];
+        foreach ($keys as $key) {
+            $saved[$key] = [array_key_exists($key, $GLOBALS), $GLOBALS[$key] ?? null];
+            $GLOBALS[$key] = in_array($key, ['parent_file', 'submenu_file', 'plugin_page', 'pagenow', 'self', 'typenow'], true) ? '' : [];
+        }
+        $filters = [];
+        foreach ($GLOBALS['wp_filter'] as $key => $hook) {
+            $filters[$key] = clone $hook;
+        }
+        $oldSelf = $_SERVER['PHP_SELF'] ?? null;
+        $actions = $GLOBALS['wp_actions'];
+        wp_set_current_user($this->user('synthetic_menu_routes', 'administrator'));
+        try {
+            $_SERVER['PHP_SELF'] = '/wp-admin/admin.php';
+            $GLOBALS['pagenow'] = $GLOBALS['self'] = 'admin.php';
+            $GLOBALS['h3_mgmt_admin_emails'] = new \H3_MGMT_Admin_Emails();
+            $GLOBALS['h3_mgmt_admin_races'] = new \H3_MGMT_Admin_Races();
+            $GLOBALS['h3_mgmt_admin_sponsors'] = new \H3_MGMT_Admin_Sponsors();
+            $GLOBALS['h3_mgmt_admin_teams'] = new \H3_MGMT_Admin_Teams();
+            $GLOBALS['h3_mgmt_admin_statistics'] = new \H3_MGMT_Admin_Statistics();
+            new \H3_MGMT_Admin();
+            do_action('admin_menu');
+            $pages = [
+                'cor-mgmt-mail-queue' => 'h3-mgmt-emails',
+                'cor-mgmt-responses' => 'h3-mgmt-emails',
+                'cor-mgmt-communication-report' => 'h3-mgmt-emails',
+                'cor-mgmt-donations' => 'h3-mgmt-sponsors-betterplace',
+            ];
+            self::assertNotContains('h3-mgmt-emails-autoresponses', array_column($GLOBALS['submenu']['h3-mgmt-emails'], 2));
+            foreach ($pages as $slug => $parent) {
+                $hook = get_plugin_page_hook($slug, $parent);
+                self::assertNotNull($hook, 'Missing page callback for ' . $slug);
+                self::assertArrayHasKey($hook, $GLOBALS['_registered_pages']);
+            }
+            ob_start();
+            try {
+                if (!function_exists('_wp_menu_output')) {
+                    require ABSPATH . 'wp-admin/menu-header.php';
+                } else {
+                    _wp_menu_output($GLOBALS['menu'], $GLOBALS['submenu']);
+                }
+                $html = (string) ob_get_contents();
+            } finally {
+                ob_end_clean();
+            }
+            $document = new \DOMDocument();
+            $document->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+            $xpath = new \DOMXPath($document);
+            foreach ($pages as $slug => $parent) {
+                self::assertGreaterThan(0, $xpath->query('//a[@href="admin.php?page=' . $slug . '"]')->length, 'Wrong menu URL for ' . $slug);
+            }
+            foreach (['cor-mgmt-mail-queue' => 'Event mail queue', 'cor-mgmt-responses' => 'Event autoresponses', 'cor-mgmt-communication-report' => 'Communication storage report'] as $slug => $title) {
+                $_GET = ['page' => $slug];
+                ob_start();
+                try {
+                    do_action(get_plugin_page_hook($slug, 'h3-mgmt-emails'));
+                    $page = (string) ob_get_contents();
+                } finally {
+                    ob_end_clean();
+                }
+                self::assertStringContainsString('<h1>' . $title . '</h1>', $page);
+            }
+
+        } finally {
+            $GLOBALS['wp_filter'] = $filters;
+            $GLOBALS['wp_actions'] = $actions;
+            foreach ($saved as $key => [$exists, $value]) {
+                if ($exists) {
+                    $GLOBALS[$key] = $value;
+                } else {
+                    unset($GLOBALS[$key]);
+                }
+            }
+            if ($oldSelf === null) {
+                unset($_SERVER['PHP_SELF']);
+            } else {
+                $_SERVER['PHP_SELF'] = $oldSelf;
+            }
         }
     }
 

@@ -1,5 +1,10 @@
 # Block 10: Gesamtabnahme und Releasevorbereitung
 
+UI-24/UI-25, 2026-11-16: Prüfen: kein globaler Auto-Responses-Menüpunkt; neues Event mit 14 DE/EN-Teilnahmevorlagen, Dropdown mit ausgeschriebenen Sprachen. Beim bestehenden Abnahmeevent fehlende Defaults ausdrücklich ergänzen und Einladungsvorschau prüfen. Eigene Texte dürfen beim Ergänzen erhalten bleiben. Übernahme aus anderem Event zunächst als Vorschau; ohne Ersetzen keine vorhandenen Texte ändern, mit bestätigtem Ersetzen nur passende Schlüssel ersetzen. Quelle, Archive und erzeugte Mail-Snapshots unverändert lassen. Gemeinsame Abnahme offen; tatsächlicher Versand weiterhin gesondert.
+
+AB-T02-B02, 2026-11-16: Backend-Menü erzeugte falsche Mail-Links statt admin.php?page=… . Durch Registrierung der Elternmenüs vor Unterseiten korrigiert; betrifft Event mail queue, Event autoresponses und Storage report. Falsch zugeordnete Donation-profiles-Unterseite zusätzlich unter Donors eingeordnet. Regression mit echtem WordPress-Menü und registrierten Seitenaufrufen ergänzt. Gemeinsame Nachprüfung am 2026-11-16 bestanden: Benutzer bestätigt alle drei Mail-Unterseiten direkt über das Backend-Menü. AB-T02-B02 geschlossen. Donation profiles ist automatisiert geprüft, nicht zusätzlich manuell bestätigt. Nächster Schritt: Einladungsvorschau; Annahme und tatsächliche Zustellung bleiben offen.
+
+
 UI-23, 2026-11-16: Zusätzlichen unteren Absatzabstand der Hinweisbox auf das Theme zurückgeführt und gezielt im Plugin aufgehoben. Gemeinsam mit UI-22 prüfen: kompakte Erfolgsmeldung sowie Resend/Revoke nebeneinander; bei schmaler Ansicht geordnet umbrechen.
 
 

@@ -1,5 +1,19 @@
 # Block 8 – Erstes Teilpaket: eventbezogene Vorlagen
 
+## Eventvorlagen und Standardnachrichten – 2026-11-16
+
+Aktueller Vertrag aus Block 10 (D-55): Der globale Auto-Responses-Menüeintrag entfällt. Globale Originaldaten und interne Bestandsleseverfahren bleiben erhalten, werden im neuen Editor aber weder angeboten noch per Formular übernommen. Eventvorlagen sind der einzige aktive Konfigurationsweg.
+
+Neue Events erhalten innerhalb derselben Transaktion 14 unabhängige Klartextvorlagen: sieben Aktionen jeweils auf Deutsch und Englisch. Abgedeckt sind Teamgründung, Einladung, beide Beitrittsbestätigungen, erfüllte Teilnahmevoraussetzungen sowie Gebühr-/Haftungsverzichtbestätigung. Für die letzten beiden legt die Vorlage allein keinen zusätzlichen Auslöser an. Historische Spenden-/PayPal-/Lastschriftverfahren erhalten keine automatisch aktivierten Standards. Texte enthalten ausschließlich allgemeine Event-/Teamplatzhalter, keine festen Veranstaltungsjahre, Domains oder Zahlungsversprechen. Einladungen enthalten den Annahmelink und erläutern die Bindung an offene Anmeldung und freie Mitgliedsplätze. Eine Einladung reserviert keinen Platz.
+
+Bestehende Events ändern sich nicht beim Öffnen oder Speichern ihrer Einstellungen. „Add missing default templates“ ergänzt ausschließlich fehlende Schlüssel nach Rechte-/Nonce-/Revisionsprüfung. Eigene Texte und deaktivierte Vorlagen bleiben erhalten. Fehlgeschlagene Einrichtung rollt die Eventgründung zurück; keine Schemamigration im Seitenaufruf.
+
+Die Sprachwahl erfolgt per Dropdown mit Deutsch und English sowie vorhandenen Sprachvarianten und installierten WordPress-Sprachpaketen. Speicherschlüssel bleiben unverändert; es gibt keine automatische Übersetzung oder Sprachfallback. Für weitere ausgewählte Sprachen müssen passende Texte hinterlegt werden.
+
+Kopien aus anderen Events besitzen eine Vorschau. Standardmäßig bleiben bestehende Schlüssel erhalten. „Replace matching templates after preview“ erlaubt ausdrücklich die Ersetzung der in der Quelle vorhandenen Aktions-/Sprachpaare; andere Zielvorlagen und die Quelle bleiben unverändert. Der Fingerabdruck bindet auch den Ersetzungsmodus und beide Revisionen. Bestätigung erfolgt per geschütztem POST; Vorher-/Nachherwerte werden protokolliert. Identische Wiederholung erzeugt keine neue Revision. Archive bleiben schreibgeschützt. Bereits erzeugte Mail-Snapshots werden weder überschrieben noch automatisch nachbereitet. Speichern, Ergänzen und Kopieren versendet keine Mail; bestehende Transportfreigaben bleiben maßgeblich.
+
+Prüfbelege und offene gemeinsame Sichtprüfung: [verification.md](verification.md). Die früheren Abschnitte unten dokumentieren den damaligen Ausbaustand; der hier beschriebene Vertrag ersetzt deren globale Kopieroberfläche und das ausschließliche Nichtüberschreiben.
+
 Aktueller Nachtrag: [Rundmails, Börse und technische Abnahme](block-8-completion.md) ersetzen die unten dokumentierten früheren offenen Folgearbeiten. Fachliche, Anbieter- und Aufbewahrungsfreigaben bleiben gesondert offen.
 
 Aktueller Nachtrag 2026-11-08: [Teamauslöser und Queueverwaltung](block-8-delivery.md) sind inzwischen angebunden; Eventvorlagen steuern diese Nachrichten. Die weiter unten beschriebene Grenze ohne Versandwirkung bezeichnet den früheren Abschluss dieses Vorlagen-Teilpakets.

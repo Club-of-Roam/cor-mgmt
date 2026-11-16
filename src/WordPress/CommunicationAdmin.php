@@ -57,8 +57,15 @@ final class CommunicationAdmin
             $template = new AutoResponseTemplate(TeamBoundary::value('template_action'), TeamBoundary::value('language'), isset($_POST['enabled']), TeamBoundary::value('subject'), TeamBoundary::value('message'));
             return self::manager()->save($race, $actor, $template, TeamBoundary::value('revision'));
         }
+        if ($action === 'defaults') {
+            return self::manager()->addDefaults($race, $actor, TeamBoundary::value('revision'));
+        }
         if ($action === 'transfer') {
-            return self::manager()->transfer($race, TeamBoundary::number(TeamBoundary::value('source_id', '0')), $actor, TeamBoundary::value('fingerprint'));
+            $source = TeamBoundary::number(TeamBoundary::value('source_id', '0'));
+            if ($source < 1) {
+                throw new CommunicationException('invalid_source');
+            }
+            return self::manager()->transfer($race, $source, $actor, TeamBoundary::value('fingerprint'), TeamBoundary::value('replace_existing') === '1');
         }
         throw new CommunicationException('invalid_operation');
     }
@@ -116,7 +123,7 @@ final class CommunicationAdmin
         foreach (AutoResponseTemplate::ACTIONS as $choice) {
             echo '<option value="' . esc_attr($choice) . '"' . selected($choice, $action, false) . '>' . esc_html(self::label($choice)) . '</option>';
         }
-        echo '</select></label> <label>' . esc_html__('Language', 'h3-mgmt') . ' <input name="language" maxlength="16" value="' . esc_attr($language) . '" required></label> <button class="button" type="submit">' . esc_html__('Open template', 'h3-mgmt') . '</button></form>';
+        echo '</select></label> <label>' . esc_html__('Language', 'h3-mgmt') . ' ' . self::languageSelect($language, $context['templates']) . '</label> <button class="button" type="submit">' . esc_html__('Open template', 'h3-mgmt') . '</button></form>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- languageSelect returns a select with individually escaped options.
         $template = self::manager()->resolve($race, $action, $language);
         echo '<form method="post">' . self::fields($race) . '<input type="hidden" name="revision" value="' . esc_attr($context['revision']) . '"><input type="hidden" name="response_operation" value="save"><input type="hidden" name="template_action" value="' . esc_attr($action) . '"><input type="hidden" name="language" value="' . esc_attr($language) . '"><fieldset' . ($context['writable'] ? '' : ' disabled') . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped native nonce and fields.
         echo '<p><label><input type="checkbox" name="enabled"' . checked($template->enabled ?? false, true, false) . '>' . esc_html__('Enable for this event', 'h3-mgmt') . '</label></p><p><label>' . esc_html__('Subject', 'h3-mgmt') . '<br><input class="large-text" name="subject" value="' . esc_attr($template->subject ?? '') . '"></label></p><p><label>' . esc_html__('Message', 'h3-mgmt') . '<br><textarea class="large-text" name="message" rows="12">' . esc_textarea($template->message ?? '') . '</textarea></label></p><p>' . esc_html__('Available placeholders', 'h3-mgmt') . ': ' . esc_html(implode(', ', array_map(static fn (string $key): string => '%' . $key . '%', AutoResponseTemplate::FIELDS))) . '</p><button class="button button-primary" type="submit">' . esc_html__('Save event template', 'h3-mgmt') . '</button></fieldset></form>';
@@ -127,6 +134,7 @@ final class CommunicationAdmin
         }
         echo '</ul>';
         if ($context['writable']) {
+            echo '<form method="post">' . self::fields($race) . '<input type="hidden" name="revision" value="' . esc_attr($context['revision']) . '"><p>' . esc_html__('New events start with German and English participation messages. Add missing defaults here without changing existing templates. No email is sent.', 'h3-mgmt') . '</p><button class="button" name="response_operation" value="defaults" type="submit">' . esc_html__('Add missing default templates', 'h3-mgmt') . '</button></form>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped native nonce and fields.
             self::copyPreview($race, $db);
         }
         echo '<h3>' . esc_html__('Recent configuration changes', 'h3-mgmt') . '</h3><ul>';
@@ -135,26 +143,49 @@ final class CommunicationAdmin
         }
         echo '</ul>';
     }
+    /** @param list<array<string,string|null>> $templates */
+    private static function languageSelect(string $selected, array $templates): string
+    {
+        $languages = ['en' => 'English', 'de' => 'Deutsch'];
+        foreach (array_merge([$selected], array_column($templates, 'language'), get_available_languages()) as $language) {
+            if (!is_string($language)) {
+                continue;
+            }
+            $language = AutoResponseTemplate::language($language);
+            $languages[$language] ??= match (strtok($language, '_')) {
+                'de' => 'Deutsch', 'en' => 'English', 'fr' => 'Français', 'es' => 'Español',
+                'it' => 'Italiano', 'nl' => 'Nederlands', 'pl' => 'Polski', default => $language,
+            } . ' (' . $language . ')';
+        }
+        $html = '<select name="language">';
+        foreach ($languages as $code => $name) {
+            $html .= '<option value="' . esc_attr($code) . '"' . selected($selected, $code, false) . '>' . esc_html($name) . '</option>';
+        }
+        return $html . '</select>';
+    }
     private static function copyPreview(int $race, Database $db): void
     {
-        echo '<h3>' . esc_html__('Copy templates without overwriting', 'h3-mgmt') . '</h3><form method="get"><input type="hidden" name="page" value="cor-mgmt-responses"><input type="hidden" name="race_id" value="' . esc_attr((string) $race) . '"><label>' . esc_html__('Source', 'h3-mgmt') . ' <select name="source_id">';
-        if (current_user_can('manage_options')) {
-            echo '<option value="0">' . esc_html__('Existing global templates', 'h3-mgmt') . '</option>';
-        }
+        echo '<h3>' . esc_html__('Copy templates from another event', 'h3-mgmt') . '</h3><form method="get"><input type="hidden" name="page" value="cor-mgmt-responses"><input type="hidden" name="race_id" value="' . esc_attr((string) $race) . '"><label>' . esc_html__('Source', 'h3-mgmt') . ' <select name="source_id">';
+        $replace = ($_GET['replace_existing'] ?? '') === '1';
+        $selectedSource = \H3_MGMT_Security::id($_GET['source_id'] ?? 0);
+        echo '<option value="">' . esc_html__('Choose an event', 'h3-mgmt') . '</option>';
         foreach ($db->rows($db->prepare('SELECT id,name FROM %i WHERE id<>%d ORDER BY id DESC', $db->table('h3_mgmt_races'), $race)) as $source) {
             if (\H3_MGMT_Security::can_object('races', 'view', (int) $source['id'])) {
-                echo '<option value="' . esc_attr($source['id'] ?? '') . '">' . esc_html(($source['name'] ?? '') . ' (#' . ($source['id'] ?? '') . ')') . '</option>';
+                echo '<option value="' . esc_attr($source['id'] ?? '') . '"' . selected((int) $source['id'], $selectedSource, false) . '>' . esc_html(($source['name'] ?? '') . ' (#' . ($source['id'] ?? '') . ')') . '</option>';
             }
         }
-        echo '</select></label> <button class="button" type="submit">' . esc_html__('Preview copy', 'h3-mgmt') . '</button></form>';
+        echo '</select></label> <label><input type="checkbox" name="replace_existing" value="1"' . checked($replace, true, false) . '>' . esc_html__('Replace matching templates after preview', 'h3-mgmt') . '</label> <button class="button" type="submit">' . esc_html__('Preview copy', 'h3-mgmt') . '</button></form>';
         if (!isset($_GET['source_id']) || !is_string($_GET['source_id'])) {
             return;
         }
-        $source = TeamBoundary::number($_GET['source_id']);
-        $preview = self::manager()->previewTransfer($race, $source, get_current_user_id());
+        $source = \H3_MGMT_Security::id($_GET['source_id']);
+        if ($source < 1) {
+            return;
+        }
+        $preview = self::manager()->previewTransfer($race, $source, get_current_user_id(), $replace);
         echo '<table class="widefat striped"><thead><tr><th>' . esc_html__('Action / language', 'h3-mgmt') . '</th><th>' . esc_html__('Result', 'h3-mgmt') . '</th><th>' . esc_html__('Subject and message', 'h3-mgmt') . '</th></tr></thead><tbody>';
         foreach ($preview['rows'] as $row) {
-            echo '<tr><td>' . esc_html(self::label($row['action']) . ' / ' . $row['language']) . '</td><td>' . esc_html($row['status'] === 'create' ? __('Create independent copy', 'h3-mgmt') : __('Keep existing event template', 'h3-mgmt')) . '</td><td><strong>' . esc_html($row['subject']) . '</strong><pre>' . esc_html($row['message']) . '</pre></td></tr>';
+            echo '<tr><td>' . esc_html(self::label($row['action']) . ' / ' . $row['language']) . '</td><td>' . esc_html($row['status'] === 'create' ? __('Create independent copy', 'h3-mgmt') : ($row['status'] === 'replace' ? __('Replace existing event template', 'h3-mgmt') : __('Keep existing event template', 'h3-mgmt'))) . '</td><td><strong>' . esc_html($row['subject']) . '</strong><pre>' . esc_html($row['message']) . '</pre></td></tr>';
         }
         echo '</tbody></table>';
         if ($preview['issues']) {
@@ -164,7 +195,7 @@ final class CommunicationAdmin
             }
             echo '</ul>';
         } elseif ($preview['rows']) {
-            echo '<form method="post">' . self::fields($race) . '<input type="hidden" name="source_id" value="' . esc_attr((string) $source) . '"><input type="hidden" name="fingerprint" value="' . esc_attr($preview['fingerprint']) . '"><button name="response_operation" value="transfer" class="button" type="submit">' . esc_html__('Copy missing templates to this event', 'h3-mgmt') . '</button></form>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped native nonce and fields.
+            echo '<form method="post">' . self::fields($race) . '<input type="hidden" name="replace_existing" value="' . esc_attr($replace ? '1' : '0') . '"><input type="hidden" name="source_id" value="' . esc_attr((string) $source) . '"><input type="hidden" name="fingerprint" value="' . esc_attr($preview['fingerprint']) . '"><button name="response_operation" value="transfer" class="button" type="submit">' . esc_html($replace ? __('Confirm replacement and copy', 'h3-mgmt') : __('Copy missing templates to this event', 'h3-mgmt')) . '</button></form>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped native nonce and fields.
         }
     }
 }

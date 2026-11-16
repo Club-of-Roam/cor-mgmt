@@ -60,6 +60,37 @@ for (const actor of ['guest', 'member']) {
   });
 }
 
+test('event responses offer language selection, defaults and reviewed replacement copies', async ({ page, context }) => {
+  await identity(context, 'admin');
+  await page.goto(base + '/responses?race_id=880090');
+  await page.getByRole('button', {name: 'Add missing default templates', exact: true}).click();
+  await expect(page.getByText('Configuration saved. No email was sent.', {exact: true})).toBeVisible();
+  await page.locator('select[name="template_action"]').selectOption('invitation');
+  await page.locator('select[name="language"]').selectOption({label: 'Deutsch'});
+  await page.getByRole('button', {name: 'Open template', exact: true}).click();
+  await expect(page.getByRole('textbox', {name: 'Message', exact: true})).toContainText('%inviter% lädt dich');
+  await expect(page.locator('select[name="language"]')).toHaveValue('de');
+  await page.locator('select[name="language"]').selectOption({label: 'English'});
+  await page.getByRole('button', {name: 'Open template', exact: true}).click();
+  await page.getByRole('textbox', {name: 'Subject', exact: true}).fill('Custom invitation');
+  await page.getByRole('button', {name: 'Save event template', exact: true}).click();
+  await page.locator('select[name="source_id"]').selectOption('880091');
+  await page.getByRole('button', {name: 'Preview copy', exact: true}).click();
+  await expect(page.getByRole('cell', {name: 'Keep existing event template', exact: true})).toBeVisible();
+  await page.getByRole('button', {name: 'Copy missing templates to this event', exact: true}).click();
+  await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en');
+  await expect(page.getByRole('textbox', {name: 'Subject', exact: true})).toHaveValue('Custom invitation');
+  await page.locator('select[name="source_id"]').selectOption('880091');
+  await page.getByRole('checkbox', {name: 'Replace matching templates after preview', exact: true}).check();
+  await page.getByRole('button', {name: 'Preview copy', exact: true}).click();
+  await expect(page.getByRole('cell', {name: 'Replace existing event template', exact: true})).toBeVisible();
+  await page.getByRole('button', {name: 'Confirm replacement and copy', exact: true}).click();
+  await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en');
+  await expect(page.getByRole('textbox', {name: 'Subject', exact: true})).toHaveValue('Copied invitation for %event_name%');
+  await expect(page.locator('select[name="source_id"] option[value="0"]')).toHaveCount(0);
+  await axe(page);
+});
+
 test('dashboard save errors are visible, specific and retain the draft', async ({ page, context }) => {
   await identity(context, 'member');
   await page.goto(base + '/event-page?kind=team');

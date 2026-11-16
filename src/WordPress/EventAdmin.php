@@ -23,7 +23,11 @@ final class EventAdmin
             new LegacyEventStore($db),
             static fn (string $type, string $action, int $id): bool => \H3_MGMT_Security::can_object($type . 's', $action, $id),
             $account,
-            static fn (int $race): array => TeamBoundary::manager($participation)->reconcileRace($race)
+            static fn (int $race): array => TeamBoundary::manager($participation)->reconcileRace($race),
+            static function (int $race) use ($db): void {
+                (new \Cor\Mgmt\Infrastructure\WordPress\ResponseTemplates($db, Services::get()->clock, static fn (): bool => true))
+                    ->seedDefaultsWithinTransaction($race, get_current_user_id());
+            }
         );
     }
     /** @return array<string,mixed> */

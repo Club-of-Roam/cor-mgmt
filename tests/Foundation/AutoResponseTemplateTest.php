@@ -10,6 +10,25 @@ use PHPUnit\Framework\TestCase;
 
 final class AutoResponseTemplateTest extends TestCase
 {
+    public function testDefaultsAreBilingualRenderableAndDoNotEnableHistoricalPayments(): void
+    {
+        $templates = \Cor\Mgmt\Domain\AutoResponseDefaults::all();
+        self::assertCount(14, $templates);
+        $keys = [];
+        foreach ($templates as $template) {
+            $keys[] = $template->action . ':' . $template->language;
+            self::assertTrue($template->enabled);
+            self::assertContains($template->language, ['de', 'en']);
+            self::assertDoesNotMatchRegularExpression('/paypal|debit|sponsor|owner/', $template->action);
+            $values = array_fill_keys(AutoResponseTemplate::FIELDS, 'Synthetic');
+            $values['link'] = 'https://example.invalid/invitation';
+            $rendered = $template->render($values);
+            self::assertStringContainsString($values['link'], $rendered['message']);
+            self::assertStringNotContainsString('%', $rendered['message']);
+            self::assertStringContainsString("\n", $rendered['message']);
+        }
+        self::assertCount(14, array_unique($keys));
+    }
     public function testLanguageAliasesHaveOneCanonicalKey():void
     {
         $a=new AutoResponseTemplate('invitation','de-DE',true,'Invitation','Body');$b=new AutoResponseTemplate('invitation','de_de',true,'Invitation','Body');self::assertSame('de_de_formal',AutoResponseTemplate::language('de_DE_formal'));self::assertSame('de_de',$a->language);self::assertSame($a->language,$b->language);

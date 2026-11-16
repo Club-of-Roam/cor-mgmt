@@ -48,14 +48,14 @@ Generiert mit `python tools/build-inventory.py`. Literale GET/POST/FILES/COOKIE/
 | [compose](../src/WordPress/BroadcastAdmin.php#L144) | `GET:email`, `POST:mode` |  |
 | [page](../src/WordPress/BroadcastAdmin.php#L201) | `GET:campaign_id`, `GET:campaign_page`, `GET:recipient_page` |  |
 | [submit](../src/WordPress/CommunicationAdmin.php#L48) | `POST:enabled` |  |
-| [page](../src/WordPress/CommunicationAdmin.php#L65) | `GET:race_id` |  |
-| [event](../src/WordPress/CommunicationAdmin.php#L109) | `GET:language`, `GET:template_action` |  |
-| [copyPreview](../src/WordPress/CommunicationAdmin.php#L138) | `GET:source_id` |  |
+| [page](../src/WordPress/CommunicationAdmin.php#L72) | `GET:race_id` |  |
+| [event](../src/WordPress/CommunicationAdmin.php#L116) | `GET:language`, `GET:template_action` |  |
+| [copyPreview](../src/WordPress/CommunicationAdmin.php#L166) | `GET:replace_existing`, `GET:source_id` |  |
 | [submit](../src/WordPress/DonationAdmin.php#L29) | `POST:donation_ids`, `POST:remove_image`, `POST:revisions`, `POST:visible` |  |
 | [page](../src/WordPress/DonationAdmin.php#L68) | `GET:donation_id` |  |
 | [listing](../src/WordPress/DonationAdmin.php#L131) | `GET:after` |  |
 | [render](../src/WordPress/DonationFrontend.php#L24) | `COOKIE:client_token`, `FILES:owner_pic`, `GET:id`, `GET:type`, `POST:new`, `POST:submitted` |  |
-| [mutate](../src/WordPress/EventAdmin.php#L30) | `GET:bulk` |  |
+| [mutate](../src/WordPress/EventAdmin.php#L34) | `GET:bulk` |  |
 | [render](../src/WordPress/EventList.php#L30) | `GET:country_filter`, `GET:event_page`, `GET:number_filter`, `GET:order`, `GET:orderby`, `GET:race_filter`, `GET:route_filter` |  |
 | [result](../src/WordPress/ExchangeBoundary.php#L40) | `POST:submitted` |  |
 | [shortcode](../src/WordPress/ExchangeBoundary.php#L52) | `GET:exchange_page` |  |

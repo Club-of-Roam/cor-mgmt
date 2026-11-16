@@ -50,6 +50,22 @@ final class CommunicationDeliveryTest extends TestCase
         $runtime=Services::get();return new MailQueueManagement($this->db,$runtime->clock,$runtime->random,$this->transport,fn(int $race,int $actor,string $operation):bool=>$actor===$this->users['admin']&&$race===951,fn():bool=>$delivery);
     }
     private function mutate(MailQueueManagement $manager,string $operation,int $id=0):string{return $manager->mutate(951,$this->users['admin'],$manager->context(951,$this->users['admin'])['revision'],$operation,$id);}
+    public function testPluginDefaultsProduceAnInvitationPreviewWithoutSendingMail(): void
+    {
+        $templates = new \Cor\Mgmt\Infrastructure\WordPress\ResponseTemplates($this->db, Services::get()->clock, static fn (): bool => true);
+        $templates->addDefaults(951, $this->users['admin'], $templates->context(951, $this->users['admin'])['revision']);
+        $this->create(951, ['invitee@example.invalid']);
+        $row = $this->rows()[1];
+        $values = json_decode($row['context'], true);
+        self::assertSame('pending', $row['status']);
+        self::assertSame('en', $row['language']);
+        self::assertStringContainsString('Alpha invites you', $row['message']);
+        self::assertStringContainsString($values['link'], $row['message']);
+        self::assertStringContainsString('invitation=', $values['link']);
+        self::assertStringNotContainsString('%', $row['message']);
+        self::assertSame([], $this->transport->calls);
+        self::assertSame([], $GLOBALS['cor_test_mail']);
+    }
     public function testCompleteTeamWorkflowSnapshotsEachRecipientLanguageAndEventLink():void
     {
         $this->templates();$result=$this->create(951,['invitee@example.invalid']);self::assertCount(2,$this->rows());$invitation=$this->rows()[1];$values=json_decode($invitation['context'],true);self::assertSame('Alpha',$values['inviter']);self::assertSame('Alpha',$values['name']);self::assertStringContainsString('race_id=951',$values['link']);self::assertStringContainsString('action=cor_mgmt_team',$values['link']);self::assertStringNotContainsString('tramprennen.org',$values['link']);

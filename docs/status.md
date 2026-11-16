@@ -1,5 +1,10 @@
 # Arbeitsstatus und Übergabe
 
+UI-24/UI-25, 2026-11-16: Globale Auto-Responses-Menüseite entfernt; neue Events erhalten unabhängige deutsche/englische Standardnachrichten. Bestehende Events ergänzen fehlende Vorlagen nur ausdrücklich. Eventkopien mit Vorschau und optional bestätigtem Ersetzen; Sprachdropdown statt Kürzeleingabe. Composer check, 352 isolierte Tests mit 792 Assertions und 133 gezielte Integrationstests mit 1110 Assertions jeweils auf PHP 8.2/8.3/8.4/8.5 bestanden. Sprachwahl/Standardergänzung/Eventkopie einschließlich axe auf PHP 8.2/8.5 im Browser bestanden; bestehender Dashboard-/Einladungsfall auf PHP 8.5 ebenfalls erfolgreich. Gemeinsame Sichtprüfung und Einladungsvorschau/Annahme bleiben offen. Vertrag: [Eventvorlagen](block-8-templates.md).
+
+AB-T02-B02, 2026-11-16: Benutzer öffnet Event mail queue über das Backend-Menü und erreicht eine falsche Adresse; weitere Mail-Einträge ebenfalls betroffen. Ursache durch echte WordPress-Menüregistrierung reproduziert: neue Unterseiten wurden vor dem übergeordneten Legacy-Menü registriert. Parent-Menüs nun mit admin_menu-Priorität 5 vor Unterseiten registrieren. Zusätzlich verwaisten Menübezug von Donation profiles auf das tatsächliche Donors-Hauptmenü korrigiert. Regression prüft aufgelöste Callbacks, registrierte Seiten, echte von WordPress erzeugte Links und Aufruf der drei neuen Mail-Seiten über ihre Hooks. Gemeinsame Nachprüfung am 2026-11-16 bestanden: Benutzer bestätigt, dass Event mail queue, Event autoresponses und Storage report direkt über das Backend-Menü öffnen. AB-T02-B02 damit geschlossen. Einladungsvorschau, Annahme und tatsächliche Zustellung bleiben gesondert offen.
+
+
 Nachtrag UI-22/UI-23, 2026-11-16: Buttons nebeneinander und Theme-Padding innerhalb der Hinweisboxen korrigiert; Prüfbelege in verification.md. Benutzer bestätigt vorhandenes zweites Konto für die Annahmeprüfung. Nächster Schritt: Event mail queue für die Abnahmeveranstaltung öffnen und Einladungsvorschau prüfen; Link anschließend mit dem zweiten Konto verwenden.
 
 

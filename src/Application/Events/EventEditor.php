@@ -15,8 +15,9 @@ final class EventEditor
      * @param Closure(string,string,int):bool $authorize
      * @param null|Closure():int $provisionAccount
      * @param null|Closure(int):array<string,mixed> $reconcileParticipation
+     * @param null|Closure(int):void $initializeTemplates
      */
-    public function __construct(private readonly EventStore $store, private readonly Closure $authorize, private readonly ?Closure $provisionAccount = null, private readonly ?Closure $reconcileParticipation = null)
+    public function __construct(private readonly EventStore $store, private readonly Closure $authorize, private readonly ?Closure $provisionAccount = null, private readonly ?Closure $reconcileParticipation = null, private readonly ?Closure $initializeTemplates = null)
     {
     }
     /**
@@ -203,6 +204,9 @@ final class EventEditor
                 }
             }
             $saved = $this->store->write($type, $old, $write);
+            if ($type === 'race' && !$id && $this->initializeTemplates !== null) {
+                ($this->initializeTemplates)($saved);
+            }
             $participation = [];
             if (
                 $type === 'race' && $id && $this->reconcileParticipation !== null
@@ -211,7 +215,7 @@ final class EventEditor
                 $participation = ($this->reconcileParticipation)($saved);
             }
             return ['id' => $saved, 'warnings' => $warnings, 'confirmation_required' => false] + $participation;
-        }, ($type === 'race' && (($input['active'] ?? '') === '1' || isset($input['startingpoint']) || isset($input['start_route_id']) || ($this->reconcileParticipation !== null && array_intersect_key($input, array_flip(['status','num_teammember','num_teammember_min','dis_fee','dis_waiver','dis_shirt_size','dis_mobile_inf'])) !== [])))
+        }, ($type === 'race' && !$id && $this->initializeTemplates !== null) || ($type === 'race' && (($input['active'] ?? '') === '1' || isset($input['startingpoint']) || isset($input['start_route_id']) || ($this->reconcileParticipation !== null && array_intersect_key($input, array_flip(['status','num_teammember','num_teammember_min','dis_fee','dis_waiver','dis_shirt_size','dis_mobile_inf'])) !== [])))
             || ($type === 'route' && (isset($input['max_teams']) || $this->provisionAccount !== null)));
     }
     /**

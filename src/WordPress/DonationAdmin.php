@@ -17,7 +17,7 @@ final class DonationAdmin
     {
         add_action('admin_menu', static function (): void {
             $capability = current_user_can('h3_mgmt_view_sponsors') ? 'h3_mgmt_view_sponsors' : 'h3_mgmt_view_own_sponsors';
-            add_submenu_page('h3-mgmt-sponsors', __('Donation profiles and pending reviews', 'h3-mgmt'), __('Profiles and pending reviews', 'h3-mgmt'), $capability, 'cor-mgmt-donations', [self::class, 'page']);
+            add_submenu_page('h3-mgmt-sponsors-betterplace', __('Donation profiles and pending reviews', 'h3-mgmt'), __('Profiles and pending reviews', 'h3-mgmt'), $capability, 'cor-mgmt-donations', [self::class, 'page']);
         });
     }
     public static function manager(): DonationAdministration
