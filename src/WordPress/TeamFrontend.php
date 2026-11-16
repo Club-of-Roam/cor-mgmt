@@ -298,12 +298,12 @@ final class TeamFrontend
             foreach ($pending as $invitation) {
                 echo '<li>' . esc_html($invitation['email']);
                 if ($phase === RacePhase::RegistrationOpen) {
-                    echo '<form method="post">';
+                    echo '<div class="cor-invitation-actions"><form method="post">';
                     wp_nonce_field('cor-mgmt-team-' . $race, 'cor_mgmt_nonce', false);
                     echo '<input type="hidden" name="todo" value="resend-invitation"><input type="hidden" name="invitation_email" value="' . esc_attr($invitation['email']) . '"><input type="hidden" name="invitation_request" value="' . esc_attr(bin2hex(Services::get()->random->bytes(16))) . '"><input type="hidden" name="cor_team_revision" value="' . esc_attr($manager->revision($race, (int) $team['id'])) . '"><button type="submit">' . esc_html__('Resend invitation', 'h3-mgmt') . '</button></form>';
                     echo '<form method="post">';
                     wp_nonce_field('cor-mgmt-team-' . $race, 'cor_mgmt_nonce', false);
-                    echo '<input type="hidden" name="todo" value="cancel-invitation"><input type="hidden" name="invitation_email" value="' . esc_attr($invitation['email']) . '"><button type="submit">' . esc_html__('Revoke invitation', 'h3-mgmt') . '</button></form>';
+                    echo '<input type="hidden" name="todo" value="cancel-invitation"><input type="hidden" name="invitation_email" value="' . esc_attr($invitation['email']) . '"><button type="submit">' . esc_html__('Revoke invitation', 'h3-mgmt') . '</button></form></div>';
                 }
                 echo '</li>';
             }

@@ -1,5 +1,15 @@
 # Prüfbelege
 
+## Zusätzlicher Theme-Abstand in Hinweisboxen – 2026-11-16
+
+UI-23: Benutzer meldet großen Leerraum unter dem Text einer Erfolgsmeldung. Quellbefund: cor-theme/style.css, Zeilen 129–132, setzt für Absätze unter #main ein unteres Padding von 1.533333333333em. Vorhandene Feedback-Regeln änderten nur Margin und Farbe. Padding nun ausdrücklich nur in Absätzen eigener Dashboard-Hinweisboxen zurückgesetzt; das begrenzte important schützt auch gegen die ID-Spezifität des Themes. Keine Themeänderung. Bestehender Browserfall reproduziert eine entsprechende nachgeladene Theme-Regel und prüft den berechneten unteren Innenabstand der Erfolgsmeldung. Gemeinsames Paket mit UI-22: Auf PHP 8.2/8.3/8.4/8.5 jeweils 351 isolierte Tests mit 706 Assertions und composer check bestanden. Gezielter Dashboard-Browserfall einschließlich horizontaler Button-Anordnung, berechnetem Absatz-Padding, getrennten Formularen und axe auf PHP 8.2/8.5 bestanden; ESLint ebenfalls bestanden. Der erste PHP-8.5-Browserlauf brach beim Seitenaufbau mit einer allgemeinen WordPress-Fehlerseite ab; im anschließenden Einzellauf mit zusätzlicher PHP-Fehlerprotokollierung nicht reproduziert, kein PHP-Fehler protokolliert. Ursprüngliche Ursache nicht nachgewiesen. Keine erneute vollständige Integration, Browsergesamtsuite oder ZIP-Abnahme. Keine Prüfungen gegen Anwendungsdaten oder echter Versand. Inventar regeneriert und synthetische Datenbank beendet; gemeinsame Sichtprüfung offen.
+
+
+## Einladungsschaltflächen nebeneinander – 2026-11-16
+
+Benutzer bestätigt Resend-Funktion und verlangt nebeneinanderliegende Aktionen. Gemeinsame Flex-Gruppe mit Abstand und Umbruch bei Platzmangel; eigenständige POST-Formulare bleiben erhalten. Stylesheet-Version erhöht. Bestehender Browserfall prüft zusätzlich die tatsächliche horizontale Anordnung der Buttons. Keine Änderungen an Berechtigungen, Nachrichten, Codes oder Versandverarbeitung. Automatisierte Nachweise gemeinsam mit UI-23 im vorherigen Abschnitt; gemeinsame Sichtprüfung offen.
+
+
 ## Offene Einladung erneut anfordern – 2026-11-16
 
 UI-21 implementiert einen eigenen TeamManager-Anwendungsfall mit Teamzugehörigkeit, offener Rennphase, Nonce an der HTTP-Grenze, Revision, journalisiertem Anfrageschlüssel und Ein-Minuten-Abstand. Vorhandene Einladung und Code bleiben unverändert; widerrufene/verbrauchte Einladungen nicht wiederbeleben. Benachrichtigungsadapter findet native Codes ausschließlich in der geschützten ursprünglichen Nachrichtenkonfiguration, nach Event, Empfänger und Codehash begrenzt. Fehlende Quelle bricht samt Anforderungsjournal atomar ab. Historische offene Codes werden unterstützt. Wartende, blockierte oder im Versand befindliche Nachrichten wiederverwenden; sonst neue Nachricht über dieselben Eventvorlagen und kontrollierten Versandweg anlegen. Keine Änderungen am Schema oder der Versandfreigabe. Teilnehmerhinweis ohne Technik: „Invitation resend requested.“

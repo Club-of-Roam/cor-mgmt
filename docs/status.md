@@ -1,5 +1,11 @@
 # Arbeitsstatus und Übergabe
 
+Nachtrag UI-22/UI-23, 2026-11-16: Buttons nebeneinander und Theme-Padding innerhalb der Hinweisboxen korrigiert; Prüfbelege in verification.md. Benutzer bestätigt vorhandenes zweites Konto für die Annahmeprüfung. Nächster Schritt: Event mail queue für die Abnahmeveranstaltung öffnen und Einladungsvorschau prüfen; Link anschließend mit dem zweiten Konto verwenden.
+
+
+Nachtrag 2026-11-16: Benutzer bestätigt erfolgreiche erneute Einladungsanforderung. Auf Wunsch Resend invitation und Revoke invitation als gemeinsame Buttonzeile nebeneinander angeordnet; bei Platzmangel darf die Gruppe umbrechen. Speicherformulare und Schutzprüfungen bleiben getrennt. Nächster gemeinsamer Schritt AB-T02: Annahme mit einem zweiten Testkonto ohne bestehendes Team; echte Versandabnahme weiterhin gesondert offen.
+
+
 Nachtrag 2026-11-16, UI-21 / AB-T02: Benutzer bestätigt Widerruf und behält die Überschrift Pending invitations bei. Verpflichtende Ergänzung Resend invitation bei jeder offenen Einladung implementiert. Authentifizierter eigener POST mit Nonce, Teamrevision und Anfrageschlüssel; nur eigene offene Einladungen in der offenen Anmeldung. Code und Mitgliedsplätze bleiben unverändert. Wiederholung derselben Anfrage ist idempotent, weitere Anfragen derselben Einladung innerhalb einer Minute werden verständlich abgewiesen. Bereits wartende Nachrichten werden wiederverwendet, sonst neue kontrollierte Versandanforderung. Teilnehmermeldung „Invitation resend requested.“ bestätigt keinen ausgeführten Versand. Gemeinsame Nachprüfung offen.
 
 

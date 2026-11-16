@@ -1,5 +1,11 @@
 # Block 10: Gesamtabnahme und Releasevorbereitung
 
+UI-23, 2026-11-16: Zusätzlichen unteren Absatzabstand der Hinweisbox auf das Theme zurückgeführt und gezielt im Plugin aufgehoben. Gemeinsam mit UI-22 prüfen: kompakte Erfolgsmeldung sowie Resend/Revoke nebeneinander; bei schmaler Ansicht geordnet umbrechen.
+
+
+AB-T02 / UI-21, 2026-11-16: Benutzer bestätigt erfolgreiche erneute Anforderung über Resend invitation. Anordnung der beiden Aktionen auf Wunsch nebeneinander verbessert, schmale Ansichten dürfen umbrechen. Nächster offener fachlicher Schritt: Einladung mit zweitem Konto annehmen, Mitgliedschaft und offenen Eintrag prüfen; Einladungscode darf danach keinen weiteren Beitritt ermöglichen. Wiederholte tatsächliche Mailzustellung noch nicht manuell abgenommen.
+
+
 AB-T02, 2026-11-16: Widerruf mit Meldung „Invitation revoked.“ vom Benutzer bestätigt. „Pending invitations“ soll unverändert bleiben. Ergänzung UI-21: offene Einladung erneut über Resend invitation anfordern; verständliche Meldung „Invitation resend requested.“, weiterhin genau ein offener Eintrag. Wiederholter identischer POST darf keine zusätzliche Nachricht erzeugen. Code muss gültig bleiben, Annahme und Widerruf weiterhin funktionieren. Neuer Button und gesamter Resend-Ablauf noch gemeinsam nachprüfen; echter Mailversand bleibt separat abzunehmen.
 
 

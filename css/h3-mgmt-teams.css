@@ -1,3 +1,15 @@
+.cor-team-dashboard .cor-invitation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+.cor-team-dashboard .cor-invitation-actions > form {
+    margin: 0;
+    width: auto;
+    max-width: 100%;
+}
 .cor-team-dashboard .cor-team-columns {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -34,6 +46,8 @@
 .cor-team-dashboard .cor-team-feedback p {
     color: inherit;
     margin: 0.25rem 0;
+    /* Content themes add paragraph padding; feedback owns its internal spacing. */
+    padding: 0 !important;
 }
 .cor-team-dashboard [aria-invalid="true"] {
     border: 2px solid #a52525;
