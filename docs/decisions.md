@@ -1,5 +1,10 @@
 # Entscheidungen
 
+## Teilnehmermeldungen bei Einladungen (2026-11-16)
+
+Keine technischen Erklärungen zu Versandverarbeitung im Teilnehmerbereich. Erfolgreiches Anlegen wird knapp als „Invitations saved.“ bestätigt; vorhandene offene Einladungen behalten ihre verständliche eigene Meldung. „Sent“ darf nur auf nachgewiesenem Versand beruhen. Einladungserstellung allein und eine deaktivierte Versandfreigabe rechtfertigen keine Versandbestätigung; Zustellung ins Postfach wird auch durch Transportannahme nicht garantiert.
+
+
 ## Zweispaltiges Team Dashboard mit bisheriger Homework-Anzeige (2026-11-15)
 
 Auf Benutzerwunsch ersetzt die bisherige Homework-Aufteilung die neue Liste je Person: eigene und übrige Mitglieder getrennt, aktivierte Eventvoraussetzungen und bearbeitbare Eventtexte verwenden, erledigte Aufgaben durchstreichen. Links Team-Einstellungen einschließlich eigenständiger Einladungsformulare, rechts Homework, persönliches Profil darunter weiterhin separat und aufklappbar. Mobile Darstellung untereinander. Bestehende Fachregeln, schreibfreie Anforderungsauswertung und Sperre ab Rennstart bleiben verbindlich; eine erstellte Einladung bedeutet keine vollständige Mitgliedschaft oder Mailzustellung. Der kombinierte Legacy-Shortcode delegiert an dasselbe Dashboard, damit keine doppelte Checkliste entsteht.

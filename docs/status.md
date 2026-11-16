@@ -1,5 +1,8 @@
 # Arbeitsstatus und Übergabe
 
+Nachtrag 2026-11-16, AB-T02: Benutzer bestätigt die zweispaltige Dashboard-Anzeige, erfolgreiche Einladungserstellung und verständliche Rückmeldung bei erneuter Einladung derselben Adresse. Technischen Versandhinweis auf Wunsch aus dem Teilnehmerbereich entfernt; Erfolg heißt „Invitations saved.“, die bestätigte Rückmeldung zu bereits offenen Einladungen bleibt unverändert. Kein automatisches Aktivieren des Versands und keine unbestätigte Sent-Meldung. Widerruf, Annahme und tatsächlicher Versand bleiben gesondert abzunehmen.
+
+
 Nachtrag UI-20, 2026-11-15: Benutzer wünscht die bisherige Homework-Checkliste integriert rechts neben den Team-Einstellungen. Zweispaltiges responsives Dashboard mit Eventtexten, eigenen/übrigen Aufgaben und durchgestrichenen erledigten Aufgaben umgesetzt. Persönliches Profil bleibt separat unter beiden Spalten eingeklappt. Alte kombinierte Dashboard-/Homework-Einbettung delegiert ohne doppelte Ausgabe. Automatisierte Nachweise in verification.md; gemeinsame Sichtprüfung und Einladungsabnahme AB-T02 weiterhin offen. Dieser Wunsch ersetzt die vorangegangene Anordnung der Voraussetzungen oberhalb des Teamformulars.
 
 

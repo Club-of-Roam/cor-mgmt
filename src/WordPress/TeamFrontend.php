@@ -57,7 +57,7 @@ final class TeamFrontend
                     throw new \Cor\Mgmt\Application\Teams\ParticipationException('not_permitted');
                 }
                 $result = TeamBoundary::manager()->inviteMembers($race, get_current_user_id(), TeamBoundary::emails(), TeamBoundary::value('cor_team_revision'));
-                $message = $result['events'] === [] ? __('These email addresses already have pending invitations.', 'h3-mgmt') : __('Invitations created. Email delivery is handled separately.', 'h3-mgmt');
+                $message = $result['events'] === [] ? __('These email addresses already have pending invitations.', 'h3-mgmt') : __('Invitations saved.', 'h3-mgmt');
                 unset($_POST['submitted']);
             } elseif (($_POST['todo'] ?? '') === 'cancel-invitation') {
                 if (!\H3_MGMT_Security::post('cor-mgmt-team-' . $race)) {
@@ -279,7 +279,7 @@ final class TeamFrontend
             wp_nonce_field('cor-mgmt-team-' . $race, 'cor_mgmt_nonce', false);
             echo '<input type="hidden" name="todo" value="invite"><input type="hidden" name="submitted" value="1"><input type="hidden" name="cor_team_revision" value="' . esc_attr($manager->revision($race, (int) $team['id'])) . '">';
             self::field('invitations', __('Email addresses (one per line)', 'h3-mgmt'), $draft, false, 'textarea', required: true, invalid: $errorCode === 'invalid_email');
-            echo '<p><button type="submit">' . esc_html__('Create invitations', 'h3-mgmt') . '</button></p></form><p>' . esc_html__('Creating an invitation does not confirm email delivery. Email delivery is handled separately.', 'h3-mgmt') . '</p>';
+            echo '<p><button type="submit">' . esc_html__('Create invitations', 'h3-mgmt') . '</button></p></form>';
         } else {
             echo '<p>' . esc_html__('Registration is closed. Invitations cannot be created or accepted now.', 'h3-mgmt') . '</p>';
         }

@@ -298,7 +298,10 @@ final class TeamManagementTest extends TestCase
         $input = ['todo' => 'invite', 'submitted' => '1', 'cor_mgmt_nonce' => wp_create_nonce('cor-mgmt-team-2'), 'cor_team_revision' => $revision,
             'invitations' => 'synthetic-invite@example.invalid', 'team_name' => 'Ignore this edit', 'city' => 'Ignore this edit', 'birthday' => 'invalid'];
         $_POST = $input; $html = do_shortcode('[h3-team-dashboard race="2"]');
-        self::assertStringContainsString('Invitations created.', $html);
+        self::assertStringContainsString('Invitations saved.', $html);
+        self::assertStringNotContainsString('Email delivery is handled separately', $html);
+        self::assertStringNotContainsString('Creating an invitation does not confirm', $html);
+        self::assertStringNotContainsString('Invitations sent.', $html);
         self::assertStringContainsString('synthetic-invite@example.invalid', $html);
         self::assertSame($before, $this->repo->find('team', 40)); self::assertSame($profile, $this->repo->profile($this->one));
         self::assertCount(1, $this->repo->related('token', 'team_id', '40')); self::assertSame([], $GLOBALS['cor_test_mail']);

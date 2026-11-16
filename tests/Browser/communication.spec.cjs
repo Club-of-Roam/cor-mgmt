@@ -105,7 +105,7 @@ test('team invitations and requirements precede a separately saved personal prof
   await city.fill('Unsaved personal draft');
   await invitations.locator('[name="invitations"]').fill('browser-invitation@example.invalid');
   await invitations.getByRole('button', {name: 'Create invitations', exact: true}).click();
-  await expect(page.getByRole('status')).toContainText('Invitations created.');
+  await expect(page.getByRole('status')).toContainText('Invitations saved.');
   await expect(invitations).toContainText('browser-invitation@example.invalid');
   await expect(city).toHaveValue(originalCity);
   await expect(profile).not.toHaveAttribute('open');

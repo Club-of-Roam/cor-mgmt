@@ -1,5 +1,8 @@
 # Block 10: Gesamtabnahme und Releasevorbereitung
 
+AB-T02, Benutzerrückmeldung 2026-11-16: Zweispaltige Ansicht gefällt; Einladungserstellung mit Erfolgsmeldung und Rückmeldung bei erneut eingegebener bereits offener Adresse bestätigt. Keine vollständige Annahme-/Widerrufs-/Versandabnahme. Technischen Erklärungstext aus Teilnehmeransicht entfernt und Anlegebestätigung auf „Invitations saved.“ gekürzt. Für „sent“ bleibt ein tatsächlicher Versandnachweis erforderlich.
+
+
 Nachtrag UI-20 (2026-11-15): In AB-T02 zusätzlich zweispaltige Darstellung prüfen: Team-Einstellungen/Einladungen links, Homework Assignments rechts mit Eventtexten, eigenen und übrigen Aufgaben sowie erledigten Markierungen. Persönliches Profil darunter standardmäßig eingeklappt und separat speicherbar. Auf schmalem Bildschirm Spalten untereinander ohne waagerechten Überlauf. Bestehende Einladungsschritte und fachliche Abnahmen bleiben offen; der kombinierte Altshortcode darf keine doppelte Homework-Anzeige erzeugen.
 
 

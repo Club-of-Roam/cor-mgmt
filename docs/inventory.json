@@ -131,7 +131,7 @@
     "src/WordPress/SitePages.php": "a7322f70e4d6d07ac4f93e9497fa01f227f7d6939fd13e2f13da296e2e6f4a15",
     "src/WordPress/TeamAdmin.php": "23873f233536e60b166c8152c440cf7ee516ff520b461400ecbe88c987dabac0",
     "src/WordPress/TeamBoundary.php": "a7516c38c7f4cd4b88ec252015c51012904c91f0e1f7c94da3f61cbab6a00c28",
-    "src/WordPress/TeamFrontend.php": "c49fd8b526206e81157f491fc6253e75fe3529b4ccdf8beded4986ccdec63090",
+    "src/WordPress/TeamFrontend.php": "415a1ec555505ab3dbe72be4336a3c02efe3926fbef7118fc0eda3cdccb5e6a6",
     "src/WordPress/TeamPortal.php": "cf9bdaeb89eba9b05e4690b84561591c153891e6b3b68bcfaf5ca71ab86b6de8",
     "src/WordPress/TeamRequirementsView.php": "34d4093b3e0f42d008a124de22de1dc6569c0a17e0bf4ba6402db0ae17cb79eb",
     "src/WordPress/TickerBoundary.php": "cccd5ca697cb64afbacb3bba4d5807ffe827b3676e8894699fb121c7268ecac7",

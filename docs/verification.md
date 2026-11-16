@@ -1,5 +1,10 @@
 # Prüfbelege
 
+## Einladungsmeldungen ohne technische Versandhinweise – 2026-11-16
+
+Erfolgsmeldung auf „Invitations saved.“ gekürzt, statischen technischen Versandhinweis entfernt. Rückmeldung bei schon vorhandenen offenen Einladungen unverändert. Benutzer bestätigt erfolgreiche Anlage und den Wiederholungsfall. Keine Versandaktivierung oder Behauptung eines erfolgten Versands. Bestehende Integrations-/Browsererwartungen angepasst; gezielte Integration prüft zusätzlich Abwesenheit der technischen Hinweise und einer unberechtigten Sent-Meldung. Auf PHP 8.2/8.3/8.4/8.5 gezielte Einladungsintegration mit jeweils einem Fall und 22 Assertions sowie jeweils 351 isolierte Tests mit 706 Assertions bestanden; ESLint bestanden. Composer check auf allen vier PHP-Versionen bestanden. Keine erneute vollständige Integration, Browser- oder ZIP-Abnahme für diese Textänderung. Inventar regeneriert und synthetische Testdatenbank beendet.
+
+
 ## Integrierte zweispaltige Homework-Anzeige – 2026-11-15
 
 UI-20: Team Dashboard zeigt links Team-Einstellungen und getrennte Einladungsformulare, rechts die bisherige Homework-Aufteilung: eigene und zusammengefasste übrige Aufgaben, aktivierte Gebühr-/Haftungsverzicht-/Shirt-/Kontaktprüfungen und bearbeitbare Eventtexte. Erledigte Aufgaben durchgestrichen, offene und erledigte Zustände zusätzlich als Text. Leere Eventtexte erhalten nur bei der Ausgabe sichere Standardtexte; keine Bestandsänderung. Mitgliederzahl bleibt sichtbar, eine Einladung ersetzt keine vollständige Mitgliedschaft. Hinweise für Zahlung/Haftungsverzicht sowie Teamstatus, Routenwahl und bestätigte Unterstützung ergänzen die Checkliste. Ab Rennstart keine neue Berechnung. Persönliches Profil bleibt separat und standardmäßig eingeklappt unter beiden Spalten. Alter kombinierter Shortcode delegiert an das integrierte Dashboard ohne doppelte Ausgabe; eigenständiger Homework-Shortcode bleibt erhalten.
