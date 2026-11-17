@@ -113,6 +113,7 @@ test('event template switching protects unsaved text and activation changes', as
   await page.locator('select[name="language"]').selectOption('de');
   await expect(page.locator('select[name="language"]')).toHaveValue('en');
   await expect(subject).toHaveValue('Unsaved invitation text');
+  await expect(page.locator('[data-response-loading]')).toBeHidden();
   page.once('dialog', dialog => dialog.dismiss());
   await page.locator('select[name="template_action"]').selectOption('team-creation');
   await expect(page.locator('select[name="template_action"]')).toHaveValue('invitation');
@@ -147,6 +148,62 @@ test('event template switching protects unsaved text and activation changes', as
   await expect(subject).toHaveValue('Saved without a discard warning');
   expect(unexpected).toEqual([]);
   await axe(page);
+});
+
+test('slow template navigation shows a spinner and blocks further edits until loaded', async ({ page, context }) => {
+  await identity(context, 'admin');
+  const response = await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en');
+  expect(response.status(), await page.locator('body').innerText()).toBe(200);
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+  await page.emulateMedia({reducedMotion: 'reduce'});
+  // Capture the rendered old-document state in its submit event. Chromium can
+  // suspend that document while the next navigation response is held open.
+  let report;
+  const reported = new Promise(resolve => { report = resolve; });
+  await page.exposeFunction('reportTemplateLoading', state => report(state));
+  await page.evaluate(() => {
+    globalThis.document.addEventListener('submit', () => {
+      const container = globalThis.document.querySelector('.cor-response-page');
+      const element = container.querySelector('[data-response-loading]');
+      const spinner = element.querySelector('.cor-response-spinner');
+      globalThis.reportTemplateLoading({
+        visible: !element.hidden && element.getBoundingClientRect().height > 0,
+        text: element.textContent,
+        spinnerVisible: spinner.getBoundingClientRect().width > 0 && globalThis.getComputedStyle(spinner).display !== 'none',
+        reducedMotion: globalThis.getComputedStyle(spinner).animationName,
+        busy: container.querySelector('.cor-response-selector').getAttribute('aria-busy'),
+        inert: container.querySelector('.cor-response-editor').inert,
+      });
+    }, {once: true});
+  });
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  let requested;
+  const seen = new Promise(resolve => { requested = resolve; });
+  await page.route(url => url.searchParams.get('page') === 'cor-mgmt-responses' && url.searchParams.get('language') === 'de', async route => {
+    requested();
+    await gate;
+    await route.continue();
+  });
+  try {
+    await page.locator('select[name="language"]').selectOption('de');
+    await seen;
+    const state = await reported;
+    expect(state.visible).toBe(true);
+    expect(state.text).toContain('Loading, please wait');
+    expect(state.spinnerVisible).toBe(true);
+    expect(state.reducedMotion).toBe('none');
+    expect(state.busy).toBe('true');
+    expect(state.inert).toBe(true);
+    release();
+    await expect(page).toHaveURL(/language=de(?:&|$)/);
+    await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+    await expect(page.locator('[data-response-loading]')).toBeHidden();
+    await expect(page.locator('.cor-response-editor')).toHaveJSProperty('inert', false);
+    await expect(page.locator('select[name="template_action"] option[value^="paypal"]')).toHaveCount(0);
+    await expect(page.locator('select[name="template_action"] option[value^="debit"]')).toHaveCount(0);
+    await axe(page);
+  } finally { release(); }
 });
 
 test('template changes entered before the script loads are protected', async ({ page, context }) => {

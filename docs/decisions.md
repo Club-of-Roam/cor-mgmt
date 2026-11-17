@@ -133,3 +133,6 @@ Diese Fragen verhindern keine Dokumentation/Referenztests, aber die jeweilige un
 
 
 - D-56 (Benutzervorgabe 2026-11-16, UI-26): Eventvorlage nach Auswahl von Nachrichtentyp oder Sprache automatisch laden; ungespeicherte Änderungen vor dem Verwerfen bestätigen lassen. Abbrechen erhält Entwurf und Auswahl, Speichern benötigt keine Verwerfen-Bestätigung. Rückfall auf explizites Laden ohne JavaScript; keine automatische Speicherung oder Änderung der Versandfreigabe.
+
+
+- D-57 (Benutzervorgabe 2026-11-17, UI-27/UI-28): Vorlagenwechsel brauchen sofort sichtbare Warteanzeige. Nicht mehr genutzte historische Zahlungsnachrichten aus der normalen Vorlagenverwaltung und Eventübernahme entfernen; historische Originaldaten und die Lesbarkeit vorhandener Nachrichten erhalten. Keine Löschung von Spenden, Rennen oder alten Texten aus diesem Bedienauftrag ableiten.

@@ -93,6 +93,9 @@ if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/broadca
     readfile(dirname(__DIR__) . '/js/h3-mgmt-broadcast.js');
     exit;
 }
+if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/responses.css') {
+    header('Content-Type: text/css; charset=UTF-8'); readfile(dirname(__DIR__) . '/css/cor-mgmt-responses.css'); exit;
+}
 if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/responses.js') {
     header('Content-Type: text/javascript; charset=UTF-8'); readfile(dirname(__DIR__) . '/js/cor-mgmt-responses.js'); exit;
 }
@@ -136,7 +139,7 @@ if (($_POST['action'] ?? '') === 'cor_mgmt_broadcast_step') {
 nocache_headers();
 header('Content-Type: text/html; charset=UTF-8');
 header("Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; form-action 'self'; img-src 'self' https://tile.openstreetmap.org data:; frame-src https://www.youtube-nocookie.com https://www.openstreetmap.org");
-echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Synthetic communication acceptance</title><link rel="stylesheet" href="/assets/ticker.css"><style>body{font:18px Arial;line-height:1.5;color:#111;background:#fff;max-width:1000px;margin:2em auto}a{color:#004f91}input,textarea,select,button{font:inherit;max-width:95%}details{padding:1em;border:1px solid #777}summary{cursor:pointer}:focus{outline:3px solid #005a9c;outline-offset:3px}</style></head><body><main>';
+echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Synthetic communication acceptance</title><link rel="stylesheet" href="/assets/ticker.css"><link rel="stylesheet" href="/assets/responses.css"><style>body{font:18px Arial;line-height:1.5;color:#111;background:#fff;max-width:1000px;margin:2em auto}a{color:#004f91}input,textarea,select,button{font:inherit;max-width:95%}details{padding:1em;border:1px solid #777}summary{cursor:pointer}:focus{outline:3px solid #005a9c;outline-offset:3px}</style></head><body><main>';
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $page = $_GET['page'] ?? '';
 if ($path === '/board') { echo \Cor\Mgmt\WordPress\ExchangeBoundary::shortcode(); }

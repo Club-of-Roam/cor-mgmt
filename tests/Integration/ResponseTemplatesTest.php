@@ -40,6 +40,37 @@ final class ResponseTemplatesTest extends TestCase
     {
         self::assertSame(1,$GLOBALS['wpdb']->insert($this->db->table('h3_mgmt_auto_responses'),$values+['action'=>'team-creation','language'=>'en','switch'=>1,'subject'=>'Old %team_name%','message'=>'Hello %name%']));
     }
+    public function testUnusedHistoricalPaymentTemplatesArePreservedButNotEditedOrCopied(): void
+    {
+        foreach (AutoResponseTemplate::HISTORICAL_ACTIONS as $action) {
+            $this->db->execute($this->db->prepare("INSERT INTO %i (race_id,action,language,enabled,subject,message,revision,updated_at) VALUES (301,%s,'en',1,'Historical','Preserved text',1,1)", $this->db->table('cor_mgmt_response_templates'), $action));
+        }
+        $this->save(301, 'Current message');
+        $before = $this->templates->context(301, 42);
+        foreach (AutoResponseTemplate::HISTORICAL_ACTIONS as $action) {
+            self::assertSame('Preserved text', $this->templates->resolve(301, $action, 'en')->message);
+            $this->rejected('historical_template_read_only', fn () => $this->templates->save(301, 42, new AutoResponseTemplate($action, 'en', false, 'Changed', 'Changed'), $before['revision']));
+        }
+        $preview = $this->templates->previewTransfer(302, 301, 42, true);
+        self::assertCount(1, $preview['rows']);
+        self::assertSame('team-creation', $preview['rows'][0]['action']);
+        self::assertSame('1', $this->templates->transfer(302, 301, 42, $preview['fingerprint'], true)['created']);
+        self::assertSame($before, $this->templates->context(301, 42));
+        foreach (AutoResponseTemplate::HISTORICAL_ACTIONS as $action) { self::assertNull($this->templates->resolve(302, $action, 'en')); }
+        $admin = wp_insert_user(['user_login'=>'synthetic_historical_templates_admin','user_email'=>'historical-templates@example.invalid','user_pass'=>'synthetic','role'=>'administrator']);
+        wp_set_current_user($admin);
+        $_GET = ['race_id'=>'301','template_action'=>'paypal-thanks'];
+        ob_start();
+        try { CommunicationAdmin::page(); $html = ob_get_contents(); } finally { ob_end_clean(); }
+        $document = new \DOMDocument();
+        $document->loadHTML('<meta charset="utf-8">' . $html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($document);
+        self::assertSame(9, $xpath->query('//select[@name="template_action"]/option')->length);
+        self::assertSame(0, $xpath->query('//a[contains(@href,"paypal") or contains(@href,"debit")]')->length);
+        self::assertSame(1, $xpath->query('//select[@name="template_action"]/option[@selected and @value="team-creation"]')->length);
+        self::assertStringNotContainsString('Historical PayPal', $html);
+        self::assertStringNotContainsString('Historical direct debit', $html);
+    }
     public function testDefaultsFillMissingTemplatesOnlyAndRequireCurrentRevisionAndRights(): void
     {
         $this->save(301, 'Keep custom text', false);

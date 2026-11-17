@@ -17,7 +17,8 @@ final class CommunicationAdmin
     {
         add_action('admin_enqueue_scripts', static function (): void {
             if (($_GET['page'] ?? '') === 'cor-mgmt-responses') {
-                wp_enqueue_script('cor-mgmt-responses', plugins_url('js/cor-mgmt-responses.js', dirname(__DIR__, 2) . '/h3-management.php'), [], '1', true);
+                wp_enqueue_script('cor-mgmt-responses', plugins_url('js/cor-mgmt-responses.js', dirname(__DIR__, 2) . '/h3-management.php'), [], '1.1', true);
+                wp_enqueue_style('cor-mgmt-responses', plugins_url('css/cor-mgmt-responses.css', dirname(__DIR__, 2) . '/h3-management.php'), [], '1.1');
             }
         });
         add_action('admin_menu', static function (): void {
@@ -124,16 +125,23 @@ final class CommunicationAdmin
         $action = isset($_GET['template_action']) && is_string($_GET['template_action']) ? $_GET['template_action'] : 'team-creation';
         $language = isset($_GET['language']) && is_string($_GET['language']) ? AutoResponseTemplate::language($_GET['language']) : 'en';
         AutoResponseTemplate::key($action, $language);
+        if (in_array($action, AutoResponseTemplate::HISTORICAL_ACTIONS, true)) {
+            $action = 'team-creation';
+        }
         echo '<h2>' . esc_html($context['race']['name'] ?? '') . '</h2><form method="get" class="cor-response-selector"><input type="hidden" name="page" value="cor-mgmt-responses"><input type="hidden" name="race_id" value="' . esc_attr((string) $race) . '"><label>' . esc_html__('Action', 'h3-mgmt') . ' <select name="template_action">';
-        foreach (AutoResponseTemplate::ACTIONS as $choice) {
+        foreach (AutoResponseTemplate::editableActions() as $choice) {
             echo '<option value="' . esc_attr($choice) . '"' . selected($choice, $action, false) . '>' . esc_html(self::label($choice)) . '</option>';
         }
         echo '</select></label> <label>' . esc_html__('Language', 'h3-mgmt') . ' ' . self::languageSelect($language, $context['templates']) . '</label> <button class="button" data-response-open type="submit">' . esc_html__('Open template', 'h3-mgmt') . '</button></form>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- languageSelect returns a select with individually escaped options.
+        echo '<p class="cor-response-loading" data-response-loading role="status" aria-live="polite" hidden><span class="cor-response-spinner" aria-hidden="true"></span><strong>' . esc_html__('Loading, please wait…', 'h3-mgmt') . '</strong></p>';
         $template = self::manager()->resolve($race, $action, $language);
         echo '<form method="post" class="cor-response-editor">' . self::fields($race) . '<input type="hidden" name="revision" value="' . esc_attr($context['revision']) . '"><input type="hidden" name="response_operation" value="save"><input type="hidden" name="template_action" value="' . esc_attr($action) . '"><input type="hidden" name="language" value="' . esc_attr($language) . '"><fieldset' . ($context['writable'] ? '' : ' disabled') . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped native nonce and fields.
         echo '<p><label><input type="checkbox" name="enabled"' . checked($template->enabled ?? false, true, false) . '>' . esc_html__('Enable for this event', 'h3-mgmt') . '</label></p><p><label>' . esc_html__('Subject', 'h3-mgmt') . '<br><input class="large-text" name="subject" value="' . esc_attr($template->subject ?? '') . '"></label></p><p><label>' . esc_html__('Message', 'h3-mgmt') . '<br><textarea class="large-text" name="message" rows="12">' . esc_textarea($template->message ?? '') . '</textarea></label></p><p>' . esc_html__('Available placeholders', 'h3-mgmt') . ': ' . esc_html(implode(', ', array_map(static fn (string $key): string => '%' . $key . '%', AutoResponseTemplate::FIELDS))) . '</p><button class="button button-primary" type="submit">' . esc_html__('Save event template', 'h3-mgmt') . '</button></fieldset></form>';
         echo '<h3>' . esc_html__('Stored templates for this event', 'h3-mgmt') . '</h3><ul>';
         foreach ($context['templates'] as $row) {
+            if (in_array($row['action'], AutoResponseTemplate::HISTORICAL_ACTIONS, true)) {
+                continue;
+            }
             $url = add_query_arg(['page' => 'cor-mgmt-responses','race_id' => $race,'template_action' => $row['action'],'language' => $row['language']], admin_url('admin.php'));
             echo '<li><a href="' . esc_url($url) . '">' . esc_html(self::label($row['action'] ?? '') . ' / ' . ($row['language'] ?? '')) . '</a> — ' . esc_html($row['enabled'] === '1' ? __('Enabled', 'h3-mgmt') : __('Disabled', 'h3-mgmt')) . '</li>';
         }

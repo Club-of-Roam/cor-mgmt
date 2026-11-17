@@ -1,0 +1,23 @@
+.cor-response-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .75rem 1rem;
+  color: #1d2327;
+  background: #f0f6fc;
+  border-left: 4px solid #2271b1;
+}
+.cor-response-loading[hidden] { display: none; }
+.cor-response-spinner {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  border: 3px solid #2271b1;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: cor-response-spin .8s linear infinite;
+}
+@keyframes cor-response-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .cor-response-spinner { animation: none; }
+}

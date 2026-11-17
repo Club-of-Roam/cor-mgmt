@@ -87,6 +87,9 @@ final class ResponseTemplates
     {
         return $this->atomic(function () use ($race, $actor, $template, $revision): array {
             $context = $this->writable($race, $actor);
+            if (in_array($template->action, AutoResponseTemplate::HISTORICAL_ACTIONS, true)) {
+                throw new CommunicationException('historical_template_read_only');
+            }
             if (!hash_equals($context['revision'], $revision)) {
                 throw new CommunicationException('stale_templates');
             }
@@ -185,6 +188,9 @@ final class ResponseTemplates
         $issues = [];
         foreach ($originals as $row) {
             $action = $row['action'] ?? '';
+            if (in_array($action, AutoResponseTemplate::HISTORICAL_ACTIONS, true)) {
+                continue;
+            }
             $language = $row['language'] ?? '';
             $key = $action . ':' . strtolower(str_replace('-', '_', $language));
             try {

@@ -10,7 +10,13 @@ use Cor\Mgmt\Application\Communication\CommunicationException;
 final readonly class AutoResponseTemplate
 {
     public const ACTIONS = ['team-creation','invitation','invitation-accepted-inviter','invitation-accepted-invitee','package-paid','waiver-reached','new-sponsor','new-owner','publishable','paypal-please-owner','paypal-please-sponsor','paypal-thanks','debit-thanks-owner','debit-thanks-sponsor'];
+    public const HISTORICAL_ACTIONS = ['paypal-please-owner','paypal-please-sponsor','paypal-thanks','debit-thanks-owner','debit-thanks-sponsor'];
     public const FIELDS = MessageText::FIELDS;
+    /** @return list<string> */
+    public static function editableActions(): array
+    {
+        return array_values(array_diff(self::ACTIONS, self::HISTORICAL_ACTIONS));
+    }
     public string $language;
     public function __construct(public string $action, string $language, public bool $enabled, public string $subject, public string $message)
     {

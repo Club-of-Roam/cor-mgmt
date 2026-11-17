@@ -10,6 +10,14 @@ use PHPUnit\Framework\TestCase;
 
 final class AutoResponseTemplateTest extends TestCase
 {
+    public function testHistoricalPaymentKeysRemainReadableButAreNotEditableChoices(): void
+    {
+        self::assertCount(9, AutoResponseTemplate::editableActions());
+        self::assertSame([], array_values(array_intersect(AutoResponseTemplate::editableActions(), AutoResponseTemplate::HISTORICAL_ACTIONS)));
+        foreach (AutoResponseTemplate::HISTORICAL_ACTIONS as $action) {
+            self::assertSame($action, (new AutoResponseTemplate($action, 'en', false, 'Historical', 'Preserved text'))->action);
+        }
+    }
     public function testDefaultsAreBilingualRenderableAndDoNotEnableHistoricalPayments(): void
     {
         $templates = \Cor\Mgmt\Domain\AutoResponseDefaults::all();
