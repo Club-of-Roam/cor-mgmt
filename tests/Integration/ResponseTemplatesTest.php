@@ -111,6 +111,9 @@ final class ResponseTemplatesTest extends TestCase
         $document = new \DOMDocument();
         $document->loadHTML('<meta charset="utf-8">' . $html, LIBXML_NOERROR | LIBXML_NOWARNING);
         $xpath = new \DOMXPath($document);
+        self::assertSame(1, $xpath->query('//form[contains(@class, "cor-response-selector")]')->length);
+        self::assertSame(1, $xpath->query('//form[contains(@class, "cor-response-editor")]')->length);
+        self::assertSame(1, $xpath->query('//button[@data-response-open]')->length);
         self::assertSame(1, $xpath->query('//select[@name="language"]/option[@value="de"]')->length);
         self::assertSame(1, $xpath->query('//select[@name="language"]/option[@value="en"]')->length);
         self::assertSame(1, $xpath->query('//select[@name="language"]/option[@value="de_de" and @selected]')->length);

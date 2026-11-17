@@ -130,3 +130,6 @@ Diese Fragen verhindern keine Dokumentation/Referenztests, aber die jeweilige un
 
 
 - D-55 (Benutzervorgabe 2026-11-16, Block 10): Globale Auto-Responses-Verwaltung entfällt zugunsten unabhängiger Standardnachrichten je neuem Event. Deutsch/Englisch vorbelegen; Sprache als Dropdown mit verständlichen Namen statt freier Kürzeleingabe. Bestehende Events nur ausdrücklich um fehlende Standards ergänzen. Texte aus anderen Events nach Vorschau übernehmen und passende Zielvorlagen ausdrücklich ersetzen können; Quelle, Archiv und bestehende Nachrichten-Snapshots erhalten. Kein automatischer Versand oder neue Zahlungsaktivierung. Dieser Nachtrag ersetzt die globale Kopieroberfläche aus D-45 und ergänzt dessen bisherigen Nichtüberschreibungsvertrag um die ausdrückliche Ersetzung. [Vertrag](block-8-templates.md).
+
+
+- D-56 (Benutzervorgabe 2026-11-16, UI-26): Eventvorlage nach Auswahl von Nachrichtentyp oder Sprache automatisch laden; ungespeicherte Änderungen vor dem Verwerfen bestätigen lassen. Abbrechen erhält Entwurf und Auswahl, Speichern benötigt keine Verwerfen-Bestätigung. Rückfall auf explizites Laden ohne JavaScript; keine automatische Speicherung oder Änderung der Versandfreigabe.

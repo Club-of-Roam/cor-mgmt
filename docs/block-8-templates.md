@@ -1,5 +1,7 @@
 # Block 8 – Erstes Teilpaket: eventbezogene Vorlagen
 
+Nachtrag UI-26, 2026-11-16: Nachrichtentyp und Sprache laden die gewählte Eventvorlage direkt per lesender GET-Anfrage. JavaScript blendet Open template aus; ohne JavaScript bleibt der Button bedienbar. Ein Vergleich mit dem geladenen Formularstand schützt ungespeicherte Betreff-/Nachricht-/Aktivierungsänderungen. Abgebrochener Wechsel stellt beide Auswahlen wieder her und erhält den Entwurf. Bestätigtes Verwerfen lädt die ausgewählte Vorlage; zurückgeänderte Werte gelten nicht als ungespeichert. Andere Seitenformulare und Vorlagenlinks warnen ebenfalls, Verlassen/Neuladen nutzt den Browserschutz. Das reguläre Speichern löst keine zusätzliche Verwerfen-Warnung aus. Keine automatische Speicherung oder Mailzustellung.
+
 ## Eventvorlagen und Standardnachrichten – 2026-11-16
 
 Aktueller Vertrag aus Block 10 (D-55): Der globale Auto-Responses-Menüeintrag entfällt. Globale Originaldaten und interne Bestandsleseverfahren bleiben erhalten, werden im neuen Editor aber weder angeboten noch per Formular übernommen. Eventvorlagen sind der einzige aktive Konfigurationsweg.

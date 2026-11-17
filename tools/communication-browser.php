@@ -93,6 +93,9 @@ if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/broadca
     readfile(dirname(__DIR__) . '/js/h3-mgmt-broadcast.js');
     exit;
 }
+if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/responses.js') {
+    header('Content-Type: text/javascript; charset=UTF-8'); readfile(dirname(__DIR__) . '/js/cor-mgmt-responses.js'); exit;
+}
 if (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === '/assets/ticker.js') {
     header('Content-Type: text/javascript; charset=UTF-8');
     readfile(dirname(__DIR__) . '/js/cor-mgmt-ticker.js');
@@ -151,7 +154,7 @@ elseif ($path === '/event-page') {
 elseif ($page === 'cor-mgmt-exchange' || $path === '/moderation') { \Cor\Mgmt\WordPress\ExchangeBoundary::page(); }
 elseif ($page === 'cor-mgmt-communication-report' || $path === '/report') { \Cor\Mgmt\WordPress\CommunicationReport::page(); }
 else { \Cor\Mgmt\WordPress\BroadcastAdmin::page(); }
-echo '</main><script src="/assets/broadcast.js"></script>';
+echo '</main><script src="/assets/broadcast.js"></script><script src="/assets/responses.js"></script>';
 if ($path === '/ticker-map') { echo '<script src="/assets/leaflet.js"></script>'; }
 echo '<script src="/assets/ticker.js"></script></body></html>';
 if ($GLOBALS['cor_test_mail'] !== []) { throw new RuntimeException('Unexpected WordPress mail call.'); }

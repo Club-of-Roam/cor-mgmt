@@ -113,7 +113,7 @@
     "src/WordPress/ArchiveFrontend.php": "94070496d757409189a14147fe8057cee944d083bb8a090a2d1189f4fde44521",
     "src/WordPress/BroadcastAdmin.php": "0699712eebf51931bded25808580a5cd2ee42186c4ce3c656377e544404e612a",
     "src/WordPress/Capabilities.php": "10cc96a8dd72f6fa6a4dcd46013023b6c0a5ac71157c8e96db936269b9663658",
-    "src/WordPress/CommunicationAdmin.php": "ad8653562099857cbc8258b5e2e539e5ad2be0401bad0efbfbb4cc2f02be62a3",
+    "src/WordPress/CommunicationAdmin.php": "2c1822d9ef6d9951bd54a54776df7d3b4b1218ba8888e4bde5f76c813bd568fa",
     "src/WordPress/CommunicationReport.php": "42a2b7f14a83b06d053b86077aa2dbe512f4e068a780af4c33596355c95f001b",
     "src/WordPress/DonationAdmin.php": "97ff1a11433e76d86e7d2ce5eb2ee66ae3023f3ca6576b9854a3589dec1896d6",
     "src/WordPress/DonationFrontend.php": "50fac23bcf03d899526f66240d899b0251b2f55ada5429116a8e38094b0bc2b8",
@@ -782,8 +782,17 @@
     },
     {
       "file": "src/WordPress/CommunicationAdmin.php",
+      "method": "register",
+      "line": 16,
+      "fields": [
+        "GET:page"
+      ],
+      "case_labels": []
+    },
+    {
+      "file": "src/WordPress/CommunicationAdmin.php",
       "method": "submit",
-      "line": 48,
+      "line": 53,
       "fields": [
         "POST:enabled"
       ],
@@ -792,7 +801,7 @@
     {
       "file": "src/WordPress/CommunicationAdmin.php",
       "method": "page",
-      "line": 72,
+      "line": 77,
       "fields": [
         "GET:race_id"
       ],
@@ -801,7 +810,7 @@
     {
       "file": "src/WordPress/CommunicationAdmin.php",
       "method": "event",
-      "line": 116,
+      "line": 121,
       "fields": [
         "GET:language",
         "GET:template_action"
@@ -811,7 +820,7 @@
     {
       "file": "src/WordPress/CommunicationAdmin.php",
       "method": "copyPreview",
-      "line": 166,
+      "line": 171,
       "fields": [
         "GET:replace_existing",
         "GET:source_id"

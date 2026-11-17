@@ -62,16 +62,22 @@ for (const actor of ['guest', 'member']) {
 
 test('event responses offer language selection, defaults and reviewed replacement copies', async ({ page, context }) => {
   await identity(context, 'admin');
-  await page.goto(base + '/responses?race_id=880090');
+  const response = await page.goto(base + '/responses?race_id=880090');
+  expect(response.status(), await page.locator('body').innerText()).toBe(200);
   await page.getByRole('button', {name: 'Add missing default templates', exact: true}).click();
   await expect(page.getByText('Configuration saved. No email was sent.', {exact: true})).toBeVisible();
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
   await page.locator('select[name="template_action"]').selectOption('invitation');
+  await expect(page).toHaveURL(/template_action=invitation/);
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
   await page.locator('select[name="language"]').selectOption({label: 'Deutsch'});
-  await page.getByRole('button', {name: 'Open template', exact: true}).click();
+  await expect(page).toHaveURL(/language=de(?:&|$)/);
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
   await expect(page.getByRole('textbox', {name: 'Message', exact: true})).toContainText('%inviter% lädt dich');
   await expect(page.locator('select[name="language"]')).toHaveValue('de');
   await page.locator('select[name="language"]').selectOption({label: 'English'});
-  await page.getByRole('button', {name: 'Open template', exact: true}).click();
+  await expect(page).toHaveURL(/language=en(?:&|$)/);
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
   await page.getByRole('textbox', {name: 'Subject', exact: true}).fill('Custom invitation');
   await page.getByRole('button', {name: 'Save event template', exact: true}).click();
   await page.locator('select[name="source_id"]').selectOption('880091');
@@ -79,6 +85,7 @@ test('event responses offer language selection, defaults and reviewed replacemen
   await expect(page.getByRole('cell', {name: 'Keep existing event template', exact: true})).toBeVisible();
   await page.getByRole('button', {name: 'Copy missing templates to this event', exact: true}).click();
   await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en');
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
   await expect(page.getByRole('textbox', {name: 'Subject', exact: true})).toHaveValue('Custom invitation');
   await page.locator('select[name="source_id"]').selectOption('880091');
   await page.getByRole('checkbox', {name: 'Replace matching templates after preview', exact: true}).check();
@@ -86,9 +93,93 @@ test('event responses offer language selection, defaults and reviewed replacemen
   await expect(page.getByRole('cell', {name: 'Replace existing event template', exact: true})).toBeVisible();
   await page.getByRole('button', {name: 'Confirm replacement and copy', exact: true}).click();
   await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en');
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
   await expect(page.getByRole('textbox', {name: 'Subject', exact: true})).toHaveValue('Copied invitation for %event_name%');
   await expect(page.locator('select[name="source_id"] option[value="0"]')).toHaveCount(0);
   await axe(page);
+});
+
+test('event template switching protects unsaved text and activation changes', async ({ page, context }) => {
+  await identity(context, 'admin');
+  await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en');
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+  await page.getByRole('button', {name: 'Add missing default templates', exact: true}).click();
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+  const subject = page.getByRole('textbox', {name: 'Subject', exact: true});
+  await page.addStyleTag({content: '.button { display: inline-block; }'});
+  await expect(page.locator('[data-response-open]')).toBeHidden();
+  await subject.fill('Unsaved invitation text');
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.locator('select[name="language"]').selectOption('de');
+  await expect(page.locator('select[name="language"]')).toHaveValue('en');
+  await expect(subject).toHaveValue('Unsaved invitation text');
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.locator('select[name="template_action"]').selectOption('team-creation');
+  await expect(page.locator('select[name="template_action"]')).toHaveValue('invitation');
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.getByRole('button', {name: 'Add missing default templates', exact: true}).click();
+  await expect(subject).toHaveValue('Unsaved invitation text');
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.locator('.cor-response-page a').first().click();
+  await expect(subject).toHaveValue('Unsaved invitation text');
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('select[name="language"]').selectOption('de');
+  await expect(page).toHaveURL(/language=de(?:&|$)/);
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+  await expect(subject).not.toHaveValue('Unsaved invitation text');
+  const enabled = page.getByRole('checkbox', {name: 'Enable for this event', exact: true});
+  await enabled.uncheck();
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.locator('select[name="language"]').selectOption('en');
+  await expect(page.locator('select[name="language"]')).toHaveValue('de');
+  await expect(enabled).not.toBeChecked();
+  await enabled.check();
+  const unexpected = [];
+  page.on('dialog', dialog => { unexpected.push(dialog.type()); return dialog.dismiss(); });
+  await page.locator('select[name="language"]').selectOption('en');
+  await expect(page).toHaveURL(/language=en(?:&|$)/);
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+  expect(unexpected).toEqual([]);
+  await subject.fill('Saved without a discard warning');
+  await page.getByRole('button', {name: 'Save event template', exact: true}).click();
+  await expect(page.getByText('Configuration saved. No email was sent.', {exact: true})).toBeVisible();
+  await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+  await expect(subject).toHaveValue('Saved without a discard warning');
+  expect(unexpected).toEqual([]);
+  await axe(page);
+});
+
+test('template changes entered before the script loads are protected', async ({ page, context }) => {
+  await identity(context, 'admin');
+  let release;
+  const ready = new Promise(resolve => { release = resolve; });
+  await page.route('**/assets/responses.js', async route => { await ready; await route.continue(); });
+  try {
+    await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en', {waitUntil: 'commit'});
+    const subject = page.getByRole('textbox', {name: 'Subject', exact: true});
+    await subject.fill('Typed before JavaScript loaded');
+    release();
+    await expect(page.locator('[data-response-open]')).toHaveJSProperty('hidden', true);
+    page.once('dialog', dialog => dialog.dismiss());
+    await page.locator('select[name="language"]').selectOption('de');
+    await expect(page.locator('select[name="language"]')).toHaveValue('en');
+    await expect(subject).toHaveValue('Typed before JavaScript loaded');
+    await axe(page);
+  } finally { release(); }
+});
+
+test('event template selection remains usable without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  try {
+    await identity(context, 'admin');
+    const page = await context.newPage();
+    await page.goto(base + '/responses?race_id=880090&template_action=invitation&language=en');
+    await expect(page.getByRole('button', {name: 'Open template', exact: true})).toBeVisible();
+    await page.locator('select[name="language"]').selectOption('de');
+    await page.getByRole('button', {name: 'Open template', exact: true}).click();
+    await expect(page).toHaveURL(/language=de(?:&|$)/);
+    await expect(page.locator('select[name="language"]')).toHaveValue('de');
+  } finally { await context.close(); }
 });
 
 test('dashboard save errors are visible, specific and retain the draft', async ({ page, context }) => {
